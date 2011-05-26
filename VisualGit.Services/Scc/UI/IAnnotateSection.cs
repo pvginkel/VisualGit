@@ -1,0 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace VisualGit.Scc.UI
+{
+    public interface IAnnotateSection : ISvnRepositoryItem
+    {
+        string Author { get; }
+        new long Revision { get; }
+        DateTime Time { get; }
+    }
+}

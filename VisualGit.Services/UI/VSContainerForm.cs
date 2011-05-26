@@ -1,0 +1,160 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
+
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
+
+using VisualGit.VS;
+
+
+namespace VisualGit.UI
+{
+    [CLSCompliant(false)]
+    public interface IVisualGitVSContainerForm
+    {
+        //IVsToolWindowToolbarHost ToolBarHost { get; }
+        VSContainerMode ContainerMode { get; set; }
+        void AddCommandTarget(IOleCommandTarget commandTarget);
+        void AddWindowPane(IVsWindowPane pane);
+    }
+
+    [Flags]
+    public enum VSContainerMode
+    {
+        Default = 0,
+
+        TranslateKeys = 1,
+        UseTextEditorScope = 2,
+    }
+
+
+    /// <summary>
+    /// .Net form which when shown modal let's the VS command routing continue
+    /// </summary>
+    /// <remarks>If the IVisualGitDialogOwner service is not available this form behaves like any other form</remarks>
+    public class VSContainerForm : VSDialogForm, IVisualGitVSContainerForm, IVisualGitCommandHookAccessor, IContextControl
+    {
+        VisualGitToolBar _toolbarId;
+        VSContainerMode _mode;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VSContainerForm"/> class.
+        /// </summary>
+        public VSContainerForm()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VSContainerForm"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        protected VSContainerForm(IContainer container)
+            : this()
+        {
+            container.Add(this);
+        }
+
+        /// <summary>
+        /// Gets or sets the mode.
+        /// </summary>
+        /// <value>The mode.</value>
+        protected VSContainerMode ContainerMode
+        {
+            get { return _mode; }
+            set
+            {
+                if (_mode != value)
+                {
+                    _mode = value;
+
+                    // Hook changes?
+                }
+            }
+        }
+
+        VSContainerMode IVisualGitVSContainerForm.ContainerMode
+        {
+            get { return ContainerMode; }
+            set { ContainerMode = value; }
+        }
+
+        protected override IDisposable DialogRunContext(IVisualGitServiceProvider context)
+        {
+            IVisualGitDialogOwner owner = null;
+            if (context != null)
+                owner = context.GetService<IVisualGitDialogOwner>();
+
+            if (owner != null)
+                return owner.InstallFormRouting(this, EventArgs.Empty);
+            else
+                return base.DialogRunContext(context);
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            if (!DesignMode && DialogOwner != null)
+                DialogOwner.OnContainerCreated(this);
+        }
+
+        public VisualGitToolBar ToolBar
+        {
+            get { return _toolbarId; }
+            set { _toolbarId = value; }
+        }
+
+        [CLSCompliant(false)]
+        protected void AddCommandTarget(IOleCommandTarget commandTarget)
+        {
+            if (commandTarget == null)
+                throw new ArgumentNullException("commandTarget");
+
+            if (DialogOwner == null)
+                throw new InvalidOperationException("DialogOwner not available");
+
+            DialogOwner.AddCommandTarget(this, commandTarget);
+        }
+
+        [CLSCompliant(false)]
+        protected void AddWindowPane(IVsWindowPane pane)
+        {
+            if (pane == null)
+                throw new ArgumentNullException("pane");
+
+            if (DialogOwner == null)
+                throw new InvalidOperationException("DialogOwner not available");
+
+            DialogOwner.AddWindowPane(this, pane);
+        }
+
+        #region IVisualGitVSContainerForm Members
+
+        void IVisualGitVSContainerForm.AddCommandTarget(IOleCommandTarget commandTarget)
+        {
+            AddCommandTarget(commandTarget);
+        }
+
+        void IVisualGitVSContainerForm.AddWindowPane(IVsWindowPane pane)
+        {
+            AddWindowPane(pane);
+        }
+
+        #endregion
+
+        #region IVisualGitCommandHookAccessor Members
+
+        VisualGitCommandHook _hook;
+        VisualGitCommandHook IVisualGitCommandHookAccessor.CommandHook
+        {
+            get { return _hook; }
+            set { _hook = value; }
+        }
+
+        #endregion
+    }
+}

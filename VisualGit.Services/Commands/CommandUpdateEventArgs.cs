@@ -1,0 +1,153 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
+
+namespace VisualGit.Commands
+{
+    public enum TextQueryType
+    {
+        None,
+        Name,
+        Status
+    }
+
+    public class CommandUpdateEventArgs : BaseCommandEventArgs
+    {
+        readonly TextQueryType _queryType;
+        bool _disabled;
+        bool _invisible;
+        bool _latched;
+        bool _ninched;
+        bool _dynamicMenuEnd;
+        bool _hideOnContextMenu;
+        string _text;
+
+        public CommandUpdateEventArgs(VisualGitCommand command, VisualGitContext context, TextQueryType textQuery)
+            : this(command, context)
+        {
+            _queryType = textQuery;
+        }
+
+        public CommandUpdateEventArgs(VisualGitCommand command, VisualGitContext context)
+            : base(command, context)
+        {
+        }
+
+        /// <summary>
+        /// The command is enabled
+        /// </summary>
+        public bool Enabled
+        {
+            get { return !_disabled; }
+            set { _disabled = !value; }
+        }
+
+        /// <summary>
+        /// The command is visible (Requires dynamicVisibility)
+        /// </summary>
+        public bool Visible
+        {
+            get { return !_invisible; }
+            set { _invisible = !value; }
+        }
+
+        public bool HideOnContextMenu
+        {
+            get { return _hideOnContextMenu; }
+            set { _hideOnContextMenu = value; }
+        }
+
+        /// <summary>
+        /// The command is an on-off toggle and is currently on. (VS term: Latched)
+        /// </summary>
+        /// <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
+        public bool Checked
+        {
+            get { return _latched; }
+            set { _latched = value; }
+        }
+
+        /// <summary>
+        /// Visual Studio SDK: Reserved for future usage
+        /// </summary>
+        public bool Ninched
+        {
+            get { return _ninched; }
+            set { _ninched = value; }
+        }
+
+        /// <summary>
+        /// Allows updating the text (Use <see cref="TextQueryType" /> to determine what text to update
+        /// </summary>
+        public string Text
+        {
+            get { return _text; }
+            set { _text = value; }
+        }
+
+        /// <summary>
+        /// Gets the type of the text query.
+        /// </summary>
+        /// <value>The type of the text query.</value>
+        public TextQueryType TextQueryType
+        {
+            get { return _queryType; }
+        }
+
+        /// <summary>
+        /// Marks the end of a dynamic menu range if set
+        /// </summary>
+        public bool DynamicMenuEnd
+        {
+            get { return _dynamicMenuEnd; }
+            set { _dynamicMenuEnd = value; }
+        }
+
+        /// <summary>
+        /// Updates the ole flags from the command status
+        /// </summary>
+        /// <param name="cmdf">The CMDF.</param>
+        /// <remarks>Used by the commandmappers</remarks>
+        [CLSCompliant(false)]
+        public void UpdateFlags(ref OLECMDF cmdf)
+        {
+            if (Enabled)
+                cmdf |= OLECMDF.OLECMDF_ENABLED;
+
+            if (Checked)
+                cmdf |= OLECMDF.OLECMDF_LATCHED;
+
+            if (Ninched)
+                cmdf |= OLECMDF.OLECMDF_NINCHED;
+
+            if (!Visible)
+                cmdf |= OLECMDF.OLECMDF_INVISIBLE;
+
+            if (HideOnContextMenu)
+                cmdf |= OLECMDF.OLECMDF_DEFHIDEONCTXTMENU;
+        }
+
+        /// <summary>
+        /// If the command is executed directly via the command window or indirectly via
+        /// EnvDTE.ExecuteCommand(), returns a boolean indicating whether an nonempty
+        /// argument was supplied.
+        /// </summary>
+        public bool CommandArgumentAvailable
+        {
+            get
+            {
+                IVsCommandArgInfo info = GetService<IVsCommandArgInfo>(typeof(SVsCommandWindow));
+                if (info == null)
+                    return false;
+
+                int available;
+                if (info.QueryCommandArgAvailable(out available) == 0)
+                    return (available != 0);
+
+                return false;
+            }
+        }
+    }
+}

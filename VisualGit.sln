@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Definitions", "Definitions", "{01F3ED56-C896-409C-8464-DB82B3AF1364}"
 	ProjectSection(SolutionItems) = preProject
-		tools\Ankh-Common.targets = tools\Ankh-Common.targets
+		tools\VisualGit-Common.targets = tools\VisualGit-Common.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{9B380404-6594-4737-8518-291DEDEF3496}"
@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BED3AA50-17ED-4A23-9104-72E31091B216}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh", "Ankh\Ankh.csproj", "{CE58AAC8-2271-4223-882F-0CD1A7105A52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit", "VisualGit\VisualGit.csproj", "{CE58AAC8-2271-4223-882F-0CD1A7105A52}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A3248E1E-8272-4227-AF02-BB86040FBED9} = {A3248E1E-8272-4227-AF02-BB86040FBED9}
 		{AC32DD7A-4FC3-42C5-AFA7-ADE81F13A6DE} = {AC32DD7A-4FC3-42C5-AFA7-ADE81F13A6DE}
@@ -21,33 +21,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh", "Ankh\Ankh.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{A3248E1E-8272-4227-AF02-BB86040FBED9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.UI", "Ankh.UI\Ankh.UI.csproj", "{AC32DD7A-4FC3-42C5-AFA7-ADE81F13A6DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.UI", "VisualGit.UI\VisualGit.UI.csproj", "{AC32DD7A-4FC3-42C5-AFA7-ADE81F13A6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Services", "Ankh.Services\Ankh.Services.csproj", "{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Services", "VisualGit.Services\VisualGit.Services.csproj", "{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Scc", "Ankh.Scc\Ankh.Scc.csproj", "{ECE36A69-DD85-4AAB-B329-12BAE4675056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Scc", "VisualGit.Scc\VisualGit.Scc.csproj", "{ECE36A69-DD85-4AAB-B329-12BAE4675056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.VS", "Ankh.VS\Ankh.VS.csproj", "{906E3F01-CD79-4F80-BCA7-1105224328C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.VS", "VisualGit.VS\VisualGit.VS.csproj", "{906E3F01-CD79-4F80-BCA7-1105224328C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Package", "Ankh.Package\Ankh.Package.csproj", "{FA90174C-5763-46E8-9C95-328CA8451072}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Package", "VisualGit.Package\VisualGit.Package.csproj", "{FA90174C-5763-46E8-9C95-328CA8451072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Migrate", "Ankh.Migrate\Ankh.Migrate.csproj", "{1AD899A2-9283-4AB6-9426-E251E5772196}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Migrate", "VisualGit.Migrate\VisualGit.Migrate.csproj", "{1AD899A2-9283-4AB6-9426-E251E5772196}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Diff", "Ankh.Diff\Ankh.Diff.csproj", "{62F97060-6A9E-477D-B15B-E1A1F5320039}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Diff", "VisualGit.Diff\VisualGit.Diff.csproj", "{62F97060-6A9E-477D-B15B-E1A1F5320039}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.Ids", "Ankh.Ids\Ankh.Ids.csproj", "{61D343CF-77BA-4EF2-96F5-E0D4EFD04844}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Ids", "VisualGit.Ids\VisualGit.Ids.csproj", "{61D343CF-77BA-4EF2-96F5-E0D4EFD04844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.ExtensionPoints", "Ankh.ExtensionPoints\Ankh.ExtensionPoints.csproj", "{B7168874-E05E-458D-95CC-5D7BBC243986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.ExtensionPoints", "VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj", "{B7168874-E05E-458D-95CC-5D7BBC243986}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.GenPkgDef", "tools\Ankh.GenPkgDef\Ankh.GenPkgDef.csproj", "{9392145E-1047-4FFC-84F5-6B5F3C80CA9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.GenPkgDef", "tools\VisualGit.GenPkgDef\VisualGit.GenPkgDef.csproj", "{9392145E-1047-4FFC-84F5-6B5F3C80CA9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ankh.GenerateVSIXManifest", "tools\Ankh.GenerateVSIXManifest\Ankh.GenerateVSIXManifest.csproj", "{ED9554E1-C0CD-45AD-AB30-98052D01F291}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.GenerateVSIXManifest", "tools\VisualGit.GenerateVSIXManifest\VisualGit.GenerateVSIXManifest.csproj", "{ED9554E1-C0CD-45AD-AB30-98052D01F291}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = AnkhSvn.2010.vsmdi
 	EndGlobalSection
@@ -129,12 +125,12 @@ Global
 		{9392145E-1047-4FFC-84F5-6B5F3C80CA9B}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
 		{9392145E-1047-4FFC-84F5-6B5F3C80CA9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9392145E-1047-4FFC-84F5-6B5F3C80CA9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Debug|Any CPU.Build.0 = Debug|x86
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release (With MSI)|Any CPU.ActiveCfg = Release|x86
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release (With MSI)|Any CPU.Build.0 = Release|x86
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release|Any CPU.ActiveCfg = Release|x86
-		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release|Any CPU.Build.0 = Release|x86
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release (With MSI)|Any CPU.ActiveCfg = Release|Any CPU
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED9554E1-C0CD-45AD-AB30-98052D01F291}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,5 +152,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		DPBuild = 5
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal

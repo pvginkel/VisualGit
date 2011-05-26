@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using VisualGit.VS;
+using System.IO;
+
+namespace VisualGit.UI.WorkingCopyExplorer.Nodes
+{
+    class WCSolutionNode : WCFileSystemNode
+    {
+        readonly int _imageIndex;
+        public WCSolutionNode(IVisualGitServiceProvider context, SvnItem item)
+            : base(context, null, item)
+        {
+            string file = Context.GetService<IVisualGitSolutionSettings>().SolutionFilename;
+
+            IFileIconMapper iconMapper = context.GetService<IFileIconMapper>();
+
+            if (string.IsNullOrEmpty(file))
+                _imageIndex = iconMapper.GetIconForExtension(".sln");
+            else
+                _imageIndex = iconMapper.GetIcon(file);
+        }
+
+        public override string Title
+        {
+            get 
+            { 
+                string file = Context.GetService<IVisualGitSolutionSettings>().SolutionFilename;
+
+                if (file != null)
+                    file = Path.GetFileNameWithoutExtension(file);
+
+                return string.Format(WCStrings.SolutionX, file); 
+            }
+        }
+
+        IEnumerable<SvnItem> UpdateRoots
+        {
+            get
+            {
+                IVisualGitProjectLayoutService pls = Context.GetService<IVisualGitProjectLayoutService>();
+                foreach (SvnItem item in pls.GetUpdateRoots(null))
+                    yield return item;
+            }
+        }
+
+        public override IEnumerable<WCTreeNode> GetChildren()
+        {
+            foreach(SvnItem item in UpdateRoots)
+            {
+                yield return new WCDirectoryNode(Context, this, item);
+            }
+        }
+
+        public override bool IsContainer
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override void GetResources(System.Collections.ObjectModel.Collection<SvnItem> list, bool getChildItems, Predicate<SvnItem> filter)
+        {
+//            throw new NotImplementedException();
+        }
+
+        protected override void RefreshCore(bool rescan)
+        {
+//            throw new NotImplementedException();
+        }
+
+        public override int ImageIndex
+        {
+            get { return _imageIndex; }
+        }
+
+        internal override bool ContainsDescendant(string path)
+        {
+            SvnItem needle = StatusCache[path];
+
+            foreach (SvnItem item in UpdateRoots)
+            {
+                if (needle.IsBelowPath(item))
+                    return true;
+            }
+            return false;
+        }
+    }
+}

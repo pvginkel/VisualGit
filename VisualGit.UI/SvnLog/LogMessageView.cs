@@ -1,0 +1,50 @@
+using System.ComponentModel;
+using System.Windows.Forms;
+using VisualGit.Scc;
+
+namespace VisualGit.UI.SvnLog
+{
+    public partial class LogMessageView : UserControl
+    {
+        ICurrentItemSource<ISvnLogItem> logItemSource;
+
+        public LogMessageView()
+        {
+            InitializeComponent();
+        }
+
+        public LogMessageView(IContainer container)
+            : this()
+        {
+            container.Add(this);
+        }
+
+        public ICurrentItemSource<ISvnLogItem> ItemSource
+        {
+            get { return logItemSource; }
+            set 
+            { 
+                if(logItemSource != null)
+                    logItemSource.FocusChanged -= LogFocusChanged;
+
+                logItemSource = value; 
+                
+                if(logItemSource != null)
+                    logItemSource.FocusChanged += LogFocusChanged;
+            }
+        }
+
+        void LogFocusChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        {
+            if (ItemSource != null && ItemSource.FocusedItem != null)
+                logMessageEditor.Text = logItemSource.FocusedItem.LogMessage;
+            else
+                logMessageEditor.Text = "";
+        }
+
+        internal void Reset()
+        {
+            logMessageEditor.Text = "";
+        }
+    }
+}
