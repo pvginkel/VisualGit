@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}</ProjectGuid>
+    <ProjectGuid>{EE420899-9076-40CD-81A7-E6E8B6C9E37E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VisualGit</RootNamespace>
@@ -190,11 +190,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{B7168874-E05E-458D-95CC-5D7BBC243986}</Project>
+      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
       <Name>VisualGit.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
-      <Project>{61D343CF-77BA-4EF2-96F5-E0D4EFD04844}</Project>
+      <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>
     </ProjectReference>
   </ItemGroup>

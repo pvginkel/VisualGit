@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{906E3F01-CD79-4F80-BCA7-1105224328C4}</ProjectGuid>
+    <ProjectGuid>{B6F91ED2-5285-40FF-B699-98C1BA06B06B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
@@ -127,11 +127,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
-      <Project>{61D343CF-77BA-4EF2-96F5-E0D4EFD04844}</Project>
+      <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Services\VisualGit.Services.csproj">
-      <Project>{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}</Project>
+      <Project>{EE420899-9076-40CD-81A7-E6E8B6C9E37E}</Project>
       <Name>VisualGit.Services</Name>
     </ProjectReference>
   </ItemGroup>

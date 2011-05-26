@@ -1030,7 +1030,7 @@ namespace VisualGit.UI.VS.TextEditor
                 {
                     IVsTextEditorPropertyContainer spPropContainer;
                     Guid GUID_EditPropCategory_View_MasterSettings =
-                        new Guid("{D1756E7C-B7FD-49a8-B48E-87B14A55655A}");
+                        new Guid("{D1756E7C-B7FD-49A8-B48E-87B14A55655A}");
                     ErrorHandler.ThrowOnFailure(spPropCatContainer.GetPropertyCategory(
                         ref GUID_EditPropCategory_View_MasterSettings,
                         out spPropContainer));
@@ -1418,19 +1418,19 @@ namespace VisualGit.UI.VS.TextEditor
             public static readonly Guid VsBufferMoniker_guid = new Guid(VsBufferMoniker_string);
 
             /// <summary>bool: true if buffer is a file on disk</summary>
-            public const string VsBufferIsDiskFile_string = "{D9126592-1473-11D3-BEC6-0080C747D9A0}";
+            public const string VsBufferIsDiskFile_string = "{8BE152D2-3FF8-4996-B5AE-4F5AF20D67CE}";
             /// <summary>bool: true if buffer is a file on disk</summary>
             public static readonly Guid VsBufferIsDiskFile_guid = new Guid(VsBufferIsDiskFile_string);
 
             /// <summary>uint: VS Text File Format (VSTFF) for buffer. codepage = bufferVSTFF & __VSTFF.VSTFF_CPMASK; vstffFlags = bufferVSTFF & __VSTFF.VSTFF_FLAGSMASK;</summary>
-            public const string VsBufferEncodingVSTFF_string = "{16417F39-A6B7-4C90-89FA-770D2C60440B}";
+            public const string VsBufferEncodingVSTFF_string = "{232CDE6D-6255-46E7-AB9F-901CB5973871}";
             /// <summary>uint: VS Text File Format (VSTFF) for buffer. codepage = bufferVSTFF & __VSTFF.VSTFF_CPMASK; vstffFlags = bufferVSTFF & __VSTFF.VSTFF_FLAGSMASK;</summary>
             public static readonly Guid VsBufferEncodingVSTFF_guid = new Guid(VsBufferEncodingVSTFF_string);
 
             /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog. 
             /// This data is only for a set purpose.  You cannot get the value of this back.
             /// </summary>
-            public const string VsBufferEncodingPromptOnLoad_string = "{99EC03F0-C843-4C09-BE74-CDCA5158D36C}";
+            public const string VsBufferEncodingPromptOnLoad_string = "{D4F3F4FB-673F-4306-8541-0B3BF64E6E75}";
             /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog. 
             /// This data is only for a set purpose.  You cannot get the value of this back.
             /// </summary>
@@ -1439,7 +1439,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// <summary>bool: If true and the current BufferEncoding is CHARFMT_MBCS, the buffer will runs it's HTML charset tag detection code to determine a codepage to load and save the file. The detected codepage overrides any codepage set in CHARFMT_MBCS.
             /// This is forced on in the buffer's IPersistFileFormat::LoadDocData when it sees an HTML type of file, according to the extension mapping in "$RootKey$\Languages\File Extensions".
             /// </summary>
-            public const string VsBufferDetectCharSet_string = "{36358D1F-BF7E-11D1-B03A-00C04FB68006}";
+            public const string VsBufferDetectCharSet_string = "{D626E2C9-11D4-44FC-AD27-FBA312958B43}";
             /// <summary>bool: If true and the current BufferEncoding is CHARFMT_MBCS, the buffer will runs it's HTML charset tag detection code to determine a codepage to load and save the file. The detected codepage overrides any codepage set in CHARFMT_MBCS.
             /// This is forced on in the buffer's IPersistFileFormat::LoadDocData when it sees an HTML type of file, according to the extension mapping in "$RootKey$\Languages\File Extensions".
             /// </summary>
@@ -1448,7 +1448,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service 
             /// based on the file extension of the moniker.
             /// </summary>
-            public const string VsBufferDetectLangSID_string = "{17F375AC-C814-11D1-88AD-0000F87579D2}";
+            public const string VsBufferDetectLangSID_string = "{6D5F13EF-389F-4C6E-A091-19B3C0D68C1D}";
             /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service 
             /// based on the file extension of the moniker.
             /// </summary>
@@ -1458,7 +1458,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// This is only used if you have a custom property browser. If this property is not set, the standard property browser 
             /// will be associated with the view.
             /// </summary>
-            public const string PropertyBrowserSID_string = "{CE6DDBBA-8D13-11D1-8889-0000F87579D2}";
+            public const string PropertyBrowserSID_string = "{F7F64351-A83F-471E-BB18-2C5205E92177}";
             /// <summary>string: This property will be used to set the SEID_PropertyBrowserSID element of the selection for text views.  
             /// This is only used if you have a custom property browser. If this property is not set, the standard property browser 
             /// will be associated with the view.
@@ -1469,7 +1469,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not 
             /// put up UI, but only calls IVsUIShell::SetErrorInfo. The caller can decide whether to show the message to the user.
             /// </summary>
-            public const string UserReadOnlyErrorString_string = "{A3BCFE56-CF1B-11D1-88B1-0000F87579D2}";
+            public const string UserReadOnlyErrorString_string = "{081A1DD3-3E7E-485B-8258-C49A31B5705C}";
             /// <summary>string: This property provides a specific error message for when the buffer originates the BUFFER_E_READONLY error.
             /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not 
             /// put up UI, but only calls IVsUIShell::SetErrorInfo. The caller can decide whether to show the message to the user.
@@ -1480,7 +1480,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.  
             /// This is a get-only property. To set the storage, use the buffer's InitializeContentEx method.
             /// </summary>
-            public const string BufferStorage_string = "{D97F167A-638E-11D2-88F6-0000F87579D2}";
+            public const string BufferStorage_string = "{684D72CB-8225-46C8-98BF-1745A40BDD05}";
             /// <summary>object: This property is used to get access to the buffer's storage object.
             /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.  
             /// This is a get-only property. To set the storage, use the buffer's InitializeContentEx method.
@@ -1493,7 +1493,7 @@ namespace VisualGit.UI.VS.TextEditor
             /// This property controls the behavior of IVsTextManager2::AttemptToCheckOutBufferFromScc3 and GetBufferSccStatus3 as well as which
             /// files are passed by the buffer when it calls IVsQueryEditQuerySave2 methods.
             /// </summary>
-            public const string VsBufferExtraFiles_string = "{FD494BF6-1167-4635-A20C-5C24B2D7B33D}";
+            public const string VsBufferExtraFiles_string = "{CA9510A3-0310-4874-87C4-EF50F3AE6644}";
             /// <summary>object: Use this property if the file opened in the buffer is associated with list of extra files under source code control (SCC).
             /// Set this property with an implementation of IVsBufferExtraFiles in order to control how the buffer handles SCC operations.
             /// The IVsBufferExtraFiles object set will determine what files are checked out from Source Code Control (SCC) when edits are made to the buffer.
@@ -1503,22 +1503,22 @@ namespace VisualGit.UI.VS.TextEditor
             public static readonly Guid VsBufferExtraFiles_guid = new Guid(VsBufferExtraFiles_string);
 
             /// <summary>bool: </summary>
-            public const string VsBufferFileReload_string = "{80D2B881-81A3-4F0B-BCF0-70A0054E672F}";
+            public const string VsBufferFileReload_string = "{C2C1E5CC-D6CE-4671-A89C-6E5DE34CD26A}";
             /// <summary>bool: </summary>
             public static readonly Guid VsBufferFileReload_guid = new Guid(VsBufferFileReload_string);
 
             /// <summary>bool: </summary>
-            public const string VsInitEncodingDialogFromUserData_string = "{C2382D84-6650-4386-860F-248ECB222FC1}";
+            public const string VsInitEncodingDialogFromUserData_string = "{682843EF-5475-49EE-B75B-2DF0FB3A9D60}";
             /// <summary>bool: </summary>
             public static readonly Guid VsInitEncodingDialogFromUserData_guid = new Guid(VsInitEncodingDialogFromUserData_string);
 
             /// <summary>string: The ContentType for the text buffer.</summary>
-            public const string VsBufferContentType_string = "{1BEB4195-98F4-4589-80E0-480CE32FF059}";
+            public const string VsBufferContentType_string = "{E48F1630-AC9B-45B5-8087-6CDC0BE5C85C}";
             /// <summary>string: The ContentType for the text buffer.</summary>
             public static readonly Guid VsBufferContentType_guid = new Guid(VsBufferContentType_string);
 
             /// <summary>string: The comma-separated list of text view roles for the text view.</summary>
-            public const string VsTextViewRoles_string = "{297078FF-81A2-43D8-9CA3-4489C53C99BA}";
+            public const string VsTextViewRoles_string = "{13AF9302-64E0-43DD-9957-3B3A043C0BF0}";
             /// <summary>string: The comma-separated list of text view roles for the text view.</summary>
             public static readonly Guid VsTextViewRoles_guid = new Guid(VsTextViewRoles_string);
         }

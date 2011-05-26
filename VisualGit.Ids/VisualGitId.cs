@@ -13,7 +13,7 @@ namespace VisualGit
         /// <summary>
         /// The guid the VisualGitSvn package is registered with inside Visual Studio
         /// </summary>
-        public const string PackageId = "604ad610-5cf9-4bd5-8acc-f49810e2efd4";
+        public const string PackageId = "23558e20-d3d3-4de3-8101-54851f33f629";
         public const string PackageDescription = "VisualGit - Git Support for Visual Studio";
 
         /// <summary>The package version as used in the PLK</summary>
@@ -24,7 +24,7 @@ namespace VisualGit
         public const string PlkCompany = "VisualGit";
         //**********************************************************************************
 
-        public const string AssemblyCopyright = "Copyright © VisualGit 2011";
+        public const string AssemblyCopyright = "Copyright ï¿½ VisualGit 2011";
         public const string AssemblyProduct = "VisualGit - Git Support for Visual Studio";
         public const string AssemblyCompany = "VisualGit";
         //**********************************************************************************
@@ -44,12 +44,12 @@ namespace VisualGit
         /// The guid used for registering the commands registered by the VisualGitSvn package
         /// </summary>
         /// <remarks>Must be changed when the PackageId changes</remarks>
-        public const string CommandSet = "aa61c329-d559-468f-8f0f-4f03896f704d";
+        public const string CommandSet = "ef48818d-629d-41a9-a9a6-50bba9133444";
 
         /// <summary>The SCC Provider guid (used as SCC active marker by VS)</summary>
-        public const string SccProviderId = "8770915b-b235-42ec-bbc6-8e93286e59b5";
+        public const string SccProviderId = "75fae898-e066-4f7b-9f9e-d8492d971c04";
         /// <summary>The GUID of the SCC Service</summary>
-        public const string SccServiceId = "d8c473d2-9634-4513-91d5-e1a671fe2df4";
+        public const string SccServiceId = "7fe71a89-61a4-4d4c-a4e0-526d57a4650e";
         /// <summary>Language neutral SCC Provider title</summary>
         public const string SccProviderTitle = "VisualGit - Git Support for Visual Studio";
 
@@ -58,59 +58,59 @@ namespace VisualGit
         /// <summary>
         /// Context set by Trigger package when another Scc package is active
         /// </summary>
-        public const string CtxNoOtherSccActive = "3eec2d0e-8224-4d68-9748-773e2ace8dda";
-        public const string CtxNoOtherSccManaging = "644c07df-048b-44c5-aeff-cf54ad82a209";
+        public const string CtxNoOtherSccActive = "ee46100d-3901-4ae5-8081-86f75c1a0422";
+        public const string CtxNoOtherSccManaging = "af002ebc-9e2f-4bcc-baf5-2e1f812019b7";
         
         // When this context is set the full package is loaded and the trigger package is deactivated
-        public const string CtxFullSccLoaded = "1142ad52-4c53-499a-afac-3f3694261f5d";
+        public const string CtxFullSccLoaded = "f86a50fc-b065-403c-9585-a48bce8e793c";
         //**********************************************************************************
 
         // Increase this value when you want to have VisualGitCommand.MigrateSettings called on first use
         public const int MigrateVersion = 5;
 
-        public const string VisualGitServicesAvailable = "ED044A39-AC7B-4617-A466-A7C4FFA2998D";
-        public const string VisualGitRuntimeStarted = "8057B1AF-21D8-4276-AC27-9C02A1F95BC7";
+        public const string VisualGitServicesAvailable = "1A667225-B18F-4EAA-85E5-0C86E464CFC0";
+        public const string VisualGitRuntimeStarted = "6ACA795D-C994-4DD0-AC9C-2C936D45A1BB";
 
-        public const string LogMessageLanguageServiceId = "1DFE69CE-7F9B-4CC5-B09B-E5BDE95E9439";
+        public const string LogMessageLanguageServiceId = "EC98C414-9B51-4F51-9CFA-F4C71ECDC2A8";
         public const string LogMessageServiceName = "VisualGit Log Messages";
 
-        public const string UnifiedDiffLanguageServiceId = "9E5AB2DC-5A41-4D39-AB71-5DCA5908AA32";
+        public const string UnifiedDiffLanguageServiceId = "C00D9098-DCA3-4819-89BD-2FF52C8A8037";
         public const string UnifiedDiffServiceName = "VisualGit Unified Diff";
 
-        public const string TriggerExtenderGuid = "83B9F93B-20E9-4CE2-8B1B-BD18F14DF582";
+        public const string TriggerExtenderGuid = "ED797D43-13D0-4883-8F56-BDC2F82443BB";
         public const string TriggerExtenderName = "VisualGitExtenderProvider";
-        public const string SccExtenderGuid = "5E7F5850-6409-49F3-ABF4-E9E87C011D00";
+        public const string SccExtenderGuid = "046603DB-74E7-478E-9933-F6E32433A8AE";
 
         /// <summary>
         /// The guid used for our on-and-only bitmap resource
         /// </summary>
-        public const string BmpId = "9DB594CA-EBDD-40E1-9E37-51B7F9EF8DF0";
+        public const string BmpId = "A7C70823-6626-4E56-B855-339D5AE83F21";
 
 
-        public const string VisualGitOutputPaneId = "BA0EEC02-577C-424E-B6AA-FC8499D917BA";
+        public const string VisualGitOutputPaneId = "1BA9280B-3B7E-41F2-91DC-0EBED18DD619";
 
 
-        public const string RepositoryExplorerToolWindowId = "748BECBE-04A1-4FFA-8E1E-46840F91A083";
-        public const string PendingChangesToolWindowId = "896E815D-3862-4978-A1BC-CB6A3E70045C";
-        public const string WorkingCopyExplorerToolWindowId = "A1929D7E-610A-48B0-8152-8E4AA202427F";
-        public const string BlameToolWindowId = "A543EA62-696C-4C7C-AB42-78BD7267DA92";
-        public const string LogToolWindowId = "2FAC1EBF-6B37-4BE3-9A44-F9ED32D561CD";
-        public const string DiffToolWindowId = "8B17630D-72A5-43AE-8105-DB31004D08AD";
-        public const string GitInfoToolWindowId = "C3630016-F162-4AF5-B165-9F468A642E9A";
+        public const string RepositoryExplorerToolWindowId = "AFDAA869-4921-4859-8FE3-BCE8868227DA";
+        public const string PendingChangesToolWindowId = "7D28E788-89D6-464B-A6A6-FDCB06B7D664";
+        public const string WorkingCopyExplorerToolWindowId = "63C4CB4B-2A73-47F3-ADB6-99D52B9C00FD";
+        public const string BlameToolWindowId = "843AB0C2-A28C-46E4-B2E5-EF55B570CC1F";
+        public const string LogToolWindowId = "D81233FE-925A-4285-9038-2BA21F0B3610";
+        public const string DiffToolWindowId = "F1095693-1237-4682-9605-79AF3C41955C";
+        public const string GitInfoToolWindowId = "EC03B4B6-7444-4143-AC47-CC51E98245E2";
 
-        public const string PendingChangeViewContext = "A02C6D65-1F8B-46AC-8DB3-511AE5DBA374";
-        public const string DiffMergeViewContext = "6E66DFC4-CB72-4023-BDF5-6B139DF2F19B";
-        public const string SccExplorerViewContext = "FD4828F6-49A3-4E2F-BF36-8304884219CA";
-        public const string LogViewContext = "0D2CA125-6CDF-407A-9C03-E8427E27F34D";
+        public const string PendingChangeViewContext = "CACA63FD-EC08-4032-990B-AE5884C89CA9";
+        public const string DiffMergeViewContext = "92734E38-7AD7-4189-A207-7CC6DABD6B80";
+        public const string SccExplorerViewContext = "75CE7E40-9400-4D40-82B3-803AACF37212";
+        public const string LogViewContext = "27A4F1E4-3EE9-44B3-ADA7-63A29F0C071A";
 
-        public const string AnnotateContext = "61ADE608-F2F9-4983-AE28-623DE0DCA5C6";
-        public const string DiffEditorId = "7C6FACCE-0C14-4A3E-BC69-15F3966EE312";
-        public const string DynamicEditorId = "923F6990-98C1-4DD5-983E-25088C02975D";
-        public const string DiffEditorViewId = "3D9F7A9D-F9D1-4DD6-A89F-C89312708923";
+        public const string AnnotateContext = "ED1FE1D2-8378-41D5-A943-23B9CF859CB5";
+        public const string DiffEditorId = "3D57C254-990C-4062-86F1-D2FE6E75869E";
+        public const string DynamicEditorId = "87CFC2E1-DD6E-4683-8240-E0E7C6822A69";
+        public const string DiffEditorViewId = "579E41BB-0FBD-4469-A7D9-8C28C9BCA6D2";
 
-        public const string EnvironmentSettingsPageGuid = "F362B52E-E8F8-43DE-A02D-5072A2A96E6A";
-        public const string UserToolsSettingsPageGuid = "AE1A4DB8-09C3-438D-93BD-0FE37412CE34";
-        public const string IssueTrackerSettingsPageGuid = "363B3E68-EE94-403D-88BA-681A7CAD247A";
+        public const string EnvironmentSettingsPageGuid = "3DFCF4B7-2037-446A-9423-AB6AD794E906";
+        public const string UserToolsSettingsPageGuid = "F6EF370E-EB7C-41E2-A725-F7976D11EFC2";
+        public const string IssueTrackerSettingsPageGuid = "E208E058-A2D5-423A-9746-9B49FCCBEDF5";
 
         /// <summary>
         /// The command set as a guid

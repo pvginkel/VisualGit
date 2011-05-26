@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -28,7 +28,7 @@ namespace VisualGit.UI.PendingChanges
         private void openSccSelectorLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             IVisualGitCommandService cs = Context.GetService<IVisualGitCommandService>();
-            cs.PostExecCommand(new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.ToolsOptions), "53544C4D-1D2D-44BD-8566-4FC149E23AAF");
+            cs.PostExecCommand(new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.ToolsOptions), "4393D325-DD54-4626-9527-5C1F6F333CDF");
         }
 
         protected override Type PageType

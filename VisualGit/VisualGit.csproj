@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CE58AAC8-2271-4223-882F-0CD1A7105A52}</ProjectGuid>
+    <ProjectGuid>{05C0EC96-01D6-47F3-A9D1-8EEA5EA920BB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
@@ -61,23 +61,23 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{B7168874-E05E-458D-95CC-5D7BBC243986}</Project>
+      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
       <Name>VisualGit.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
-      <Project>{61D343CF-77BA-4EF2-96F5-E0D4EFD04844}</Project>
+      <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Services\VisualGit.Services.csproj">
-      <Project>{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}</Project>
+      <Project>{EE420899-9076-40CD-81A7-E6E8B6C9E37E}</Project>
       <Name>VisualGit.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.UI\VisualGit.UI.csproj">
-      <Project>{AC32DD7A-4FC3-42C5-AFA7-ADE81F13A6DE}</Project>
+      <Project>{78DF0648-E98B-4103-BA39-82707CDB71F5}</Project>
       <Name>VisualGit.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Migrate\VisualGit.Migrate.csproj">
-      <Project>{1AD899A2-9283-4AB6-9426-E251E5772196}</Project>
+      <Project>{4D39E02B-FAED-4041-BAB8-01B002CD7046}</Project>
       <Name>VisualGit.Migrate</Name>
     </ProjectReference>
   </ItemGroup>

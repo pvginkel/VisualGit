@@ -24,7 +24,7 @@ using VisualGit;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f09b3087-2501-4d00-98f5-1267bdeeb18b")]
+[assembly: Guid("16f1f810-19db-4b48-985f-cbb1475f480a")]
 
 // Version information for an assembly consists of the following four values:
 //
