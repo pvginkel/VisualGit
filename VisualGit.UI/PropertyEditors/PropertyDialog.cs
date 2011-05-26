@@ -48,7 +48,7 @@ namespace VisualGit.UI.PropertyEditors
         }
 
         /// <summary>
-        /// Adds the property editor if it allows the current SvnItem's node kind
+        /// Adds the property editor if it allows the current GitItem's node kind
         /// </summary>
         /// <param name="propEditor">IPropertyEditor</param>
         private void AddPropertyEditor(PropertyEditControl propEditor)

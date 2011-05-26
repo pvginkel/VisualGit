@@ -13,9 +13,9 @@ namespace VisualGit.UI.RepositoryExplorer
     class RepositoryListItem : SmartListViewItem
     {
         SvnDirEntry _entry;
-        SvnOrigin _origin;
+        GitOrigin _origin;
 
-        public RepositoryListItem(RepositoryListView view, SharpSvn.Remote.ISvnRepositoryListItem listItem, SvnOrigin dirOrigin, IFileIconMapper iconMapper)
+        public RepositoryListItem(RepositoryListView view, SharpSvn.Remote.ISvnRepositoryListItem listItem, GitOrigin dirOrigin, IFileIconMapper iconMapper)
             : base(view)
         {
             if (listItem == null)
@@ -27,7 +27,7 @@ namespace VisualGit.UI.RepositoryExplorer
             Uri entryUri = listItem.Uri;
 
             _entry = entry;
-            _origin = new SvnOrigin(entryUri, dirOrigin);
+            _origin = new GitOrigin(entryUri, dirOrigin);
 
             string name = SvnTools.GetFileName(entryUri);
 
@@ -82,7 +82,7 @@ namespace VisualGit.UI.RepositoryExplorer
         /// Gets the origin.
         /// </summary>
         /// <value>The origin.</value>
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _origin; }
         }

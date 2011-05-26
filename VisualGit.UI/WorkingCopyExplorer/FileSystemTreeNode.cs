@@ -8,8 +8,8 @@ namespace VisualGit.UI.WorkingCopyExplorer
     sealed class FileSystemTreeNode : TreeNode
     {
         readonly WCTreeNode _wcNode;
-        readonly SvnItem _item;
-        public FileSystemTreeNode(WCTreeNode wcNode, SvnItem item)
+        readonly GitItem _item;
+        public FileSystemTreeNode(WCTreeNode wcNode, GitItem item)
         {
             if (wcNode == null)
                 throw new ArgumentNullException("wcNode");
@@ -41,13 +41,13 @@ namespace VisualGit.UI.WorkingCopyExplorer
             get { return _wcNode; }
         }
 
-        public SvnItem SvnItem
+        public GitItem GitItem
         {
             get
             {
                 WCFileSystemNode dirNode = _wcNode as WCFileSystemNode;
                 if (_item == null && dirNode != null)
-                    return dirNode.SvnItem;
+                    return dirNode.GitItem;
                 return _item; 
             }
         }
@@ -56,14 +56,14 @@ namespace VisualGit.UI.WorkingCopyExplorer
         {
             StateImageIndex = (int) VisualGitGlyph.None;
 
-            if(SvnItem == null)
+            if(GitItem == null)
                 return;
 
-            if (SvnItem.IsDirectory)
+            if (GitItem.IsDirectory)
             {
                 bool canRead;
 
-                foreach (SccFileSystemNode node in SccFileSystemNode.GetDirectoryNodes(SvnItem.FullPath, out canRead))
+                foreach (SccFileSystemNode node in SccFileSystemNode.GetDirectoryNodes(GitItem.FullPath, out canRead))
                 {
                     canRead = true;
                     break;
@@ -73,7 +73,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
                     return;
             }
 
-            StateImageIndex = (int)TreeView.StatusMapper.GetStatusImageForSvnItem(SvnItem);
+            StateImageIndex = (int)TreeView.StatusMapper.GetStatusImageForGitItem(GitItem);
         }
 
         internal void SelectSubNode(string path)
@@ -92,7 +92,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             // No subnode to expand; we reached the target, lets select it
             TreeView.SelectedNode = this;
             EnsureVisible();
-            if (SvnItem != null && SvnItem.FullPath == path)
+            if (GitItem != null && GitItem.FullPath == path)
             {
                 TreeView.Select();
                 TreeView.Focus();

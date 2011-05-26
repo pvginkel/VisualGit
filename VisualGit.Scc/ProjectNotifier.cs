@@ -20,7 +20,7 @@ namespace VisualGit.Scc
         readonly object _lock = new object();
         bool _posted;
         bool _onIdle;
-        List<SvnProject> _dirtyProjects;
+        List<GitProject> _dirtyProjects;
         HybridCollection<string> _maybeAdd;
         uint _cookie;
 
@@ -109,7 +109,7 @@ namespace VisualGit.Scc
         /// Schedules a glyph refresh of all specified projects
         /// </summary>
         /// <param name="projects"></param>
-        public void ScheduleGlyphOnlyUpdate(IEnumerable<SvnProject> projects)
+        public void ScheduleGlyphOnlyUpdate(IEnumerable<GitProject> projects)
         {
             if (projects == null)
                 throw new ArgumentNullException("projects");
@@ -117,9 +117,9 @@ namespace VisualGit.Scc
             lock (_lock)
             {
                 if (_dirtyProjects == null)
-                    _dirtyProjects = new List<SvnProject>();
+                    _dirtyProjects = new List<GitProject>();
 
-                foreach (SvnProject project in projects)
+                foreach (GitProject project in projects)
                 {
                     if (!_dirtyProjects.Contains(project))
                         _dirtyProjects.Add(project);
@@ -158,7 +158,7 @@ namespace VisualGit.Scc
             if (path == null)
                 throw new ArgumentNullException("path");
 
-            SvnItem item = Cache[path];
+            GitItem item = Cache[path];
 
             if (!item.IsVersioned || item.IsModified)
                 return; // Not needed
@@ -197,7 +197,7 @@ namespace VisualGit.Scc
 
         internal void HandleEvent(VisualGitCommand command)
         {
-            List<SvnProject> dirtyProjects;
+            List<GitProject> dirtyProjects;
             HybridCollection<string> dirtyCheck;
             HybridCollection<string> maybeAdd;
 
@@ -227,7 +227,7 @@ namespace VisualGit.Scc
 
             if (dirtyProjects != null)
             {
-                foreach (SvnProject project in dirtyProjects)
+                foreach (GitProject project in dirtyProjects)
                 {
                     if (project.RawHandle == null)
                     {
@@ -247,11 +247,11 @@ namespace VisualGit.Scc
 
             if (maybeAdd != null)
             {
-                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
+                using (SvnClient cl = GetService<IGitClientPool>().GetNoUIClient())
                 {
                     foreach (string file in maybeAdd)
                     {
-                        SvnItem item = Cache[file];
+                        GitItem item = Cache[file];
                         // Only add
                         // * files
                         // * that are unversioned
@@ -268,7 +268,7 @@ namespace VisualGit.Scc
 
                             cl.Add(item.FullPath, aa);
 
-                            // Detect if we have a file that Subversion might detect as binary
+                            // Detect if we have a file that Git might detect as binary
                             if (!item.IsTextFile)
                             {
                                 // Only check small files, avoid checking big binary files
@@ -310,7 +310,7 @@ namespace VisualGit.Scc
             return true;
         }
 
-        public void ScheduleSvnStatus(string path)
+        public void ScheduleGitStatus(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -320,7 +320,7 @@ namespace VisualGit.Scc
             ScheduleGlyphUpdate(path);
         }
 
-        public void ScheduleSvnStatus(IEnumerable<string> paths)
+        public void ScheduleGitStatus(IEnumerable<string> paths)
         {
             if (paths == null)
                 throw new ArgumentNullException("paths");
@@ -330,18 +330,18 @@ namespace VisualGit.Scc
             ScheduleGlyphUpdate(paths);
         }
 
-        public void HandleSvnResult(IDictionary<string, SvnClientAction> actions)
+        public void HandleGitResult(IDictionary<string, GitClientAction> actions)
         {
-            List<SvnClientAction> sccRefreshItems = null;
+            List<GitClientAction> sccRefreshItems = null;
             ScheduleMonitor(actions.Keys);
 
-            ScheduleSvnStatus(actions.Keys);
+            ScheduleGitStatus(actions.Keys);
 
-            foreach (SvnClientAction action in actions.Values)
+            foreach (GitClientAction action in actions.Values)
             {
                 if (action.Recursive)
                 {
-                    foreach (SvnItem item in Cache.GetCachedBelow(action.FullPath))
+                    foreach (GitItem item in Cache.GetCachedBelow(action.FullPath))
                     {
                         item.MarkDirty();
                         ScheduleGlyphUpdate(item.FullPath);
@@ -351,14 +351,14 @@ namespace VisualGit.Scc
                 if (action.AddOrRemove)
                 {
                     if(sccRefreshItems == null)
-                        sccRefreshItems = new List<SvnClientAction>();
+                        sccRefreshItems = new List<GitClientAction>();
 
                     sccRefreshItems.Add(action);
                 }
             }
 
             if (sccRefreshItems != null)
-                SccProvider.ScheduleSvnRefresh(sccRefreshItems);
+                SccProvider.ScheduleGitRefresh(sccRefreshItems);
         }
 
         public void ScheduleGlyphUpdate(string path)
@@ -410,7 +410,7 @@ namespace VisualGit.Scc
             if (path == null)
                 throw new ArgumentNullException("path");
 
-            ScheduleSvnStatus(path);
+            ScheduleGitStatus(path);
 
             lock (_externallyChanged)
             {
@@ -442,8 +442,8 @@ namespace VisualGit.Scc
             {
                 foreach (KeyValuePair<string, DocumentLock> file in modified)
                 {
-                    ScheduleSvnStatus(file.Key);
-                    SvnItem item = Cache[file.Key];
+                    ScheduleGitStatus(file.Key);
+                    GitItem item = Cache[file.Key];
 
                     if (item.IsConflicted)
                     {
@@ -455,7 +455,7 @@ namespace VisualGit.Scc
                         switch (dr)
                         {
                             case DialogResult.Yes:
-                                using (SvnClient c = Context.GetService<ISvnClientPool>().GetNoUIClient())
+                                using (SvnClient c = Context.GetService<IGitClientPool>().GetNoUIClient())
                                 {
                                     SvnResolveArgs ra = new SvnResolveArgs();
                                     ra.ThrowOnError = false;

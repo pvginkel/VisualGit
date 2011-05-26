@@ -37,7 +37,7 @@ namespace VisualGit.Scc.ProjectMap
 
             _name = name;
 
-            if (SvnItem.IsValidPath(name))
+            if (GitItem.IsValidPath(name))
             {
                 _isFileDocument = true;
 
@@ -153,7 +153,7 @@ namespace VisualGit.Scc.ProjectMap
                 return;
 
             IFileStatusMonitor statusMonitor = GetService<IFileStatusMonitor>();
-            statusMonitor.ScheduleSvnStatus(Name);
+            statusMonitor.ScheduleGitStatus(Name);
         }
 
         internal void OnClosed(bool closedWithoutSaving)
@@ -207,12 +207,12 @@ namespace VisualGit.Scc.ProjectMap
             if (!_isFileDocument)
                 return;
 
-            SvnItem item = GetService<IFileStatusCache>()[Name];
+            GitItem item = GetService<IFileStatusCache>()[Name];
 
             if (item == null)
                 return;
 
-            ISvnItemStateUpdate sisu = item;
+            IGitItemStateUpdate sisu = item;
             sisu.SetDocumentDirty(dirty);
 
             if (item.IsModified)
@@ -635,7 +635,7 @@ namespace VisualGit.Scc.ProjectMap
                 if (fileChange == null)
                     fileChange = GetService<IVsFileChangeEx>(typeof(SVsFileChangeEx));
 
-                List<SvnItem> items = new List<SvnItem>(GetService<VisualGitSccProvider>(typeof(ITheVisualGitSvnSccProvider)).GetAllDocumentItems(_name));
+                List<GitItem> items = new List<GitItem>(GetService<VisualGitSccProvider>(typeof(ITheVisualGitGitSccProvider)).GetAllDocumentItems(_name));
 
                 uint[] cookies = new uint[items.Count];
                 _fileChangeCookies = cookies;
@@ -668,7 +668,7 @@ namespace VisualGit.Scc.ProjectMap
 
                 IFileStatusMonitor monitor = GetService<IFileStatusMonitor>();
 
-                monitor.ScheduleSvnStatus(nFiles);
+                monitor.ScheduleGitStatus(nFiles);
             }
             catch (Exception ex)
             {

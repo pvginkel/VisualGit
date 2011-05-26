@@ -116,7 +116,7 @@ namespace VisualGit
             public void Start(string caption)
             {
                 Thread thread = new Thread(new ParameterizedThreadStart(this.Run));
-                ISvnClientPool pool = _context.GetService<ISvnClientPool>();
+                IGitClientPool pool = _context.GetService<IGitClientPool>();
                 IVisualGitDialogOwner dialogOwner = _context.GetService<IVisualGitDialogOwner>();
 
                 using (ProgressDialog dialog = new ProgressDialog())

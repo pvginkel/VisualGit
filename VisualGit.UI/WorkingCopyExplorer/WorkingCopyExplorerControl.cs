@@ -117,7 +117,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
                 IVisualGitSolutionSettings slnSettings = Context.GetService<IVisualGitSolutionSettings>();
                 if (!string.IsNullOrEmpty(slnSettings.SolutionFilename))
                 {
-                    SvnItem slnItem = FileStatusCache[slnSettings.SolutionFilename];
+                    GitItem slnItem = FileStatusCache[slnSettings.SolutionFilename];
                     folderTree.AddRoot(new WCSolutionNode(Context, slnItem));
                 }
                 folderTree.AddRoot(new WCMyComputerNode(Context));
@@ -200,12 +200,12 @@ namespace VisualGit.UI.WorkingCopyExplorer
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            SvnItem item = StatusCache[path];
+            GitItem item = StatusCache[path];
 
             if (item == null)
                 return;
 
-            SvnWorkingCopy wc = item.WorkingCopy;
+            GitWorkingCopy wc = item.WorkingCopy;
 
             string root;
             if (wc != null)
@@ -238,7 +238,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
         private WCTreeNode CreateRoot(string directory)
         {
             StatusCache.MarkDirtyRecursive(directory);
-            SvnItem item = StatusCache[directory];
+            GitItem item = StatusCache[directory];
 
             return new WCDirectoryNode(Context, null, item);
         }
@@ -281,7 +281,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         void OnUpdateOpen(object sender, CommandUpdateEventArgs e)
         {
-            SvnItem item = EnumTools.GetSingle(e.Selection.GetSelectedSvnItems(false));
+            GitItem item = EnumTools.GetSingle(e.Selection.GetSelectedGitItems(false));
 
             if (item == null)
                 e.Enabled = false;
@@ -289,7 +289,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         void OnOpen(object sender, CommandEventArgs e)
         {
-            SvnItem item = EnumTools.GetSingle(e.Selection.GetSelectedSvnItems(false));
+            GitItem item = EnumTools.GetSingle(e.Selection.GetSelectedGitItems(false));
 
             if (item.IsDirectory)
             {
@@ -300,7 +300,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             AutoOpenCommand(e, item);
         }
 
-        private static void AutoOpenCommand(CommandEventArgs e, SvnItem item)
+        private static void AutoOpenCommand(CommandEventArgs e, GitItem item)
         {
             IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
             IVisualGitCommandService svc = e.GetService<IVisualGitCommandService>();

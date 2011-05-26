@@ -132,7 +132,7 @@ namespace VisualGit.UI.Commands
         private void urlTextBox_TextChanged(object sender, EventArgs e)
         {
             if (Uri != null)
-                revisionPicker.SvnOrigin = new VisualGit.Scc.SvnOrigin(Uri, Uri);
+                revisionPicker.GitOrigin = new VisualGit.Scc.GitOrigin(Uri, Uri);
         }
 
         private void urlBrowse_Click(object sender, EventArgs e)

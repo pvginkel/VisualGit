@@ -18,18 +18,18 @@ namespace VisualGit
         bool _singleSelection;
         bool _enableRecursive;
         SvnDepth _depth = SvnDepth.Empty;
-        readonly ICollection<SvnItem> _items;
-        readonly Dictionary<string, SvnItem> _checkedItems = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
-        readonly Dictionary<string, SvnItem> _visibleItems = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
+        readonly ICollection<GitItem> _items;
+        readonly Dictionary<string, GitItem> _checkedItems = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, GitItem> _visibleItems = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
         SvnRevision _revisionStart;
         SvnRevision _revisionEnd;
-        Predicate<SvnItem> _checkedFilter;
-        Predicate<SvnItem> _visibleFilter;
+        Predicate<GitItem> _checkedFilter;
+        Predicate<GitItem> _visibleFilter;
         SelectableFilter _checkableFilter;
 
         bool _evaluated;
 
-        public PathSelectorInfo(string caption, IEnumerable<SvnItem> items)
+        public PathSelectorInfo(string caption, IEnumerable<GitItem> items)
         {
             if (string.IsNullOrEmpty(caption))
                 throw new ArgumentNullException("caption");
@@ -37,10 +37,10 @@ namespace VisualGit
                 throw new ArgumentNullException("items");
 
             _caption = caption;
-            _items = new List<SvnItem>(items);
+            _items = new List<GitItem>(items);
         }
 
-        public event Predicate<SvnItem> CheckedFilter
+        public event Predicate<GitItem> CheckedFilter
         {
             add
             {
@@ -54,7 +54,7 @@ namespace VisualGit
             }
         }
 
-        public event Predicate<SvnItem> VisibleFilter
+        public event Predicate<GitItem> VisibleFilter
         {
             add
             {
@@ -82,12 +82,12 @@ namespace VisualGit
             }
         }
 
-        public bool EvaluateChecked(SvnItem item)
+        public bool EvaluateChecked(GitItem item)
         {
             return EvaluateFilter(item, _checkedFilter);
         }
 
-        public bool EvaluateCheckable(SvnItem item, SvnRevision from, SvnRevision to)
+        public bool EvaluateCheckable(GitItem item, SvnRevision from, SvnRevision to)
         {
             if (_checkableFilter == null)
                 return true;
@@ -107,7 +107,7 @@ namespace VisualGit
                 _checkedItems.Clear();
                 _visibleItems.Clear();
 
-                foreach (SvnItem i in _items)
+                foreach (GitItem i in _items)
                 {
                     if (EvaluateFilter(i, _visibleFilter))
                     {
@@ -127,7 +127,7 @@ namespace VisualGit
             }
         }
 
-        public ICollection<SvnItem> VisibleItems
+        public ICollection<GitItem> VisibleItems
         {
             get
             {
@@ -136,7 +136,7 @@ namespace VisualGit
             }
         }
 
-        ICollection<SvnItem> CheckedItems
+        ICollection<GitItem> CheckedItems
         {
             get
             {
@@ -193,16 +193,16 @@ namespace VisualGit
             }
         }
 
-        public delegate bool SelectableFilter(SvnItem item, SvnRevision from, SvnRevision to);
+        public delegate bool SelectableFilter(GitItem item, SvnRevision from, SvnRevision to);
 
-        public static bool EvaluateFilter(SvnItem item, Predicate<SvnItem> filter)
+        public static bool EvaluateFilter(GitItem item, Predicate<GitItem> filter)
         {
             if (item == null)
                 return false;
             if (filter == null)
                 return true;
 
-            foreach (Predicate<SvnItem> i in filter.GetInvocationList())
+            foreach (Predicate<GitItem> i in filter.GetInvocationList())
             {
                 if (!i(item))
                     return false;

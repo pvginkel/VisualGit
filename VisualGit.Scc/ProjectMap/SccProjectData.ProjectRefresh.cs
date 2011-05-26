@@ -20,7 +20,7 @@ namespace VisualGit.Scc.ProjectMap
             readonly IVsProject2 _project;
             readonly ISccProjectWalker _walker;
             readonly string _projectDir;
-            readonly SvnItem _projectDirItem;
+            readonly GitItem _projectDirItem;
             readonly Dictionary<string, uint> _map = new Dictionary<string, uint>(StringComparer.OrdinalIgnoreCase);
 
             public RefreshState(IVisualGitServiceProvider context, IVsHierarchy hier, IVsProject project, string projectDir)
@@ -52,13 +52,13 @@ namespace VisualGit.Scc.ProjectMap
                 get { return _projectDir; }
             }
 
-            public bool AddItem(SvnItem item)
+            public bool AddItem(GitItem item)
             {
                 uint parentId;
                 return AddItem(item, out parentId);
             }
 
-            private bool AddItem(SvnItem item, out uint parentId)
+            private bool AddItem(GitItem item, out uint parentId)
             {
                 string itemDir = item.Directory;
 
@@ -114,7 +114,7 @@ namespace VisualGit.Scc.ProjectMap
                     return VSConstants.VSITEMID_NIL;
             }
 
-            public void RemoveItem(SvnItem item, uint id)
+            public void RemoveItem(GitItem item, uint id)
             {
                 int found;
                 VsProject.RemoveItem(0, id, out found);
@@ -122,7 +122,7 @@ namespace VisualGit.Scc.ProjectMap
             }
         }
 
-        public void PerformRefresh(IEnumerable<SvnClientAction> sccRefreshItems)
+        public void PerformRefresh(IEnumerable<GitClientAction> sccRefreshItems)
         {
             Debug.Assert(RequiresForcedRefresh(), "Refreshing a project that manages itself");
 
@@ -134,12 +134,12 @@ namespace VisualGit.Scc.ProjectMap
             VSDOCUMENTPRIORITY[] prio = new VSDOCUMENTPRIORITY[1];
             IVsHierarchy hierarchy = null;
 
-            foreach (SvnClientAction action in sccRefreshItems)
+            foreach (GitClientAction action in sccRefreshItems)
             {
                 if (!action.AddOrRemove)
                     continue; // Not for me
 
-                SvnItem item = state.Cache[action.FullPath];
+                GitItem item = state.Cache[action.FullPath];
                 if (!item.IsBelowPath(ProjectDirectory))
                     return;
 

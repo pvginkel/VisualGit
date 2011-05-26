@@ -10,6 +10,7 @@ namespace VisualGit.UI
     /// <summary>
     /// Public api of the VisualGit package as used by other components
     /// </summary>
+    [CLSCompliant(false)]
     public interface IVisualGitPackage : IVisualGitServiceProvider, System.ComponentModel.Design.IServiceContainer, IVisualGitQueryService
     {
         /// <summary>

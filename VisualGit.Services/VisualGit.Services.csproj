@@ -95,7 +95,7 @@
     <Compile Include="Scc\UI\IVisualGitRevisionResolver.cs" />
     <Compile Include="UI\VisualGitPropertyGridItem.cs" />
     <Compile Include="Scc\UI\IAnnotateSection.cs" />
-    <Compile Include="Scc\SvnOrigin.cs" />
+    <Compile Include="Scc\GitOrigin.cs" />
     <Compile Include="UI\IVisualGitHasVsTextView.cs" />
     <Compile Include="UI\IVisualGitPreFilterMessage.cs" />
     <Compile Include="UI\IContextControl.cs" />
@@ -111,9 +111,9 @@
     <Compile Include="Scc\UI\IVisualGitToolWindowControl.cs" />
     <Compile Include="Scc\UI\IConflictHandler.cs" />
     <Compile Include="Scc\UI\ILastChangeInfo.cs" />
-    <Compile Include="Scc\ISvnLogChangedPathItem.cs" />
-    <Compile Include="Scc\ISvnLogItem.cs" />
-    <Compile Include="Scc\ISvnRepositoryItem.cs" />
+    <Compile Include="Scc\IGitLogChangedPathItem.cs" />
+    <Compile Include="Scc\IGitLogItem.cs" />
+    <Compile Include="Scc\IGitRepositoryItem.cs" />
     <Compile Include="Scc\PendingChangeKind.cs" />
     <Compile Include="Scc\PendingChangeText.Designer.cs">
       <DependentUpon>PendingChangeText.resx</DependentUpon>
@@ -125,11 +125,11 @@
     <Compile Include="Scc\HybridCollection.cs" />
     <Compile Include="Scc\PendingChangeStatus.cs" />
     <Compile Include="Scc\ProjectIconReference.cs" />
-    <Compile Include="Scc\SvnDirectory.cs" />
-    <Compile Include="Scc\SvnItemsEventArgs.cs" />
-    <Compile Include="Scc\SvnItemData.cs" />
-    <Compile Include="Scc\SvnItemState.cs" />
-    <Compile Include="Scc\SvnWorkingCopy.cs" />
+    <Compile Include="Scc\GitDirectory.cs" />
+    <Compile Include="Scc\GitItemsEventArgs.cs" />
+    <Compile Include="Scc\GitItemData.cs" />
+    <Compile Include="Scc\GitItemState.cs" />
+    <Compile Include="Scc\GitWorkingCopy.cs" />
     <Compile Include="Scc\UI\IVisualGitDiffHandler.cs" />
     <Compile Include="Scc\UI\ILogControl.cs" />
     <Compile Include="UI\VisualGitMessageBox.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="IVisualGitRuntimeInfo.cs" />
     <Compile Include="Scc\IVisualGitSccService.cs" />
     <Compile Include="IVisualGitServiceProvider.cs" />
-    <Compile Include="ISvnClientPool.cs" />
+    <Compile Include="IGitClientPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scc\VisualGitGlyph.cs" />
     <Compile Include="Scc\VisualGitStatus.cs" />
@@ -165,12 +165,12 @@
     <Compile Include="Scc\ISccHierarchyWalker.cs" />
     <Compile Include="Scc\IProjectFileMapper.cs" />
     <Compile Include="Scc\IStatusImageMapper.cs" />
-    <Compile Include="Scc\SvnItem.cs" />
+    <Compile Include="Scc\GitItem.cs" />
     <Compile Include="Scc\SvnItem.State.cs">
-      <DependentUpon>SvnItem.cs</DependentUpon>
+      <DependentUpon>GitItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Selection\ISelectionContext.cs" />
-    <Compile Include="Selection\SvnProject.cs" />
+    <Compile Include="Selection\GitProject.cs" />
     <Compile Include="UI\IVisualGitConfigurationService.cs" />
     <Compile Include="UI\IVisualGitUIHost.cs" />
     <Compile Include="UI\VSContainerForm.cs">

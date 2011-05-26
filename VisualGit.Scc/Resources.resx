@@ -112,22 +112,22 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddToSubversionCommandName" xml:space="preserve">
+  <data name="AddToGitCommandName" xml:space="preserve">
     <value>Add to Sub&amp;version</value>
+  </data>
+  <data name="GitPathXBlocked" xml:space="preserve">
+    <value>The path '{0}' is in a Git administrative area. This file shouldn't be added to Git.</value>
   </data>
   <data name="MergeCompleted" xml:space="preserve">
     <value>File Merge Completed?</value>
   </data>
   <data name="PathXBlocked" xml:space="preserve">
-    <value>The path '{0}' is currently blocked by subversion; do you have a file with a case-only-different name?</value>
-  </data>
-  <data name="SvnPathXBlocked" xml:space="preserve">
-    <value>The path '{0}' is in a subversion administrative area. This file shouldn't be added to subversion.</value>
+    <value>The path '{0}' is currently blocked by Git; do you have a file with a case-only-different name?</value>
   </data>
   <data name="ToolTipConflict" xml:space="preserve">
     <value>This file is marked as Conflicted.</value>
@@ -142,7 +142,7 @@
     <value>This file does not exist on disk. Instead there is a directory with the same name</value>
   </data>
   <data name="ToolTipIgnored" xml:space="preserve">
-    <value>This file is explicitly ignored by subversion.</value>
+    <value>This file is explicitly ignored by Git.</value>
   </data>
   <data name="ToolTipLocked" xml:space="preserve">
     <value>You have exclusively locked this file.</value>
@@ -154,7 +154,7 @@
     <value>This file must be locked before it can be edited.</value>
   </data>
   <data name="UnsupportedWorkingCopyFound" xml:space="preserve">
-    <value>Subversion detected an unsupported working copy version while checking the status of '{0}'. Most likely you upgraded another Subversion client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
+    <value>Git detected an unsupported working copy version while checking the status of '{0}'. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
 
 Most likely VisualGit will not work correctly on this and other upgraded working copies until you upgrade to a newer version.</value>
   </data>

@@ -63,9 +63,18 @@ namespace VisualGit.Scc {
         /// <summary>
         ///   Looks up a localized string similar to Add to Sub&amp;version.
         /// </summary>
-        internal static string AddToSubversionCommandName {
+        internal static string AddToGitCommandName {
             get {
-                return ResourceManager.GetString("AddToSubversionCommandName", resourceCulture);
+                return ResourceManager.GetString("AddToGitCommandName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path &apos;{0}&apos; is in a Git administrative area. This file shouldn&apos;t be added to Git..
+        /// </summary>
+        internal static string GitPathXBlocked {
+            get {
+                return ResourceManager.GetString("GitPathXBlocked", resourceCulture);
             }
         }
         
@@ -79,20 +88,11 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The path &apos;{0}&apos; is currently blocked by subversion; do you have a file with a case-only-different name?.
+        ///   Looks up a localized string similar to The path &apos;{0}&apos; is currently blocked by Git; do you have a file with a case-only-different name?.
         /// </summary>
         internal static string PathXBlocked {
             get {
                 return ResourceManager.GetString("PathXBlocked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The path &apos;{0}&apos; is in a subversion administrative area. This file shouldn&apos;t be added to subversion..
-        /// </summary>
-        internal static string SvnPathXBlocked {
-            get {
-                return ResourceManager.GetString("SvnPathXBlocked", resourceCulture);
             }
         }
         
@@ -133,7 +133,7 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This file is explicitly ignored by subversion..
+        ///   Looks up a localized string similar to This file is explicitly ignored by Git..
         /// </summary>
         internal static string ToolTipIgnored {
             get {
@@ -169,7 +169,7 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subversion detected an unsupported working copy version while checking the status of &apos;{0}&apos;. Most likely you upgraded another Subversion client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
+        ///   Looks up a localized string similar to Git detected an unsupported working copy version while checking the status of &apos;{0}&apos;. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
         ///
         ///Most likely VisualGit will not work correctly on this and other upgraded working copies until you upgrade to a newer version..
         /// </summary>

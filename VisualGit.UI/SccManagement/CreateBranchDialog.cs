@@ -141,12 +141,12 @@ namespace VisualGit.UI.SccManagement
 
         private void versionBrowse_Click(object sender, EventArgs e)
         {
-            using (LogViewerDialog lvd = new LogViewerDialog(new SvnOrigin(Context, SrcUri, null)))
+            using (LogViewerDialog lvd = new LogViewerDialog(new GitOrigin(Context, SrcUri, null)))
             {
                 if (lvd.ShowDialog(Context) != DialogResult.OK)
                     return;
 
-                ISvnLogItem li = EnumTools.GetSingle(lvd.SelectedItems);
+                IGitLogItem li = EnumTools.GetSingle(lvd.SelectedItems);
 
                 if (li != null)
                 {

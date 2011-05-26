@@ -83,7 +83,7 @@ namespace VisualGit.Scc
 
         static string NormalizePathFormat(string path)
         {
-            if (!SvnItem.IsValidPath(path, true))
+            if (!GitItem.IsValidPath(path, true))
                 return path; // Not an on-disk path -> Nothing to normalize
 
             string np = SvnTools.GetTruePath(path, true);
@@ -176,7 +176,7 @@ namespace VisualGit.Scc
             {
                 if (string.IsNullOrEmpty(project))
                     continue;
-                else if (!SvnItem.IsValidPath(project))
+                else if (!GitItem.IsValidPath(project))
                 {
                     yield return project;
                     continue;
@@ -219,7 +219,7 @@ namespace VisualGit.Scc
                     continue;
 
                 string name;
-                if (SvnItem.IsValidPath(project))
+                if (GitItem.IsValidPath(project))
                     name = PackageUtilities.MakeRelative(file, project);
                 else
                     name = project;
@@ -238,7 +238,7 @@ namespace VisualGit.Scc
                     continue;
 
                 string name;
-                if (SvnItem.IsValidPath(project))
+                if (GitItem.IsValidPath(project))
                     name = PackageUtilities.MakeRelative(file, project);
                 else
                     name = project;
@@ -333,7 +333,7 @@ namespace VisualGit.Scc
             foreach (string project in projects)
             {
                 string name;
-                if (SvnItem.IsValidPath(project))
+                if (GitItem.IsValidPath(project))
                     name = PackageUtilities.MakeRelative(file, project);
                 else
                     name = project;

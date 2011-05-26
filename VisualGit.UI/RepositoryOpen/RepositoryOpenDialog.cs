@@ -282,7 +282,7 @@ namespace VisualGit.UI.RepositoryOpen
 
         protected SvnClient GetClient()
         {
-            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
+            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
 
             if (pool != null)
                 return pool.GetClient();
@@ -326,7 +326,7 @@ namespace VisualGit.UI.RepositoryOpen
 
         private void CheckResult(Uri combined, bool forceLoad)
         {
-            using (SvnPoolRemoteSession session = GetSession(combined))
+            using (GitPoolRemoteSession session = GetSession(combined))
             {
                 SvnRemoteCommonArgs ca = new SvnRemoteCommonArgs();
                 ca.ThrowOnError = false;
@@ -567,7 +567,7 @@ namespace VisualGit.UI.RepositoryOpen
 
             try
             {
-                using (SvnPoolRemoteSession session = GetSession(uri))
+                using (GitPoolRemoteSession session = GetSession(uri))
                 {
                     string path = session.MakeRelativePath(uri);
 
@@ -679,9 +679,9 @@ namespace VisualGit.UI.RepositoryOpen
             }
         }
 
-        private SvnPoolRemoteSession GetSession(Uri uri)
+        private GitPoolRemoteSession GetSession(Uri uri)
         {
-            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
+            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
 
             if (pool != null)
                 return pool.GetRemoteSession(uri, true);

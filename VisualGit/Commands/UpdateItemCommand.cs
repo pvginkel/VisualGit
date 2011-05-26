@@ -19,7 +19,7 @@ namespace VisualGit.Commands
         {
             bool hasDirectory = false;
             bool hasFile = false;
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsDirectory)
                     hasDirectory = true;
@@ -37,7 +37,7 @@ namespace VisualGit.Commands
                 return;
             }
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsVersioned)
                     return;
@@ -55,10 +55,10 @@ namespace VisualGit.Commands
                 IUIShell uiShell = e.GetService<IUIShell>();
 
                 PathSelectorInfo info = new PathSelectorInfo("Select Items to Update",
-                    e.Selection.GetSelectedSvnItems(true));
+                    e.Selection.GetSelectedGitItems(true));
 
-                info.CheckedFilter += delegate(SvnItem item) { return item.IsVersioned; };
-                info.VisibleFilter += delegate(SvnItem item) { return item.IsVersioned; };
+                info.CheckedFilter += delegate(GitItem item) { return item.IsVersioned; };
+                info.VisibleFilter += delegate(GitItem item) { return item.IsVersioned; };
                 info.EnableRecursive = true;
                 info.RevisionStart = SvnRevision.Head;
                 info.Depth = SvnDepth.Infinity;
@@ -70,9 +70,9 @@ namespace VisualGit.Commands
 
                 updateTo = result.RevisionStart;
                 depth = result.Depth;
-                List<SvnItem> dirs = new List<SvnItem>();
+                List<GitItem> dirs = new List<GitItem>();
 
-                foreach (SvnItem item in result.Selection)
+                foreach (GitItem item in result.Selection)
                 {
                     if (!item.IsVersioned)
                         continue;
@@ -93,7 +93,7 @@ namespace VisualGit.Commands
                     }
 
                     bool found = false;
-                    foreach (SvnItem dir in dirs)
+                    foreach (GitItem dir in dirs)
                     {
                         if (item.IsBelowPath(dir))
                         {
@@ -117,15 +117,15 @@ namespace VisualGit.Commands
             {
                 updateTo = SvnRevision.Head;
                 depth = SvnDepth.Infinity;
-                List<SvnItem> dirs = new List<SvnItem>();
+                List<GitItem> dirs = new List<GitItem>();
 
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
                 {
                     if (!item.IsVersioned)
                         continue;
 
                     bool found = false;
-                    foreach (SvnItem p in dirs)
+                    foreach (GitItem p in dirs)
                     {
                         if (item.IsBelowPath(p) && p.WorkingCopy == item.WorkingCopy)
                         {

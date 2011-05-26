@@ -20,8 +20,8 @@ namespace VisualGit.UI.PathSelector
     /// </summary>
     partial class PathSelectionTreeView : PathTreeView
     {
-        Predicate<SvnItem> _checkedFilter;
-        ICollection<SvnItem> _items;
+        Predicate<GitItem> _checkedFilter;
+        ICollection<GitItem> _items;
         TreeNode _checkedNode;
         bool _singleCheck;
         bool _recursive;
@@ -31,7 +31,7 @@ namespace VisualGit.UI.PathSelector
             this.CheckBoxes = true;
             this.SingleCheck = false;
             this.Recursive = false;
-            this._items = new SvnItem[] { };
+            this._items = new GitItem[] { };
         }
 
         protected override void WndProc(ref Message m)
@@ -59,7 +59,7 @@ namespace VisualGit.UI.PathSelector
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ICollection<SvnItem> Items
+        public ICollection<GitItem> Items
         {
             get { return this._items; }
             set
@@ -93,7 +93,7 @@ namespace VisualGit.UI.PathSelector
             }
         }
 
-        public IEnumerable<SvnItem> CheckedItems
+        public IEnumerable<GitItem> CheckedItems
         {
             get
             {
@@ -102,7 +102,7 @@ namespace VisualGit.UI.PathSelector
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public event Predicate<SvnItem> CheckedFilter
+        public event Predicate<GitItem> CheckedFilter
         {
             add
             {
@@ -169,7 +169,7 @@ namespace VisualGit.UI.PathSelector
         protected void ResolveIcon(TreeNode node)
         {
 
-            SvnItem item = (SvnItem)node.Tag;
+            GitItem item = (GitItem)node.Tag;
             if (item.IsDirectory)
             {
                 node.SelectedImageIndex = node.ImageIndex = this.FolderIndex;
@@ -186,14 +186,14 @@ namespace VisualGit.UI.PathSelector
         /// <param name="nodes"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        private IEnumerable<SvnItem> GetCheckedItems(TreeNodeCollection nodes)
+        private IEnumerable<GitItem> GetCheckedItems(TreeNodeCollection nodes)
         {
             foreach (TreeNode node in nodes)
             {
                 if (node.Checked)
-                    yield return (SvnItem)node.Tag;
+                    yield return (GitItem)node.Tag;
 
-                foreach (SvnItem i in GetCheckedItems(node.Nodes))
+                foreach (GitItem i in GetCheckedItems(node.Nodes))
                     yield return i;
             }
         }
@@ -207,7 +207,7 @@ namespace VisualGit.UI.PathSelector
         {
             foreach (TreeNode node in nodes)
             {
-                node.Checked = PathSelectorInfo.EvaluateFilter((SvnItem)node.Tag, _checkedFilter);
+                node.Checked = PathSelectorInfo.EvaluateFilter((GitItem)node.Tag, _checkedFilter);
 
                 this.SetCheckedItems(node.Nodes);
             }
@@ -270,7 +270,7 @@ namespace VisualGit.UI.PathSelector
                 if (this._items.Count == 0)
                     return;
 
-                foreach (SvnItem item in this._items)
+                foreach (GitItem item in this._items)
                     this.AddNode(item);
 
                 this.TrimTree();
@@ -287,7 +287,7 @@ namespace VisualGit.UI.PathSelector
         /// Adds a node to the right place in the tree.
         /// </summary>
         /// <param name="nodeName"></param>
-        private void AddNode(SvnItem item)
+        private void AddNode(GitItem item)
         {
             TreeNodeCollection nodes = this.Nodes;
 

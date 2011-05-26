@@ -28,7 +28,7 @@ namespace VisualGit.UI.MergeWizard
         private WizardPage mergeSummaryPage;
 
         MergeUtils _mergeUtils = null;
-        SvnItem _mergeTarget = null;
+        GitItem _mergeTarget = null;
         IEnumerable<SvnRevisionRange> _mergeRevisions = null;
         bool _performDryRun = false;
         List<SvnNotifyEventArgs> _mergeActions;
@@ -50,7 +50,7 @@ namespace VisualGit.UI.MergeWizard
         /// Constructor.
         /// </summary>
         /// <param name="utils"></param>
-        public MergeWizard(IVisualGitServiceProvider context, SvnItem mergeTarget)
+        public MergeWizard(IVisualGitServiceProvider context, GitItem mergeTarget)
         {
             InitializeComponent();
 
@@ -389,18 +389,18 @@ namespace VisualGit.UI.MergeWizard
         /// Gets or sets the merge target.
         /// </summary>
         /// <value>The merge target.</value>
-        public SvnItem MergeTarget
+        public GitItem MergeTarget
         {
             get { return _mergeTarget; }
             set { _mergeTarget = value; }
         }
 
-        SvnOrigin _mergeSource;
+        GitOrigin _mergeSource;
         /// <summary>
         /// Gets or sets the merge source.
         /// </summary>
         /// <value>The merge source.</value>
-        public SvnOrigin MergeSource
+        public GitOrigin MergeSource
         {
             get { return _mergeSource; }
             set { _mergeSource = value; }
@@ -466,7 +466,7 @@ namespace VisualGit.UI.MergeWizard
                 }
                 else
                 {
-                    mergeConflictHandler.BinaryConflictResolutionChoice = ToSvnAccept(binaryOption);
+                    mergeConflictHandler.BinaryConflictResolutionChoice = ToGitAccept(binaryOption);
                 }
 
                 MergeOptionsPage.ConflictResolutionOption textOption = mergeOptionsPage.TextConflictResolution;
@@ -476,13 +476,13 @@ namespace VisualGit.UI.MergeWizard
                 }
                 else
                 {
-                    mergeConflictHandler.TextConflictResolutionChoice = ToSvnAccept(textOption);
+                    mergeConflictHandler.TextConflictResolutionChoice = ToGitAccept(textOption);
                 }
             }
             return mergeConflictHandler;
         }
 
-        private SvnAccept ToSvnAccept(MergeOptionsPage.ConflictResolutionOption option)
+        private SvnAccept ToGitAccept(MergeOptionsPage.ConflictResolutionOption option)
         {
             SvnAccept choice = SvnAccept.Postpone;
             switch (option)

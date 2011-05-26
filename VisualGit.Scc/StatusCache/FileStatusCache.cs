@@ -10,17 +10,17 @@ using SharpSvn;
 namespace VisualGit.Scc.StatusCache
 {
     /// <summary>
-    /// Maintains path->SvnItem mappings.
+    /// Maintains path->GitItem mappings.
     /// </summary>
     [GlobalService(typeof(IFileStatusCache), AllowPreRegistered=true)]
-    [GlobalService(typeof(ISvnItemChange), AllowPreRegistered=true)]
-    sealed partial class FileStatusCache : VisualGitService, VisualGit.Scc.IFileStatusCache, ISvnItemChange
+    [GlobalService(typeof(IGitItemChange), AllowPreRegistered=true)]
+    sealed partial class FileStatusCache : VisualGitService, VisualGit.Scc.IFileStatusCache, IGitItemChange
     {
         readonly object _lock = new object();
         readonly SvnClient _client;
         readonly SvnWorkingCopyClient _wcClient;
-        readonly Dictionary<string, SvnItem> _map; // Maps from full-normalized paths to SvnItems
-        readonly Dictionary<string, SvnDirectory> _dirMap;
+        readonly Dictionary<string, GitItem> _map; // Maps from full-normalized paths to SvnItems
+        readonly Dictionary<string, GitDirectory> _dirMap;
         IVisualGitCommandService _commandService;
 
         public FileStatusCache(IVisualGitServiceProvider context)
@@ -31,8 +31,8 @@ namespace VisualGit.Scc.StatusCache
 
             _client = new SvnClient();
             _wcClient = new SvnWorkingCopyClient();
-            _map = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
-            _dirMap = new Dictionary<string, SvnDirectory>(StringComparer.OrdinalIgnoreCase);
+            _map = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
+            _dirMap = new Dictionary<string, GitDirectory>(StringComparer.OrdinalIgnoreCase);
             InitializeShellMonitor();
         }
 
@@ -52,21 +52,21 @@ namespace VisualGit.Scc.StatusCache
             get { return _commandService ?? (_commandService = Context.GetService<IVisualGitCommandService>()); }
         }
 
-        void VisualGit.Scc.IFileStatusCache.RefreshItem(SvnItem item, SvnNodeKind nodeKind)
+        void VisualGit.Scc.IFileStatusCache.RefreshItem(GitItem item, SvnNodeKind nodeKind)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
             RefreshPath(item.FullPath, nodeKind, SvnDepth.Files);
 
-            ISvnItemUpdate updateItem = (ISvnItemUpdate)item;
+            IGitItemUpdate updateItem = (IGitItemUpdate)item;
 
             if (!updateItem.IsStatusClean())
             {
                 // Ok, the status update did not refresh the item requesting to be refreshed
                 // That means the item is not here or RefreshPath would have added it
 
-                SvnItem other;
+                GitItem other;
                 if (_map.TryGetValue(item.FullPath, out other) && other != item)
                 {
                     updateItem.RefreshTo(other); // This item is no longer current; but we have the status anyway
@@ -83,7 +83,7 @@ namespace VisualGit.Scc.StatusCache
             Debug.Assert(updateItem.IsStatusClean(), "The item requesting to be updated is updated");
         }
 
-        void VisualGit.Scc.IFileStatusCache.RefreshNested(SvnItem item)
+        void VisualGit.Scc.IFileStatusCache.RefreshNested(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -92,36 +92,36 @@ namespace VisualGit.Scc.StatusCache
             
             // We retrieve nesting information by walking the entry data of the parent directory
 
-            SvnItem dir = item.Parent;
+            GitItem dir = item.Parent;
 
             if (dir == null)
             {
                 // A root directory can't be a nested working copy!
-                ((ISvnItemUpdate)item).SetState(SvnItemState.None, SvnItemState.IsNested); 
+                ((IGitItemUpdate)item).SetState(GitItemState.None, GitItemState.IsNested); 
                 return;
             }
 
             lock (_lock)
             {
-                ISvnItemUpdate oi = (ISvnItemUpdate)item;
+                IGitItemUpdate oi = (IGitItemUpdate)item;
 
                 SvnWorkingCopyEntriesArgs a = new SvnWorkingCopyEntriesArgs();
                 a.ThrowOnError = false;
 
                 if (_wcClient.ListEntries(dir.FullPath, a, OnLoadEntry))
                 {
-                    SvnItemState st;
+                    GitItemState st;
 
-                    if (!oi.TryGetState(SvnItemState.IsNested, out st))
+                    if (!oi.TryGetState(GitItemState.IsNested, out st))
                     {
                         // The item was not found as entry in the parent -> Nested working copy
-                        oi.SetState(SvnItemState.IsNested, SvnItemState.None);
+                        oi.SetState(GitItemState.IsNested, GitItemState.None);
                     }
                 }
                 else
                 {
                     // The parent directory is not a valid workingcopy -> not nested
-                    oi.SetState(SvnItemState.None, SvnItemState.IsNested);
+                    oi.SetState(GitItemState.None, GitItemState.IsNested);
                 }
             }
         }
@@ -132,22 +132,22 @@ namespace VisualGit.Scc.StatusCache
                 return; // Files and the walked directory are not nested from this base
 
             // Set not-nested on all items that are certainly not nested
-            SvnItem item;
+            GitItem item;
             if(_map.TryGetValue(e.FullPath, out item))
-                ((ISvnItemUpdate)item).SetState(SvnItemState.None, SvnItemState.IsNested);
+                ((IGitItemUpdate)item).SetState(GitItemState.None, GitItemState.IsNested);
         }
 
-        SvnItem CreateItem(string fullPath, VisualGitStatus status)
+        GitItem CreateItem(string fullPath, VisualGitStatus status)
         {
-            return new SvnItem(this, fullPath, status);
+            return new GitItem(this, fullPath, status);
         }
 
-        SvnItem CreateItem(string fullPath, NoSccStatus status, SvnNodeKind nodeKind)
+        GitItem CreateItem(string fullPath, NoSccStatus status, SvnNodeKind nodeKind)
         {
-            return new SvnItem(this, fullPath, status, nodeKind);
+            return new GitItem(this, fullPath, status, nodeKind);
         }
 
-        SvnItem CreateItem(string fullPath, NoSccStatus status)
+        GitItem CreateItem(string fullPath, NoSccStatus status)
         {
             return CreateItem(fullPath, status, SvnNodeKind.Unknown);
         }
@@ -156,19 +156,19 @@ namespace VisualGit.Scc.StatusCache
         /// Stores the item in the caching dictionary/ies
         /// </summary>
         /// <param name="item"></param>
-        void StoreItem(SvnItem item)
+        void StoreItem(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
             _map[item.FullPath] = item;
 
-            SvnDirectory dir;
+            GitDirectory dir;
             if (_dirMap.TryGetValue(item.FullPath, out dir))
             {
                 if (item.IsDirectory)
                 {
-                    ((ISvnDirectoryUpdate)dir).Store(item);
+                    ((IGitDirectoryUpdate)dir).Store(item);
                 }
                 else
                     ScheduleForCleanup(dir);
@@ -181,17 +181,17 @@ namespace VisualGit.Scc.StatusCache
 
             if (_dirMap.TryGetValue(item.FullPath, out dir))
             {
-                ((ISvnDirectoryUpdate)dir).Store(item);
+                ((IGitDirectoryUpdate)dir).Store(item);
             }
         }
 
-        void RemoveItem(SvnItem item)
+        void RemoveItem(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
             bool deleted = false;
-            SvnDirectory dir;
+            GitDirectory dir;
             if (_dirMap.TryGetValue(item.FullPath, out dir))
             {
                 // The item is a directory itself.. remove it's map
@@ -202,7 +202,7 @@ namespace VisualGit.Scc.StatusCache
                 }
             }
 
-            SvnItem other;
+            GitItem other;
             if (_map.TryGetValue(item.FullPath, out other))
             {
                 if (item == other)
@@ -283,9 +283,9 @@ namespace VisualGit.Scc.StatusCache
 
             lock (_lock)
             {
-                SvnDirectory directory = null;
-                ISvnDirectoryUpdate updateDir = null;
-                SvnItem walkItem;
+                GitDirectory directory = null;
+                IGitDirectoryUpdate updateDir = null;
+                GitItem walkItem;
 
                 if (depth > SvnDepth.Empty)
                 {
@@ -302,7 +302,7 @@ namespace VisualGit.Scc.StatusCache
                     else
                     {
                         // No existing directory instance, let's create one
-                        updateDir = directory = new SvnDirectory(Context, walkPath);
+                        updateDir = directory = new GitDirectory(Context, walkPath);
                         _dirMap[walkPath] = directory;
                     }
 
@@ -311,7 +311,7 @@ namespace VisualGit.Scc.StatusCache
                 else
                 {
                     if (_map.TryGetValue(walkPath, out walkItem))
-                        ((ISvnItemUpdate)walkItem).TickItem();
+                        ((IGitItemUpdate)walkItem).TickItem();
                 }
 
                 bool ok;
@@ -341,7 +341,7 @@ namespace VisualGit.Scc.StatusCache
 
                 if (!statSelf)
                 {
-                    if (((ISvnItemUpdate)walkItem).ShouldRefresh())
+                    if (((IGitItemUpdate)walkItem).ShouldRefresh())
                         statSelf = true;
                     else if (walkingDirectory && !walkItem.IsVersioned)
                         statSelf = true;
@@ -366,14 +366,14 @@ namespace VisualGit.Scc.StatusCache
                         }
                         else
                         {
-                            ((ISvnItemUpdate)walkItem).RefreshTo(walkItem.Exists ? NoSccStatus.NotVersioned : NoSccStatus.NotExisting, SvnNodeKind.Unknown);
+                            ((IGitItemUpdate)walkItem).RefreshTo(walkItem.Exists ? NoSccStatus.NotVersioned : NoSccStatus.NotExisting, SvnNodeKind.Unknown);
                         }
                     }
                 }
 
                 if (directory != null)
                 {
-                    foreach (ISvnItemUpdate item in directory)
+                    foreach (IGitItemUpdate item in directory)
                     {
                         if (item.IsItemTicked()) // These items were not found in the stat calls
                             item.RefreshTo(NoSccStatus.NotExisting, SvnNodeKind.Unknown);
@@ -385,7 +385,7 @@ namespace VisualGit.Scc.StatusCache
                 }
 
 
-                SvnItem pathItem; // We promissed to return an updated item for the specified path; check if we updated it
+                GitItem pathItem; // We promissed to return an updated item for the specified path; check if we updated it
 
                 if (!_map.TryGetValue(path, out pathItem))
                 {
@@ -394,13 +394,13 @@ namespace VisualGit.Scc.StatusCache
 
                     if (directory != null)
                     {
-                        ((ISvnDirectoryUpdate)directory).Store(pathItem);
+                        ((IGitDirectoryUpdate)directory).Store(pathItem);
                         ScheduleForCleanup(directory);
                     }
                 }
                 else
                 {
-                    ISvnItemUpdate update = pathItem;
+                    IGitItemUpdate update = pathItem;
 
                     if (!update.IsStatusClean())
                     {
@@ -408,7 +408,7 @@ namespace VisualGit.Scc.StatusCache
 
                         if (directory != null)
                         {
-                            ((ISvnDirectoryUpdate)directory).Store(pathItem);
+                            ((IGitDirectoryUpdate)directory).Store(pathItem);
                             ScheduleForCleanup(directory);
                         }
                     }
@@ -416,7 +416,7 @@ namespace VisualGit.Scc.StatusCache
             }
         }
 
-        private void StatDirectory(string walkPath, SvnDepth depth, SvnDirectory directory)
+        private void StatDirectory(string walkPath, SvnDepth depth, GitDirectory directory)
         {
             // Note: There is a lock(_lock) around this in our caller
 
@@ -430,14 +430,14 @@ namespace VisualGit.Scc.StatusCache
                 if (string.Equals(node.Name, adminName, StringComparison.OrdinalIgnoreCase) || node.IsHiddenOrSystem)
                     continue;
 
-                SvnItem item;
+                GitItem item;
                 if (node.IsFile)
                 {
                     if (!_map.TryGetValue(node.FullPath, out item))
                         StoreItem(CreateItem(node.FullPath, NoSccStatus.NotVersioned, SvnNodeKind.File));
                     else
                     {
-                        ISvnItemUpdate updateItem = item;
+                        IGitItemUpdate updateItem = item;
                         if (updateItem.ShouldRefresh())
                             updateItem.RefreshTo(NoSccStatus.NotVersioned, SvnNodeKind.File);
                     }
@@ -452,7 +452,7 @@ namespace VisualGit.Scc.StatusCache
 
             if (canRead) // The directory exists
             {
-                SvnItem item;
+                GitItem item;
 
                 if (!_map.TryGetValue(walkPath, out item))
                 {
@@ -461,7 +461,7 @@ namespace VisualGit.Scc.StatusCache
                 }
                 else
                 {
-                    ISvnItemUpdate updateItem = item;
+                    IGitItemUpdate updateItem = item;
                     if (updateItem.ShouldRefresh())
                         updateItem.RefreshTo(NoSccStatus.NotVersioned, SvnNodeKind.Directory);
                 }
@@ -471,8 +471,8 @@ namespace VisualGit.Scc.StatusCache
         }
 
         bool _postedCleanup;
-        List<SvnDirectory> _cleanup = new List<SvnDirectory>();
-        private void ScheduleForCleanup(SvnDirectory directory)
+        List<GitDirectory> _cleanup = new List<GitDirectory>();
+        private void ScheduleForCleanup(GitDirectory directory)
         {
             lock (_lock)
             {
@@ -492,15 +492,15 @@ namespace VisualGit.Scc.StatusCache
 
                 while (_cleanup.Count > 0)
                 {
-                    SvnDirectory dir = _cleanup[0];
+                    GitDirectory dir = _cleanup[0];
                     string path = dir.FullPath;
 
                     _cleanup.RemoveAt(0);
 
                     for (int i = 0; i < dir.Count; i++)
                     {
-                        SvnItem item = dir[i];
-                        if (((ISvnItemUpdate)item).ShouldClean())
+                        GitItem item = dir[i];
+                        if (((IGitItemUpdate)item).ShouldClean())
                         {
                             RemoveItem(item);
                             dir.RemoveAt(i--);
@@ -516,7 +516,7 @@ namespace VisualGit.Scc.StatusCache
             }
         }
 
-        static bool NewFullPathOk(SvnItem item, string fullPath, VisualGitStatus status)
+        static bool NewFullPathOk(GitItem item, string fullPath, VisualGitStatus status)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -558,25 +558,25 @@ namespace VisualGit.Scc.StatusCache
             VisualGitStatus status = new VisualGitStatus(e);
             string path = e.FullPath; // Fully normalized
 
-            SvnItem item;
+            GitItem item;
             if (!_map.TryGetValue(path, out item) || !NewFullPathOk(item, path, status))
             {
                 // We only create an item if we don't have an existing
                 // with a valid path. (No casing changes allowed!)
                 
-                SvnItem newItem = CreateItem(path, status); 
+                GitItem newItem = CreateItem(path, status); 
                 StoreItem(newItem);
 
                 if (item != null)
                 {
-                    ((ISvnItemUpdate)item).RefreshTo(newItem); 
+                    ((IGitItemUpdate)item).RefreshTo(newItem); 
                     item.Dispose();
                 }
 
                 item = newItem;
             }
             else
-                ((ISvnItemUpdate)item).RefreshTo(status);
+                ((IGitItemUpdate)item).RefreshTo(status);
 
             // Note: There is a lock(_lock) around this in our caller
         }
@@ -594,7 +594,7 @@ namespace VisualGit.Scc.StatusCache
 
             lock (_lock)
             {
-                SvnItem item;
+                GitItem item;
 
                 if (_map.TryGetValue(normPath, out item))
                 {
@@ -612,7 +612,7 @@ namespace VisualGit.Scc.StatusCache
             {
                 List<string> names = new List<string>();
 
-                foreach (SvnItem v in _map.Values)
+                foreach (GitItem v in _map.Values)
                 {
                     string name = v.FullPath;
                     if (v.IsBelowPath(path))
@@ -623,16 +623,16 @@ namespace VisualGit.Scc.StatusCache
             }
         }
 
-        public IList<SvnItem> GetCachedBelow(string path)
+        public IList<GitItem> GetCachedBelow(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
             
             lock (_lock)
             {
-                List<SvnItem> items = new List<SvnItem>();
+                List<GitItem> items = new List<GitItem>();
 
-                foreach (SvnItem v in _map.Values)
+                foreach (GitItem v in _map.Values)
                 {
                     if(v.IsBelowPath(path))
                         items.Add(v);
@@ -642,25 +642,25 @@ namespace VisualGit.Scc.StatusCache
             }
         }
 
-        public IList<SvnItem> GetCachedBelow(IEnumerable<string> paths)
+        public IList<GitItem> GetCachedBelow(IEnumerable<string> paths)
         {
             if (paths == null)
                 throw new ArgumentNullException("path");
 
             lock (_lock)
             {
-                SortedList<string, SvnItem> items = new SortedList<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
+                SortedList<string, GitItem> items = new SortedList<string, GitItem>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (string path in paths)
                 {
-                    foreach (SvnItem v in _map.Values)
+                    foreach (GitItem v in _map.Values)
                     {
                         if (v.IsBelowPath(path))
                             items[v.FullPath] = v;
                     }
                 }
 
-                return new List<SvnItem>(items.Values);
+                return new List<GitItem>(items.Values);
             }
         }
 
@@ -678,7 +678,7 @@ namespace VisualGit.Scc.StatusCache
                 foreach (string path in paths)
                 {
                     string normPath = SvnTools.GetNormalizedFullPath(path);
-                    SvnItem item;
+                    GitItem item;
 
                     if (_map.TryGetValue(normPath, out item))
                     {
@@ -689,7 +689,7 @@ namespace VisualGit.Scc.StatusCache
         }
 
 
-        public SvnItem this[string path]
+        public GitItem this[string path]
         {
             get
             {
@@ -700,14 +700,14 @@ namespace VisualGit.Scc.StatusCache
 
                 lock (_lock)
                 {
-                    SvnItem item;
+                    GitItem item;
 
                     if (!_map.TryGetValue(path, out item))
                     {
                         string truePath = SvnTools.GetTruePath(path, true);
 
                         // Just create an item based on his name. Delay the svn calls as long as we can
-                        StoreItem(item = new SvnItem(this, truePath ?? path, NoSccStatus.Unknown, SvnNodeKind.Unknown));
+                        StoreItem(item = new GitItem(this, truePath ?? path, NoSccStatus.Unknown, SvnNodeKind.Unknown));
 
                         //item.MarkDirty(); // Load status on first access
                     }
@@ -734,31 +734,31 @@ namespace VisualGit.Scc.StatusCache
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            SvnItem item;
+            GitItem item;
             if (_map.TryGetValue(path, out item))
-                ((ISvnItemStateUpdate)item).SetSolutionContained(contained);
+                ((IGitItemStateUpdate)item).SetSolutionContained(contained);
         }
 
         #region IFileStatusCache Members
 
 
-        public SvnDirectory GetDirectory(string path)
+        public GitDirectory GetDirectory(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             lock (_lock)
             {
-                SvnDirectory dir;
+                GitDirectory dir;
 
                 if (_dirMap.TryGetValue(path, out dir))
                     return dir;
 
-                SvnItem item = this[path];
+                GitItem item = this[path];
 
                 if (item.IsDirectory)
                 {
-                    dir = new SvnDirectory(Context, path);
+                    dir = new GitDirectory(Context, path);
                     dir.Add(item);
                     return dir;
                 }
@@ -771,16 +771,16 @@ namespace VisualGit.Scc.StatusCache
 
         internal void BroadcastChanges()
         {
-            ISvnItemStateUpdate update;
+            IGitItemStateUpdate update;
             if(_map.Count > 0)
                 update = GetFirst(_map.Values);
             else
-                update = this["c:\\windows"]; // Just give me a SvnItem instance to access the interface
+                update = this["c:\\windows"]; // Just give me a GitItem instance to access the interface
 
-            IList<SvnItem> updates = update.GetUpdateQueueAndClearScheduled();
+            IList<GitItem> updates = update.GetUpdateQueueAndClearScheduled();
 
             if(updates != null)
-                OnSvnItemsChanged(new SvnItemsEventArgs(updates));
+                OnGitItemsChanged(new GitItemsEventArgs(updates));
         }
 
         static T GetFirst<T>(IEnumerable<T> valueCollection)
@@ -792,15 +792,15 @@ namespace VisualGit.Scc.StatusCache
             return null;
         }
 
-        public event EventHandler<SvnItemsEventArgs> SvnItemsChanged;
+        public event EventHandler<GitItemsEventArgs> GitItemsChanged;
 
-        public void OnSvnItemsChanged(SvnItemsEventArgs e)
+        public void OnGitItemsChanged(GitItemsEventArgs e)
         {
             if (e == null)
                 throw new ArgumentNullException("e");
 
-            if (SvnItemsChanged != null)
-                SvnItemsChanged(this, e);
+            if (GitItemsChanged != null)
+                GitItemsChanged(this, e);
         }
     }
 }

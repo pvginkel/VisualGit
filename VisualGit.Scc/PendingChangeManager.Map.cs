@@ -63,7 +63,7 @@ namespace VisualGit.Scc
             {
                 _extraFiles.Remove(file); // If we find it here; it is no longer 'extra'!
 
-                SvnItem item = cache[file];
+                GitItem item = cache[file];
 
                 if (item == null)
                     continue;
@@ -76,7 +76,7 @@ namespace VisualGit.Scc
 
             foreach (string file in new List<string>(_extraFiles))
             {
-                SvnItem item = cache[file];
+                GitItem item = cache[file];
 
                 if (item == null)
                 {
@@ -110,7 +110,7 @@ namespace VisualGit.Scc
             OnRefreshCompleted(pceMe);
         }
 
-        private PendingChange UpdatePendingChange(bool wasClean, SvnItem item)
+        private PendingChange UpdatePendingChange(bool wasClean, GitItem item)
         {
             PendingChange pc;
             string file = item.FullPath;
@@ -146,7 +146,7 @@ namespace VisualGit.Scc
 
         private void ItemRefresh(string file)
         {
-            SvnItem item = Cache[file];
+            GitItem item = Cache[file];
             file = item.FullPath; // Use existing normalization
 
             bool inProject = item.InSolution;
@@ -295,7 +295,7 @@ namespace VisualGit.Scc
 
             foreach (PendingChange pc in GetAll()) // Get copy of list to make sure the list doesn't change on our back
             {
-                string cl = pc.SvnItem.Status.ChangeList;
+                string cl = pc.GitItem.Status.ChangeList;
 
                 if (!string.IsNullOrEmpty(cl) && !string.Equals(cl, IgnoreOnCommit))
                 {

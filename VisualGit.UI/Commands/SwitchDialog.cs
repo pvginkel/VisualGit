@@ -76,7 +76,7 @@ namespace VisualGit.UI.Commands
         {
             versionSelector.Context = Context;
             if (_reposRoot == null)
-                versionSelector.SvnOrigin = null;
+                versionSelector.GitOrigin = null;
             else
             {
                 Uri switchUri = SwitchToUri;
@@ -84,9 +84,9 @@ namespace VisualGit.UI.Commands
                 if (switchUri != null)
                 {
                     if (!switchUri.AbsoluteUri.StartsWith(_reposRoot.AbsoluteUri))
-                        versionSelector.SvnOrigin = null;
+                        versionSelector.GitOrigin = null;
                     else
-                        versionSelector.SvnOrigin = new SvnOrigin(switchUri, _reposRoot);
+                        versionSelector.GitOrigin = new GitOrigin(switchUri, _reposRoot);
                 }
             }
         }

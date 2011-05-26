@@ -51,7 +51,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         SvnRevision _revision = SvnRevision.Head;
         [Localizable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public SvnRevision SvnRevision
+        public SvnRevision GitRevision
         {
             get { return _revision; }
             set { _revision = value ?? SvnRevision.Head; UpdateLabelEdit(); }
@@ -68,7 +68,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         private void UpdateLabelEdit()
         {
-            if (AllowRenames && SvnRevision == SvnRevision.Head)
+            if (AllowRenames && GitRevision == SvnRevision.Head)
                 LabelEdit = true;
             else
                 LabelEdit = false;
@@ -334,7 +334,7 @@ namespace VisualGit.UI.RepositoryExplorer
                     la.ThrowOnError = false;
 
                     Collection<SvnListEventArgs> items;
-                    using (SvnClient client = Context.GetService<ISvnClientPool>().GetClient())
+                    using (SvnClient client = Context.GetService<IGitClientPool>().GetClient())
                     {
                         client.GetList(uri, la, out items);
                     }
@@ -559,7 +559,7 @@ namespace VisualGit.UI.RepositoryExplorer
             }
 
             // uri is always the repos root here
-            RepositoryTreeNode rtn = new RepositoryTreeNode(new SvnOrigin(uri, uri));
+            RepositoryTreeNode rtn = new RepositoryTreeNode(new GitOrigin(uri, uri));
             rtn.Text = uri.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped);
             if (IconMapper != null)
                 rtn.IconIndex = IconMapper.GetSpecialIcon(SpecialIcon.Db);
@@ -640,7 +640,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
                 if (parent != null)
                 {
-                    tn = new RepositoryTreeNode(new SvnOrigin(uri, repositoryUri));
+                    tn = new RepositoryTreeNode(new GitOrigin(uri, repositoryUri));
                     string name = uri.ToString();
 
                     tn.Text = tn.Origin.Target.FileName;
@@ -735,7 +735,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
             _editItem = null;
             RepositoryTreeNode item = e.Node as RepositoryTreeNode;
-            if (item == null || !AllowRenames || SvnRevision != SvnRevision.Head)
+            if (item == null || !AllowRenames || GitRevision != SvnRevision.Head)
                 e.CancelEdit = true;
             else
             {
@@ -770,7 +770,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         internal void OnItemEdit(RepositoryExplorerItem item, CancelEventArgs e)
         {
-            if (!AllowRenames || SvnRevision != SvnRevision.Head || item.Origin == null
+            if (!AllowRenames || GitRevision != SvnRevision.Head || item.Origin == null
                 || item.Origin.IsRepositoryRoot)
             {
                 e.Cancel = true;
@@ -781,7 +781,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         internal void OnAfterEdit(RepositoryExplorerItem item, string newName, CancelEventArgs e)
         {
-            if (!AllowRenames || SvnRevision != SvnRevision.Head || string.IsNullOrEmpty(newName))
+            if (!AllowRenames || GitRevision != SvnRevision.Head || string.IsNullOrEmpty(newName))
             {
                 e.Cancel = true;
                 return;

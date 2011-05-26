@@ -48,7 +48,7 @@ namespace VisualGit.UI.PendingChanges.Conflicts
             modified.Sorter = new SortWrapper(
                 delegate(ConflictListItem x, ConflictListItem y)
                 {
-                    return x.PendingChange.SvnItem.Modified.CompareTo(y.PendingChange.SvnItem.Modified);
+                    return x.PendingChange.GitItem.Modified.CompareTo(y.PendingChange.GitItem.Modified);
                 });
 
             change.Groupable = true;

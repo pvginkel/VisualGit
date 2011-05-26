@@ -262,16 +262,16 @@ namespace VisualGit.Scc
                 return VSConstants.S_OK;
 
             if (!string.IsNullOrEmpty(bstrCopyLocation))
-                monitor.ScheduleSvnStatus(bstrCopyLocation);
+                monitor.ScheduleGitStatus(bstrCopyLocation);
                 
             IVsSccProject2 project = pHierarchy as IVsSccProject2;
 
             if (project != null)
             {
-                ISvnProjectInfo info = mapper.GetProjectInfo(new SvnProject(null, project));
+                IGitProjectInfo info = mapper.GetProjectInfo(new GitProject(null, project));
 
                 if (info != null && !string.IsNullOrEmpty(info.ProjectFile))
-                    monitor.ScheduleSvnStatus(info.ProjectFile);
+                    monitor.ScheduleGitStatus(info.ProjectFile);
             }
 
             return VSConstants.S_OK;

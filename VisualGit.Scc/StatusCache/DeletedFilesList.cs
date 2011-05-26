@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 
 namespace VisualGit.Scc.StatusCache
 {
-    public class DeletedSvnItemList : KeyedCollection<string, SvnItem>
+    public class DeletedGitItemList : KeyedCollection<string, GitItem>
     {
-        public DeletedSvnItemList()
+        public DeletedGitItemList()
             : base(StringComparer.OrdinalIgnoreCase)
         {
         }
@@ -17,7 +17,7 @@ namespace VisualGit.Scc.StatusCache
         /// </summary>
         /// <param name="item">The element from which to extract the key.</param>
         /// <returns>The key for the specified element.</returns>
-        protected override string GetKeyForItem(SvnItem item)
+        protected override string GetKeyForItem(GitItem item)
         {
             return item.FullPath;
         }

@@ -13,14 +13,14 @@ using System.IO;
 namespace VisualGit.Scc
 {
     [DebuggerDisplay("File={FullPath}, Change={ChangeText}")]
-    public sealed class PendingChange : SvnItemData
+    public sealed class PendingChange : GitItemData
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PendingChange"/> class
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="item">The item.</param>
-        public PendingChange(RefreshContext context, SvnItem item)
+        public PendingChange(RefreshContext context, GitItem item)
             : base(context, item)
         {
             Refresh(context, item);
@@ -32,7 +32,7 @@ namespace VisualGit.Scc
             get { return _projects; }
         }
 
-        [DisplayName("Change"), Category("Subversion")]
+        [DisplayName("Change"), Category("Git")]
         public string ChangeText
         {
             get { return _status.Text; }
@@ -54,7 +54,7 @@ namespace VisualGit.Scc
         [Browsable(false)]
         public bool IsClean
         {
-            get { return !PendingChange.IsPending(SvnItem); }
+            get { return !PendingChange.IsPending(GitItem); }
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool Refresh(RefreshContext context, SvnItem item)
+        public bool Refresh(RefreshContext context, GitItem item)
         {
             bool m = false;
 
@@ -123,13 +123,13 @@ namespace VisualGit.Scc
             RefreshValue(ref m, ref _projects, GetProjects(context));
             RefreshValue(ref m, ref _status, GetStatus(context, item));
             RefreshValue(ref m, ref _relativePath, GetRelativePath(context));
-            RefreshValue(ref m, ref _changeList, SvnItem.Status.ChangeList);
+            RefreshValue(ref m, ref _changeList, GitItem.Status.ChangeList);
             RefreshValue(ref m, ref _fileType, GetFileType(context, item));
 
             return m || (_status == null);
         }
 
-        private string GetFileType(RefreshContext context, SvnItem item)
+        private string GetFileType(RefreshContext context, GitItem item)
         {
             return context.IconMapper.GetFileType(item.FullPath);
         }        
@@ -147,9 +147,9 @@ namespace VisualGit.Scc
         string GetProjects(RefreshContext context)
         {
             string name = null;
-            foreach (SvnProject project in context.ProjectFileMapper.GetAllProjectsContaining(FullPath))
+            foreach (GitProject project in context.ProjectFileMapper.GetAllProjectsContaining(FullPath))
             {
-                ISvnProjectInfo info = context.ProjectFileMapper.GetProjectInfo(project);
+                IGitProjectInfo info = context.ProjectFileMapper.GetProjectInfo(project);
 
                 if (info == null)
                 {
@@ -175,20 +175,20 @@ namespace VisualGit.Scc
 
         int GetIcon(RefreshContext context)
         {
-            if (SvnItem.Exists)
+            if (GitItem.Exists)
             {
-                if (SvnItem.IsDirectory || SvnItem.NodeKind == SvnNodeKind.Directory)
+                if (GitItem.IsDirectory || GitItem.NodeKind == SvnNodeKind.Directory)
                     return context.IconMapper.DirectoryIcon; // Is or was a directory
                 else
                     return context.IconMapper.GetIcon(FullPath);
             }
-            else if (SvnItem.Status != null && SvnItem.Status.NodeKind == SvnNodeKind.Directory)
+            else if (GitItem.Status != null && GitItem.Status.NodeKind == SvnNodeKind.Directory)
                 return context.IconMapper.DirectoryIcon;
             else
-                return context.IconMapper.GetIconForExtension(SvnItem.Extension);
+                return context.IconMapper.GetIconForExtension(GitItem.Extension);
         }
 
-        PendingChangeStatus GetStatus(RefreshContext context, SvnItem item)
+        PendingChangeStatus GetStatus(RefreshContext context, GitItem item)
         {
             VisualGitStatus status = item.Status;
             _kind = CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, item.IsTreeConflicted, item);
@@ -218,7 +218,7 @@ namespace VisualGit.Scc
             }
         }
 
-        public static bool IsPending(SvnItem item)
+        public static bool IsPending(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -258,7 +258,7 @@ namespace VisualGit.Scc
         /// <param name="isDirty">if set to <c>true</c> [is dirty].</param>
         /// <param name="pc">The pc.</param>
         /// <returns></returns>
-        public static bool CreateIfPending(RefreshContext context, SvnItem item, out PendingChange pc)
+        public static bool CreateIfPending(RefreshContext context, GitItem item, out PendingChange pc)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -341,7 +341,7 @@ namespace VisualGit.Scc
                 case PendingChangeKind.LockedOnly:
                     return true;
                 case PendingChangeKind.TreeConflict:
-                    return !SvnItem.IsVersioned;
+                    return !GitItem.IsVersioned;
             }
 
             return false;
@@ -356,7 +356,7 @@ namespace VisualGit.Scc
         /// </returns>
         public bool IsBelowPath(string path)
         {
-            return SvnItem.IsBelowPath(path);
+            return GitItem.IsBelowPath(path);
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace VisualGit.Scc
         /// <param name="treeConflict">if set to <c>true</c> [tree conflict].</param>
         /// <param name="item">The item or null if no on disk representation is availavke</param>
         /// <returns></returns>
-        public static PendingChangeKind CombineStatus(SvnStatus contentStatus, SvnStatus propertyStatus, bool treeConflict, SvnItem item)
+        public static PendingChangeKind CombineStatus(SvnStatus contentStatus, SvnStatus propertyStatus, bool treeConflict, GitItem item)
         {
             // item can be null!
             if (treeConflict || (item != null && item.IsTreeConflicted))

@@ -17,7 +17,7 @@ namespace VisualGit.Scc.SccUI
             pictureBox1.Image = SystemIcons.Exclamation.ToBitmap();
         }
 
-        public EditReadOnlyFileDialog(SvnItem item)
+        public EditReadOnlyFileDialog(GitItem item)
             :this()
         {
             if(item == null)

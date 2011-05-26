@@ -12,7 +12,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsCasingConflicted)
                 {
@@ -26,9 +26,9 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> toResolve = new List<SvnItem>();
+            List<GitItem> toResolve = new List<GitItem>();
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsCasingConflicted)
                 {
@@ -37,9 +37,9 @@ namespace VisualGit.Commands
             }
             try
             {
-                foreach (SvnItem item in toResolve)
+                foreach (GitItem item in toResolve)
                 {
-                    string svnPath = GetSvnCasing(item);
+                    string svnPath = GetGitCasing(item);
                     string actualPath = SvnTools.GetTruePath(item.FullPath);
 
                     if (svnPath == null || actualPath == null)
@@ -76,11 +76,11 @@ namespace VisualGit.Commands
             }
             finally
             {
-                e.GetService<IFileStatusMonitor>().ScheduleSvnStatus(SvnItem.GetPaths(toResolve));
+                e.GetService<IFileStatusMonitor>().ScheduleGitStatus(GitItem.GetPaths(toResolve));
             }
         }
 
-        static string GetSvnCasing(SvnItem item)
+        static string GetGitCasing(GitItem item)
         {
             string name = null;
             // Find the correct casing

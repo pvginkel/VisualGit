@@ -148,7 +148,7 @@ namespace VisualGit.UI.PendingChanges
         {
             IVisualGitProjectLayoutService pls = Context.GetService<IVisualGitProjectLayoutService>();
             List<SvnStatusEventArgs> resultList = new List<SvnStatusEventArgs>();
-            List<string> roots = new List<string>(SvnItem.GetPaths(pls.GetUpdateRoots(null)));
+            List<string> roots = new List<string>(GitItem.GetPaths(pls.GetUpdateRoots(null)));
             Dictionary<string, string> found = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             bool refreshFromList = false;
             try
@@ -170,7 +170,7 @@ namespace VisualGit.UI.PendingChanges
                 else
                 {
                     ShowBusyIndicator();
-                    using (SvnClient client = Context.GetService<ISvnClientPool>().GetClient())
+                    using (SvnClient client = Context.GetService<IGitClientPool>().GetClient())
                     {
                         SvnStatusArgs sa = new SvnStatusArgs();
                         sa.RetrieveRemoteStatus = true;
@@ -271,7 +271,7 @@ namespace VisualGit.UI.PendingChanges
                 List<SynchronizeListItem> items = new List<SynchronizeListItem>(resultList.Count);
                 foreach (SvnStatusEventArgs s in resultList)
                 {
-                    SvnItem item = fs[s.FullPath];
+                    GitItem item = fs[s.FullPath];
 
                     if (item == null)
                         return;

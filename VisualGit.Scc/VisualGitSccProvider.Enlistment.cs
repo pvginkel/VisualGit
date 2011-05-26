@@ -443,7 +443,7 @@ namespace VisualGit.Scc
             IVsSolutionPersistence ps = GetService<IVsSolutionPersistence>(typeof(SVsSolutionPersistence));
             if (ps != null)
             {
-                int hr = ps.LoadPackageUserOpts((IVsPersistSolutionOpts)GetService<VisualGit.UI.IVisualGitPackage>(), VisualGitId.SubversionSccName + "Enlist");
+                int hr = ps.LoadPackageUserOpts((IVsPersistSolutionOpts)GetService<VisualGit.UI.IVisualGitPackage>(), VisualGitId.GitSccName + "Enlist");
 
             }
 
@@ -669,7 +669,7 @@ namespace VisualGit.Scc
         static string RemoveEndSlash(string path, out char end)
         {
             end = '\0';
-            if (SvnItem.IsValidPath(path))
+            if (GitItem.IsValidPath(path))
             {
                 string p = SvnTools.GetNormalizedFullPath(path);
 
@@ -715,7 +715,7 @@ namespace VisualGit.Scc
             SccTranslateData td;
             if (_sccPaths.TryGetValue(lpszEnlistmentPath, out td) && !string.IsNullOrEmpty(td.StoredPathName))
             {
-                if (SvnItem.IsValidPath(td.StoredPathName))
+                if (GitItem.IsValidPath(td.StoredPathName))
                     pbstrProjectPath = AddEndSlash(td.StoredPathName, end);
                 else
                     pbstrProjectPath = td.StoredPathName;
@@ -749,7 +749,7 @@ namespace VisualGit.Scc
             char end = '\0';
             string path;
 
-            if (SvnItem.IsValidPath(lpszProjectPath))
+            if (GitItem.IsValidPath(lpszProjectPath))
             {
                 path = RemoveEndSlash(lpszProjectPath, out end);
                 path = SvnTools.GetNormalizedFullPath(lpszProjectPath);
@@ -818,7 +818,7 @@ namespace VisualGit.Scc
             if (createType > SccEnlistMode.None)
             {
                 SccTranslateData td;
-                if (createType <= SccEnlistMode.SvnStateOnly)
+                if (createType <= SccEnlistMode.GitStateOnly)
                     td = new SccTranslateData(this, projectId, solutionName);
                 else
                     td = new SccTranslateEnlistData(this, projectId, solutionName);

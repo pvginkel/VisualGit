@@ -69,12 +69,12 @@ namespace VisualGit.UI.SvnLog
 
     sealed class PathListViewItem : SmartListViewItem
     {
-        readonly ISvnLogItem _logItem;
+        readonly IGitLogItem _logItem;
         readonly SvnChangeItem _change;
         readonly bool _isInSelection;
-        readonly SvnOrigin _origin;
+        readonly GitOrigin _origin;
 
-        public PathListViewItem(LogChangedPathsView view, ISvnLogItem logItem, SvnChangeItem change, Uri reposRoot, bool isInSelection)
+        public PathListViewItem(LogChangedPathsView view, IGitLogItem logItem, SvnChangeItem change, Uri reposRoot, bool isInSelection)
             : base(view)
         {
             if (logItem == null)
@@ -93,13 +93,13 @@ namespace VisualGit.UI.SvnLog
             else
                 uri = SvnTools.AppendPathSuffix(reposRoot, path);
 
-            _origin = new SvnOrigin(new SvnUriTarget(uri, logItem.Revision), reposRoot);
+            _origin = new GitOrigin(new SvnUriTarget(uri, logItem.Revision), reposRoot);
 
             RefreshText();
             UpdateColors();
         }
 
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _origin; }
         }
@@ -165,7 +165,7 @@ namespace VisualGit.UI.SvnLog
             get { return _change.CopyFromRevision; }
         }
 
-        internal ISvnLogItem LogItem
+        internal IGitLogItem LogItem
         {
             get { return _logItem; }
         }
@@ -176,7 +176,7 @@ namespace VisualGit.UI.SvnLog
         }
     }
 
-    sealed class PathItem : VisualGitPropertyGridItem, ISvnLogChangedPathItem
+    sealed class PathItem : VisualGitPropertyGridItem, IGitLogChangedPathItem
     {
         readonly PathListViewItem _lvi;
         public PathItem(PathListViewItem lvi)
@@ -187,7 +187,7 @@ namespace VisualGit.UI.SvnLog
         }
 
         [Browsable(false)]
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _lvi.Origin; }
         }
@@ -197,7 +197,7 @@ namespace VisualGit.UI.SvnLog
             get { return _lvi; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Action")]
         public SvnChangeAction Action
         {
@@ -230,14 +230,14 @@ namespace VisualGit.UI.SvnLog
             get { return _lvi.Path; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Url")]
         public Uri Uri
         {
             get { return _lvi.Origin.Uri; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Last Revision")]
         [Description("Revision number of the Last Commit")]
         public long Revision
@@ -245,7 +245,7 @@ namespace VisualGit.UI.SvnLog
             get { return _lvi.LogItem.Revision; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Last Author")]
         [Description("Author of the Last Commit")]
         public string Author
@@ -253,7 +253,7 @@ namespace VisualGit.UI.SvnLog
             get { return _lvi.LogItem.Author; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Last Committed")]
         [Description("Time of the Last Commit")]
         public DateTime LastCommitted
@@ -279,23 +279,23 @@ namespace VisualGit.UI.SvnLog
             get { return Origin.Target.FileName; }
         }
 
-        SvnRevision ISvnRepositoryItem.Revision
+        SvnRevision IGitRepositoryItem.Revision
         {
             get { return Revision; }
         }
 
-        SvnNodeKind ISvnRepositoryItem.NodeKind
+        SvnNodeKind IGitRepositoryItem.NodeKind
         {
             get { return _lvi.NodeKind; }
         }
 
-        SvnOrigin ISvnRepositoryItem.Origin
+        GitOrigin IGitRepositoryItem.Origin
         {
             // We don't have a repository item when we are deleted!
             get { return (Action != SvnChangeAction.Delete) ? Origin : null; }
         }
 
-        void ISvnRepositoryItem.RefreshItem(bool refreshParent)
+        void IGitRepositoryItem.RefreshItem(bool refreshParent)
         {
         }
     }

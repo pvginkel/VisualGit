@@ -67,7 +67,7 @@ namespace VisualGit.Settings
             public string SolutionFilename;
             public string ProjectRoot;
             public Uri ProjectRootUri;
-            public SvnItem ProjectRootItem;
+            public GitItem ProjectRootItem;
 
             public int SolutionCookie;
             public int RootCookie;
@@ -131,7 +131,7 @@ namespace VisualGit.Settings
             if (solutionFile == null)
                 return false;
 
-            SvnItem item = StatusCache[solutionFile];
+            GitItem item = StatusCache[solutionFile];
 
             if (item == null || item.ChangeCookie != cache.SolutionCookie)
                 return true;
@@ -164,7 +164,7 @@ namespace VisualGit.Settings
                 if (string.IsNullOrEmpty(solutionFile))
                     return;
 
-                SvnItem item = StatusCache[solutionFile];
+                GitItem item = StatusCache[solutionFile];
 
                 if (item == null)
                     return;
@@ -175,8 +175,8 @@ namespace VisualGit.Settings
                 if (!item.Exists)
                     return;
 
-                SvnWorkingCopy wc = item.WorkingCopy;
-                SvnItem parent;
+                GitWorkingCopy wc = item.WorkingCopy;
+                GitItem parent;
                 if (wc != null)
                     parent = StatusCache[wc.FullPath];
                 else
@@ -210,11 +210,11 @@ namespace VisualGit.Settings
             }
         }
 
-        private void LoadSolutionProperties(SettingsCache cache, SvnItem item)
+        private void LoadSolutionProperties(SettingsCache cache, GitItem item)
         {
-            // Subversion -1.5 loads all properties in memory at once; loading them 
+            // Git -1.5 loads all properties in memory at once; loading them 
             // all is always faster than loading a few
-            // We must change this algorithm if Subversions implementation changes
+            // We must change this algorithm if Gits implementation changes
             SvnPropertyCollection pc = GetAllProperties(item.FullPath);
 
             if (pc != null)
@@ -237,11 +237,11 @@ namespace VisualGit.Settings
             string dir = value;
             string solutionFile = cache.SolutionFilename;
 
-            SvnItem directory = StatusCache[solutionFile].Parent;
+            GitItem directory = StatusCache[solutionFile].Parent;
             if (directory == null)
                 return;
 
-            SvnWorkingCopy wc = directory.WorkingCopy;
+            GitWorkingCopy wc = directory.WorkingCopy;
 
             int up = 0;
 
@@ -266,11 +266,11 @@ namespace VisualGit.Settings
             }
         }
 
-        private void LoadRootProperties(SettingsCache cache, SvnItem item)
+        private void LoadRootProperties(SettingsCache cache, GitItem item)
         {
-            // Subversion -1.5 loads all properties in memory at once; loading them 
+            // Git -1.5 loads all properties in memory at once; loading them 
             // all at once is always faster than loading a few
-            // We must change this algorithm if Subversions implementation changes
+            // We must change this algorithm if Gits implementation changes
             SvnPropertyCollection pc = GetAllProperties(item.FullPath);
 
             if (pc != null)
@@ -390,11 +390,11 @@ namespace VisualGit.Settings
 
         SvnPropertyCollection GetAllProperties(string path)
         {
-            // Subversion -1.5 loads all properties in memory at once; loading them 
+            // Git -1.5 loads all properties in memory at once; loading them 
             // all at once is always faster than loading a few
-            // We must change this algorithm if Subversions implementation changes
+            // We must change this algorithm if Gits implementation changes
             SvnPropertyCollection pc = null;
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
             {
                 SvnPropertyListArgs pl = new SvnPropertyListArgs();
                 pl.ThrowOnError = false;
@@ -465,7 +465,7 @@ namespace VisualGit.Settings
                 || !Uri.TryCreate("file:///" + v.Replace('\\', '/'), UriKind.Absolute, out resUri))
                 return;
 
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
             {
                 SvnSetPropertyArgs ps = new SvnSetPropertyArgs();
                 ps.ThrowOnError = false;
@@ -502,7 +502,7 @@ namespace VisualGit.Settings
             }
         }
 
-        public SvnItem ProjectRootSvnItem
+        public GitItem ProjectRootGitItem
         {
             get
             {
@@ -587,7 +587,7 @@ namespace VisualGit.Settings
                         {
                             string path = r as string;
 
-                            if (!string.IsNullOrEmpty(path) && SvnItem.IsValidPath(path))
+                            if (!string.IsNullOrEmpty(path) && GitItem.IsValidPath(path))
                                 path = Path.Combine(path, "msenv.dll");
                             else
                                 path = null;
@@ -692,7 +692,7 @@ namespace VisualGit.Settings
             if (cache.SolutionFilename == null)
                 return null;
 
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
             {
                 return cache.RepositoryRoot = client.GetRepositoryRoot(cache.SolutionFilename);
             }

@@ -58,9 +58,9 @@ namespace VisualGit.Commands
             }
         }
 
-        static IEnumerable<SvnProject> GetSelectedProjects(BaseCommandEventArgs e)
+        static IEnumerable<GitProject> GetSelectedProjects(BaseCommandEventArgs e)
         {
-            foreach (SvnProject p in e.Selection.GetSelectedProjects(false))
+            foreach (GitProject p in e.Selection.GetSelectedProjects(false))
             {
                 yield return p;
             }
@@ -77,7 +77,7 @@ namespace VisualGit.Commands
                     return;
                 }
 
-                if (!settings.ProjectRootSvnItem.IsVersioned)
+                if (!settings.ProjectRootGitItem.IsVersioned)
                     e.Enabled = false;
             }
             else if (IsFolderCommand(e.Command))
@@ -85,7 +85,7 @@ namespace VisualGit.Commands
                 bool forHead = IsHeadCommand(e.Command);
                 bool foundOne = false;
                 Uri root = null;
-                foreach (SvnItem dir in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem dir in e.Selection.GetSelectedGitItems(false))
                 {
                     if (!dir.IsDirectory || !dir.IsVersioned)
                     {
@@ -123,12 +123,12 @@ namespace VisualGit.Commands
                 IFileStatusCache fsc = null;
 
                 Uri rootUrl = null;
-                foreach (SvnProject p in GetSelectedProjects(e))
+                foreach (GitProject p in GetSelectedProjects(e))
                 {
                     if (pfm == null)
                         pfm = e.GetService<IProjectFileMapper>();
 
-                    ISvnProjectInfo pi = pfm.GetProjectInfo(p);
+                    IGitProjectInfo pi = pfm.GetProjectInfo(p);
 
                     if (pi == null || pi.ProjectDirectory == null)
                         continue;
@@ -136,7 +136,7 @@ namespace VisualGit.Commands
                     if (fsc == null)
                         fsc = e.GetService<IFileStatusCache>();
 
-                    SvnItem rootItem = fsc[pi.ProjectDirectory];
+                    GitItem rootItem = fsc[pi.ProjectDirectory];
 
                     if (!rootItem.IsVersioned)
                         continue;
@@ -180,7 +180,7 @@ namespace VisualGit.Commands
                 rev = SvnRevision.Head;
             else if (IsSolutionCommand(e.Command))
             {
-                SvnItem projectItem = settings.ProjectRootSvnItem;
+                GitItem projectItem = settings.ProjectRootGitItem;
 
                 Debug.Assert(projectItem != null, "Has item");
 
@@ -200,7 +200,7 @@ namespace VisualGit.Commands
             }
             else if (IsFolderCommand(e.Command))
             {
-                SvnItem dirItem = EnumTools.GetFirst(e.Selection.GetSelectedSvnItems(false));
+                GitItem dirItem = EnumTools.GetFirst(e.Selection.GetSelectedGitItems(false));
 
                 Debug.Assert(dirItem != null && dirItem.IsDirectory && dirItem.IsVersioned);
 
@@ -225,22 +225,22 @@ namespace VisualGit.Commands
                 // We checked there was only a single repository to select a revision 
                 // from in OnUpdate, so we can suffice with only calculate the path
 
-                SvnItem si = null;
-                SvnOrigin origin = null;
-                foreach (SvnProject p in GetSelectedProjects(e))
+                GitItem si = null;
+                GitOrigin origin = null;
+                foreach (GitProject p in GetSelectedProjects(e))
                 {
-                    ISvnProjectInfo pi = mapper.GetProjectInfo(p);
+                    IGitProjectInfo pi = mapper.GetProjectInfo(p);
                     if (pi == null || pi.ProjectDirectory == null)
                         continue;
 
-                    SvnItem item = cache[pi.ProjectDirectory];
+                    GitItem item = cache[pi.ProjectDirectory];
                     if (!item.IsVersioned)
                         continue;
 
                     if (si == null && origin == null)
                     {
                         si = item;
-                        origin = new SvnOrigin(item);
+                        origin = new GitOrigin(item);
                         reposRoot = item.WorkingCopy.RepositoryRoot;
                     }
                     else
@@ -259,7 +259,7 @@ namespace VisualGit.Commands
                         while (i > 0 && urlPath1[i - 1] != '/')
                             i--;
 
-                        origin = new SvnOrigin(new Uri(origin.Uri, urlPath1.Substring(0, i)), origin.RepositoryRoot);
+                        origin = new GitOrigin(new Uri(origin.Uri, urlPath1.Substring(0, i)), origin.RepositoryRoot);
                     }
                 }
 
@@ -273,7 +273,7 @@ namespace VisualGit.Commands
                         ud.ItemToUpdate = si;
                     else
                     {
-                        ud.SvnOrigin = origin;
+                        ud.GitOrigin = origin;
                         ud.SetMultiple(true);
                     }
 
@@ -289,21 +289,21 @@ namespace VisualGit.Commands
                 }
             }
 
-            Dictionary<string, SvnItem> itemsToUpdate = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, GitItem> itemsToUpdate = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
             Dictionary<string, List<string>> groups = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 
             // Get a list of all documents below the specified paths that are open in editors inside VS
             HybridCollection<string> lockPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
             IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
 
-            foreach (SvnItem item in GetAllUpdateRoots(e))
+            foreach (GitItem item in GetAllUpdateRoots(e))
             {
                 // GetAllUpdateRoots can (and probably will) return duplicates!
 
                 if (itemsToUpdate.ContainsKey(item.FullPath) || !item.IsVersioned)
                     continue;
 
-                SvnWorkingCopy wc = item.WorkingCopy;
+                GitWorkingCopy wc = item.WorkingCopy;
 
                 if (!IsHeadCommand(e.Command) && reposRoot != null)
                 {
@@ -384,8 +384,8 @@ namespace VisualGit.Commands
 
             foreach (List<string> group in groups)
             {
-                // Currently Subversion runs update per item passed and in
-                // Subversion 1.6 passing each item separately is actually 
+                // Currently Git runs update per item passed and in
+                // Git 1.6 passing each item separately is actually 
                 // a tiny bit faster than passing them all at once. 
                 // (sleep_for_timestamp fails its fast route)
                 foreach (string path in group)
@@ -402,25 +402,25 @@ namespace VisualGit.Commands
             }
         }
 
-        private static IEnumerable<SvnItem> GetAllUpdateRoots(CommandEventArgs e)
+        private static IEnumerable<GitItem> GetAllUpdateRoots(CommandEventArgs e)
         {
             // Duplicate handling is handled above this method!
             IVisualGitProjectLayoutService pls = e.GetService<IVisualGitProjectLayoutService>();
             if (IsSolutionCommand(e.Command))
-                foreach (SvnItem item in pls.GetUpdateRoots(null))
+                foreach (GitItem item in pls.GetUpdateRoots(null))
                 {
                     yield return item;
                 }
             else if (IsFolderCommand(e.Command))
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     // Everything is checked in the OnUpdate
                     yield return item;
                 }
             else
-                foreach (SvnProject project in GetSelectedProjects(e))
+                foreach (GitProject project in GetSelectedProjects(e))
                 {
-                    foreach (SvnItem item in pls.GetUpdateRoots(project))
+                    foreach (GitItem item in pls.GetUpdateRoots(project))
                     {
                         yield return item;
                     }

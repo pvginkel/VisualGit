@@ -8,14 +8,14 @@ namespace VisualGit.UI.SvnLog
 {
     public sealed partial class LogViewerDialog : VSContainerForm, ILogControl
     {
-        private SvnOrigin _logTarget;
+        private GitOrigin _logTarget;
 
         public LogViewerDialog()
         {
             InitializeComponent();
         }
 
-        public LogViewerDialog(SvnOrigin target)
+        public LogViewerDialog(GitOrigin target)
             : this()
         {
             LogTarget = target;
@@ -38,14 +38,14 @@ namespace VisualGit.UI.SvnLog
         /// <summary>
         /// The target of the log.
         /// </summary>
-        public SvnOrigin LogTarget
+        public GitOrigin LogTarget
         {
             [DebuggerStepThrough]
             get { return _logTarget; }
             set { _logTarget = value; }
         }
 
-        public IEnumerable<ISvnLogItem> SelectedItems
+        public IEnumerable<IGitLogItem> SelectedItems
         {
             get { return logViewerControl.SelectedItems; }
         }
@@ -60,7 +60,7 @@ namespace VisualGit.UI.SvnLog
             if (LogTarget == null)
                 throw new InvalidOperationException("Log target is null");
 
-            logViewerControl.StartLog(new SvnOrigin[] { LogTarget }, null, null);
+            logViewerControl.StartLog(new GitOrigin[] { LogTarget }, null, null);
         }
 
         #region ILogControl Members
@@ -99,9 +99,9 @@ namespace VisualGit.UI.SvnLog
             LogControl.Restart();
         }
 
-        public IList<SvnOrigin> Origins
+        public IList<GitOrigin> Origins
         {
-            get { return new SvnOrigin[] { LogTarget }; }
+            get { return new GitOrigin[] { LogTarget }; }
         }
 
         #endregion

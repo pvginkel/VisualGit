@@ -110,11 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Only edit this block if you really know what you are doing; part of the command compilation -->
-    <CtcFile Include="$(IntermediateOutputPath)VisualGitSvn.ctc" Condition="'$(UseCtcInsteadOfVsct)' == 'true'">
+    <CtcFile Include="$(IntermediateOutputPath)VisualGit.ctc" Condition="'$(UseCtcInsteadOfVsct)' == 'true'">
       <ResourceName>1000.ctmenu</ResourceName>
       <Visible>false</Visible>
     </CtcFile>
-    <VSCTCompile Include="$(IntermediateOutputPath)..\VisualGitSvn.vsct" Condition="'$(UseCtcInsteadOfVsct)' != 'true'">
+    <VSCTCompile Include="$(IntermediateOutputPath)..\VisualGit.vsct" Condition="'$(UseCtcInsteadOfVsct)' != 'true'">
       <ResourceName>1000.ctmenu</ResourceName>
       <Visible>false</Visible>
     </VSCTCompile>
@@ -127,12 +127,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <!-- Xml based ctc generation; also generates Gui\Ctc\VisualGitSvn.bmp -->
-    <XslSource Include="Gui\VisualGitSvn.xml">
+    <!-- Xml based ctc generation; also generates Gui\Ctc\VisualGit.bmp -->
+    <XslSource Include="Gui\VisualGit.xml">
       <Transform Condition="'$(UseCtcInsteadOfVsct)' == 'true'">Gui\Gui-To-Ctc.xsl</Transform>
-      <To Condition="'$(UseCtcInsteadOfVsct)' == 'true'">$(IntermediateOutputPath)VisualGitSvn.ctc</To>
+      <To Condition="'$(UseCtcInsteadOfVsct)' == 'true'">$(IntermediateOutputPath)VisualGit.ctc</To>
       <Transform Condition="'$(UseCtcInsteadOfVsct)' != 'true'">Gui\Gui-To-Vsct.xsl</Transform>
-      <To Condition="'$(UseCtcInsteadOfVsct)' != 'true'">$(IntermediateOutputPath)..\VisualGitSvn.vsct</To>
+      <To Condition="'$(UseCtcInsteadOfVsct)' != 'true'">$(IntermediateOutputPath)..\VisualGit.vsct</To>
       <Debug>true</Debug>
       <SubType>Designer</SubType>
     </XslSource>
@@ -163,22 +163,22 @@
     <Compile Include="OptionPages\UserToolsSettingsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VisualGitSvnPackage.cs" />
-    <Compile Include="VisualGitSvnPackage.About.cs">
+    <Compile Include="VisualGitGitPackage.cs" />
+    <Compile Include="VisualGitGitPackage.About.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.Commands.cs">
+    <Compile Include="VisualGitGitPackage.Commands.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.Editors.cs">
+    <Compile Include="VisualGitGitPackage.Editors.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.Languages.cs">
+    <Compile Include="VisualGitGitPackage.Languages.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.OptionPages.cs">
+    <Compile Include="VisualGitGitPackage.OptionPages.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.ToolWindows.cs">
+    <Compile Include="VisualGitGitPackage.ToolWindows.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.SolutionProperties.cs">
+    <Compile Include="VisualGitGitPackage.SolutionProperties.cs">
     </Compile>
-    <Compile Include="VisualGitSvnPackage.OleComponent.cs">
+    <Compile Include="VisualGitGitPackage.OleComponent.cs">
     </Compile>
     <Compile Include="Attributes\ProvideLanguageSettings.cs" />
     <Compile Include="Attributes\ProvideMenuResourceEx.cs" />

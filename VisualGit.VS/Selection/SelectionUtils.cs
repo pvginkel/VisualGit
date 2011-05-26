@@ -160,7 +160,7 @@ namespace VisualGit.VS.Selection
             if(string.IsNullOrEmpty(path))
                 return false;
 
-            return SvnItem.IsValidPath(path);
+            return GitItem.IsValidPath(path);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace VisualGit.VS.Selection
             if (string.IsNullOrEmpty(path))
                 return false;
 
-            return SvnItem.IsValidPath(path, extraChecks);
+            return GitItem.IsValidPath(path, extraChecks);
         }
 
         internal static bool GetSccFiles(SelectionItem item, out string[] files, bool includeSpecial, bool includeNoScc, IDictionary<string, uint> map)

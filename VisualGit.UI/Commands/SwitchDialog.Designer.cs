@@ -81,7 +81,7 @@ namespace VisualGit.UI.Commands
 			// 
 			resources.ApplyResources(this.versionSelector, "versionSelector");
 			this.versionSelector.Name = "versionSelector";
-			this.versionSelector.SvnOrigin = null;
+			this.versionSelector.GitOrigin = null;
 			// 
 			// browseUrl
 			// 

@@ -59,9 +59,9 @@ namespace VisualGit.Scc
                     if (Change != null)
                     {
                         if (value)
-                            Change.SvnItemsChanged += new EventHandler<SvnItemsEventArgs>(OnSvnItemsChanged);
+                            Change.GitItemsChanged += new EventHandler<GitItemsEventArgs>(OnGitItemsChanged);
                         else
-                            Change.SvnItemsChanged -= new EventHandler<SvnItemsEventArgs>(OnSvnItemsChanged);
+                            Change.GitItemsChanged -= new EventHandler<GitItemsEventArgs>(OnGitItemsChanged);
                     }
 
                     OnIsActiveChanged(new PendingChangeEventArgs(this, null));
@@ -69,10 +69,10 @@ namespace VisualGit.Scc
             }
         }
 
-        ISvnItemChange _change;
-        ISvnItemChange Change
+        IGitItemChange _change;
+        IGitItemChange Change
         {
-            get { return _change ?? (_change = GetService<ISvnItemChange>()); }
+            get { return _change ?? (_change = GetService<IGitItemChange>()); }
         }
 
         readonly HybridCollection<string> _toRefresh = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
@@ -114,14 +114,14 @@ namespace VisualGit.Scc
             }
         }
 
-        void OnSvnItemsChanged(object sender, SvnItemsEventArgs e)
+        void OnGitItemsChanged(object sender, GitItemsEventArgs e)
         {
             lock (_toRefresh)
             {
                 if (_fullRefresh || !_solutionOpen)
                     return;
 
-                foreach (SvnItem item in e.ChangedItems)
+                foreach (GitItem item in e.ChangedItems)
                 {
                     if (!_toRefresh.Contains(item.FullPath))
                         _toRefresh.Add(item.FullPath);

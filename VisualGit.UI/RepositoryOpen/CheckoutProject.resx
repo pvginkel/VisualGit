@@ -493,7 +493,7 @@
     <value>549, 236</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Open Project from Subversion</value>
+    <value>Open Project from Git</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>CheckoutProject</value>

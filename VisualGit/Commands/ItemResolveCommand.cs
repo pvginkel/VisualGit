@@ -21,7 +21,7 @@ namespace VisualGit.Commands
         {
             bool foundOne = false;
             bool canDiff = true;
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (!item.IsConflicted)
                     continue;
@@ -38,7 +38,7 @@ namespace VisualGit.Commands
                         case VisualGitCommand.ItemResolveMineConflict:
                         case VisualGitCommand.ItemResolveTheirsConflict:
                         case VisualGitCommand.ItemResolveBase:
-                            e.Enabled = false; // Subversion can't handle these and neither can we.
+                            e.Enabled = false; // Git can't handle these and neither can we.
                             return;
                         case VisualGitCommand.ItemResolveWorking:
                         default:
@@ -97,7 +97,7 @@ namespace VisualGit.Commands
         {
             HybridCollection<string> paths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (!item.IsConflicted)
                     continue;
@@ -112,7 +112,7 @@ namespace VisualGit.Commands
 
             using (DocumentLock lck = documentTracker.LockDocuments(paths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
-            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             {
                 SvnResolveArgs a = new SvnResolveArgs();
                 a.Depth = SvnDepth.Empty;
@@ -126,9 +126,9 @@ namespace VisualGit.Commands
 
         static void Resolved(CommandEventArgs e)
         {
-            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             {
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
                 {
                     if (!item.IsConflicted)
                         continue;

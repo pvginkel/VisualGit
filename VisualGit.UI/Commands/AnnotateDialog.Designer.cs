@@ -78,7 +78,7 @@
 			// 
 			resources.ApplyResources(this.startRevision, "startRevision");
 			this.startRevision.Name = "startRevision";
-			this.startRevision.SvnOrigin = null;
+			this.startRevision.GitOrigin = null;
 			// 
 			// groupBox2
 			// 
@@ -91,7 +91,7 @@
 			// 
 			resources.ApplyResources(this.toRevision, "toRevision");
 			this.toRevision.Name = "toRevision";
-			this.toRevision.SvnOrigin = null;
+			this.toRevision.GitOrigin = null;
 			// 
 			// label2
 			// 

@@ -140,7 +140,7 @@ namespace VisualGit.UI.PathSelector
         /// The items to put in the treeview.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ICollection<SvnItem> Items
+        public ICollection<GitItem> Items
         {
             get { return this.pathSelectionTreeView.Items; }
             set
@@ -148,10 +148,10 @@ namespace VisualGit.UI.PathSelector
                 this.pathSelectionTreeView.Items = value;
                 if (value != null)
                 {
-                    SvnItem parent = SvnItem.GetCommonParent(value);
+                    GitItem parent = GitItem.GetCommonParent(value);
 
                     if (parent != null && parent.IsVersioned)
-                        revisionPickerEnd.SvnOrigin = revisionPickerStart.SvnOrigin = new SvnOrigin(parent);
+                        revisionPickerEnd.GitOrigin = revisionPickerStart.GitOrigin = new GitOrigin(parent);
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace VisualGit.UI.PathSelector
         /// The items checked in the treeview.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnumerable<SvnItem> CheckedItems
+        public IEnumerable<GitItem> CheckedItems
         {
             get { return this.pathSelectionTreeView.CheckedItems; }
         }
@@ -351,14 +351,14 @@ namespace VisualGit.UI.PathSelector
         /// <summary>
         /// Evaluates the item to see if item is selectable with the current RevisionStart and RevisionEnd,
         /// Cancels the action if the filter evaluates to false.
-        /// For example: do not allow checking a deleted item if start revision OR end revision is SvnRevision.Working
+        /// For example: do not allow checking a deleted item if start revision OR end revision is GitRevision.Working
         /// </summary>
         void BeforePathCheck(object sender, System.Windows.Forms.TreeViewCancelEventArgs e)
         {
             if (_info != null)
             {
                 TreeNode node = e.Node;
-                SvnItem si = node == null ? null : node.Tag as SvnItem;
+                GitItem si = node == null ? null : node.Tag as GitItem;
                 if (si != null
                     && !node.Checked
                     && !_info.EvaluateCheckable(si, RevisionStart, RevisionEnd)
@@ -387,7 +387,7 @@ namespace VisualGit.UI.PathSelector
             {
                 if (node.Checked)
                 {
-                    if (!_info.EvaluateCheckable(node.Tag as SvnItem, RevisionStart, RevisionEnd))
+                    if (!_info.EvaluateCheckable(node.Tag as GitItem, RevisionStart, RevisionEnd))
                     {
                         node.Checked = false;
                     }

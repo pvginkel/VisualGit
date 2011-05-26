@@ -64,16 +64,16 @@ namespace VisualGit.Scc.SccUI
             }
 
             // TODO: Optimize to one time init and then just refresh
-            if (SvnItem.IsValidPath(SolutionSettings.SolutionFilename))
+            if (GitItem.IsValidPath(SolutionSettings.SolutionFilename))
             {
-                bindingGrid.Rows.Add(new ChangeSourceControlRow(Context, SvnProject.Solution));
+                bindingGrid.Rows.Add(new ChangeSourceControlRow(Context, GitProject.Solution));
             }
-            foreach (SvnProject project in ProjectMapper.GetAllProjects())
+            foreach (GitProject project in ProjectMapper.GetAllProjects())
             {
                 if (project.IsSolution)
                     continue;
 
-                ISvnProjectInfo projectInfo = ProjectMapper.GetProjectInfo(project);
+                IGitProjectInfo projectInfo = ProjectMapper.GetProjectInfo(project);
 
                 if (projectInfo == null || string.IsNullOrEmpty(projectInfo.ProjectDirectory))
                     continue;
@@ -107,7 +107,7 @@ namespace VisualGit.Scc.SccUI
             IVisualGitSccService scc = Context.GetService<IVisualGitSccService>();
 
             bool isSolution = false;
-            foreach (SvnProject project in SelectedProjects)
+            foreach (GitProject project in SelectedProjects)
             {
                 if (project.IsSolution)
                     isSolution = true;
@@ -116,10 +116,10 @@ namespace VisualGit.Scc.SccUI
                     enableDisconnect = true;
                 else if (!enableConnect)
                 {
-                    SvnItem item = null;
+                    GitItem item = null;
                     if (!project.IsSolution)
                     {
-                        ISvnProjectInfo projectInfo = ProjectMapper.GetProjectInfo(project);
+                        IGitProjectInfo projectInfo = ProjectMapper.GetProjectInfo(project);
 
                         if (projectInfo == null || string.IsNullOrEmpty(projectInfo.ProjectDirectory))
                             continue;
@@ -127,7 +127,7 @@ namespace VisualGit.Scc.SccUI
                         item = StatusCache[projectInfo.SccBaseDirectory];
                     }
                     else
-                        item = SolutionSettings.ProjectRootSvnItem;
+                        item = SolutionSettings.ProjectRootGitItem;
 
                     if (item != null && item.Uri != null)
                         enableConnect = true;
@@ -161,7 +161,7 @@ namespace VisualGit.Scc.SccUI
 
             IVisualGitSccService scc = Context.GetService<IVisualGitSccService>();
 
-            foreach (SvnProject project in SelectedProjects)
+            foreach (GitProject project in SelectedProjects)
             {
                 scc.SetProjectManaged(project, true);
             }
@@ -175,7 +175,7 @@ namespace VisualGit.Scc.SccUI
 
             IVisualGitSccService scc = Context.GetService<IVisualGitSccService>();
 
-            foreach (SvnProject project in SelectedProjects)
+            foreach (GitProject project in SelectedProjects)
             {
                 scc.SetProjectManaged(project, false);
             }
@@ -201,14 +201,14 @@ namespace VisualGit.Scc.SccUI
             get { return _solutionSettings ?? (_solutionSettings = Context.GetService<IVisualGitSolutionSettings>()); }
         }
 
-        IEnumerable<SvnProject> SelectedProjects
+        IEnumerable<GitProject> SelectedProjects
         {
             get
             {
-                List<SvnProject> projects = new List<SvnProject>();
+                List<GitProject> projects = new List<GitProject>();
                 foreach (ChangeSourceControlRow row in bindingGrid.SelectedRows)
                 {
-                    SvnProject project = row.Project;
+                    GitProject project = row.Project;
 
                     if (projects.Contains(project))
                         continue;
@@ -252,9 +252,9 @@ namespace VisualGit.Scc.SccUI
             Uri projectUri = null;
             SccEnlistMode enlistMode = (SccEnlistMode) (-1);
 
-            foreach (SvnProject p in SelectedProjects)
+            foreach (GitProject p in SelectedProjects)
             {
-                ISvnProjectInfo info;
+                IGitProjectInfo info;
                 if (p.IsSolution ||
                     null == (info = ProjectMapper.GetProjectInfo(p)) ||
                     string.IsNullOrEmpty(info.ProjectDirectory))
@@ -290,7 +290,7 @@ namespace VisualGit.Scc.SccUI
                         string doc;
                         if (ErrorHandler.Succeeded(ps.GetMkDocument(VSConstants.VSITEMID_ROOT, out doc)))
                         {
-                            if (!string.IsNullOrEmpty(doc) && SvnItem.IsValidPath(doc))
+                            if (!string.IsNullOrEmpty(doc) && GitItem.IsValidPath(doc))
                                 pLoc = PackageUtilities.MakeRelative(SolutionSettings.SolutionFilename, doc);
                             else
                                 pLoc = doc;
@@ -302,7 +302,7 @@ namespace VisualGit.Scc.SccUI
 
                 if (pUri == null && pBase != null)
                 {
-                    SvnItem pi = StatusCache[pBase];
+                    GitItem pi = StatusCache[pBase];
 
                     if (pi != null)
                         pUri = pi.Uri;
@@ -348,14 +348,14 @@ namespace VisualGit.Scc.SccUI
             slnBindUrl.Text = (SolutionSettings.ProjectRootUri != null) ? SolutionSettings.ProjectRootUri.ToString() : "";
 
             usProjectLocationBrowse.Visible = enlistMode > SccEnlistMode.None;
-            usProjectLocationBrowse.Enabled = enlistMode > SccEnlistMode.SvnStateOnly;
+            usProjectLocationBrowse.Enabled = enlistMode > SccEnlistMode.GitStateOnly;
 
             sharedProjectUrlBrowse.Enabled = sharedBasePathBrowse.Visible 
                 = (enlistMode > SccEnlistMode.None) 
                 && (projectBase != null) 
-                && (enlistMode > SccEnlistMode.SvnStateOnly || projectBase != SolutionSettings.ProjectRoot);
+                && (enlistMode > SccEnlistMode.GitStateOnly || projectBase != SolutionSettings.ProjectRoot);
 
-            slnBindBrowse.Enabled = (SolutionSettings.ProjectRootSvnItem != null) && SolutionSettings.ProjectRootSvnItem.WorkingCopy != null;
+            slnBindBrowse.Enabled = (SolutionSettings.ProjectRootGitItem != null) && SolutionSettings.ProjectRootGitItem.WorkingCopy != null;
         }
 
         private void KeepOneIgnoreCase(ref string result, string newValue, bool first)

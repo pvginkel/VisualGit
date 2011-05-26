@@ -23,7 +23,7 @@ namespace VisualGit.UI.MergeWizard.Commands
             switch (e.Command)
             {
                 case VisualGitCommand.ItemMerge:
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
                         if (!item.IsVersioned)
                         {
@@ -40,15 +40,15 @@ namespace VisualGit.UI.MergeWizard.Commands
                 case VisualGitCommand.ProjectMerge:
                     statusCache = e.GetService<IFileStatusCache>();
                     IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
-                    foreach (SvnProject project in e.Selection.GetSelectedProjects(false))
+                    foreach (GitProject project in e.Selection.GetSelectedProjects(false))
                     {
-                        ISvnProjectInfo projInfo = pfm.GetProjectInfo(project);
+                        IGitProjectInfo projInfo = pfm.GetProjectInfo(project);
                         if (projInfo == null || string.IsNullOrEmpty(projInfo.ProjectDirectory))
                         {
                             e.Enabled = false;
                             return;
                         }
-                        SvnItem projectDir = statusCache[projInfo.ProjectDirectory];
+                        GitItem projectDir = statusCache[projInfo.ProjectDirectory];
                         if (!projectDir.IsVersioned)
                         {
                             e.Enabled = false;
@@ -69,7 +69,7 @@ namespace VisualGit.UI.MergeWizard.Commands
                         e.Enabled = false;
                         return;
                     }
-                    SvnItem solutionItem = statusCache[solutionSettings.ProjectRoot];
+                    GitItem solutionItem = statusCache[solutionSettings.ProjectRoot];
                     if (solutionItem.IsVersioned)
                         n = 1;
                     break;
@@ -84,24 +84,24 @@ namespace VisualGit.UI.MergeWizard.Commands
         /// <see cref="VisualGit.Commands.ICommandHandler.OnExecute" />
         public void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> svnItems = new List<SvnItem>();
+            List<GitItem> svnItems = new List<GitItem>();
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
 
             switch (e.Command)
             {
                 case VisualGitCommand.ItemMerge:
                     // TODO: Check for solution and/or project selection to use the folder instead of the file
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
                         svnItems.Add(item);
                     }
                     break;
                 case VisualGitCommand.ProjectMerge:
-                    foreach (SvnProject p in e.Selection.GetSelectedProjects(false))
+                    foreach (GitProject p in e.Selection.GetSelectedProjects(false))
                     {
                         IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
 
-                        ISvnProjectInfo info = pfm.GetProjectInfo(p);
+                        IGitProjectInfo info = pfm.GetProjectInfo(p);
                         if (info != null && info.ProjectDirectory != null)
                         {
                             svnItems.Add(cache[info.ProjectDirectory]);

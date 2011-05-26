@@ -52,12 +52,12 @@ namespace VisualGit.Scc
 
         VisualGitGlyph GetPathGlyph(string path, bool lookForChildren)
         {
-            SvnItem item = StatusCache[path];
+            GitItem item = StatusCache[path];
 
             if (item == null)
                 return VisualGitGlyph.None;
 
-            VisualGitGlyph glyph = StatusImages.GetStatusImageForSvnItem(item);
+            VisualGitGlyph glyph = StatusImages.GetStatusImageForGitItem(item);
 
             switch (glyph)
             {
@@ -100,7 +100,7 @@ namespace VisualGit.Scc
 
         private bool IsChildChanged(string path)
         {
-            SvnItem item = StatusCache[path];
+            GitItem item = StatusCache[path];
 
             if (item == null)
                 return false;
@@ -108,7 +108,7 @@ namespace VisualGit.Scc
             return PendingChange.IsPending(item);
         } 
         
-        bool ShouldIgnore(SvnItem item)
+        bool ShouldIgnore(GitItem item)
         {
             while (item != null)
             {
@@ -270,7 +270,7 @@ namespace VisualGit.Scc
             string format = (files.Count > 0) ? "{0}: {1}" : "{1}";
             for (int i = 0; i < files.Count; i++)
             {
-                SvnItem item = StatusCache[files[i].FullPath];
+                GitItem item = StatusCache[files[i].FullPath];
 
                 if (i >= n) // This is a subitem!
                 {

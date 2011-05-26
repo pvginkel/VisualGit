@@ -9,7 +9,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
     class WCSolutionNode : WCFileSystemNode
     {
         readonly int _imageIndex;
-        public WCSolutionNode(IVisualGitServiceProvider context, SvnItem item)
+        public WCSolutionNode(IVisualGitServiceProvider context, GitItem item)
             : base(context, null, item)
         {
             string file = Context.GetService<IVisualGitSolutionSettings>().SolutionFilename;
@@ -35,19 +35,19 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
             }
         }
 
-        IEnumerable<SvnItem> UpdateRoots
+        IEnumerable<GitItem> UpdateRoots
         {
             get
             {
                 IVisualGitProjectLayoutService pls = Context.GetService<IVisualGitProjectLayoutService>();
-                foreach (SvnItem item in pls.GetUpdateRoots(null))
+                foreach (GitItem item in pls.GetUpdateRoots(null))
                     yield return item;
             }
         }
 
         public override IEnumerable<WCTreeNode> GetChildren()
         {
-            foreach(SvnItem item in UpdateRoots)
+            foreach(GitItem item in UpdateRoots)
             {
                 yield return new WCDirectoryNode(Context, this, item);
             }
@@ -61,7 +61,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
             }
         }
 
-        public override void GetResources(System.Collections.ObjectModel.Collection<SvnItem> list, bool getChildItems, Predicate<SvnItem> filter)
+        public override void GetResources(System.Collections.ObjectModel.Collection<GitItem> list, bool getChildItems, Predicate<GitItem> filter)
         {
 //            throw new NotImplementedException();
         }
@@ -78,9 +78,9 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 
         internal override bool ContainsDescendant(string path)
         {
-            SvnItem needle = StatusCache[path];
+            GitItem needle = StatusCache[path];
 
-            foreach (SvnItem item in UpdateRoots)
+            foreach (GitItem item in UpdateRoots)
             {
                 if (needle.IsBelowPath(item))
                     return true;

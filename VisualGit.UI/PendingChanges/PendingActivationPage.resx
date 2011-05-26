@@ -133,7 +133,7 @@
     <value>0</value>
   </data>
   <data name="openSccSelectorLink.Text" xml:space="preserve">
-    <value>'VisualGit - Subversion Support for Visual Studio' is not your current Source Control plug-in.
+    <value>'VisualGit - Git Support for Visual Studio' is not your current Source Control plug-in.
 
 Click here to set the current Source Control plug-in.</value>
   </data>

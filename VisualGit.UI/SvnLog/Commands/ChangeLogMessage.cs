@@ -17,7 +17,7 @@ namespace VisualGit.UI.SvnLog.Commands
         public void OnUpdate(CommandUpdateEventArgs e)
         {
             int count = 0;
-            foreach (ISvnLogItem i in e.Selection.GetSelection<ISvnLogItem>())
+            foreach (IGitLogItem i in e.Selection.GetSelection<IGitLogItem>())
             {
                 count++;
 
@@ -31,7 +31,7 @@ namespace VisualGit.UI.SvnLog.Commands
         public void OnExecute(CommandEventArgs e)
         {
             IVisualGitSolutionSettings slnSettings = e.GetService<IVisualGitSolutionSettings>();
-            List<ISvnLogItem> logItems = new List<ISvnLogItem>(e.Selection.GetSelection<ISvnLogItem>());
+            List<IGitLogItem> logItems = new List<IGitLogItem>(e.Selection.GetSelection<IGitLogItem>());
             if (logItems.Count != 1)
                 return;
 
@@ -53,7 +53,7 @@ namespace VisualGit.UI.SvnLog.Commands
                             config.GetRecentLogMessages().Add(dialog.LogMessage);
                     }
 
-                    using (SvnClient client = e.GetService<ISvnClientPool>().GetClient())
+                    using (SvnClient client = e.GetService<IGitClientPool>().GetClient())
                     {
                         SvnSetRevisionPropertyArgs sa = new SvnSetRevisionPropertyArgs();
                         sa.AddExpectedError(SvnErrorCode.SVN_ERR_REPOS_DISABLED_FEATURE);

@@ -19,7 +19,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.Exists)
                     return;
@@ -29,7 +29,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> toDelete = new List<SvnItem>(e.Selection.GetSelectedSvnItems(true));
+            List<GitItem> toDelete = new List<GitItem>(e.Selection.GetSelectedGitItems(true));
 
             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
 
@@ -45,7 +45,7 @@ namespace VisualGit.Commands
                 return; // No delete
 
             int hr = VSConstants.S_OK;
-            foreach (SvnItem item in toDelete)
+            foreach (GitItem item in toDelete)
             {
                 {
                     IVsUIHierarchy hier;
@@ -64,7 +64,7 @@ namespace VisualGit.Commands
                 {
                     if (item.IsVersioned)
                     {
-                        using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
+                        using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
                         {
                             SvnDeleteArgs da = new SvnDeleteArgs();
                             da.Force = true;
@@ -89,9 +89,9 @@ namespace VisualGit.Commands
 
                 IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
 
-                List<SvnProject> projects = new List<SvnProject>(pfm.GetAllProjectsContaining(item.FullPath));
+                List<GitProject> projects = new List<GitProject>(pfm.GetAllProjectsContaining(item.FullPath));
 
-                foreach (SvnProject p in projects)
+                foreach (GitProject p in projects)
                 {
                     IVsProject2 p2 = p.RawHandle as IVsProject2;
 

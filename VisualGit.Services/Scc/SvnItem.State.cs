@@ -7,26 +7,26 @@ using SharpSvn;
 
 namespace VisualGit
 {
-    public interface ISvnItemStateUpdate
+    public interface IGitItemStateUpdate
     {
-        IList<SvnItem> GetUpdateQueueAndClearScheduled();
+        IList<GitItem> GetUpdateQueueAndClearScheduled();
 
         void SetDocumentDirty(bool value);
         void SetSolutionContained(bool value);
     }
 
-    partial class SvnItem : ISvnItemStateUpdate
+    partial class GitItem : IGitItemStateUpdate
     {
-        SvnItemState _currentState;
-        SvnItemState _validState;
-        SvnItemState _onceValid;
+        GitItemState _currentState;
+        GitItemState _validState;
+        GitItemState _onceValid;
 
-        const SvnItemState MaskRefreshTo = SvnItemState.Versioned | SvnItemState.HasLockToken | SvnItemState.Obstructed | SvnItemState.Modified | SvnItemState.PropertyModified | SvnItemState.Added | SvnItemState.HasCopyOrigin
-            | SvnItemState.Deleted | SvnItemState.Replaced | SvnItemState.HasProperties | SvnItemState.ContentConflicted | SvnItemState.PropertyModified | SvnItemState.SvnDirty | SvnItemState.Ignored;
+        const GitItemState MaskRefreshTo = GitItemState.Versioned | GitItemState.HasLockToken | GitItemState.Obstructed | GitItemState.Modified | GitItemState.PropertyModified | GitItemState.Added | GitItemState.HasCopyOrigin
+            | GitItemState.Deleted | GitItemState.Replaced | GitItemState.HasProperties | GitItemState.ContentConflicted | GitItemState.PropertyModified | GitItemState.GitDirty | GitItemState.Ignored;
 
-        public SvnItemState GetState(SvnItemState flagsToGet)
+        public GitItemState GetState(GitItemState flagsToGet)
         {
-            SvnItemState unavailable = flagsToGet & ~_validState;
+            GitItemState unavailable = flagsToGet & ~_validState;
 
             if (unavailable == 0)
                 return _currentState & flagsToGet; // We have everything we need
@@ -123,7 +123,7 @@ namespace VisualGit
             return _currentState & flagsToGet;
         }
 
-        IList<SvnItem> ISvnItemStateUpdate.GetUpdateQueueAndClearScheduled()
+        IList<GitItem> IGitItemStateUpdate.GetUpdateQueueAndClearScheduled()
         {
             lock (_stateChanged)
             {
@@ -132,11 +132,11 @@ namespace VisualGit
                 if (_stateChanged.Count == 0)
                     return null;
 
-                List<SvnItem> modified = new List<SvnItem>(_stateChanged.Count);
+                List<GitItem> modified = new List<GitItem>(_stateChanged.Count);
                 modified.AddRange(_stateChanged);
                 _stateChanged.Clear();
 
-                foreach (SvnItem i in modified)
+                foreach (GitItem i in modified)
                     i._enqueued = false;
 
 
@@ -144,7 +144,7 @@ namespace VisualGit
             }
         }
 
-        private void SetDirty(SvnItemState dirty)
+        private void SetDirty(GitItemState dirty)
         {
             // NOTE: This method is /not/ thread safe, but its callers have race conditions anyway
             // Setting an integer could worst case completely destroy the integer; nothing a refresh can't fix
@@ -153,14 +153,14 @@ namespace VisualGit
         }
 
         // Mask of states not to broadcast for
-        const SvnItemState NoBroadcastFor = ~(SvnItemState.DocumentDirty | SvnItemState.InSolution);
+        const GitItemState NoBroadcastFor = ~(GitItemState.DocumentDirty | GitItemState.InSolution);
 
-        void SetState(SvnItemState set, SvnItemState unset)
+        void SetState(GitItemState set, GitItemState unset)
         {
             // NOTE: This method is /not/ thread safe, but its callers have race conditions anyway
             // Setting an integer could worst case completely destroy the integer; nothing a refresh can't fix
 
-            SvnItemState st = (_currentState & ~unset) | set;
+            GitItemState st = (_currentState & ~unset) | set;
 
             if (st != _currentState)
             {
@@ -187,30 +187,30 @@ namespace VisualGit
             _onceValid |= _validState;
         }
 
-        void ISvnItemUpdate.SetState(SvnItemState set, SvnItemState unset)
+        void IGitItemUpdate.SetState(GitItemState set, GitItemState unset)
         {
             SetState(set, unset);
         }
-        void ISvnItemUpdate.SetDirty(SvnItemState dirty)
+        void IGitItemUpdate.SetDirty(GitItemState dirty)
         {
             SetDirty(dirty);
         }
-        bool ISvnItemUpdate.TryGetState(SvnItemState get, out SvnItemState value)
+        bool IGitItemUpdate.TryGetState(GitItemState get, out GitItemState value)
         {
             return TryGetState(get, out value);
         }
 
         #region Versionable
 
-        const SvnItemState MaskVersionable = SvnItemState.Versionable;
+        const GitItemState MaskVersionable = GitItemState.Versionable;
 
         void UpdateVersionable()
         {
             bool versionable;
 
-            SvnItemState state;
+            GitItemState state;
 
-            if (TryGetState(SvnItemState.Versioned, out state) && state != 0)
+            if (TryGetState(GitItemState.Versioned, out state) && state != 0)
                 versionable = true;
             else if (Exists && SvnTools.IsBelowManagedPath(FullPath)) // Will call GetState again!
                 versionable = true;
@@ -218,16 +218,16 @@ namespace VisualGit
                 versionable = false;
 
             if (versionable)
-                SetState(SvnItemState.Versionable, SvnItemState.None);
+                SetState(GitItemState.Versionable, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.Versionable);
+                SetState(GitItemState.None, GitItemState.Versionable);
         }
 
         #endregion
 
         #region DocumentInfo
 
-        const SvnItemState MaskDocumentInfo = SvnItemState.DocumentDirty;
+        const GitItemState MaskDocumentInfo = GitItemState.DocumentDirty;
 
         void UpdateDocumentInfo()
         {
@@ -236,20 +236,20 @@ namespace VisualGit
             if (dt == null)
             {
                 // We /must/ make the state not dirty
-                SetState(SvnItemState.None, SvnItemState.DocumentDirty);
+                SetState(GitItemState.None, GitItemState.DocumentDirty);
                 return;
             }
 
             if (dt.IsDocumentDirty(FullPath, true))
-                SetState(SvnItemState.DocumentDirty, SvnItemState.None);
+                SetState(GitItemState.DocumentDirty, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.DocumentDirty);
+                SetState(GitItemState.None, GitItemState.DocumentDirty);
         }
 
         #endregion
 
         #region Solution Info
-        const SvnItemState MaskUpdateSolution = SvnItemState.InSolution;
+        const GitItemState MaskUpdateSolution = GitItemState.InSolution;
         void UpdateSolutionInfo()
         {
             IProjectFileMapper pfm = _context.GetService<IProjectFileMapper>();
@@ -259,36 +259,36 @@ namespace VisualGit
                 inSolution = pfm.ContainsPath(FullPath);
 
             if (inSolution)
-                SetState(SvnItemState.InSolution, SvnItemState.None);
+                SetState(GitItemState.InSolution, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.InSolution);
+                SetState(GitItemState.None, GitItemState.InSolution);
         }
 
-        void ISvnItemStateUpdate.SetSolutionContained(bool inSolution)
+        void IGitItemStateUpdate.SetSolutionContained(bool inSolution)
         {
             if (inSolution)
-                SetState(SvnItemState.InSolution, SvnItemState.None);
+                SetState(GitItemState.InSolution, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.InSolution);
+                SetState(GitItemState.None, GitItemState.InSolution);
         }
 
         #endregion
 
         #region Must Lock
-        const SvnItemState MaskMustLock = SvnItemState.MustLock;
+        const GitItemState MaskMustLock = GitItemState.MustLock;
         void UpdateMustLock()
         {
-            SvnItemState fastValue = SvnItemState.IsDiskFile | SvnItemState.ReadOnly;
-            SvnItemState slowValue = SvnItemState.Versioned;
-            SvnItemState v;
+            GitItemState fastValue = GitItemState.IsDiskFile | GitItemState.ReadOnly;
+            GitItemState slowValue = GitItemState.Versioned;
+            GitItemState v;
 
             bool mustLock;
 
-            if (TryGetState(SvnItemState.Versioned, out v) && (v == 0))
+            if (TryGetState(GitItemState.Versioned, out v) && (v == 0))
                 mustLock = false;
-            else if (TryGetState(SvnItemState.HasProperties, out v) && (v == 0))
+            else if (TryGetState(GitItemState.HasProperties, out v) && (v == 0))
                 mustLock = false;
-            else if (TryGetState(SvnItemState.ReadOnly, out v) && (v == 0))
+            else if (TryGetState(GitItemState.ReadOnly, out v) && (v == 0))
                 mustLock = false;
             else if (GetState(fastValue) != fastValue)
                 mustLock = false;
@@ -296,7 +296,7 @@ namespace VisualGit
                 mustLock = false;
             else
             {
-                using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
+                using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
                 {
                     string propVal;
 
@@ -310,28 +310,28 @@ namespace VisualGit
             }
 
             if (mustLock)
-                SetState(SvnItemState.MustLock, SvnItemState.None);
+                SetState(GitItemState.MustLock, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.MustLock);
+                SetState(GitItemState.None, GitItemState.MustLock);
         }
         #endregion
 
         #region TextFile File
-        const SvnItemState MaskTextFile = SvnItemState.IsTextFile;
+        const GitItemState MaskTextFile = GitItemState.IsTextFile;
         void UpdateTextFile()
         {
-            SvnItemState value = SvnItemState.IsDiskFile | SvnItemState.Versioned;
-            SvnItemState v;
+            GitItemState value = GitItemState.IsDiskFile | GitItemState.Versioned;
+            GitItemState v;
 
             bool isTextFile;
 
-            if (TryGetState(SvnItemState.Versioned, out v) && (v == 0))
+            if (TryGetState(GitItemState.Versioned, out v) && (v == 0))
                 isTextFile = false;
             else if (GetState(value) != value)
                 isTextFile = false;
             else
             {
-                using (SvnWorkingCopyClient client = _context.GetService<ISvnClientPool>().GetWcClient())
+                using (SvnWorkingCopyClient client = _context.GetService<IGitClientPool>().GetWcClient())
                 {
                     SvnWorkingCopyStateArgs a = new SvnWorkingCopyStateArgs();
                     a.ThrowOnError = false;
@@ -347,14 +347,14 @@ namespace VisualGit
             }
 
             if (isTextFile)
-                SetState(SvnItemState.IsTextFile, SvnItemState.None);
+                SetState(GitItemState.IsTextFile, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.IsTextFile);
+                SetState(GitItemState.None, GitItemState.IsTextFile);
         }
         #endregion
 
         #region Attribute Info
-        const SvnItemState MaskGetAttributes = SvnItemState.Exists | SvnItemState.ReadOnly | SvnItemState.IsDiskFile | SvnItemState.IsDiskFolder;
+        const GitItemState MaskGetAttributes = GitItemState.Exists | GitItemState.ReadOnly | GitItemState.IsDiskFile | GitItemState.IsDiskFolder;
 
         void UpdateAttributeInfo()
         {
@@ -366,29 +366,29 @@ namespace VisualGit
             {
                 // File does not exist / no rights, etc.
 
-                SetState(SvnItemState.None,
-                    SvnItemState.Exists | SvnItemState.ReadOnly | SvnItemState.MustLock | SvnItemState.Versionable | SvnItemState.IsDiskFolder | SvnItemState.IsDiskFile);
+                SetState(GitItemState.None,
+                    GitItemState.Exists | GitItemState.ReadOnly | GitItemState.MustLock | GitItemState.Versionable | GitItemState.IsDiskFolder | GitItemState.IsDiskFile);
 
                 return;
             }
 
-            SvnItemState set = SvnItemState.Exists;
-            SvnItemState unset = SvnItemState.None;
+            GitItemState set = GitItemState.Exists;
+            GitItemState unset = GitItemState.None;
 
             if ((value & NativeMethods.FILE_ATTRIBUTE_READONLY) != 0)
-                set |= SvnItemState.ReadOnly;
+                set |= GitItemState.ReadOnly;
             else
-                unset = SvnItemState.ReadOnly;
+                unset = GitItemState.ReadOnly;
 
             if ((value & NativeMethods.FILE_ATTRIBUTE_DIRECTORY) != 0)
             {
-                unset |= SvnItemState.IsDiskFile | SvnItemState.ReadOnly;
-                set = SvnItemState.IsDiskFolder | (set & ~SvnItemState.ReadOnly); // Don't set readonly
+                unset |= GitItemState.IsDiskFile | GitItemState.ReadOnly;
+                set = GitItemState.IsDiskFolder | (set & ~GitItemState.ReadOnly); // Don't set readonly
             }
             else
             {
-                set |= SvnItemState.IsDiskFile;
-                unset |= SvnItemState.IsDiskFolder;
+                set |= GitItemState.IsDiskFile;
+                unset |= GitItemState.IsDiskFolder;
             }
 
             SetState(set, unset);
@@ -396,21 +396,21 @@ namespace VisualGit
         #endregion
 
         #region Nested Info
-        const SvnItemState MaskNested = SvnItemState.IsNested;
+        const GitItemState MaskNested = GitItemState.IsNested;
         static readonly Uri parentRefUri = new Uri("../", UriKind.Relative);
 
         void UpdateNested()
         {
-            SvnItem parentItem;
+            GitItem parentItem;
 
             if (IsDirectory && IsVersioned &&
                 null != (parentItem = Parent) && parentItem.IsVersioned)
             {
                 StatusCache.RefreshNested(this);
 
-                SvnItemState r;
+                GitItemState r;
 
-                bool foundNestedState = TryGetState(SvnItemState.IsNested, out r);
+                bool foundNestedState = TryGetState(GitItemState.IsNested, out r);
 
                 Debug.Assert(foundNestedState, "StatusCache.RefreshNested() should have updated status");
 
@@ -420,29 +420,29 @@ namespace VisualGit
                 // Fall through to at least have some state
             }
 
-            SetState(SvnItemState.None, SvnItemState.IsNested);
+            SetState(GitItemState.None, GitItemState.IsNested);
         }
         #endregion
 
         #region Administrative Area
-        const SvnItemState MaskIsAdministrativeArea = SvnItemState.IsAdministrativeArea;
+        const GitItemState MaskIsAdministrativeArea = GitItemState.IsAdministrativeArea;
         void UpdateAdministrativeArea()
         {
             if(string.Equals(Name, SvnClient.AdministrativeDirectoryName, StringComparison.OrdinalIgnoreCase))
-                SetState(SvnItemState.IsAdministrativeArea, SvnItemState.None);
+                SetState(GitItemState.IsAdministrativeArea, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.IsAdministrativeArea);
+                SetState(GitItemState.None, GitItemState.IsAdministrativeArea);
         }
         #endregion
 
-        #region ISvnItemStateUpdate Members
+        #region IGitItemStateUpdate Members
 
-        void ISvnItemStateUpdate.SetDocumentDirty(bool value)
+        void IGitItemStateUpdate.SetDocumentDirty(bool value)
         {
             if (value)
-                SetState(SvnItemState.DocumentDirty, SvnItemState.None);
+                SetState(GitItemState.DocumentDirty, GitItemState.None);
             else
-                SetState(SvnItemState.None, SvnItemState.DocumentDirty);
+                SetState(GitItemState.None, GitItemState.DocumentDirty);
         }
 
         #endregion

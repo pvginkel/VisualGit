@@ -27,15 +27,15 @@ namespace VisualGit.UI.SvnLog
             set { _synchronizer = value; }
         }
 
-        ICollection<SvnOrigin> _targets;
-        SvnOrigin _mergeTarget;
-        public ICollection<SvnOrigin> Targets
+        ICollection<GitOrigin> _targets;
+        GitOrigin _mergeTarget;
+        public ICollection<GitOrigin> Targets
         {
             get { return _targets; }
             set { _targets = value; }
         }
 
-        public SvnOrigin MergeTarget
+        public GitOrigin MergeTarget
         {
             get { return _mergeTarget; }
             set { _mergeTarget = value; }
@@ -45,7 +45,7 @@ namespace VisualGit.UI.SvnLog
         {
             get
             {
-                SvnOrigin o = EnumTools.GetFirst(Targets);
+                GitOrigin o = EnumTools.GetFirst(Targets);
                 if (o != null)
                     return o.RepositoryRoot;
                 

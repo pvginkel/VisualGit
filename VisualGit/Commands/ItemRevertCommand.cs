@@ -18,7 +18,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsModified || (item.IsVersioned && item.IsDocumentDirty) || item.IsConflicted)
                     return;
@@ -28,11 +28,11 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> toRevert = new List<SvnItem>();
+            List<GitItem> toRevert = new List<GitItem>();
             HybridCollection<string> contained = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
             HybridCollection<string> checkedItems = null;
 
-            foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
             {
                 if (contained.Contains(i.FullPath))
                     continue;
@@ -43,18 +43,18 @@ namespace VisualGit.Commands
                     toRevert.Add(i);
             }
 
-            Predicate<SvnItem> initialCheckedFilter = null;
+            Predicate<GitItem> initialCheckedFilter = null;
             if (toRevert.Count > 0)
             {
                 checkedItems = new HybridCollection<string>(contained, StringComparer.OrdinalIgnoreCase);
 
-                initialCheckedFilter = delegate(SvnItem item)
+                initialCheckedFilter = delegate(GitItem item)
                     {
                         return checkedItems.Contains(item.FullPath);
                     };
             }
 
-            foreach (SvnItem i in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem i in e.Selection.GetSelectedGitItems(true))
             {
                 if (contained.Contains(i.FullPath))
                     continue;
@@ -86,7 +86,7 @@ namespace VisualGit.Commands
 
             IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
 
-            ICollection<string> revertPaths = SvnItem.GetPaths(toRevert);
+            ICollection<string> revertPaths = GitItem.GetPaths(toRevert);
             documentTracker.SaveDocuments(revertPaths);
 
             // perform the actual revert 
@@ -100,7 +100,7 @@ namespace VisualGit.Commands
                     ra.Depth = SvnDepth.Empty;
                     ra.AddExpectedError(SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY); // Parent revert invalidated this change
 
-                    foreach (SvnItem item in toRevert)
+                    foreach (GitItem item in toRevert)
                     {
                         a.Client.Revert(item.FullPath, ra);
                     }

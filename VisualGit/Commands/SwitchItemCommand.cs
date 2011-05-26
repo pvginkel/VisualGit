@@ -32,7 +32,7 @@ namespace VisualGit.Commands
                         return;
                     }
                     statusCache = e.GetService<IFileStatusCache>();
-                    SvnItem solutionItem = statusCache[solutionSettings.ProjectRoot];
+                    GitItem solutionItem = statusCache[solutionSettings.ProjectRoot];
                     if (!solutionItem.IsVersioned)
                     {
                         e.Enabled = false;
@@ -43,9 +43,9 @@ namespace VisualGit.Commands
                 case VisualGitCommand.SwitchProject:
                     statusCache = e.GetService<IFileStatusCache>();
                     IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
-                    foreach (SvnProject item in e.Selection.GetSelectedProjects(true))
+                    foreach (GitProject item in e.Selection.GetSelectedProjects(true))
                     {
-                        ISvnProjectInfo pi = pfm.GetProjectInfo(item);
+                        IGitProjectInfo pi = pfm.GetProjectInfo(item);
 
                         if (pi == null || pi.ProjectDirectory == null)
                         {
@@ -53,7 +53,7 @@ namespace VisualGit.Commands
                             return;
                         }
 
-                        SvnItem projectItem = statusCache[pi.ProjectDirectory];
+                        GitItem projectItem = statusCache[pi.ProjectDirectory];
                         if (!projectItem.IsVersioned)
                         {
                             e.Enabled = false;
@@ -64,7 +64,7 @@ namespace VisualGit.Commands
 
                 case VisualGitCommand.SwitchItem:
                     bool foundOne = false, error = false;
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
                         if (item.IsVersioned && !foundOne)
                             foundOne = true;
@@ -82,7 +82,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            SvnItem theItem = null;
+            GitItem theItem = null;
             string path;
             bool allowObstructions = false;
 
@@ -95,9 +95,9 @@ namespace VisualGit.Commands
                 IProjectFileMapper mapper = e.GetService<IProjectFileMapper>();
                 path = null;
 
-                foreach (SvnProject item in e.Selection.GetSelectedProjects(true))
+                foreach (GitProject item in e.Selection.GetSelectedProjects(true))
                 {
-                    ISvnProjectInfo pi = mapper.GetProjectInfo(item);
+                    IGitProjectInfo pi = mapper.GetProjectInfo(item);
 
                     if (pi == null)
                         continue;
@@ -111,7 +111,7 @@ namespace VisualGit.Commands
             }
             else
             {
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     if (item.IsVersioned)
                     {
@@ -125,7 +125,7 @@ namespace VisualGit.Commands
 
             IFileStatusCache statusCache = e.GetService<IFileStatusCache>();
 
-            SvnItem pathItem = statusCache[path];
+            GitItem pathItem = statusCache[path];
             Uri uri = pathItem.Uri;
 
             if (uri == null)
@@ -235,7 +235,7 @@ namespace VisualGit.Commands
                     finally
                     {
                         statusCache.MarkDirtyRecursive(path);
-                        e.GetService<IFileStatusMonitor>().ScheduleGlyphUpdate(SvnItem.GetPaths(statusCache.GetCachedBelow(path)));
+                        e.GetService<IFileStatusMonitor>().ScheduleGlyphUpdate(GitItem.GetPaths(statusCache.GetCachedBelow(path)));
                     }
 
 

@@ -26,7 +26,7 @@ namespace VisualGit
         FileCacheFinishTasks,
         SccFinishTasks,
         TickRefreshPendingTasks,
-        TickRefreshSvnItems,
+        TickRefreshGitItems,
         // /Tick Commands
         TickLast,
 
@@ -45,14 +45,14 @@ namespace VisualGit
         // Start of public commands; values shouldn't change between versions to
         // allow interop with other packages (like Collabnet Desktop and others)
 
-        FileFileOpenFromSubversion,
-        FileFileAddFromSubversion,
+        FileFileOpenFromGit,
+        FileFileAddFromGit,
 
-        FileSccOpenFromSubversion,
-        FileSccAddFromSubversion,
+        FileSccOpenFromGit,
+        FileSccAddFromGit,
 
-        FileSccAddSolutionToSubversion,
-        FileSccAddProjectToSubversion,
+        FileSccAddSolutionToGit,
+        FileSccAddProjectToGit,
 
         FileSccChangeSourceControl,
 
@@ -68,7 +68,7 @@ namespace VisualGit
         /// <summary>
         /// Execute blame command from blame window
         /// </summary>
-        SvnNodeAnnotate,
+        GitNodeAnnotate,
         Checkout,
         CopyToWorkingCopy,
         ItemResolveCasing,
@@ -197,7 +197,7 @@ namespace VisualGit
         ItemIgnoreFolder,
 
         LockMustLock,
-        SvnNodeDelete,
+        GitNodeDelete,
         SolutionUpdateLatest,
 
         PendingChangesApplyWorkingCopy,
@@ -278,6 +278,6 @@ namespace VisualGit
         MakeNonSccFileWriteable,
 
         PendingChangesConfigureRecentChangesPage,
-        ShowSubversionInfo,
+        ShowGitInfo,
     }
 }

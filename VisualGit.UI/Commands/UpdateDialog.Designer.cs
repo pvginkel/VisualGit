@@ -67,7 +67,7 @@ namespace VisualGit.UI.Commands
 			// 
 			resources.ApplyResources(this.versionBox, "versionBox");
 			this.versionBox.Name = "versionBox";
-			this.versionBox.SvnOrigin = null;
+			this.versionBox.GitOrigin = null;
 			// 
 			// ignoreExternals
 			// 

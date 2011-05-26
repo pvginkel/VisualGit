@@ -42,11 +42,11 @@ namespace VisualGit.UI.MergeWizard
             get { return mergeFromComboBox.Text.Trim(); }
         }
 
-        internal SvnOrigin MergeSource
+        internal GitOrigin MergeSource
         {
             get
             {
-                SvnOrigin mergeSource = null;
+                GitOrigin mergeSource = null;
                 string mergeFrom = mergeFromComboBox.Text.Trim();
                 if (!string.IsNullOrEmpty(mergeFrom))
                 {
@@ -55,7 +55,7 @@ namespace VisualGit.UI.MergeWizard
                     {
                         try
                         {
-                            mergeSource = new SvnOrigin(Context, mergeFromUri, null);
+                            mergeSource = new GitOrigin(Context, mergeFromUri, null);
                         }
                         catch
                         {
@@ -124,7 +124,7 @@ namespace VisualGit.UI.MergeWizard
             return GetMergeSources(MergeTarget);
         }
 
-        SvnItem MergeTarget
+        GitItem MergeTarget
         {
             get { return Wizard.MergeTarget; }
         }
@@ -157,7 +157,7 @@ namespace VisualGit.UI.MergeWizard
 
         private void wcHistoryBtn_Click(object sender, EventArgs e)
         {
-            using (LogViewerDialog dialog = new LogViewerDialog(new SvnOrigin(MergeTarget)))
+            using (LogViewerDialog dialog = new LogViewerDialog(new GitOrigin(MergeTarget)))
             {
                 dialog.LogControl.StrictNodeHistory = true;
 

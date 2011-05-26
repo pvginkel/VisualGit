@@ -18,7 +18,7 @@ namespace VisualGit.Commands
     /// </summary>
     [Command(VisualGitCommand.ItemAnnotate)]
     [Command(VisualGitCommand.LogAnnotateRevision)]
-    [Command(VisualGitCommand.SvnNodeAnnotate)]
+    [Command(VisualGitCommand.GitNodeAnnotate)]
     [Command(VisualGitCommand.DocumentAnnotate)]
     class ItemAnnotateCommand : CommandBase
     {
@@ -26,13 +26,13 @@ namespace VisualGit.Commands
         {
             switch (e.Command)
             {
-                case VisualGitCommand.SvnNodeAnnotate:
-                    ISvnRepositoryItem ri = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+                case VisualGitCommand.GitNodeAnnotate:
+                    IGitRepositoryItem ri = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
                     if (ri != null && ri.Origin != null && ri.NodeKind != SvnNodeKind.Directory)
                         return;
                     break;
                 case VisualGitCommand.ItemAnnotate:
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
                         if (item.IsVersioned && item.IsFile)
                             return;
@@ -50,7 +50,7 @@ namespace VisualGit.Commands
                         return;
                     }
 
-                    if (!EnumTools.IsEmpty(e.Selection.GetSelection<ISvnLogChangedPathItem>()))
+                    if (!EnumTools.IsEmpty(e.Selection.GetSelection<IGitLogChangedPathItem>()))
                         return;
                     break;
             }
@@ -59,35 +59,35 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnOrigin> targets = new List<SvnOrigin>();
+            List<GitOrigin> targets = new List<GitOrigin>();
             SvnRevision startRev = SvnRevision.Zero;
             SvnRevision endRev = null;
             switch (e.Command)
             {
                 case VisualGitCommand.ItemAnnotate:
                     endRev = SvnRevision.Base;
-                    foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
                     {
                         if (i.IsVersionable)
-                            targets.Add(new SvnOrigin(i));
+                            targets.Add(new GitOrigin(i));
                     }
                     break;
                 case VisualGitCommand.LogAnnotateRevision:
-                    foreach (ISvnLogChangedPathItem logItem in e.Selection.GetSelection<ISvnLogChangedPathItem>())
+                    foreach (IGitLogChangedPathItem logItem in e.Selection.GetSelection<IGitLogChangedPathItem>())
                     {
                         targets.Add(logItem.Origin);
                         endRev = logItem.Revision;
                     }
                     break;
-                case VisualGitCommand.SvnNodeAnnotate:
-                    foreach (ISvnRepositoryItem item in e.Selection.GetSelection<ISvnRepositoryItem>())
+                case VisualGitCommand.GitNodeAnnotate:
+                    foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
                     {
                         targets.Add(item.Origin);
                         endRev = item.Revision;
                     }
                     break;
                 case VisualGitCommand.DocumentAnnotate:
-                    targets.Add(new SvnOrigin(e.GetService<IFileStatusCache>()[e.Selection.ActiveDocumentFilename]));
+                    targets.Add(new GitOrigin(e.GetService<IFileStatusCache>()[e.Selection.ActiveDocumentFilename]));
                     endRev = SvnRevision.Base;
                     break;
             }
@@ -98,7 +98,7 @@ namespace VisualGit.Commands
             bool ignoreEols = true;
             SvnIgnoreSpacing ignoreSpacing = SvnIgnoreSpacing.IgnoreSpace;
             bool retrieveMergeInfo = false;
-            SvnOrigin target;
+            GitOrigin target;
 
             if ((!e.DontPrompt && !Shift) || e.PromptUser)
                 using (AnnotateDialog dlg = new AnnotateDialog())
@@ -119,18 +119,18 @@ namespace VisualGit.Commands
                 }
             else
             {
-                SvnItem one = EnumTools.GetFirst(e.Selection.GetSelectedSvnItems(false));
+                GitItem one = EnumTools.GetFirst(e.Selection.GetSelectedGitItems(false));
 
                 if (one == null)
                     return;
 
-                target = new SvnOrigin(one);
+                target = new GitOrigin(one);
             }
 
             DoBlame(e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo);
         }
 
-        static void DoBlame(CommandEventArgs e, SvnOrigin item, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
+        static void DoBlame(CommandEventArgs e, GitOrigin item, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
         {
             SvnWriteArgs wa = new SvnWriteArgs();
             wa.Revision = revisionEnd;

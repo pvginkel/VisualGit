@@ -42,7 +42,7 @@ namespace VisualGit.Services.PendingChanges
             get
             {
                 if (_client == null)
-                    _client = GetService<ISvnClientPool>().GetNoUIClient();
+                    _client = GetService<IGitClientPool>().GetNoUIClient();
 
                 return _client;
             }
@@ -117,7 +117,7 @@ namespace VisualGit.Services.PendingChanges
 
         #endregion
 
-        bool IsDirectory(SvnItem item)
+        bool IsDirectory(GitItem item)
         {
             return item.IsDirectory || item.NodeKind == SvnNodeKind.Directory;
         }
@@ -131,7 +131,7 @@ namespace VisualGit.Services.PendingChanges
 
             foreach (string path in CommitPaths)
             {
-                SvnItem item = Cache[path];
+                GitItem item = Cache[path];
 
                 if (IsDirectory(item))
                 {
@@ -160,7 +160,7 @@ namespace VisualGit.Services.PendingChanges
 
                 // Let's see if committing with depth infinity would go wrong
                 bool hasOther = false;
-                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
+                using (SvnClient cl = GetService<IGitClientPool>().GetNoUIClient())
                 {
                     bool cancel = false;
                     SvnStatusArgs sa = new SvnStatusArgs();
@@ -173,7 +173,7 @@ namespace VisualGit.Services.PendingChanges
 
                     foreach (string path in CommitPaths)
                     {
-                        SvnItem item = Cache[path];
+                        GitItem item = Cache[path];
 
                         if (!IsDirectory(item) || item.IsDeleteScheduled)
                             continue; // Only check not to be deleted directories

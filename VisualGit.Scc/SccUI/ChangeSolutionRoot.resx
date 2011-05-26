@@ -268,7 +268,7 @@
     <value>3</value>
   </data>
   <data name="checkBox1.Text" xml:space="preserve">
-    <value>&amp;Publish Solution Root in Subversion</value>
+    <value>&amp;Publish Solution Root in Git</value>
   </data>
   <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
     <value>checkBox1</value>

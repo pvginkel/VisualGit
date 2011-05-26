@@ -15,7 +15,7 @@ namespace VisualGit.UI.IssueTracker
         public void OnUpdate(CommandUpdateEventArgs e)
         {
             IVisualGitIssueService service = null;
-            SvnItem item = null;
+            GitItem item = null;
             e.Enabled = true
                 && (item = GetRoot(e)) != null
                 && item.IsVersioned // ensure solution (project root) is versioned
@@ -26,7 +26,7 @@ namespace VisualGit.UI.IssueTracker
 
         public void OnExecute(CommandEventArgs e)
         {
-            SvnItem firstVersioned = null;
+            GitItem firstVersioned = null;
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
             IVisualGitSolutionSettings solutionSettings = e.GetService<IVisualGitSolutionSettings>();
             if (solutionSettings != null)
@@ -61,7 +61,7 @@ namespace VisualGit.UI.IssueTracker
 
         #endregion
 
-        private bool DeleteIssueRepositoryProperties(VisualGitContext context, SvnItem item)
+        private bool DeleteIssueRepositoryProperties(VisualGitContext context, GitItem item)
         {
             return context.GetService<IProgressRunner>().RunModal("Removing Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
@@ -74,7 +74,7 @@ namespace VisualGit.UI.IssueTracker
                 }).Succeeded;
         }
 
-        private bool SetIssueRepositoryProperties(VisualGitContext context, SvnItem item, IssueRepositorySettings settings)
+        private bool SetIssueRepositoryProperties(VisualGitContext context, GitItem item, IssueRepositorySettings settings)
         {
             return context.GetService<IProgressRunner>().RunModal("Applying Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
@@ -127,9 +127,9 @@ namespace VisualGit.UI.IssueTracker
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private static SvnItem GetRoot(BaseCommandEventArgs e)
+        private static GitItem GetRoot(BaseCommandEventArgs e)
         {
-            SvnItem item = null;
+            GitItem item = null;
             switch (e.Command)
             {
                 case VisualGitCommand.SolutionIssueTrackerSetup:

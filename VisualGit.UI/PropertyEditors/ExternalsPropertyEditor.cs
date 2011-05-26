@@ -400,12 +400,12 @@ namespace VisualGit.UI.PropertyEditors
                             string rev = row.Cells[2].Value as string;
                             SvnRevision rr = string.IsNullOrEmpty(rev) ? SvnRevision.None : long.Parse(rev);
                             SvnUriTarget svnTarget = new SvnUriTarget(selectedUri, rr);
-                            VisualGit.Scc.SvnOrigin origin = new VisualGit.Scc.SvnOrigin(svnTarget, repoRoot);
+                            VisualGit.Scc.GitOrigin origin = new VisualGit.Scc.GitOrigin(svnTarget, repoRoot);
                             using (VisualGit.UI.SvnLog.LogViewerDialog dlg = new VisualGit.UI.SvnLog.LogViewerDialog(origin))
                             {
                                 if (dlg.ShowDialog(Context) == DialogResult.OK)
                                 {
-                                    VisualGit.Scc.ISvnLogItem li = EnumTools.GetSingle(dlg.SelectedItems);
+                                    VisualGit.Scc.IGitLogItem li = EnumTools.GetSingle(dlg.SelectedItems);
                                     rev = li == null ? null : li.Revision.ToString();
                                     //set the revision cell value to the selection revision
                                     row.Cells[2].Value = rev ?? string.Empty;

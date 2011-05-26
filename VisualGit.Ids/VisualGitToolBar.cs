@@ -14,6 +14,6 @@ namespace VisualGit
         PendingChanges,
         SourceControl,
         LogViewer,
-        SvnInfo
+        GitInfo
     }
 }

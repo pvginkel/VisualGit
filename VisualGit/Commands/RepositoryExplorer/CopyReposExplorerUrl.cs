@@ -14,7 +14,7 @@ namespace VisualGit.Commands.RepositoryExplorer
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
             int n = 0;
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 n++;
                 if (n > 1 || i.Origin == null)
@@ -26,7 +26,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             if (n == 1)
                 return;
 
-            foreach(SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach(GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 n++;
                 if(n > 1 || item.Uri == null)
@@ -42,7 +42,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (i.Uri != null)
                     Clipboard.SetText(i.Uri.AbsoluteUri);
@@ -50,7 +50,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                 return;
             }
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.Uri != null)
                     Clipboard.SetText(item.Uri.AbsoluteUri);

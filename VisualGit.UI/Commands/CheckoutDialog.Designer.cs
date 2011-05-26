@@ -55,7 +55,7 @@ namespace VisualGit.UI.Commands
 			// 
 			resources.ApplyResources(this.revisionPicker, "revisionPicker");
 			this.revisionPicker.Name = "revisionPicker";
-			this.revisionPicker.SvnOrigin = null;
+			this.revisionPicker.GitOrigin = null;
 			// 
 			// urlBrowse
 			// 

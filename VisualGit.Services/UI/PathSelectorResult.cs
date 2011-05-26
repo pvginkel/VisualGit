@@ -9,18 +9,18 @@ namespace VisualGit.UI
     public class PathSelectorResult
     {
         readonly bool _succeeded;
-        readonly List<SvnItem> _selection;
+        readonly List<GitItem> _selection;
         SvnDepth _depth = SvnDepth.Unknown;
         SvnRevision _start;
         SvnRevision _end;
 
-        public PathSelectorResult(bool succeeded, IEnumerable<SvnItem> items)
+        public PathSelectorResult(bool succeeded, IEnumerable<GitItem> items)
         {
             if (items == null)
                 throw new ArgumentNullException("items");
 
             _succeeded = succeeded;
-            _selection = new List<SvnItem>(items);
+            _selection = new List<GitItem>(items);
         }
 
         public SvnDepth Depth
@@ -45,7 +45,7 @@ namespace VisualGit.UI
         }
 
 
-        public IList<SvnItem> Selection
+        public IList<GitItem> Selection
         {
             [DebuggerStepThrough]
             get { return _selection; }

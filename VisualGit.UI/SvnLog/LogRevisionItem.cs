@@ -151,7 +151,7 @@ namespace VisualGit.UI.SvnLog
         }
     }
 
-    sealed class LogItem : VisualGitPropertyGridItem, ISvnLogItem
+    sealed class LogItem : VisualGitPropertyGridItem, IGitLogItem
     {
         readonly LogRevisionItem _lvi;
         public Uri _repositoryRoot;
@@ -191,27 +191,27 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Commit date")]
         public DateTime CommitDate
         {
             get { return _lvi.Date.ToLocalTime(); }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         public string Author
         {
             get { return _lvi.Author; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Log message")]
         public string LogMessage
         {
             get { return _lvi.RawData.LogMessage; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         public long Revision
         {
             get { return _lvi.Revision; }

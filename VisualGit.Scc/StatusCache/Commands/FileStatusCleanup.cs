@@ -4,7 +4,7 @@ using VisualGit.Commands;
 namespace VisualGit.Scc.StatusCache.Commands
 {
     [Command(VisualGitCommand.FileCacheFinishTasks, AlwaysAvailable = true)]
-    [Command(VisualGitCommand.TickRefreshSvnItems, AlwaysAvailable = true)]
+    [Command(VisualGitCommand.TickRefreshGitItems, AlwaysAvailable = true)]
     public class FileStatusCleanup : ICommandHandler
     {
         public void OnUpdate(CommandUpdateEventArgs e)

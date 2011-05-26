@@ -133,7 +133,7 @@ namespace VisualGit.Services.PendingChanges {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subversion does not allow to commit this combination of files and directories at once..
+        ///   Looks up a localized string similar to Git does not allow to commit this combination of files and directories at once..
         /// </summary>
         internal static string InvalidCommitCombination {
             get {

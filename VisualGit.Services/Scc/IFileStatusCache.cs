@@ -12,10 +12,10 @@ namespace VisualGit.Scc
     public interface IFileStatusCache : IVisualGitServiceProvider
     {
         /// <summary>
-        /// Gets the <see cref="VisualGit.SvnItem"/> with the specified path.
+        /// Gets the <see cref="GitItem"/> with the specified path.
         /// </summary>
         /// <value></value>
-        SvnItem this[string path] { get; }
+        GitItem this[string path] { get; }
 
         /// <summary>
         /// Marks the specified path dirty
@@ -36,29 +36,29 @@ namespace VisualGit.Scc
         void ClearCache();
 
         /// <summary>
-        /// Called from <see cref="SvnItem.Refresh()"/>
+        /// Called from <see cref="GitItem.Refresh()"/>
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="diskNodeKind">The on-disk node kind if it is known to be correct.</param>
-        void RefreshItem(SvnItem item, SvnNodeKind diskNodeKind);
+        void RefreshItem(GitItem item, SvnNodeKind diskNodeKind);
 
         /// <summary>
-        /// Refreshes the nested status of the <see cref="SvnItem"/>
+        /// Refreshes the nested status of the <see cref="GitItem"/>
         /// </summary>
         /// <param name="item"></param>
-        void RefreshNested(SvnItem item);
+        void RefreshNested(GitItem item);
 
         /// <summary>
-        /// Gets the <see cref="SvnDirectory"/> of the specified path
+        /// Gets the <see cref="GitDirectory"/> of the specified path
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        SvnDirectory GetDirectory(string path);
+        GitDirectory GetDirectory(string path);
 
         void MarkDirtyRecursive(string path);
 
-        IList<SvnItem> GetCachedBelow(string path);
-        IList<SvnItem> GetCachedBelow(IEnumerable<string> paths);
+        IList<GitItem> GetCachedBelow(string path);
+        IList<GitItem> GetCachedBelow(IEnumerable<string> paths);
 
         void SetSolutionContained(string path, bool contained);
     }

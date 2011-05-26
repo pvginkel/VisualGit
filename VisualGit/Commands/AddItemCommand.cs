@@ -15,7 +15,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsVersioned)
                     continue;
@@ -29,13 +29,13 @@ namespace VisualGit.Commands
         public override void OnExecute(CommandEventArgs e)
         {
             string argumentFile = e.Argument as string;
-            List<SvnItem> selection = new List<SvnItem>();
+            List<GitItem> selection = new List<GitItem>();
 
             if (string.IsNullOrEmpty(argumentFile))
             {
                 if (e.PromptUser || (!e.DontPrompt && !Shift))
                 {
-                    selection.AddRange(e.Selection.GetSelectedSvnItems(true));
+                    selection.AddRange(e.Selection.GetSelectedGitItems(true));
 
                     using (PendingChangeSelector pcs = new PendingChangeSelector())
                     {
@@ -44,8 +44,8 @@ namespace VisualGit.Commands
                         pcs.PreserveWindowPlacement = true;
 
                         pcs.LoadItems(selection,
-                                      delegate(SvnItem item) { return !item.IsVersioned && item.IsVersionable; },
-                                      delegate(SvnItem item) { return !item.IsIgnored || !item.InSolution; });
+                                      delegate(GitItem item) { return !item.IsVersioned && item.IsVersionable; },
+                                      delegate(GitItem item) { return !item.IsIgnored || !item.InSolution; });
 
                         if (pcs.ShowDialog(e.Context) != DialogResult.OK)
                             return;
@@ -56,7 +56,7 @@ namespace VisualGit.Commands
                 }
                 else
                 {
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
                     {
                         if (!item.IsVersioned && item.IsVersionable && !item.IsIgnored && item.InSolution)
                             selection.Add(item);
@@ -68,7 +68,7 @@ namespace VisualGit.Commands
                 selection.Add(e.GetService<IFileStatusCache>()[argumentFile]);
             }
 
-            ICollection<string> paths = SvnItem.GetPaths(selection);
+            ICollection<string> paths = GitItem.GetPaths(selection);
             IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
             documentTracker.SaveDocuments(paths); // Make sure all files are saved before updating/merging!
 
@@ -81,7 +81,7 @@ namespace VisualGit.Commands
                         args.Depth = SvnDepth.Empty;
                         args.AddParents = true;
 
-                        foreach (SvnItem item in selection)
+                        foreach (GitItem item in selection)
                         {
                             ee.Client.Add(item.FullPath, args);
                         }

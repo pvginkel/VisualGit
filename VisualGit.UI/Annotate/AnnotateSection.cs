@@ -62,38 +62,38 @@ namespace VisualGit.UI.Annotate
         #endregion
     }
 
-    class AnnotateSource : VisualGitPropertyGridItem, IAnnotateSection, ISvnRepositoryItem
+    class AnnotateSource : VisualGitPropertyGridItem, IAnnotateSection, IGitRepositoryItem
     {
         readonly SvnBlameEventArgs _args;
-        readonly SvnOrigin _origin;
+        readonly GitOrigin _origin;
         string _logMessage;
 
-        public AnnotateSource(SvnBlameEventArgs blameArgs, SvnOrigin origin)
+        public AnnotateSource(SvnBlameEventArgs blameArgs, GitOrigin origin)
         {
             _args = blameArgs;
             _origin = origin;
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         public long Revision
         {
             get { return _args.Revision; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         public string Author
         {
             get { return _args.Author; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         public DateTime Time
         {
             get { return _args.Time.ToLocalTime(); }
         }
 
         [Browsable(false)]
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _origin; }
         }
@@ -123,19 +123,19 @@ namespace VisualGit.UI.Annotate
             get { return Origin.Target.FileName; }
         }        
 
-        #region ISvnRepositoryItem Members
+        #region IGitRepositoryItem Members
 
-        Uri ISvnRepositoryItem.Uri
+        Uri IGitRepositoryItem.Uri
         {
             get { return Origin.Uri; }
         }
 
-        SvnNodeKind ISvnRepositoryItem.NodeKind
+        SvnNodeKind IGitRepositoryItem.NodeKind
         {
             get { return SvnNodeKind.File; }
         }
 
-        SvnRevision ISvnRepositoryItem.Revision
+        SvnRevision IGitRepositoryItem.Revision
         {
             get { return Revision; }
         }

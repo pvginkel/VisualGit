@@ -14,18 +14,18 @@ namespace VisualGit.Commands
     [Command(VisualGitCommand.DocumentRemoveFromPending)]
     class ItemAddToPending : CommandBase
     {
-        IEnumerable<SvnItem> GetSelection(BaseCommandEventArgs e)
+        IEnumerable<GitItem> GetSelection(BaseCommandEventArgs e)
         {
             if (e.Command == VisualGitCommand.DocumentAddToPending || e.Command == VisualGitCommand.DocumentRemoveFromPending)
             {
-                SvnItem i = e.Selection.ActiveDocumentItem;
+                GitItem i = e.Selection.ActiveDocumentItem;
                 if (i == null)
-                    return new SvnItem[0];
+                    return new GitItem[0];
                 else
-                    return new SvnItem[] { i };
+                    return new GitItem[] { i };
             }
             else
-                return e.Selection.GetSelectedSvnItems(false);
+                return e.Selection.GetSelectedGitItems(false);
         }
 
         public override void OnUpdate(CommandUpdateEventArgs e)
@@ -35,7 +35,7 @@ namespace VisualGit.Commands
 
             add = (e.Command == VisualGitCommand.ItemAddToPending) || (e.Command == VisualGitCommand.DocumentAddToPending);
 
-            foreach (SvnItem i in GetSelection(e))
+            foreach (GitItem i in GetSelection(e))
             {
                 if (i.InSolution || !PendingChange.IsPending(i))
                     continue;
@@ -58,7 +58,7 @@ namespace VisualGit.Commands
         {
             IFileStatusMonitor fsm = e.GetService<IFileStatusMonitor>();
 
-            foreach (SvnItem i in GetSelection(e))
+            foreach (GitItem i in GetSelection(e))
             {
                 if (i.InSolution)
                     continue;

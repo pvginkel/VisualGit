@@ -26,28 +26,28 @@ namespace VisualGit.UI.Commands
             whitespaceBox.SelectedIndex = 1;
         }
 
-        public void SetTargets(IEnumerable<SvnItem> targets)
+        public void SetTargets(IEnumerable<GitItem> targets)
         {
-            List<SvnOrigin> origins = new List<SvnOrigin>();
+            List<GitOrigin> origins = new List<GitOrigin>();
 
-            foreach (SvnItem i in targets)
-                origins.Add(new SvnOrigin(i));
+            foreach (GitItem i in targets)
+                origins.Add(new GitOrigin(i));
 
             SetTargets(origins);
         }
 
-        public void SetTargets(List<SvnOrigin> origins)
+        public void SetTargets(List<GitOrigin> origins)
         {
-            foreach (SvnOrigin i in origins)
+            foreach (GitOrigin i in origins)
                 targetBox.Items.Add(i);
 
             if (targetBox.Items.Count > 0)
                 targetBox.SelectedIndex = 0;
         }
 
-        public SvnOrigin SelectedTarget
+        public GitOrigin SelectedTarget
         {
-            get { return targetBox.SelectedItem as SvnOrigin; }
+            get { return targetBox.SelectedItem as GitOrigin; }
         }
 
         public SvnRevision StartRevision
@@ -64,8 +64,8 @@ namespace VisualGit.UI.Commands
 
         private void targetBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            startRevision.SvnOrigin = SelectedTarget;
-            toRevision.SvnOrigin = SelectedTarget;
+            startRevision.GitOrigin = SelectedTarget;
+            toRevision.GitOrigin = SelectedTarget;
         }
 
         public bool IgnoreEols
@@ -101,7 +101,7 @@ namespace VisualGit.UI.Commands
         {
             using (RepositoryFolderBrowserDialog dlg = new RepositoryFolderBrowserDialog())
             {
-                SvnOrigin from = SelectedTarget;
+                GitOrigin from = SelectedTarget;
 
                 if (from == null)
                     return;
@@ -113,7 +113,7 @@ namespace VisualGit.UI.Commands
                     dlg.SelectedUri = ut.Uri;
                 else
                 {
-                    SvnItem file = GetService<IFileStatusCache>()[((SvnPathTarget)from.Target).FullPath];
+                    GitItem file = GetService<IFileStatusCache>()[((SvnPathTarget)from.Target).FullPath];
 
                     if (file.Uri == null)
                         dlg.SelectedUri = from.RepositoryRoot;
@@ -125,7 +125,7 @@ namespace VisualGit.UI.Commands
                 {
                     Uri selectedUri = dlg.SelectedUri;
 
-                    SvnOrigin o = new SvnOrigin(Context, selectedUri, null);
+                    GitOrigin o = new GitOrigin(Context, selectedUri, null);
 
                     targetBox.Items.Add(o);
                     targetBox.SelectedItem = o;

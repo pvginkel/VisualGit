@@ -28,11 +28,11 @@ namespace VisualGit.Commands
             switch (e.Command)
             {
                 case VisualGitCommand.ProjectHistory:
-                    SvnProject p = EnumTools.GetFirst(e.Selection.GetSelectedProjects(false));
+                    GitProject p = EnumTools.GetFirst(e.Selection.GetSelectedProjects(false));
                     if (p == null)
                         break;
 
-                    ISvnProjectInfo pi = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
+                    IGitProjectInfo pi = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
 
                     if (pi == null || string.IsNullOrEmpty(pi.ProjectDirectory))
                         break; // No project location
@@ -53,14 +53,14 @@ namespace VisualGit.Commands
 
                     break; // No history
                 case VisualGitCommand.DocumentHistory:
-                    SvnItem docitem = e.Selection.ActiveDocumentItem;
+                    GitItem docitem = e.Selection.ActiveDocumentItem;
                     if (docitem != null && docitem.HasCopyableHistory)
                         return;
                     break; // No history
                 case VisualGitCommand.Log:
                     int itemCount = 0;
                     int needsRemoteCount = 0;
-                    foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
                         if (!item.IsVersioned)
                         {
@@ -96,7 +96,7 @@ namespace VisualGit.Commands
                     return;
                 case VisualGitCommand.ReposExplorerLog:
                     i = 0;
-                    foreach (ISvnRepositoryItem item in e.Selection.GetSelection<ISvnRepositoryItem>())
+                    foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
                     {
                         if (item == null || item.Origin == null)
                             continue;
@@ -117,15 +117,15 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnOrigin> selected = new List<SvnOrigin>();
+            List<GitOrigin> selected = new List<GitOrigin>();
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
 
             switch (e.Command)
             {
                 case VisualGitCommand.Log:
                     IVisualGitDiffHandler diffHandler = e.GetService<IVisualGitDiffHandler>();
-                    List<SvnOrigin> items = new List<SvnOrigin>();
-                    foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+                    List<GitOrigin> items = new List<GitOrigin>();
+                    foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
                     {
                         Debug.Assert(i.IsVersioned);
 
@@ -134,40 +134,40 @@ namespace VisualGit.Commands
                             if (!i.HasCopyableHistory)
                                 continue;
 
-                            items.Add(new SvnOrigin(diffHandler.GetCopyOrigin(i), i.WorkingCopy.RepositoryRoot));
+                            items.Add(new GitOrigin(diffHandler.GetCopyOrigin(i), i.WorkingCopy.RepositoryRoot));
                             continue;
                         }
 
-                        items.Add(new SvnOrigin(i));
+                        items.Add(new GitOrigin(i));
                     }
                     PerformLog(e.Context, items, null, null);
                     break;
                 case VisualGitCommand.SolutionHistory:
                     IVisualGitSolutionSettings settings = e.GetService<IVisualGitSolutionSettings>();
 
-                    PerformLog(e.Context, new SvnOrigin[] { new SvnOrigin(cache[settings.ProjectRoot]) }, null, null);
+                    PerformLog(e.Context, new GitOrigin[] { new GitOrigin(cache[settings.ProjectRoot]) }, null, null);
                     break;
                 case VisualGitCommand.ProjectHistory:
                     IProjectFileMapper mapper = e.GetService<IProjectFileMapper>();
-                    foreach (SvnProject p in e.Selection.GetSelectedProjects(false))
+                    foreach (GitProject p in e.Selection.GetSelectedProjects(false))
                     {
-                        ISvnProjectInfo info = mapper.GetProjectInfo(p);
+                        IGitProjectInfo info = mapper.GetProjectInfo(p);
 
                         if (info != null)
-                            selected.Add(new SvnOrigin(cache[info.ProjectDirectory]));
+                            selected.Add(new GitOrigin(cache[info.ProjectDirectory]));
                     }
 
                     PerformLog(e.Context, selected, null, null);
                     break;
                 case VisualGitCommand.DocumentHistory:
-                    SvnItem docItem = e.Selection.ActiveDocumentItem;
+                    GitItem docItem = e.Selection.ActiveDocumentItem;
                     Debug.Assert(docItem != null);
 
-                    PerformLog(e.Context, new SvnOrigin[] { new SvnOrigin(docItem) }, null, null);
+                    PerformLog(e.Context, new GitOrigin[] { new GitOrigin(docItem) }, null, null);
                     break;
                 case VisualGitCommand.ReposExplorerLog:
-                    ISvnRepositoryItem item = null;
-                    foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+                    IGitRepositoryItem item = null;
+                    foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
                     {
                         if (i != null && i.Uri != null)
                             item = i;
@@ -175,7 +175,7 @@ namespace VisualGit.Commands
                     }
 
                     if (item != null)
-                        PerformLog(e.Context, new SvnOrigin[] { item.Origin }, null, null);
+                        PerformLog(e.Context, new GitOrigin[] { item.Origin }, null, null);
                     break;
                 case VisualGitCommand.AnnotateShowLog:
                     IAnnotateSection section = EnumTools.GetSingle(e.Selection.GetSelection<IAnnotateSection>());
@@ -183,13 +183,13 @@ namespace VisualGit.Commands
                     if (section == null)
                         return;
 
-                    PerformLog(e.Context, new SvnOrigin[] { section.Origin }, section.Revision, null);
+                    PerformLog(e.Context, new GitOrigin[] { section.Origin }, section.Revision, null);
 
                     break;
             }
         }
 
-        static void PerformLog(IVisualGitServiceProvider context, ICollection<SvnOrigin> targets, SvnRevision start, SvnRevision end)
+        static void PerformLog(IVisualGitServiceProvider context, ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
         {
             IVisualGitPackage package = context.GetService<IVisualGitPackage>();
 

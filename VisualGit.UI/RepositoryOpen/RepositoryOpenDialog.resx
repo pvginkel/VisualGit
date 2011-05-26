@@ -487,7 +487,7 @@
     <value>573, 319</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Open from Subversion</value>
+    <value>Open from Git</value>
   </data>
   <data name="&gt;&gt;urlLabel.Name" xml:space="preserve">
     <value>urlLabel</value>

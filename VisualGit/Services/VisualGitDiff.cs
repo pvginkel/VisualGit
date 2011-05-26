@@ -125,7 +125,7 @@ namespace VisualGit.Services
 
             if (string.IsNullOrEmpty(diffApp))
             {
-                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools->Options->SourceControl->Subversion", "VisualGit - No visual merge tool is available");
+                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools->Options->SourceControl->Git", "VisualGit - No visual merge tool is available");
 
                 return false;
             }
@@ -191,7 +191,7 @@ namespace VisualGit.Services
 
             if (string.IsNullOrEmpty(diffApp))
             {
-                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools->Options->SourceControl->Subversion", "VisualGit - No visual merge tool is available");
+                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools->Options->SourceControl->Git", "VisualGit - No visual merge tool is available");
 
                 return false;
             }
@@ -233,7 +233,7 @@ namespace VisualGit.Services
             }
         }
 
-        public SvnUriTarget GetCopyOrigin(SvnItem item)
+        public SvnUriTarget GetCopyOrigin(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -241,7 +241,7 @@ namespace VisualGit.Services
             // TODO: Maybe handle cases where the parent was copied instead of the child?
 
             SvnUriTarget copiedFrom = null;
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
             {
                 SvnInfoArgs ia = new SvnInfoArgs();
                 ia.ThrowOnError = false;
@@ -270,7 +270,7 @@ namespace VisualGit.Services
             {
                 if (string.IsNullOrEmpty(monitor))
                     throw new ArgumentNullException("monitor");
-                else if (!SvnItem.IsValidPath(monitor))
+                else if (!GitItem.IsValidPath(monitor))
                     throw new ArgumentOutOfRangeException("monitor");
 
                 _monitorDir = monitorDir;
@@ -704,7 +704,7 @@ namespace VisualGit.Services
 
         #endregion
 
-        public string GetTitle(SvnItem target, SvnRevision revision)
+        public string GetTitle(GitItem target, SvnRevision revision)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -764,7 +764,7 @@ namespace VisualGit.Services
         }
 
         string _lastDir;
-        public string GetTempFile(SvnItem target, SharpSvn.SvnRevision revision, bool withProgress)
+        public string GetTempFile(GitItem target, SharpSvn.SvnRevision revision, bool withProgress)
         {
             if (target == null)
                 throw new ArgumentNullException("target");

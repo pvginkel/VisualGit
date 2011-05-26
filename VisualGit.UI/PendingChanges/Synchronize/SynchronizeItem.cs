@@ -12,9 +12,9 @@ namespace VisualGit.UI.PendingChanges.Synchronize
         readonly IVisualGitServiceProvider _context;
         readonly SynchronizeListItem _listItem;
 
-        SvnItem SvnItem
+        GitItem GitItem
         {
-            get { return _listItem.SvnItem; }
+            get { return _listItem.GitItem; }
         }
 
         public SynchronizeItem(IVisualGitServiceProvider context, SynchronizeListItem listItem)
@@ -35,7 +35,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
 
         protected override string ComponentName
         {
-            get { return SvnItem.Name; }
+            get { return GitItem.Name; }
         }
 
         internal SynchronizeListItem ListItem
@@ -46,40 +46,40 @@ namespace VisualGit.UI.PendingChanges.Synchronize
         [DisplayName("Full Path")]
         public string FullPath
         {
-            get { return _listItem.SvnItem.FullPath; }
+            get { return _listItem.GitItem.FullPath; }
         }
 
         [DisplayName("File Name")]
         public string Name
         {
-            get { return SvnItem.Name; }
+            get { return GitItem.Name; }
         }
 
-        [DisplayName("Change List"), Category("Subversion")]
+        [DisplayName("Change List"), Category("Git")]
         public string ChangeList
         {
-            get { return SvnItem.Status.ChangeList; }
+            get { return GitItem.Status.ChangeList; }
             set
             {
                 string cl = string.IsNullOrEmpty(value) ? null : value.Trim();
 
-                if (SvnItem.IsVersioned && SvnItem.Status != null && SvnItem.IsFile)
+                if (GitItem.IsVersioned && GitItem.Status != null && GitItem.IsFile)
                 {
-                    if (value != SvnItem.Status.ChangeList)
+                    if (value != GitItem.Status.ChangeList)
                     {
-                        using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
+                        using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
                         {
                             if (cl != null)
                             {
                                 SvnAddToChangeListArgs ca = new SvnAddToChangeListArgs();
                                 ca.ThrowOnError = false;
-                                client.AddToChangeList(SvnItem.FullPath, cl);
+                                client.AddToChangeList(GitItem.FullPath, cl);
                             }
                             else
                             {
                                 SvnRemoveFromChangeListArgs ca = new SvnRemoveFromChangeListArgs();
                                 ca.ThrowOnError = false;
-                                client.RemoveFromChangeList(SvnItem.FullPath, ca);
+                                client.RemoveFromChangeList(GitItem.FullPath, ca);
                             }
                         }
                     }

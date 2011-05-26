@@ -71,7 +71,7 @@ namespace VisualGit.UI
 
         /// <summary>
         /// Whether the error is internal to VisualGit(encourage the user to report it) or
-        /// just a Subversion error.
+        /// just a Git error.
         /// </summary>
         public bool InternalError
         {
@@ -81,7 +81,7 @@ namespace VisualGit.UI
                 this.internalError = value;
                 this.headerLabel.Text = this.internalError ?
                     @"An internal error occurred:" :
-                    "Subversion reported an error: ";
+                    "Git reported an error: ";
             }
         }
 

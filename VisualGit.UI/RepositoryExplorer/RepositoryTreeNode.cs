@@ -21,7 +21,7 @@ namespace VisualGit.UI.RepositoryExplorer
     sealed class RepositoryTreeNode : TreeNode
     {
         readonly Uri _uri;
-        readonly SvnOrigin _origin;
+        readonly GitOrigin _origin;
 
         RepositoryTreeNode _dummy;
         ListItemCollection _items;
@@ -32,7 +32,7 @@ namespace VisualGit.UI.RepositoryExplorer
         /// Initializes a new instance of the <see cref="RepositoryTreeNode"/> class.
         /// </summary>
         /// <param name="origin">The origin.</param>
-        public RepositoryTreeNode(SvnOrigin origin)
+        public RepositoryTreeNode(GitOrigin origin)
         {
             if(origin == null)
                 throw new ArgumentNullException("origin");
@@ -65,7 +65,7 @@ namespace VisualGit.UI.RepositoryExplorer
             get { return _uri; }
         }
 
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _origin; }
         }

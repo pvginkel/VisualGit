@@ -149,16 +149,16 @@ namespace VisualGit.Scc
 
 
         /// <summary>
-        /// Gets the SvnItem of the document file and all subdocument files (SccSpecial files)
+        /// Gets the GitItem of the document file and all subdocument files (SccSpecial files)
         /// </summary>
         /// <param name="document">The document.</param>
         /// <returns></returns>
-        internal IEnumerable<SvnItem> GetAllDocumentItems(string document)
+        internal IEnumerable<GitItem> GetAllDocumentItems(string document)
         {
             if (string.IsNullOrEmpty(document))
                 throw new ArgumentNullException("document");
 
-            SvnItem item = StatusCache[document];
+            GitItem item = StatusCache[document];
 
             if (item == null)
                 yield break;
@@ -213,7 +213,7 @@ namespace VisualGit.Scc
         {
             if (string.IsNullOrEmpty(file))
                 return false;
-            else if (!SvnItem.IsValidPath(file))
+            else if (!GitItem.IsValidPath(file))
                 return false;
             else if (file.StartsWith(TempPathWithSeparator, StringComparison.OrdinalIgnoreCase))
                 return false;
@@ -265,8 +265,8 @@ namespace VisualGit.Scc
 
                 HybridCollection<string> mustLockFiles = null;
                 HybridCollection<string> readOnlyEditFiles = null;
-                List<SvnItem> mustLockItems = null;
-                List<SvnItem> readOnlyItems = null;
+                List<GitItem> mustLockItems = null;
+                List<GitItem> readOnlyItems = null;
 
                 for (int i = 0; i < cFiles; i++)
                 {
@@ -279,7 +279,7 @@ namespace VisualGit.Scc
 
                     Monitor.ScheduleDirtyCheck(file);
 
-                    SvnItem item = StatusCache[file];
+                    GitItem item = StatusCache[file];
 
                     if (item.IsReadOnlyMustLock && !item.IsDirectory)
                     {
@@ -295,7 +295,7 @@ namespace VisualGit.Scc
                         if (mustLockItems == null)
                         {
                             mustLockFiles = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
-                            mustLockItems = new List<SvnItem>();
+                            mustLockItems = new List<GitItem>();
                         }
 
                         if (!mustLockFiles.Contains(item.FullPath))
@@ -324,7 +324,7 @@ namespace VisualGit.Scc
                             if (readOnlyEditFiles == null)
                             {
                                 readOnlyEditFiles = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
-                                readOnlyItems = new List<SvnItem>();
+                                readOnlyItems = new List<GitItem>();
                             }
 
                             if (!readOnlyEditFiles.Contains(item.FullPath))
@@ -338,13 +338,13 @@ namespace VisualGit.Scc
                 }
                 if (mustLockItems != null)
                 {
-                    List<SvnItem> mustBeLocked = new List<SvnItem>(mustLockItems);
+                    List<GitItem> mustBeLocked = new List<GitItem>(mustLockItems);
 
                     // Look at all subfiles of the must be locked document and add these to the dialog
                     // to make it easier to lock them too
                     foreach (string lockFile in new List<string>(mustLockFiles))
                     {
-                        foreach (SvnItem item in GetAllDocumentItems(lockFile))
+                        foreach (GitItem item in GetAllDocumentItems(lockFile))
                         {
                             if (!mustLockFiles.Contains(item.FullPath))
                             {
@@ -356,7 +356,7 @@ namespace VisualGit.Scc
 
                     CommandService.DirectlyExecCommand(VisualGitCommand.SccLock, mustLockItems, CommandPrompt.DoDefault);
                     // Only check the original list; the rest of the items in mustLockItems is optional
-                    foreach (SvnItem i in mustBeLocked)
+                    foreach (GitItem i in mustBeLocked)
                     {
                         if (i.IsReadOnlyMustLock)
                         {
@@ -404,9 +404,9 @@ namespace VisualGit.Scc
             // Force all real files to be writable
             foreach (string file in rgpszMkDocuments)
             {
-                if (SvnItem.IsValidPath(file))
+                if (GitItem.IsValidPath(file))
                 {
-                    SvnItem item = StatusCache[file];
+                    GitItem item = StatusCache[file];
 
                     if (item.IsReadOnly)
                     {
@@ -477,7 +477,7 @@ namespace VisualGit.Scc
             pdwQSResult = (uint)tagVSQuerySaveResult.QSR_SaveOK;
             bool silent = (rgfQuerySave & (uint)tagVSQuerySaveFlags.QSF_SilentMode) != 0;
 
-            List<SvnItem> toBeSvnLocked = new List<SvnItem>();
+            List<GitItem> toBeSvnLocked = new List<GitItem>();
 
             if (rgpszMkDocuments == null)
                 return VSConstants.E_POINTER;
@@ -502,7 +502,7 @@ namespace VisualGit.Scc
 
                     file = SvnTools.GetNormalizedFullPath(file);
 
-                    SvnItem item = StatusCache[file];
+                    GitItem item = StatusCache[file];
                     if (item.IsReadOnlyMustLock)
                     {
                         if (silent)
@@ -551,7 +551,7 @@ namespace VisualGit.Scc
                     CommandService.DirectlyExecCommand(VisualGitCommand.SccLock, toBeSvnLocked.ToArray());
 
                     bool notWritable = false;
-                    foreach (SvnItem item in toBeSvnLocked)
+                    foreach (GitItem item in toBeSvnLocked)
                     {
                         if (item.IsReadOnlyMustLock)
                             notWritable = true;
@@ -577,7 +577,7 @@ namespace VisualGit.Scc
             }
         }
 
-        tagVSQuerySaveResult QueryReadOnlyFile(SvnItem item)
+        tagVSQuerySaveResult QueryReadOnlyFile(GitItem item)
         {
             Debug.Assert(item.IsReadOnly && !item.IsReadOnlyMustLock, "item.IsReadOnly && !item.IsReadOnlyMustLock");
 

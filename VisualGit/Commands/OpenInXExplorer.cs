@@ -12,10 +12,10 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            SvnItem node = EnumTools.GetSingle(e.Selection.GetSelectedSvnItems(false));
+            GitItem node = EnumTools.GetSingle(e.Selection.GetSelectedGitItems(false));
 
             if (node == null && e.Selection.IsSingleNodeSelection)
-                node = EnumTools.GetFirst(e.Selection.GetSelectedSvnItems(false));
+                node = EnumTools.GetFirst(e.Selection.GetSelectedGitItems(false));
 
             bool enable = true;
             if (node == null)
@@ -38,7 +38,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            SvnItem node = EnumTools.GetFirst(e.Selection.GetSelectedSvnItems(false));
+            GitItem node = EnumTools.GetFirst(e.Selection.GetSelectedGitItems(false));
 
             IVisualGitCommandService cmd = e.GetService<IVisualGitCommandService>();
             switch (e.Command)

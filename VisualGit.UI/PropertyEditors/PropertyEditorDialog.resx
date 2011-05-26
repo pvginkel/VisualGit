@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -279,37 +279,37 @@
   <data name="propGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="svnItemLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="gitItemLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="svnItemLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="gitItemLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="svnItemLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="gitItemLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="svnItemLabel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="gitItemLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 16</value>
   </data>
-  <data name="svnItemLabel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="gitItemLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 13</value>
   </data>
-  <data name="svnItemLabel.TabIndex" type="System.Int32, mscorlib">
+  <data name="gitItemLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="svnItemLabel.Text" xml:space="preserve">
+  <data name="gitItemLabel.Text" xml:space="preserve">
     <value>Selected Svn Item</value>
   </data>
-  <data name="&gt;&gt;svnItemLabel.Name" xml:space="preserve">
-    <value>svnItemLabel</value>
+  <data name="&gt;&gt;gitItemLabel.Name" xml:space="preserve">
+    <value>gitItemLabel</value>
   </data>
-  <data name="&gt;&gt;svnItemLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;gitItemLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;svnItemLabel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;gitItemLabel.Parent" xml:space="preserve">
     <value>propGroupBox</value>
   </data>
-  <data name="&gt;&gt;svnItemLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;gitItemLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="propGroupBox.Location" type="System.Drawing.Point, System.Drawing">

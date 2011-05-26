@@ -131,7 +131,7 @@ namespace VisualGit.UI.PathSelector
             this.revisionPickerStart.Location = new System.Drawing.Point(4, 13);
             this.revisionPickerStart.Name = "revisionPickerStart";
             this.revisionPickerStart.Size = new System.Drawing.Size(395, 29);
-            this.revisionPickerStart.SvnOrigin = null;
+            this.revisionPickerStart.GitOrigin = null;
             this.revisionPickerStart.TabIndex = 1;
             // 
             // toPanel
@@ -152,7 +152,7 @@ namespace VisualGit.UI.PathSelector
             this.revisionPickerEnd.Location = new System.Drawing.Point(4, 15);
             this.revisionPickerEnd.Name = "revisionPickerEnd";
             this.revisionPickerEnd.Size = new System.Drawing.Size(395, 29);
-            this.revisionPickerEnd.SvnOrigin = null;
+            this.revisionPickerEnd.GitOrigin = null;
             this.revisionPickerEnd.TabIndex = 1;
             // 
             // pathSelectionTreeView

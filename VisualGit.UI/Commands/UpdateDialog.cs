@@ -24,8 +24,8 @@ namespace VisualGit.UI.Commands
             set { projectRootLabel.Text = value; }
         }
 
-        SvnItem _item;
-        public SvnItem ItemToUpdate
+        GitItem _item;
+        public GitItem ItemToUpdate
         {
             get { return _item; }
             set
@@ -35,7 +35,7 @@ namespace VisualGit.UI.Commands
                 {
                     projectRootBox.Text = value.FullPath;
                     urlBox.Text = _item.Uri.ToString();
-                    versionBox.SvnOrigin = new VisualGit.Scc.SvnOrigin(value);
+                    versionBox.GitOrigin = new VisualGit.Scc.GitOrigin(value);
                 }
             }
         }
@@ -47,12 +47,12 @@ namespace VisualGit.UI.Commands
                 projectRootBox.Text = "-";
         }
 
-        public SvnOrigin SvnOrigin
+        public GitOrigin GitOrigin
         {
-            get { return versionBox.SvnOrigin; }
+            get { return versionBox.GitOrigin; }
             set
             {
-                versionBox.SvnOrigin = value;
+                versionBox.GitOrigin = value;
                 if (value != null)
                     urlBox.Text = value.Uri.ToString();
             }

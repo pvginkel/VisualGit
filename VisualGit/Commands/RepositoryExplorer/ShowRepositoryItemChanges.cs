@@ -13,7 +13,7 @@ namespace VisualGit.Commands.RepositoryExplorer
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnRepositoryItem reposItem = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem reposItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (reposItem != null && reposItem.Origin != null && reposItem.NodeKind != SharpSvn.SvnNodeKind.Directory
                 && reposItem.Revision.RevisionType == SharpSvn.SvnRevisionType.Number)
@@ -36,7 +36,7 @@ namespace VisualGit.Commands.RepositoryExplorer
         public override void OnExecute(CommandEventArgs e)
         {
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
-            ISvnRepositoryItem reposItem = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem reposItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (reposItem == null)
                 return;

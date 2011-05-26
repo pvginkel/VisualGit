@@ -42,7 +42,7 @@ namespace VisualGit.UI.PathSelector
         /// </summary>
         /// <param name="origin">The origin.</param>
         /// <returns></returns>
-        public IEnumerable<VisualGitRevisionType> GetRevisionTypes(VisualGit.Scc.SvnOrigin origin)
+        public IEnumerable<VisualGitRevisionType> GetRevisionTypes(VisualGit.Scc.GitOrigin origin)
         {
             Hashtable ht = new Hashtable();
             foreach (IVisualGitRevisionProvider p in _providers)
@@ -63,7 +63,7 @@ namespace VisualGit.UI.PathSelector
         /// <param name="origin"></param>
         /// <param name="revision">The revision.</param>
         /// <returns></returns>
-        public VisualGitRevisionType Resolve(SvnOrigin origin, SharpSvn.SvnRevision revision)
+        public VisualGitRevisionType Resolve(GitOrigin origin, SharpSvn.SvnRevision revision)
         {
             if (revision == null)
                 throw new ArgumentNullException("revision");
@@ -87,7 +87,7 @@ namespace VisualGit.UI.PathSelector
             return null;
         }
 
-        public VisualGitRevisionType Resolve(SvnOrigin origin, VisualGitRevisionType revision)
+        public VisualGitRevisionType Resolve(GitOrigin origin, VisualGitRevisionType revision)
         {
             if (revision == null)
                 throw new ArgumentNullException("revision");
@@ -120,7 +120,7 @@ namespace VisualGit.UI.PathSelector
             }
             #region IVisualGitRevisionProvider Members
 
-            public IEnumerable<VisualGitRevisionType> GetRevisionTypes(VisualGit.Scc.SvnOrigin origin)
+            public IEnumerable<VisualGitRevisionType> GetRevisionTypes(VisualGit.Scc.GitOrigin origin)
             {
                 if (origin == null)
                     throw new ArgumentNullException("origin");
@@ -132,7 +132,7 @@ namespace VisualGit.UI.PathSelector
 
                 if (isPath)
                 {
-                    SvnItem item = GetService<IFileStatusCache>()[pt.FullPath];
+                    GitItem item = GetService<IFileStatusCache>()[pt.FullPath];
 
                     if (item.IsVersioned)
                     {
@@ -152,7 +152,7 @@ namespace VisualGit.UI.PathSelector
                 yield return new ExplicitRevisionType(this, origin);
             }
 
-            public VisualGitRevisionType Resolve(SvnOrigin origin, SharpSvn.SvnRevision revision)
+            public VisualGitRevisionType Resolve(GitOrigin origin, SharpSvn.SvnRevision revision)
             {
                 if (revision == null)
                     throw new ArgumentNullException("revision");
@@ -174,7 +174,7 @@ namespace VisualGit.UI.PathSelector
                 return null;
             }
 
-            public VisualGitRevisionType Resolve(SvnOrigin origin, VisualGitRevisionType revision)
+            public VisualGitRevisionType Resolve(GitOrigin origin, VisualGitRevisionType revision)
             {
                 return Resolve(origin, revision.CurrentValue);
             }
@@ -229,7 +229,7 @@ namespace VisualGit.UI.PathSelector
                     }
                 }
 
-                public override bool IsValidOn(SvnOrigin origin)
+                public override bool IsValidOn(GitOrigin origin)
                 {
                     switch (_rev.RevisionType)
                     {
@@ -246,11 +246,11 @@ namespace VisualGit.UI.PathSelector
         }
         sealed class DateRevisionType : VisualGitRevisionType
         {
-            readonly SvnOrigin _origin;
+            readonly GitOrigin _origin;
             readonly IVisualGitServiceProvider _context;
             DateTime _date;
 
-            public DateRevisionType(IVisualGitServiceProvider context, SvnOrigin origin)
+            public DateRevisionType(IVisualGitServiceProvider context, GitOrigin origin)
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
@@ -320,11 +320,11 @@ namespace VisualGit.UI.PathSelector
 
         sealed class ExplicitRevisionType : VisualGitRevisionType
         {
-            readonly SvnOrigin _origin;
+            readonly GitOrigin _origin;
             readonly IVisualGitServiceProvider _context;
             long _rev;
 
-            public ExplicitRevisionType(IVisualGitServiceProvider context, SvnOrigin origin)
+            public ExplicitRevisionType(IVisualGitServiceProvider context, GitOrigin origin)
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
@@ -369,7 +369,7 @@ namespace VisualGit.UI.PathSelector
 
                 _sel = new RevisionSelector();
                 _sel.Context = _context;
-                _sel.SvnOrigin = _origin;
+                _sel.GitOrigin = _origin;
                 parentPanel.Controls.Add(_sel);
                 _sel.Dock = System.Windows.Forms.DockStyle.Fill;
                 _sel.Changed += new EventHandler(OnVersionChanged);

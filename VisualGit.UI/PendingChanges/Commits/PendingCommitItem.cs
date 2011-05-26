@@ -35,7 +35,7 @@ namespace VisualGit.UI.PendingChanges.Commits
             IFileStatusCache cache = context.GetService<IFileStatusCache>();
 
             ImageIndex = PendingChange.IconIndex;
-            SvnItem item = cache[FullPath];
+            GitItem item = cache[FullPath];
 
             if (item == null)
                 throw new InvalidOperationException(); // Item no longer valued
@@ -101,17 +101,17 @@ namespace VisualGit.UI.PendingChanges.Commits
                 return n.ToString("T");
         }
 
-        private string GetDirectory(SvnItem svnItem)
+        private string GetDirectory(GitItem gitItem)
         {
-            if (svnItem.IsDirectory)
-                return svnItem.FullPath;
+            if (gitItem.IsDirectory)
+                return gitItem.FullPath;
             else
-                return svnItem.Directory;
+                return gitItem.Directory;
         }
 
-        static string SafeWorkingCopy(SvnItem svnItem)
+        static string SafeWorkingCopy(GitItem gitItem)
         {
-            SvnWorkingCopy wc = svnItem.WorkingCopy;
+            GitWorkingCopy wc = gitItem.WorkingCopy;
             if (wc == null)
                 return "";
 

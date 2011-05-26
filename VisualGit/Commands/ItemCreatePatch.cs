@@ -13,7 +13,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem i in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem i in e.Selection.GetSelectedGitItems(true))
             {
                 if (i.IsVersioned)
                 {
@@ -39,8 +39,8 @@ namespace VisualGit.Commands
                     changes.Add(pc.FullPath, pc);
             }
 
-            Dictionary<string, SvnItem> selectedChanges = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            Dictionary<string, GitItem> selectedChanges = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (changes.ContainsKey(item.FullPath) &&
                     !selectedChanges.ContainsKey(item.FullPath))
@@ -49,11 +49,11 @@ namespace VisualGit.Commands
                 }
             }
 
-            Collection<SvnItem> resources = new Collection<SvnItem>();
-            List<SvnItem> selectedItems = new List<SvnItem>(selectedChanges.Values);
+            Collection<GitItem> resources = new Collection<GitItem>();
+            List<GitItem> selectedItems = new List<GitItem>(selectedChanges.Values);
 
             // TODO: Give the whole list to a refreshable dialog!
-            foreach (SvnItem item in selectedItems)
+            foreach (GitItem item in selectedItems)
             {
                 PendingChange pc = changes[item.FullPath];
 
@@ -72,7 +72,7 @@ namespace VisualGit.Commands
 
                 pcs.PreserveWindowPlacement = true;
 
-                pcs.LoadItems(e.Selection.GetSelectedSvnItems(true));
+                pcs.LoadItems(e.Selection.GetSelectedGitItems(true));
 
                 DialogResult dr = pcs.ShowDialog(e.Context);
 

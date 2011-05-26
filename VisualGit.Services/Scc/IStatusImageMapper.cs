@@ -7,7 +7,7 @@ namespace VisualGit.Scc
 {
     public interface IStatusImageMapper
     {
-        VisualGitGlyph GetStatusImageForSvnItem(SvnItem item);
+        VisualGitGlyph GetStatusImageForGitItem(GitItem item);
         ImageList StatusImageList { get; }
 
         ImageList CreateStatusImageList();

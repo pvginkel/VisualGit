@@ -35,7 +35,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             }
         }
 
-        public void SelectSubNode(SvnItem item)
+        public void SelectSubNode(GitItem item)
         {
             if (item == null)
                 return;
@@ -43,7 +43,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             FileSystemTreeNode fstn = SelectedNode as FileSystemTreeNode;
             if(fstn != null)
             {
-                if(fstn.SvnItem == item)
+                if(fstn.GitItem == item)
                     return;
             }
 
@@ -51,7 +51,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
             foreach (FileSystemTreeNode tn in SelectedNode.Nodes)
             {
-                if (tn.SvnItem == item)
+                if (tn.GitItem == item)
                 {
                     SelectedNode = tn;
                     return;
@@ -199,11 +199,11 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         protected override void OnRetrieveSelection(TreeViewWithSelection<FileSystemTreeNode>.RetrieveSelectionEventArgs e)
         {
-            SvnItem item = e.Item.SvnItem;
+            GitItem item = e.Item.GitItem;
 
             if (item != null)
             {
-                e.SelectionItem = new SvnItemData(Context, item);
+                e.SelectionItem = new GitItemData(Context, item);
                 return;
             }
 
@@ -212,12 +212,12 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         protected override void OnResolveItem(TreeViewWithSelection<FileSystemTreeNode>.ResolveItemEventArgs e)
         {
-            SvnItemData dt = e.SelectionItem as SvnItemData;
+            GitItemData dt = e.SelectionItem as GitItemData;
             if (dt != null)
             {
                 foreach (FileSystemTreeNode tn in AllNodes)
                 {
-                    if (tn.SvnItem == dt.SvnItem)
+                    if (tn.GitItem == dt.GitItem)
                     {
                         e.Item = tn;
                         return;
@@ -230,7 +230,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         protected override string GetCanonicalName(FileSystemTreeNode item)
         {
-            SvnItem i = item.SvnItem;
+            GitItem i = item.GitItem;
 
             if (i != null)
             {

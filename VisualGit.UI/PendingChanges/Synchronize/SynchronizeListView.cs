@@ -89,7 +89,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             modified.Sorter = new SortWrapper(
                 delegate(SynchronizeListItem x, SynchronizeListItem y)
                 {
-                    return x.SvnItem.Modified.CompareTo(y.SvnItem.Modified);
+                    return x.GitItem.Modified.CompareTo(y.GitItem.Modified);
                 });
 
             AllColumns.Add(changeList);
@@ -113,7 +113,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
 
         protected override string GetCanonicalName(SynchronizeListItem item)
         {
-            return item.SvnItem.FullPath;
+            return item.GitItem.FullPath;
         }
 
         public override void OnShowContextMenu(MouseEventArgs e)

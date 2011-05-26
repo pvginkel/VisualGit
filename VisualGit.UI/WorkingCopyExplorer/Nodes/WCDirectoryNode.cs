@@ -9,9 +9,9 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 {
     abstract class WCFileSystemNode : WCTreeNode
     {
-        readonly SvnItem _item;
-        public SvnItem SvnItem { get { return _item; } }
-        protected WCFileSystemNode(IVisualGitServiceProvider context, WCTreeNode parent, SvnItem item)
+        readonly GitItem _item;
+        public GitItem GitItem { get { return _item; } }
+        protected WCFileSystemNode(IVisualGitServiceProvider context, WCTreeNode parent, GitItem item)
             :base(context, parent)
         {
             if (item == null)
@@ -34,7 +34,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 
     class WCFileNode : WCFileSystemNode
     {
-        public WCFileNode(IVisualGitServiceProvider context, WCTreeNode parent, SvnItem item)
+        public WCFileNode(IVisualGitServiceProvider context, WCTreeNode parent, GitItem item)
             : base(context, parent, item)
         {
         }
@@ -52,21 +52,21 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
             get
             {
                 IFileIconMapper iconMap = Context.GetService<IFileIconMapper>();
-                return iconMap.GetIcon(SvnItem.FullPath);
+                return iconMap.GetIcon(GitItem.FullPath);
             }
         }
 
-        public override void GetResources(System.Collections.ObjectModel.Collection<SvnItem> list, bool getChildItems, Predicate<SvnItem> filter)
+        public override void GetResources(System.Collections.ObjectModel.Collection<GitItem> list, bool getChildItems, Predicate<GitItem> filter)
         {
         }
 
         protected override void RefreshCore(bool rescan)
         {
-            if(SvnItem == null)
+            if(GitItem == null)
                 return;
              
             if(rescan)
-                StatusCache.MarkDirtyRecursive(SvnItem.FullPath);
+                StatusCache.MarkDirtyRecursive(GitItem.FullPath);
 
             if (TreeNode != null)
                 TreeNode.Refresh();
@@ -86,7 +86,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 
     class WCDirectoryNode : WCFileSystemNode
     {
-        public WCDirectoryNode(IVisualGitServiceProvider context, WCTreeNode parent, SvnItem item)
+        public WCDirectoryNode(IVisualGitServiceProvider context, WCTreeNode parent, GitItem item)
             : base(context, parent, item)
         {
         }
@@ -96,11 +96,11 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
             get 
             {
                 IFileIconMapper iconMap = Context.GetService<IFileIconMapper>();
-                return iconMap.GetIcon(SvnItem.FullPath);
+                return iconMap.GetIcon(GitItem.FullPath);
             }
         }
 
-        public override void GetResources(System.Collections.ObjectModel.Collection<SvnItem> list, bool getChildItems, Predicate<SvnItem> filter)
+        public override void GetResources(System.Collections.ObjectModel.Collection<GitItem> list, bool getChildItems, Predicate<GitItem> filter)
         {
         }
 
@@ -111,7 +111,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
         public override IEnumerable<WCTreeNode> GetChildren()
         {
             IFileStatusCache cache = Context.GetService<IFileStatusCache>();
-            foreach (SccFileSystemNode node in SccFileSystemNode.GetDirectoryNodes(SvnItem.FullPath))
+            foreach (SccFileSystemNode node in SccFileSystemNode.GetDirectoryNodes(GitItem.FullPath))
             {
                 if ((node.Attributes & (FileAttributes.Hidden | FileAttributes.System
                     | FileAttributes.Offline)) != 0)
@@ -126,7 +126,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 
         internal override bool ContainsDescendant(string path)
         {
-            return StatusCache[path].IsBelowPath(SvnItem);
+            return StatusCache[path].IsBelowPath(GitItem);
         }
     }
 }

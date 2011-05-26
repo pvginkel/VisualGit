@@ -14,7 +14,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsLocked)
                     return;
@@ -25,14 +25,14 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            PathSelectorInfo psi = new PathSelectorInfo("Select Files to Unlock", e.Selection.GetSelectedSvnItems(true));
+            PathSelectorInfo psi = new PathSelectorInfo("Select Files to Unlock", e.Selection.GetSelectedGitItems(true));
 
-            psi.VisibleFilter += delegate(SvnItem item)
+            psi.VisibleFilter += delegate(GitItem item)
                                      {
                                          return item.IsLocked;
                                      };
 
-            psi.CheckedFilter += delegate(SvnItem item)
+            psi.CheckedFilter += delegate(GitItem item)
                                      {
                                          return item.IsLocked;
                                      };
@@ -52,7 +52,7 @@ namespace VisualGit.Commands
 
             List<string> files = new List<string>();
 
-            foreach (SvnItem item in psr.Selection)
+            foreach (GitItem item in psr.Selection)
             {
                 files.Add(item.FullPath);
             }

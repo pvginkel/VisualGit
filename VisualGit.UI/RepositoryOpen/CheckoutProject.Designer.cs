@@ -72,7 +72,7 @@ namespace VisualGit.UI.RepositoryOpen
 			// 
 			resources.ApplyResources(this.version, "version");
 			this.version.Name = "version";
-			this.version.SvnOrigin = null;
+			this.version.GitOrigin = null;
 			// 
 			// checkOutFrom
 			// 

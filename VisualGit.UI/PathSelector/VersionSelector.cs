@@ -104,12 +104,12 @@ namespace VisualGit.UI.PathSelector
                     SetRevision(null);
                 }
                 else
-                    SetRevision(RevisionResolver.Resolve(SvnOrigin, value));
+                    SetRevision(RevisionResolver.Resolve(GitOrigin, value));
             }
         }
 
-        SvnOrigin _origin;
-        public SvnOrigin SvnOrigin
+        GitOrigin _origin;
+        public GitOrigin GitOrigin
         {
             get { return _origin; }
             set { _origin = value; EnsureList(); }
@@ -124,12 +124,12 @@ namespace VisualGit.UI.PathSelector
 
         private void EnsureList()
         {
-            if (RevisionResolver == null || SvnOrigin == null)
+            if (RevisionResolver == null || GitOrigin == null)
                 return;
 
             foreach (VisualGitRevisionType ri in new ArrayList(typeCombo.Items))
             {
-                if (!ri.IsValidOn(SvnOrigin))
+                if (!ri.IsValidOn(GitOrigin))
                 {
                     if (ri == _currentRevType)
                     {
@@ -143,13 +143,13 @@ namespace VisualGit.UI.PathSelector
             if (_revTypes != null)
                 foreach (VisualGitRevisionType rt in _revTypes)
                 {
-                    if (rt.IsValidOn(SvnOrigin) && !typeCombo.Items.Contains(rt))
+                    if (rt.IsValidOn(GitOrigin) && !typeCombo.Items.Contains(rt))
                         typeCombo.Items.Add(rt);
                 }
             else
                 _revTypes = new List<VisualGitRevisionType>();
 
-            foreach (VisualGitRevisionType rt in RevisionResolver.GetRevisionTypes(SvnOrigin))
+            foreach (VisualGitRevisionType rt in RevisionResolver.GetRevisionTypes(GitOrigin))
             {
                 if (_revTypes.Contains(rt))
                     continue;
@@ -160,15 +160,15 @@ namespace VisualGit.UI.PathSelector
 
             if (_currentRevType == null && _newValue != null && _newValue != SvnRevision.None)
             {
-                VisualGitRevisionType rt = RevisionResolver.Resolve(SvnOrigin, _newValue);
+                VisualGitRevisionType rt = RevisionResolver.Resolve(GitOrigin, _newValue);
 
-                if (rt != null && !rt.IsValidOn(SvnOrigin))
+                if (rt != null && !rt.IsValidOn(GitOrigin))
                 {
-                    _newValue = SvnOrigin.Target.Revision;
+                    _newValue = GitOrigin.Target.Revision;
                     if (_newValue == null || _newValue == SvnRevision.None)
-                        _newValue = (SvnOrigin.Target is SvnUriTarget) ? SvnRevision.Head : SvnRevision.Base;
+                        _newValue = (GitOrigin.Target is SvnUriTarget) ? SvnRevision.Head : SvnRevision.Base;
 
-                    rt = RevisionResolver.Resolve(SvnOrigin, _newValue);
+                    rt = RevisionResolver.Resolve(GitOrigin, _newValue);
                 }
 
                 SetRevision(rt);

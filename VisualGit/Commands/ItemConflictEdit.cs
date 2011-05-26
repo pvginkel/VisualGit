@@ -14,13 +14,13 @@ namespace VisualGit.Commands
         {
             if (e.Command == VisualGitCommand.DocumentConflictEdit)
             {
-                SvnItem item = e.Selection.ActiveDocumentItem;
+                GitItem item = e.Selection.ActiveDocumentItem;
 
                 if (item != null && item.IsConflicted)
                     return;
             }
             else
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     if (item.IsConflicted && item.Status.LocalContentStatus == SvnStatus.Conflicted)
                         return;
@@ -32,7 +32,7 @@ namespace VisualGit.Commands
         public override void OnExecute(CommandEventArgs e)
         {
             // TODO: Choose which conflict to edit if we have more than one!
-            SvnItem conflict = null;
+            GitItem conflict = null;
 
             if (e.Command == VisualGitCommand.DocumentConflictEdit)
             {
@@ -42,7 +42,7 @@ namespace VisualGit.Commands
                     return;
             }
             else
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     if (item.IsConflicted)
                     {

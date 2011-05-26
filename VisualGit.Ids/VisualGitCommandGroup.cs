@@ -168,10 +168,10 @@ namespace VisualGit
         MdiDocumentScc,
         DocumentPending,
 
-        SvnInfoTBOperations,
-        SvnInfoTBCommands,
-        SvnInfoTB3,
-        SvnInfoTB4,
-        SvnInfoTB5,
+        GitInfoTBOperations,
+        GitInfoTBCommands,
+        GitInfoTB3,
+        GitInfoTB4,
+        GitInfoTB5,
     }
 }

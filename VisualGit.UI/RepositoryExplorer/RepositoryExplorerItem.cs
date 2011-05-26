@@ -9,15 +9,15 @@ using System.Diagnostics;
 
 namespace VisualGit.UI.RepositoryExplorer
 {
-    sealed class RepositoryExplorerItem : VisualGitPropertyGridItem, ISvnRepositoryItem
+    sealed class RepositoryExplorerItem : VisualGitPropertyGridItem, IGitRepositoryItem
     {
         readonly IVisualGitServiceProvider _context;
         readonly RepositoryTreeNode _tn;
         readonly RepositoryListItem _li;        
         readonly string _name;
-        readonly SvnOrigin _origin;
+        readonly GitOrigin _origin;
 
-        public RepositoryExplorerItem(IVisualGitServiceProvider context, SvnOrigin origin, RepositoryTreeNode tn)
+        public RepositoryExplorerItem(IVisualGitServiceProvider context, GitOrigin origin, RepositoryTreeNode tn)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -30,7 +30,7 @@ namespace VisualGit.UI.RepositoryExplorer
             _name = tn.Text;
         }
 
-        public RepositoryExplorerItem(IVisualGitServiceProvider context, SvnOrigin origin, RepositoryListItem li)
+        public RepositoryExplorerItem(IVisualGitServiceProvider context, GitOrigin origin, RepositoryListItem li)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -106,7 +106,7 @@ namespace VisualGit.UI.RepositoryExplorer
             }
         }
 
-        [Category("Subversion"), DisplayName("Last Author")]
+        [Category("Git"), DisplayName("Last Author")]
         [Description("Author of the Last Commit")]
         public string LastCommittedAuthor
         {
@@ -120,7 +120,7 @@ namespace VisualGit.UI.RepositoryExplorer
             }
         }  
 
-        [Category("Subversion"), DisplayName("Last Revision")]
+        [Category("Git"), DisplayName("Last Revision")]
         [Description("Revision number of the Last Commit")]
         public long LastCommittedRevision
         {
@@ -134,7 +134,7 @@ namespace VisualGit.UI.RepositoryExplorer
             }
         }
 
-        [Category("Subversion"), DisplayName("Last Committed")]
+        [Category("Git"), DisplayName("Last Committed")]
         [Description("Time of the Last Commit")]
         public DateTime LastCommittedDate
         {
@@ -160,7 +160,7 @@ namespace VisualGit.UI.RepositoryExplorer
             get { return _tn; }
         }
 
-        SharpSvn.SvnNodeKind ISvnRepositoryItem.NodeKind
+        SharpSvn.SvnNodeKind IGitRepositoryItem.NodeKind
         {
             get
             {
@@ -179,16 +179,16 @@ namespace VisualGit.UI.RepositoryExplorer
         }
 
         [Browsable(false)]
-        public SvnOrigin Origin
+        public GitOrigin Origin
         {
             get { return _origin; }
         }
 
-        SharpSvn.SvnRevision ISvnRepositoryItem.Revision
+        SharpSvn.SvnRevision IGitRepositoryItem.Revision
         {
             get 
             {
-                SvnOrigin origin = Origin;
+                GitOrigin origin = Origin;
 
                 if (origin != null)
                     return origin.Target.Revision;

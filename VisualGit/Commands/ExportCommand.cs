@@ -6,14 +6,14 @@ using VisualGit.UI.Commands;
 namespace VisualGit.Commands
 {
     /// <summary>
-    /// Command to export a Subversion repository or local folder.
+    /// Command to export a Git repository or local folder.
     /// </summary>
     [Command(VisualGitCommand.Export, HideWhenDisabled = false)]
     class ExportCommand : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            SvnItem i = EnumTools.GetSingle(e.Selection.GetSelectedSvnItems(false));
+            GitItem i = EnumTools.GetSingle(e.Selection.GetSelectedGitItems(false));
 
             if (i == null)
                 e.Enabled = false;
@@ -22,7 +22,7 @@ namespace VisualGit.Commands
         {
             using (ExportDialog dlg = new ExportDialog(e.Context))
             {
-                dlg.OriginPath = EnumTools.GetSingle(e.Selection.GetSelectedSvnItems(false)).FullPath;
+                dlg.OriginPath = EnumTools.GetSingle(e.Selection.GetSelectedGitItems(false)).FullPath;
 
                 if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                     return;

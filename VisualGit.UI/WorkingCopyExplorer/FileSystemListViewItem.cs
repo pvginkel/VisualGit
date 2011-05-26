@@ -12,15 +12,15 @@ namespace VisualGit.UI.WorkingCopyExplorer
 {
     class FileSystemListViewItem : SmartListViewItem
     {
-        readonly SvnItem _svnItem;
+        readonly GitItem _gitItem;
 
-        public FileSystemListViewItem(SmartListView view, SvnItem item)
+        public FileSystemListViewItem(SmartListView view, GitItem item)
             : base(view)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
             
-            _svnItem = item;
+            _gitItem = item;
 
             ImageIndex = View.IconMapper.GetIcon(item.FullPath);
 
@@ -32,21 +32,21 @@ namespace VisualGit.UI.WorkingCopyExplorer
             get { return base.ListView as FileSystemDetailsView; }
         }
 
-        public SvnItem SvnItem
+        public GitItem GitItem
         {
             [DebuggerStepThrough]
-            get { return _svnItem; }
+            get { return _gitItem; }
         }
 
         PendingChangeStatus _chg;
     
         private void RefreshValues()
         {
-            bool exists = SvnItem.Exists;
-            string name = string.IsNullOrEmpty(SvnItem.Name) ? SvnItem.FullPath : SvnItem.Name;
+            bool exists = GitItem.Exists;
+            string name = string.IsNullOrEmpty(GitItem.Name) ? GitItem.FullPath : GitItem.Name;
 
-            VisualGitStatus status = SvnItem.Status;
-            PendingChangeKind kind = PendingChange.CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, SvnItem.IsTreeConflicted, SvnItem);
+            VisualGitStatus status = GitItem.Status;
+            PendingChangeKind kind = PendingChange.CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, GitItem.IsTreeConflicted, GitItem);
 
             if (_chg == null || _chg.State != kind)
                 _chg = new PendingChangeStatus(kind);
@@ -54,31 +54,31 @@ namespace VisualGit.UI.WorkingCopyExplorer
             SetValues(
                 name,
                 Modified.ToString("g"),
-                View.Context.GetService<IFileIconMapper>().GetFileType(SvnItem),
+                View.Context.GetService<IFileIconMapper>().GetFileType(GitItem),
                 _chg.ExplorerText,
-                SvnItem.Status.IsLockedLocal ? VisualGit.UI.PendingChanges.PCStrings.LockedValue : "",
-                SvnItem.Status.Revision.ToString(),
-                SvnItem.Status.LastChangeTime.ToLocalTime().ToString(),
-                SvnItem.Status.LastChangeRevision.ToString(),
-                SvnItem.Status.LastChangeAuthor,
-                SvnItem.Status.LocalContentStatus.ToString(),
-                SvnItem.Status.LocalPropertyStatus.ToString(),
-                SvnItem.Status.IsCopied.ToString(),
-                SvnItem.IsConflicted.ToString(),
-                SvnItem.FullPath
+                GitItem.Status.IsLockedLocal ? VisualGit.UI.PendingChanges.PCStrings.LockedValue : "",
+                GitItem.Status.Revision.ToString(),
+                GitItem.Status.LastChangeTime.ToLocalTime().ToString(),
+                GitItem.Status.LastChangeRevision.ToString(),
+                GitItem.Status.LastChangeAuthor,
+                GitItem.Status.LocalContentStatus.ToString(),
+                GitItem.Status.LocalPropertyStatus.ToString(),
+                GitItem.Status.IsCopied.ToString(),
+                GitItem.IsConflicted.ToString(),
+                GitItem.FullPath
                 );
 
-            StateImageIndex = (int)View.StatusMapper.GetStatusImageForSvnItem(SvnItem);
+            StateImageIndex = (int)View.StatusMapper.GetStatusImageForGitItem(GitItem);
         }
 
         internal bool IsDirectory
         {
-            get { return SvnItem.IsDirectory; }
+            get { return GitItem.IsDirectory; }
         }
 
         internal DateTime Modified
         {
-            get { return SvnItem.Modified; }
+            get { return GitItem.Modified; }
 
         }
     }

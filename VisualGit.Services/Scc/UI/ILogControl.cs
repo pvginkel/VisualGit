@@ -13,6 +13,6 @@ namespace VisualGit.Scc.UI
         void FetchAll();
         void Restart();
 
-        IList<SvnOrigin> Origins { get; }        
+        IList<GitOrigin> Origins { get; }        
     }
 }

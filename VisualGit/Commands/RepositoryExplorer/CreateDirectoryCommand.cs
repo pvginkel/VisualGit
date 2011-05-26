@@ -15,7 +15,7 @@ namespace VisualGit.Commands.RepositoryExplorer
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (item == null
                 || item.Origin == null
@@ -28,7 +28,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            ISvnRepositoryItem selected = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem selected = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             string directoryName = "";
 

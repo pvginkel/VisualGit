@@ -28,23 +28,23 @@ namespace VisualGit.Selection
         /// <returns></returns>
         IEnumerable<string> GetSelectedFiles(bool recursive);
         /// <summary>
-        /// Gets a list of the currently selected <see cref="SvnItem"/> instances, mapped via their path. See <see cref="GetSelectedFiles(Boolean)"/>
+        /// Gets a list of the currently selected <see cref="GitItem"/> instances, mapped via their path. See <see cref="GetSelectedFiles(Boolean)"/>
         /// </summary>
         /// <param name="recursive"></param>
         /// <returns></returns>
-        IEnumerable<SvnItem> GetSelectedSvnItems(bool recursive);
+        IEnumerable<GitItem> GetSelectedGitItems(bool recursive);
 
         /// <summary>
         /// Gets the projects owning selected files
         /// </summary>
         /// <returns></returns>
-        IEnumerable<SvnProject> GetOwnerProjects();
+        IEnumerable<GitProject> GetOwnerProjects();
 
         /// <summary>
         /// Gets a list of currently selected projects
         /// </summary>
         /// <returns></returns>
-        IEnumerable<SvnProject> GetSelectedProjects(bool recursive);
+        IEnumerable<GitProject> GetSelectedProjects(bool recursive);
 
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace VisualGit.Selection
         string ActiveDocumentFilename { get; }
 
         /// <summary>
-        /// Gets the active document SvnItem.
+        /// Gets the active document GitItem.
         /// </summary>
         /// <value>The active document item.</value>
-        SvnItem ActiveDocumentItem { get; }
+        GitItem ActiveDocumentItem { get; }
 
         /// <summary>
         /// Gets the .Net control of the <see cref="ISelectionContextEx.ActiveFrame"/>

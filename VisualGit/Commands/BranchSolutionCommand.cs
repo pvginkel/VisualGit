@@ -15,15 +15,15 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            SvnItem item = GetRoot(e);
+            GitItem item = GetRoot(e);
 
             if(item == null || !item.IsVersioned || item.IsDeleteScheduled || item.Status.LocalContentStatus == SvnStatus.Added || item.Uri == null)
                 e.Enabled = false;
         }
 
-        private static SvnItem GetRoot(BaseCommandEventArgs e)
+        private static GitItem GetRoot(BaseCommandEventArgs e)
         {
-            SvnItem item = null;
+            GitItem item = null;
             switch (e.Command)
             {
                 case VisualGitCommand.SolutionBranch:
@@ -39,11 +39,11 @@ namespace VisualGit.Commands
                     item = e.GetService<IFileStatusCache>()[root];
                     break;
                 case VisualGitCommand.ProjectBranch:
-                    SvnProject p = EnumTools.GetSingle(e.Selection.GetSelectedProjects(false));
+                    GitProject p = EnumTools.GetSingle(e.Selection.GetSelectedProjects(false));
                     if(p == null)
                         break;
 
-                    ISvnProjectInfo info = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
+                    IGitProjectInfo info = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
 
                     if (info == null || info.ProjectDirectory == null)
                         break;
@@ -57,7 +57,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {         
-            SvnItem root = GetRoot(e);
+            GitItem root = GetRoot(e);
 
             if (root == null)
                 return;

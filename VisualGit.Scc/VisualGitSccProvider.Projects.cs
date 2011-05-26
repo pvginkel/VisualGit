@@ -47,7 +47,7 @@ namespace VisualGit.Scc
             _managedSolution = asPrimarySccProvider;
         }
 
-        public bool IsProjectManaged(SvnProject project)
+        public bool IsProjectManaged(GitProject project)
         {
             if (!IsActive)
                 return false;
@@ -79,7 +79,7 @@ namespace VisualGit.Scc
             return false;
         }
 
-        public void SetProjectManaged(SvnProject project, bool managed)
+        public void SetProjectManaged(GitProject project, bool managed)
         {
             if (!IsActive)
                 return; // Perhaps allow clearing management settings?
@@ -90,7 +90,7 @@ namespace VisualGit.Scc
                 SetProjectManagedRaw(project.RawHandle, managed);
         }
 
-        public void EnsureCheckOutReference(SvnProject project)
+        public void EnsureCheckOutReference(GitProject project)
         {
             // NOOP for today
         }
@@ -297,12 +297,12 @@ namespace VisualGit.Scc
             }
             else
             {
-                if (SvnItem.IsValidPath(dir))
+                if (GitItem.IsValidPath(dir))
                     _solutionDirectory = SvnTools.GetTruePath(dir, true) ?? SvnTools.GetNormalizedFullPath(dir);
                 else
                     _solutionDirectory = "";
 
-                if (SvnItem.IsValidPath(path))
+                if (GitItem.IsValidPath(path))
                     _solutionFile = SvnTools.GetTruePath(path, true) ?? SvnTools.GetNormalizedFullPath(path);
                 else
                     _solutionFile = "";
@@ -574,13 +574,13 @@ namespace VisualGit.Scc
                 List<string> files = _delayedDelete;
                 _delayedDelete = null;
 
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
                     foreach (string file in files)
                     {
                         if (!File.Exists(file))
                         {
-                            svn.SafeDeleteFile(file);
+                            git.SafeDeleteFile(file);
                             MarkDirty(file);
                         }
                     }
@@ -592,20 +592,20 @@ namespace VisualGit.Scc
                 List<FixUp> files = _delayedMove;
                 _delayedMove = null;
 
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
                     foreach (FixUp fu in files)
                     {
-                        if (!svn.IsUnversioned(fu.From) && svn.IsUnversioned(fu.To))
+                        if (!git.IsUnversioned(fu.From) && git.IsUnversioned(fu.To))
                         {
-                            svn.SafeWcMoveFixup(fu.From, fu.To);
+                            git.SafeWcMoveFixup(fu.From, fu.To);
                         }
                     }
                 }
             }
             if (_backupMap.Count > 0)
             {
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
                     foreach (KeyValuePair<string, string> dir in _backupMap)
                     {
@@ -618,13 +618,13 @@ namespace VisualGit.Scc
                         if (Directory.Exists(originalDir))
                         {
                             // The original has not been deleted by visual studio, must be an exclude.
-                            svn.DeleteDirectory(backupDir);
+                            git.DeleteDirectory(backupDir);
                         }
                         else
                         {
-                            // Original is gone, must be a delete, put back backup so we can svn-delete it
-                            SvnSccContext.RetriedRename(backupDir, originalDir); // Use retried rename, to prevent virus-scanner locks
-                            svn.WcDelete(originalDir);
+                            // Original is gone, must be a delete, put back backup so we can git-delete it
+                            GitSccContext.RetriedRename(backupDir, originalDir); // Use retried rename, to prevent virus-scanner locks
+                            git.WcDelete(originalDir);
                         }
                     }
                 }
@@ -632,7 +632,7 @@ namespace VisualGit.Scc
             }
         }
 
-        public void ScheduleSvnRefresh(List<SvnClientAction> sccRefreshItems)
+        public void ScheduleGitRefresh(List<GitClientAction> sccRefreshItems)
         {
             if (sccRefreshItems == null)
                 throw new ArgumentNullException("sccRefreshItems");
@@ -649,7 +649,7 @@ namespace VisualGit.Scc
                             if (!dir.EndsWith("\\"))
                                 dir += "\\";
 
-                            foreach (SvnClientAction action in sccRefreshItems)
+                            foreach (GitClientAction action in sccRefreshItems)
                             {
                                 if (action.FullPath.StartsWith(dir, StringComparison.OrdinalIgnoreCase))
                                 {
@@ -679,25 +679,25 @@ namespace VisualGit.Scc
                 cmd.PostTickCommand(ref _registeredSccCleanup, VisualGitCommand.SccFinishTasks);
         }
 
-        int _disableSvnUpdates;
-        public IDisposable DisableSvnUpdates()
+        int _disableGitUpdates;
+        public IDisposable DisableGitUpdates()
         {
-            _disableSvnUpdates++;
+            _disableGitUpdates++;
 
-            return new UndisableSvnUpdate(this);
+            return new UndisableGitUpdate(this);
         }
 
-        public bool SvnUpdatesDisabled
+        public bool GitUpdatesDisabled
         {
             [DebuggerStepThrough]
-            get { return _disableSvnUpdates > 0; }
+            get { return _disableGitUpdates > 0; }
         }
 
-        sealed class UndisableSvnUpdate : IDisposable
+        sealed class UndisableGitUpdate : IDisposable
         {
             readonly VisualGitSccProvider _provider;
             bool _disposed;
-            public UndisableSvnUpdate(VisualGitSccProvider provider)
+            public UndisableGitUpdate(VisualGitSccProvider provider)
             {
                 _provider = provider;
             }
@@ -708,7 +708,7 @@ namespace VisualGit.Scc
                 if (_disposed)
                     return;
                 _disposed = true;
-                _provider._disableSvnUpdates--;
+                _provider._disableGitUpdates--;
             }
 
             #endregion

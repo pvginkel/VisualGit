@@ -32,12 +32,12 @@ namespace VisualGit.UI.RepositoryExplorer.Dialogs
         }
 
         Uri[] _uris;
-        public void SetUris(IEnumerable<SvnOrigin> uris)
+        public void SetUris(IEnumerable<GitOrigin> uris)
         {
             deleteList.ClearSelected();
 
-            SortedDictionary<Uri,SvnOrigin> d = new SortedDictionary<Uri, SvnOrigin>(UriComparer.Default);
-            foreach (SvnOrigin o in uris)
+            SortedDictionary<Uri,GitOrigin> d = new SortedDictionary<Uri, GitOrigin>(UriComparer.Default);
+            foreach (GitOrigin o in uris)
             {
                 SvnUriTarget ut = o.Target as SvnUriTarget;
                 if (ut != null)
@@ -48,7 +48,7 @@ namespace VisualGit.UI.RepositoryExplorer.Dialogs
 
             _uris = new Uri[d.Count];
             List<Uri> newUris = new List<Uri>();
-            foreach (SvnOrigin o in d.Values)
+            foreach (GitOrigin o in d.Values)
             {
                 deleteList.Items.Add(o.Uri);
                 newUris.Add(SvnTools.GetNormalizedUri(o.Uri));

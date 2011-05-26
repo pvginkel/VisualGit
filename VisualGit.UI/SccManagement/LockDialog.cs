@@ -82,7 +82,7 @@ namespace VisualGit.UI.SccManagement
         /// The items to put in the treeview.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ICollection<SvnItem> Items
+        public ICollection<GitItem> Items
         {
             get { return this.pathSelectionTreeView.Items; }
             set { this.pathSelectionTreeView.Items = value; }
@@ -92,7 +92,7 @@ namespace VisualGit.UI.SccManagement
         /// The items checked in the treeview.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IEnumerable<SvnItem> CheckedItems
+        public IEnumerable<GitItem> CheckedItems
         {
             get { return this.pathSelectionTreeView.CheckedItems; }
         }
@@ -138,7 +138,7 @@ namespace VisualGit.UI.SccManagement
         private void pathSelectionTreeView_AfterCheck(object sender, TreeViewEventArgs e)
         {
             bool result = false;
-            foreach (SvnItem item in this.CheckedItems)
+            foreach (GitItem item in this.CheckedItems)
             {
                 // enable when a checked file is discovered.
                 if (item.IsFile)

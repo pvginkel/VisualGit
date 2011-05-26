@@ -61,11 +61,11 @@ namespace VisualGit {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Would you like to add &apos;{0}&apos; to Subversion and mark it as managed?.
+        ///   Looks up a localized string similar to Would you like to add &apos;{0}&apos; to Git and mark it as managed?.
         /// </summary>
-        internal static string AddSolutionXToSubversion {
+        internal static string AddSolutionXToGit {
             get {
-                return ResourceManager.GetString("AddSolutionXToSubversion", resourceCulture);
+                return ResourceManager.GetString("AddSolutionXToGit", resourceCulture);
             }
         }
         
@@ -89,7 +89,7 @@ namespace VisualGit {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Would you like to mark &apos;{0}&apos; as managed by Subversion?.
+        ///   Looks up a localized string similar to Would you like to mark &apos;{0}&apos; as managed by Git?.
         /// </summary>
         internal static string MarkXAsManaged {
             get {

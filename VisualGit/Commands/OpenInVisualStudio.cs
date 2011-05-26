@@ -21,7 +21,7 @@ namespace VisualGit.Commands
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
             bool first = true;
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (!item.Exists)
                     continue;
@@ -58,7 +58,7 @@ namespace VisualGit.Commands
         public override void OnExecute(CommandEventArgs e)
         {
             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (!item.Exists)
                     continue;

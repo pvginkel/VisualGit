@@ -42,11 +42,11 @@ namespace VisualGit.UI.MergeWizard
                 {
                     _mergeDepths = new Dictionary<SvnDepth, string>();
 
-                    _mergeDepths.Add(SvnDepth.Unknown, MergeStrings.SvnDepthUnknown);
-                    _mergeDepths.Add(SvnDepth.Infinity, MergeStrings.SvnDepthInfinity);
-                    _mergeDepths.Add(SvnDepth.Children, MergeStrings.SvnDepthChildren);
-                    _mergeDepths.Add(SvnDepth.Files, MergeStrings.SvnDepthFiles);
-                    _mergeDepths.Add(SvnDepth.Empty, MergeStrings.SvnDepthEmpty);
+                    _mergeDepths.Add(SvnDepth.Unknown, MergeStrings.GitDepthUnknown);
+                    _mergeDepths.Add(SvnDepth.Infinity, MergeStrings.GitDepthInfinity);
+                    _mergeDepths.Add(SvnDepth.Children, MergeStrings.GitDepthChildren);
+                    _mergeDepths.Add(SvnDepth.Files, MergeStrings.GitDepthFiles);
+                    _mergeDepths.Add(SvnDepth.Empty, MergeStrings.GitDepthEmpty);
                 }
 
                 return _mergeDepths;
@@ -56,7 +56,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Returns a list of strings for the suggested merge sources.
         /// </summary>
-        internal SvnMergeSourcesCollection GetSuggestedMergeSources(SvnItem target)
+        internal SvnMergeSourcesCollection GetSuggestedMergeSources(GitItem target)
         {
             using (SvnClient client = GetClient())
             {
@@ -72,7 +72,7 @@ namespace VisualGit.UI.MergeWizard
         }
         
     
-        internal SvnMergeItemCollection GetAppliedMerges(SvnItem target)
+        internal SvnMergeItemCollection GetAppliedMerges(GitItem target)
         {
             using (SvnClient client = GetClient())
             {
@@ -93,7 +93,7 @@ namespace VisualGit.UI.MergeWizard
         /// </summary>
         public SvnClient GetClient()
         {
-            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
+            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
 
             if (pool != null)
                 return pool.GetClient();
@@ -103,7 +103,7 @@ namespace VisualGit.UI.MergeWizard
 
         public SvnWorkingCopyClient GetWcClient()
         {
-            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
+            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
 
             if (pool != null)
                 return pool.GetWcClient();

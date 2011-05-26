@@ -6,14 +6,14 @@ using VisualGit.UI;
 
 namespace VisualGit.Scc
 {
-    partial class SvnItemData
+    partial class GitItemData
     {
         [TypeConverter(typeof(ChangeListTypeConverter)), ImmutableObject(true)]
-        public sealed class SvnChangeList
+        public sealed class GitChangeList
         {
             readonly string _list;
 
-            public SvnChangeList(string list)
+            public GitChangeList(string list)
             {
                 if (list == null)
                     throw new ArgumentNullException("list");
@@ -33,10 +33,10 @@ namespace VisualGit.Scc
 
             public override bool Equals(object obj)
             {
-                return Equals(obj as SvnChangeList);
+                return Equals(obj as GitChangeList);
             }
 
-            public bool Equals(SvnChangeList obj)
+            public bool Equals(GitChangeList obj)
             {
                 if (obj == null)
                     return false;
@@ -49,18 +49,18 @@ namespace VisualGit.Scc
                 return StringComparer.Ordinal.GetHashCode(List);
             }
 
-            public static implicit operator string(SvnChangeList list)
+            public static implicit operator string(GitChangeList list)
             {
                 if (list == null)
                     return null;
                 return list.List;
             }
 
-            public static implicit operator SvnChangeList(string list)
+            public static implicit operator GitChangeList(string list)
             {
                 if (list == null)
                     return null;
-                return new SvnChangeList(list);
+                return new GitChangeList(list);
             }
         }
 
@@ -68,7 +68,7 @@ namespace VisualGit.Scc
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                if (typeof(string).IsAssignableFrom(sourceType) || sourceType == typeof(SvnChangeList))
+                if (typeof(string).IsAssignableFrom(sourceType) || sourceType == typeof(GitChangeList))
                     return true;
 
                 return base.CanConvertFrom(context, sourceType);
@@ -76,14 +76,14 @@ namespace VisualGit.Scc
 
             public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
             {
-                SvnChangeList chl = value as SvnChangeList;
+                GitChangeList chl = value as GitChangeList;
                 if (chl != null)
                     return chl;
 
                 string cl = value as string;
 
                 if (cl != null)
-                    return string.IsNullOrEmpty(cl) ? null : new SvnChangeList(cl);
+                    return string.IsNullOrEmpty(cl) ? null : new GitChangeList(cl);
 
                 return base.ConvertFrom(context, culture, value);
             }
@@ -92,7 +92,7 @@ namespace VisualGit.Scc
             {
                 if (destinationType == null)
                     throw new ArgumentNullException("destinationType");
-                if (destinationType.IsAssignableFrom(typeof(string)) || destinationType == typeof(SvnChangeList))
+                if (destinationType.IsAssignableFrom(typeof(string)) || destinationType == typeof(GitChangeList))
                     return true;
 
                 return base.CanConvertTo(context, destinationType);
@@ -103,12 +103,12 @@ namespace VisualGit.Scc
                 if (destinationType == null)
                     throw new ArgumentNullException("destinationType");
 
-                SvnChangeList chl = value as SvnChangeList;
+                GitChangeList chl = value as GitChangeList;
                 string listName = chl != null ? chl.List : null;
 
                 if (destinationType.IsAssignableFrom(typeof(string)))
                     return listName;
-                else if (destinationType == typeof(SvnChangeList))
+                else if (destinationType == typeof(GitChangeList))
                     return chl;
 
                 return base.ConvertTo(context, culture, value, destinationType);
@@ -116,7 +116,7 @@ namespace VisualGit.Scc
 
             public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
             {
-                List<SvnChangeList> names = new List<SvnChangeList>();
+                List<GitChangeList> names = new List<GitChangeList>();
 
                 if (context != null)
                 {

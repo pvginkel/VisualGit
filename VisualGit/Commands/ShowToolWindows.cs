@@ -9,7 +9,7 @@ namespace VisualGit.Commands
     /// </summary>
     [Command(VisualGitCommand.ShowPendingChanges)]
     [Command(VisualGitCommand.ShowWorkingCopyExplorer)]
-    [Command(VisualGitCommand.ShowSubversionInfo)]
+    [Command(VisualGitCommand.ShowGitInfo)]
     [Command(VisualGitCommand.ShowRepositoryExplorer, AlwaysAvailable=true)]
     class ShowToolWindows : CommandBase
     {
@@ -39,8 +39,8 @@ namespace VisualGit.Commands
                 case VisualGitCommand.ShowRepositoryExplorer:
                     toolWindow = VisualGitToolWindow.RepositoryExplorer;
                     break;
-                case VisualGitCommand.ShowSubversionInfo:
-                    toolWindow = VisualGitToolWindow.SvnInfo;
+                case VisualGitCommand.ShowGitInfo:
+                    toolWindow = VisualGitToolWindow.GitInfo;
                     break;
                 default:
                     return;

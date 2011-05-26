@@ -55,7 +55,7 @@ namespace VisualGit.UI.MergeWizard
 
                 using (SvnWorkingCopyClient client = wizard.MergeUtils.GetWcClient())
                 {
-                    SvnItem mergeTarget = wizard.MergeTarget;
+                    GitItem mergeTarget = wizard.MergeTarget;
 
                     SvnWorkingCopyVersion wcRevision;
                     client.GetVersion(mergeTarget.FullPath, out wcRevision);

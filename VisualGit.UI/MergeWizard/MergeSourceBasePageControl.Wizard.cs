@@ -65,7 +65,7 @@ namespace VisualGit.UI.MergeWizard
         /// </summary>
         internal virtual MergeWizard.MergeType MergeType { get { throw new NotImplementedException(); } }
 
-        internal virtual ICollection<Uri> GetMergeSources(SvnItem target)
+        internal virtual ICollection<Uri> GetMergeSources(GitItem target)
         {
             SvnMergeSourcesCollection sources = Wizard.MergeUtils.GetSuggestedMergeSources(target);
 

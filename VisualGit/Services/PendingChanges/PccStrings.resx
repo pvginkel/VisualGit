@@ -142,7 +142,7 @@
     <value>Failed to save open documents before committing</value>
   </data>
   <data name="InvalidCommitCombination" xml:space="preserve">
-    <value>Subversion does not allow to commit this combination of files and directories at once.</value>
+    <value>Git does not allow to commit this combination of files and directories at once.</value>
   </data>
   <data name="PostCommitError" xml:space="preserve">
     <value>Repository Post-Commit hook Result</value>

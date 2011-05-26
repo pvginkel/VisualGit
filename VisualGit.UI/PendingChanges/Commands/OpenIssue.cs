@@ -150,7 +150,7 @@ namespace VisualGit.UI.PendingChanges.Commands
                     break;
                 case VisualGitCommand.LogOpenIssue:
                     {
-                        ISvnLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+                        IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
                         if (item == null)
                             e.Enabled = false;
                         else if (EnumTools.IsEmpty(item.Issues))
@@ -172,7 +172,7 @@ namespace VisualGit.UI.PendingChanges.Commands
             {
                 case VisualGitCommand.LogOpenIssue:
                     {
-                        ISvnLogItem selectedLog = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+                        IGitLogItem selectedLog = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
                         if (selectedLog == null)
                             return;
 

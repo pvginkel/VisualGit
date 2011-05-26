@@ -177,13 +177,13 @@ namespace VisualGit.UI.MergeWizard
             ComboBox box = (ComboBox)sender;
             SvnDepth depth = SvnDepth.Unknown;
 
-            if (box.Text == MergeStrings.SvnDepthInfinity)
+            if (box.Text == MergeStrings.GitDepthInfinity)
                 depth = SvnDepth.Infinity;
-            else if (box.Text == MergeStrings.SvnDepthChildren)
+            else if (box.Text == MergeStrings.GitDepthChildren)
                 depth = SvnDepth.Children;
-            else if (box.Text == MergeStrings.SvnDepthFiles)
+            else if (box.Text == MergeStrings.GitDepthFiles)
                 depth = SvnDepth.Files;
-            else if (box.Text == MergeStrings.SvnDepthEmpty)
+            else if (box.Text == MergeStrings.GitDepthEmpty)
                 depth = SvnDepth.Empty;
 
             Depth = depth;

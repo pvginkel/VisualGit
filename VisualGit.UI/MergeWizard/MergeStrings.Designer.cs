@@ -183,6 +183,51 @@ namespace VisualGit.UI.MergeWizard {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Immediate children, including folders.
+        /// </summary>
+        internal static string GitDepthChildren {
+            get {
+                return ResourceManager.GetString("GitDepthChildren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only this item.
+        /// </summary>
+        internal static string GitDepthEmpty {
+            get {
+                return ResourceManager.GetString("GitDepthEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only file children.
+        /// </summary>
+        internal static string GitDepthFiles {
+            get {
+                return ResourceManager.GetString("GitDepthFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fully recursive.
+        /// </summary>
+        internal static string GitDepthInfinity {
+            get {
+                return ResourceManager.GetString("GitDepthInfinity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working copy.
+        /// </summary>
+        internal static string GitDepthUnknown {
+            get {
+                return ResourceManager.GetString("GitDepthUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HEAD.
         /// </summary>
         internal static string HEAD {
@@ -604,51 +649,6 @@ namespace VisualGit.UI.MergeWizard {
             get {
                 object obj = ResourceManager.GetObject("SuccessImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Immediate children, including folders.
-        /// </summary>
-        internal static string SvnDepthChildren {
-            get {
-                return ResourceManager.GetString("SvnDepthChildren", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only this item.
-        /// </summary>
-        internal static string SvnDepthEmpty {
-            get {
-                return ResourceManager.GetString("SvnDepthEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Only file children.
-        /// </summary>
-        internal static string SvnDepthFiles {
-            get {
-                return ResourceManager.GetString("SvnDepthFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fully recursive.
-        /// </summary>
-        internal static string SvnDepthInfinity {
-            get {
-                return ResourceManager.GetString("SvnDepthInfinity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Working copy.
-        /// </summary>
-        internal static string SvnDepthUnknown {
-            get {
-                return ResourceManager.GetString("SvnDepthUnknown", resourceCulture);
             }
         }
         

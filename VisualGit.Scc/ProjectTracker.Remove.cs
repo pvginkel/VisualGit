@@ -35,7 +35,7 @@ namespace VisualGit.Scc
             {
                 string s = rgpszMkDocuments[i];
 
-                if (!string.IsNullOrEmpty(s) && SvnItem.IsValidPath(s))
+                if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
                     StatusCache.MarkDirty(SvnTools.GetNormalizedFullPath(s));
             }
 
@@ -55,7 +55,7 @@ namespace VisualGit.Scc
 
                     string file = rgpszMkDocuments[iFile];
 
-                    if (string.IsNullOrEmpty(file) || !SvnItem.IsValidPath(file))
+                    if (string.IsNullOrEmpty(file) || !GitItem.IsValidPath(file))
                         continue;
 
                     file = SvnTools.GetNormalizedFullPath(file);
@@ -81,7 +81,7 @@ namespace VisualGit.Scc
 
                 string dir = rgpszMkDocuments[i];
 
-                if (string.IsNullOrEmpty(dir) || !SvnItem.IsValidPath(dir))
+                if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
                 dir = SvnTools.GetNormalizedFullPath(dir);
@@ -116,7 +116,7 @@ namespace VisualGit.Scc
             {
                 string s = rgpszMkDocuments[i];
 
-                if (!string.IsNullOrEmpty(s) && SvnItem.IsValidPath(s))
+                if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
                     StatusCache.MarkDirty(SvnTools.GetNormalizedFullPath(s));
             }
 
@@ -134,7 +134,7 @@ namespace VisualGit.Scc
 
                     string dir = rgpszMkDocuments[iDirectory];
 
-                    if (string.IsNullOrEmpty(dir) || !SvnItem.IsValidPath(dir))
+                    if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                         continue;
 
                     dir = SvnTools.GetNormalizedFullPath(dir);

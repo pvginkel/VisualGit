@@ -135,7 +135,7 @@
   <data name="label1.Text" xml:space="preserve">
     <value>The disk drive that contains your Solution File is formatted with the FAT or FAT32 filesystem.
 
-For better Subversion stability and greater Visual Studio performance it is recommended to upgrade this filesystem to a more modern filesystem such as NTFS (Harddrives) or exFAT (Memory sticks).</value>
+For better Git stability and greater Visual Studio performance it is recommended to upgrade this filesystem to a more modern filesystem such as NTFS (Harddrives) or exFAT (Memory sticks).</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>

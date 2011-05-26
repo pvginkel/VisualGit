@@ -78,10 +78,10 @@ namespace VisualGit.Scc
 
             MarkDirty(filename);
 
-            if (SvnUpdatesDisabled || !StatusCache[filename].IsVersioned)
+            if (GitUpdatesDisabled || !StatusCache[filename].IsVersioned)
                 return; // Don't bother
 
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
                 if (File.Exists(filename))
                 {
@@ -98,10 +98,10 @@ namespace VisualGit.Scc
                     return;
                 }
 
-                if (svn.IsUnversioned(filename))
+                if (git.IsUnversioned(filename))
                     return;
 
-                svn.SafeDeleteFile(filename);
+                git.SafeDeleteFile(filename);
             }
         }
 
@@ -119,22 +119,22 @@ namespace VisualGit.Scc
                 // Don't backup twice
                 string oldBackup = _backupMap[fullPath];
                 _backupMap.Remove(fullPath);
-                using (SvnSccContext svn = new SvnSccContext(this))
+                using (GitSccContext git = new GitSccContext(this))
                 {
-                    svn.DeleteDirectory(oldBackup);
+                    git.DeleteDirectory(oldBackup);
                 }
             }
             else
             {
-                SvnItem dir = StatusCache[fullPath];
+                GitItem dir = StatusCache[fullPath];
 
                 if (!dir.IsVersioned)
                     return; // Nothing to do for us
             }
 
-            using (SvnSccContext svn = new SvnSccContext(this))
+            using (GitSccContext git = new GitSccContext(this))
             {
-                _backupMap.Add(fullPath, svn.MakeBackup(fullPath));
+                _backupMap.Add(fullPath, git.MakeBackup(fullPath));
             }
 
             RegisterForSccCleanup();
@@ -210,15 +210,15 @@ namespace VisualGit.Scc
             if (!IsActive)
                 return;
 
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!svn.CouldAdd(newName, SvnNodeKind.File))
+                if (!git.CouldAdd(newName, SvnNodeKind.File))
                 {
                     ok = false;
                     return;
                 }
 
-                if (svn.IsUnversioned(oldName))
+                if (git.IsUnversioned(oldName))
                     return;
             }
         }
@@ -234,15 +234,15 @@ namespace VisualGit.Scc
             //    // TODO: Is enlisted -> Ask user!
             //}
 
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!svn.CouldAdd(newName, SvnNodeKind.File))
+                if (!git.CouldAdd(newName, SvnNodeKind.File))
                 {
                     ok = false;
                     return;
                 }
 
-                if (svn.IsUnversioned(oldName))
+                if (git.IsUnversioned(oldName))
                     return;
             }
         }
@@ -268,12 +268,12 @@ namespace VisualGit.Scc
             if (!IsActive)
                 return;
 
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!svn.IsUnversioned(oldName))
+                if (!git.IsUnversioned(oldName))
                 {
                     if (!Directory.Exists(newName)) // Fails if the new name is a directory!
-                        svn.SafeWcMoveFixup(oldName, newName);
+                        git.SafeWcMoveFixup(oldName, newName);
                 }
 
                 MarkDirty(new string[] { oldName, newName }, true);
@@ -287,13 +287,13 @@ namespace VisualGit.Scc
 
             _solutionDirectory = _solutionFile = null; // Get new data after this rename
 
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!svn.IsUnversioned(oldName))
+                if (!git.IsUnversioned(oldName))
                 {
                     try
                     {
-                        svn.SafeWcMoveFixup(oldName, newName);
+                        git.SafeWcMoveFixup(oldName, newName);
                     }
                     catch (IOException)
                     {
@@ -337,7 +337,7 @@ namespace VisualGit.Scc
             if (!IsActive)
                 return;
 
-            // TODO: Is the file managed in Subversion: Verify renaming of more than casing
+            // TODO: Is the file managed in Git: Verify renaming of more than casing
             if (oldName != newName && string.Equals(oldName, newName, StringComparison.OrdinalIgnoreCase))
             {
                 ok = false; // For now just disallow casing only changes
@@ -377,7 +377,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            Monitor.ScheduleSvnStatus(path);
+            Monitor.ScheduleGitStatus(path);
         }
 
         void MarkDirty(IEnumerable<string> paths, bool addToMonitorList)
@@ -388,7 +388,7 @@ namespace VisualGit.Scc
             if (addToMonitorList)
                 Monitor.ScheduleMonitor(paths);
 
-            Monitor.ScheduleSvnStatus(paths);
+            Monitor.ScheduleGitStatus(paths);
         }
 
 
@@ -414,7 +414,7 @@ namespace VisualGit.Scc
 
         #region IProjectFileMapper Members
 
-        public IEnumerable<VisualGit.Selection.SvnProject> GetAllProjectsContaining(string path)
+        public IEnumerable<VisualGit.Selection.GitProject> GetAllProjectsContaining(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -426,15 +426,15 @@ namespace VisualGit.Scc
             {
                 foreach (SccProjectData pd in file.GetOwnerProjects())
                 {
-                    yield return pd.SvnProject;
+                    yield return pd.GitProject;
                 }
             }
 
             if (string.Equals(path, SolutionFilename, StringComparison.OrdinalIgnoreCase))
-                yield return SvnProject.Solution;
+                yield return GitProject.Solution;
         }
 
-        public IEnumerable<SvnProject> GetAllProjectsContaining(IEnumerable<string> paths)
+        public IEnumerable<GitProject> GetAllProjectsContaining(IEnumerable<string> paths)
         {
             if (paths == null)
                 throw new ArgumentNullException("paths");
@@ -454,15 +454,15 @@ namespace VisualGit.Scc
 
                         projects.Add(pd, pd);
 
-                        yield return pd.SvnProject;
+                        yield return pd.GitProject;
                     }
                 }
 
-                if (!projects.Contains(SvnProject.Solution)
+                if (!projects.Contains(GitProject.Solution)
                     && string.Equals(path, SolutionFilename, StringComparison.OrdinalIgnoreCase))
                 {
-                    projects.Add(SvnProject.Solution, SvnProject.Solution);
-                    yield return SvnProject.Solution;
+                    projects.Add(GitProject.Solution, GitProject.Solution);
+                    yield return GitProject.Solution;
                 }
             }
         }
@@ -471,10 +471,10 @@ namespace VisualGit.Scc
         /// Gets all projects.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<VisualGit.Selection.SvnProject> GetAllProjects()
+        public IEnumerable<VisualGit.Selection.GitProject> GetAllProjects()
         {
             foreach (SccProjectData pd in _projectMap.Values)
-                yield return pd.SvnProject;
+                yield return pd.GitProject;
         }
 
         /// <summary>
@@ -501,7 +501,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="project"></param>
         /// <returns></returns>
-        public IEnumerable<string> GetAllFilesOf(VisualGit.Selection.SvnProject project)
+        public IEnumerable<string> GetAllFilesOf(VisualGit.Selection.GitProject project)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
@@ -531,13 +531,13 @@ namespace VisualGit.Scc
             }
         }
 
-        public IEnumerable<string> GetAllFilesOf(ICollection<SvnProject> projects)
+        public IEnumerable<string> GetAllFilesOf(ICollection<GitProject> projects)
         {
             SortedList<string, string> files = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase);
             Hashtable handled = new Hashtable();
-            foreach (SvnProject p in projects)
+            foreach (GitProject p in projects)
             {
-                SvnProject project = ResolveRawProject(p);
+                GitProject project = ResolveRawProject(p);
 
                 IVsSccProject2 scc = project.RawHandle;
                 SccProjectData data;
@@ -587,7 +587,7 @@ namespace VisualGit.Scc
             return files.ToArray();
         }
 
-        public SvnProject ResolveRawProject(SvnProject project)
+        public GitProject ResolveRawProject(GitProject project)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
@@ -600,7 +600,7 @@ namespace VisualGit.Scc
                 {
                     foreach (SccProjectData p in file.GetOwnerProjects())
                     {
-                        return p.SvnProject;
+                        return p.GitProject;
                     }
                 }
             }
@@ -633,7 +633,7 @@ namespace VisualGit.Scc
             return null;
         }
 
-        public ISvnProjectInfo GetProjectInfo(SvnProject project)
+        public IGitProjectInfo GetProjectInfo(GitProject project)
         {
             if (project == null)
                 return null;
@@ -674,7 +674,7 @@ namespace VisualGit.Scc
 
         #endregion
 
-        public IEnumerable<SvnItem> GetUpdateRoots(SvnProject project)
+        public IEnumerable<GitItem> GetUpdateRoots(GitProject project)
         {
             if (project != null)
                 return GetSingleProjectRoots(project);
@@ -682,11 +682,11 @@ namespace VisualGit.Scc
             return GetSolutionProjectRoots();
         }
 
-        private IEnumerable<SvnItem> GetSolutionProjectRoots()
+        private IEnumerable<GitItem> GetSolutionProjectRoots()
         {
-            Dictionary<string, SvnItem> roots = new Dictionary<string, SvnItem>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, GitItem> roots = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
 
-            SvnItem root = SolutionSettings.ProjectRootSvnItem;
+            GitItem root = SolutionSettings.ProjectRootGitItem;
             if (root != null)
             {
                 if (root.IsVersioned)
@@ -704,19 +704,19 @@ namespace VisualGit.Scc
                 if (dir == null || roots.ContainsKey(dir))
                     continue;
 
-                SvnItem pItem = StatusCache[dir];
+                GitItem pItem = StatusCache[dir];
                 if (pItem == null || !pItem.Exists)
                     continue;
 
-                SvnWorkingCopy wc = pItem.WorkingCopy;
+                GitWorkingCopy wc = pItem.WorkingCopy;
 
                 if (wc == null || roots.ContainsKey(wc.FullPath))
                     continue;
 
-                SvnItem wcItem = StatusCache[wc.FullPath];
+                GitItem wcItem = StatusCache[wc.FullPath];
 
                 bool below = false;
-                foreach (SvnItem r in roots.Values)
+                foreach (GitItem r in roots.Values)
                 {
                     if (r.WorkingCopy != wc) // same working copy?
                         continue;
@@ -742,13 +742,13 @@ namespace VisualGit.Scc
             return roots.Values;
         }
 
-        private IEnumerable<SvnItem> GetSingleProjectRoots(SvnProject project)
+        private IEnumerable<GitItem> GetSingleProjectRoots(GitProject project)
         {
             SccProjectData pd;
             if (project.RawHandle == null || !_projectMap.TryGetValue(project.RawHandle, out pd))
                 yield break;
 
-            SvnItem projectRootItem = null;
+            GitItem projectRootItem = null;
             if (!string.IsNullOrEmpty(pd.ProjectDirectory))
             {
                 projectRootItem = StatusCache[pd.ProjectDirectory];
@@ -759,10 +759,10 @@ namespace VisualGit.Scc
 
             string file = pd.ProjectFile;
 
-            if (string.IsNullOrEmpty(file) || !SvnItem.IsValidPath(file))
+            if (string.IsNullOrEmpty(file) || !GitItem.IsValidPath(file))
                 yield break;
 
-            SvnItem projectFileItem = StatusCache[file];
+            GitItem projectFileItem = StatusCache[file];
 
             if (projectFileItem.IsVersioned &&
                 (projectRootItem == null || !projectFileItem.IsBelowPath(projectRootItem.FullPath)))
@@ -788,7 +788,7 @@ namespace VisualGit.Scc
         /// Wrapper class providing a public api to the data contained within <see cref="SccProjectData"/>
         /// </summary>
         /// <remarks>Showing the raw properties of SccProjectData has side-effects. We wrap the class to hide this problem</remarks>
-        sealed class WrapProjectInfo : ISvnProjectInfo
+        sealed class WrapProjectInfo : IGitProjectInfo
         {
             readonly SccProjectData _data;
 
@@ -822,7 +822,7 @@ namespace VisualGit.Scc
                 get { return _data.ProjectDirectory; }
             }
 
-            #region ISvnProjectInfo Members
+            #region IGitProjectInfo Members
 
 
             /// <summary>

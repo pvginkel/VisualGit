@@ -14,7 +14,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsVersioned)
                     return;
@@ -48,9 +48,9 @@ namespace VisualGit.Commands
                 e.Context.GetService<IProgressRunner>().RunModal("Diffing",
                     delegate(object sender, ProgressWorkerArgs ee)
                     {
-                        foreach (SvnItem item in result.Selection)
+                        foreach (GitItem item in result.Selection)
                         {
-                            SvnWorkingCopy wc;
+                            GitWorkingCopy wc;
                             if (!string.IsNullOrEmpty(slndir) &&
                                 item.FullPath.StartsWith(slndirP, StringComparison.OrdinalIgnoreCase))
                                 args.RelativeToPath = slndir;
@@ -75,10 +75,10 @@ namespace VisualGit.Commands
 
         static PathSelectorResult ShowDialog(CommandEventArgs e)
         {
-            PathSelectorInfo info = new PathSelectorInfo("Select items for diffing", e.Selection.GetSelectedSvnItems(true));
+            PathSelectorInfo info = new PathSelectorInfo("Select items for diffing", e.Selection.GetSelectedGitItems(true));
             IUIShell uiShell = e.GetService<IUIShell>();
             info.VisibleFilter += delegate { return true; };
-            info.CheckedFilter += delegate(SvnItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
+            info.CheckedFilter += delegate(GitItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
 
             info.RevisionStart = SvnRevision.Base;
             info.RevisionEnd = SvnRevision.Working;

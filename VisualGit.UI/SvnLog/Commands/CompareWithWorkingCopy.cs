@@ -13,7 +13,7 @@ namespace VisualGit.UI.SvnLog.Commands
     {
         public void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+            IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
             if (item != null)
             {
@@ -21,7 +21,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
                 if (logWindow != null)
                 {
-                    SvnOrigin origin = EnumTools.GetSingle(logWindow.Origins);
+                    GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
                     if (origin != null)
                     {
@@ -29,9 +29,9 @@ namespace VisualGit.UI.SvnLog.Commands
 
                         if (pt != null)
                         {
-                            SvnItem svnItem = e.GetService<IFileStatusCache>()[pt.FullPath];
+                            GitItem gitItem = e.GetService<IFileStatusCache>()[pt.FullPath];
 
-                            if (svnItem != null && !svnItem.IsDirectory)
+                            if (gitItem != null && !gitItem.IsDirectory)
                             {
                                 if (null == e.Selection.GetActiveControl<ILogControl>())
                                     e.Enabled = false;
@@ -50,8 +50,8 @@ namespace VisualGit.UI.SvnLog.Commands
         {
             // All checked in OnUpdate            
             ILogControl logWindow = e.Selection.GetActiveControl<ILogControl>();
-            SvnOrigin origin = EnumTools.GetSingle(logWindow.Origins);
-            ISvnLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+            GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
+            IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
 

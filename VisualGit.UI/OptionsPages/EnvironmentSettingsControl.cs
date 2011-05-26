@@ -11,7 +11,7 @@ namespace VisualGit.UI.OptionsPages
 
         private void authenticationEdit_Click(object sender, EventArgs e)
         {
-            using (SvnAuthenticationCacheEditor editor = new SvnAuthenticationCacheEditor())
+            using (GitAuthenticationCacheEditor editor = new GitAuthenticationCacheEditor())
             {
                 editor.ShowDialog(Context);
             }
@@ -37,7 +37,7 @@ namespace VisualGit.UI.OptionsPages
 
         private void proxyEdit_Click(object sender, EventArgs e)
         {
-            using (SvnProxyEditor editor = new SvnProxyEditor())
+            using (GitProxyEditor editor = new GitProxyEditor())
             {
                 editor.ShowDialog(Context);
             }

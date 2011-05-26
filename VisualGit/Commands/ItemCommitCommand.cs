@@ -6,7 +6,7 @@ using VisualGit.UI.SccManagement;
 namespace VisualGit.Commands
 {
     /// <summary>
-    /// Command to commit selected items to the Subversion repository.
+    /// Command to commit selected items to the Git repository.
     /// </summary>
     [Command(VisualGitCommand.CommitItem)]
     class ItemCommitCommand : CommandBase
@@ -16,7 +16,7 @@ namespace VisualGit.Commands
 
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem i in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem i in e.Selection.GetSelectedGitItems(true))
             {
                 if (i.IsVersioned)
                 {
@@ -42,7 +42,7 @@ namespace VisualGit.Commands
 
                 pcd.PreserveWindowPlacement = true;
 
-                pcd.LoadItems(e.Selection.GetSelectedSvnItems(true));
+                pcd.LoadItems(e.Selection.GetSelectedGitItems(true));
 
                 DialogResult dr = pcd.ShowDialog(e.Context);
 

@@ -43,7 +43,7 @@ namespace VisualGit.VS.SolutionExplorer
             }
         }
 
-        public VisualGitGlyph GetStatusImageForSvnItem(SvnItem item)
+        public VisualGitGlyph GetStatusImageForGitItem(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");

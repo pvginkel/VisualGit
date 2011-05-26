@@ -61,9 +61,9 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VisualGit - Subversion Support for Visual Studio {0} 
+        ///   Looks up a localized string similar to VisualGit - Git Support for Visual Studio {0} 
         /// * VisualGit.Package {1}
-        /// * Subversion {2} via SharpSvn {3}.
+        /// * Git {2} via SharpSvn {3}.
         /// </summary>
         internal static string AboutDetails {
             get {
@@ -108,7 +108,7 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VisualGit - Subversion Support for Visual Studio.
+        ///   Looks up a localized string similar to VisualGit - Git Support for Visual Studio.
         /// </summary>
         internal static string AboutTitleName {
             get {
@@ -117,7 +117,7 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VisualGit - Subversion Support.
+        ///   Looks up a localized string similar to VisualGit - Git Support.
         /// </summary>
         internal static string AboutTitleNameShort {
             get {
@@ -128,9 +128,9 @@ namespace VisualGit.VSPackage {
         /// <summary>
         ///   Looks up a localized string similar to Add to Sub&amp;version.
         /// </summary>
-        internal static string AddToSubversionCommandName {
+        internal static string AddToGitCommandName {
             get {
-                return ResourceManager.GetString("AddToSubversionCommandName", resourceCulture);
+                return ResourceManager.GetString("AddToGitCommandName", resourceCulture);
             }
         }
         
@@ -180,11 +180,11 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subversion Info.
+        ///   Looks up a localized string similar to Git Info.
         /// </summary>
-        internal static string SubversionInfoToolWindowTitle {
+        internal static string GitInfoToolWindowTitle {
             get {
-                return ResourceManager.GetString("SubversionInfoToolWindowTitle", resourceCulture);
+                return ResourceManager.GetString("GitInfoToolWindowTitle", resourceCulture);
             }
         }
         

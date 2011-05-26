@@ -45,11 +45,11 @@ namespace VisualGit.Scc
             {
                 bool ok = true;
 
-                if (string.IsNullOrEmpty(rgpszMkDocuments[i]) || !SvnItem.IsValidPath(rgpszMkDocuments[i]))
+                if (string.IsNullOrEmpty(rgpszMkDocuments[i]) || !GitItem.IsValidPath(rgpszMkDocuments[i]))
                     continue;
 
-                // TODO: Verify the new names do not give invalid Subversion state (Double casings, etc.)
-                if (track && !SvnCanAddPath(SvnTools.GetNormalizedFullPath(rgpszMkDocuments[i]), SvnNodeKind.File))
+                // TODO: Verify the new names do not give invalid Git state (Double casings, etc.)
+                if (track && !GitCanAddPath(SvnTools.GetNormalizedFullPath(rgpszMkDocuments[i]), SvnNodeKind.File))
                     ok = false;
 
                 if (rgResults != null)
@@ -115,7 +115,7 @@ namespace VisualGit.Scc
                     _fileOrigins[newDoc] = origDoc;
                 }
 
-                if (track && !SvnCanAddPath(newDoc, SvnNodeKind.File))
+                if (track && !GitCanAddPath(newDoc, SvnNodeKind.File))
                     ok = false;
 
                 if (rgResults != null)
@@ -139,15 +139,15 @@ namespace VisualGit.Scc
             return VSConstants.S_OK;
         }
 
-        protected bool SvnCanAddPath(string fullpath, SvnNodeKind nodeKind)
+        protected bool GitCanAddPath(string fullpath, SvnNodeKind nodeKind)
         {
-            using (SvnSccContext svn = new SvnSccContext(Context))
+            using (GitSccContext git = new GitSccContext(Context))
             {
                 // Determine if we could add fullname
-                if (!svn.CouldAdd(fullpath, nodeKind))
+                if (!git.CouldAdd(fullpath, nodeKind))
                 {
-                    if (svn.BelowAdminDir(fullpath))
-                        _batchErrors.Add(string.Format(Resources.SvnPathXBlocked, fullpath));
+                    if (git.BelowAdminDir(fullpath))
+                        _batchErrors.Add(string.Format(Resources.GitPathXBlocked, fullpath));
                     else
                         _batchErrors.Add(string.Format(Resources.PathXBlocked, fullpath));
                     return false;
@@ -194,7 +194,7 @@ namespace VisualGit.Scc
                     string origin = null;
                     string newName = rgpszMkDocuments[iFile];
 
-                    if (string.IsNullOrEmpty(newName) || !SvnItem.IsValidPath(newName))
+                    if (string.IsNullOrEmpty(newName) || !GitItem.IsValidPath(newName))
                         continue;
 
                     newName = SvnTools.GetNormalizedFullPath(rgpszMkDocuments[iFile]);
@@ -221,7 +221,7 @@ namespace VisualGit.Scc
             }
 
             if (copies != null)
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
                     while (copies.Count > 0)
                     {
@@ -232,14 +232,14 @@ namespace VisualGit.Scc
                         copies.RemoveAt(0);
                         Guid addGuid;
 
-                        if (!svn.TryGetRepositoryId(dir, out addGuid))
+                        if (!git.TryGetRepositoryId(dir, out addGuid))
                         {
                             continue; // No repository to fix up
                         }
 
                         Guid fileGuid;
 
-                        if (!svn.TryGetRepositoryId(fromFile, out fileGuid) || fileGuid != addGuid)
+                        if (!git.TryGetRepositoryId(fromFile, out fileGuid) || fileGuid != addGuid)
                             continue; // Can't fix history for this file
 
                         if (string.Equals(Path.GetFileName(fromFile), Path.GetFileName(toFile), StringComparison.OrdinalIgnoreCase))
@@ -258,7 +258,7 @@ namespace VisualGit.Scc
                                     string.Equals(Path.GetFileName(fl), Path.GetFileName(tl), StringComparison.OrdinalIgnoreCase))
                                 {
                                     Guid fromGuid;
-                                    if (svn.TryGetRepositoryId(tl, out fromGuid) && (fromGuid == addGuid))
+                                    if (git.TryGetRepositoryId(tl, out fromGuid) && (fromGuid == addGuid))
                                         now.Add(fl, tl); // We can copy this item at the same time
                                     // else 
                                     // This copy comes from another repository, no history to save
@@ -269,12 +269,12 @@ namespace VisualGit.Scc
 
                             // Now contains all the files we are receiving in a single directory
                             if (now.Count > 0)
-                                svn.SafeWcCopyToDirFixup(now, dir);
+                                git.SafeWcCopyToDirFixup(now, dir);
                             else
-                                svn.SafeWcCopyFixup(fromFile, toFile);
+                                git.SafeWcCopyFixup(fromFile, toFile);
                         }
                         else
-                            svn.SafeWcCopyFixup(fromFile, toFile);
+                            git.SafeWcCopyFixup(fromFile, toFile);
                     }
                 }
 
@@ -360,7 +360,7 @@ namespace VisualGit.Scc
                             else if (!orgInfo.Exists)
                             {
                                 // Handle Cut&Paste
-                                SvnItem item = StatusCache[orgInfo.FullName];
+                                GitItem item = StatusCache[orgInfo.FullName];
 
                                 if (item.IsVersioned && item.IsDeleteScheduled)
                                 {
@@ -486,12 +486,12 @@ namespace VisualGit.Scc
 
                 string dir = rgpszMkDocuments[i];
 
-                if (string.IsNullOrEmpty(dir) || !SvnItem.IsValidPath(dir))
+                if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
                 dir = SvnTools.GetNormalizedFullPath(dir);
 
-                if (track && !SvnCanAddPath(dir, SvnNodeKind.Directory))
+                if (track && !GitCanAddPath(dir, SvnNodeKind.Directory))
                     ok = false;
 
                 if (rgResults != null)
@@ -530,14 +530,14 @@ namespace VisualGit.Scc
             {
                 string dir = rgpszMkDocuments[i];
 
-                if (string.IsNullOrEmpty(dir) || !SvnItem.IsValidPath(dir))
+                if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
                 dir = SvnTools.GetNormalizedFullPath(dir);
 
                 StatusCache.MarkDirty(dir);
 
-                SvnItem item = StatusCache[dir];
+                GitItem item = StatusCache[dir];
 
                 if (!item.Exists || !item.IsDirectory || !SvnTools.IsManagedPath(dir))
                     continue;
@@ -545,10 +545,10 @@ namespace VisualGit.Scc
                 if ((DateTime.UtcNow - GetCreated(item)) > new TimeSpan(0, 1, 0))
                     continue; // Directory is older than one minute.. Not just copied
 
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
-                    // Ok; we have a 'new' directory here.. Lets check if VS broke the subversion working copy
-                    SvnWorkingCopyEntryEventArgs entry = svn.SafeGetEntry(dir);
+                    // Ok; we have a 'new' directory here.. Lets check if VS broke the Git working copy
+                    SvnWorkingCopyEntryEventArgs entry = git.SafeGetEntry(dir);
 
                     if (entry != null && entry.NodeKind == SvnNodeKind.Directory) // Entry exists, valid dir
                         continue;
@@ -560,7 +560,7 @@ namespace VisualGit.Scc
                     if (parentDir == null || !SvnTools.IsManagedPath(parentDir))
                         continue; 
 
-                    svn.UnversionRecursive(dir);
+                    git.UnversionRecursive(dir);
                 }
             }
 
@@ -579,7 +579,7 @@ namespace VisualGit.Scc
 
                     string dir = rgpszMkDocuments[iDir];
 
-                    if (string.IsNullOrEmpty(dir) || !SvnItem.IsValidPath(dir))
+                    if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                         continue;
 
                     dir = SvnTools.GetNormalizedFullPath(dir);
@@ -592,7 +592,7 @@ namespace VisualGit.Scc
             return VSConstants.S_OK;
         }
 
-        static DateTime GetCreated(SvnItem item)
+        static DateTime GetCreated(GitItem item)
         {
             try
             {

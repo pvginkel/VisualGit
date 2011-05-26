@@ -8,7 +8,7 @@ using VisualGit.Scc;
 
 namespace VisualGit.UI.SvnLog
 {
-    sealed partial class LogControl : UserControl, ICurrentItemSource<ISvnLogItem>, ICurrentItemDestination<ISvnLogItem>
+    sealed partial class LogControl : UserControl, ICurrentItemSource<IGitLogItem>, ICurrentItemDestination<IGitLogItem>
     {
         public LogControl()
         {
@@ -65,7 +65,7 @@ namespace VisualGit.UI.SvnLog
             set { _mode = value; }
         }
 
-        public void StartLog(ICollection<SvnOrigin> targets, SvnRevision start, SvnRevision end)
+        public void StartLog(ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
         {
             if (targets == null)
                 throw new ArgumentNullException("targets");
@@ -88,7 +88,7 @@ namespace VisualGit.UI.SvnLog
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
         /// <param name="source">The source.</param>
-        public void StartMergesEligible(IVisualGitServiceProvider context, SvnOrigin target, SvnTarget source)
+        public void StartMergesEligible(IVisualGitServiceProvider context, GitOrigin target, SvnTarget source)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -97,7 +97,7 @@ namespace VisualGit.UI.SvnLog
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            LogSource.Targets = new SvnOrigin[] { new SvnOrigin(context, source, target.RepositoryRoot) }; // Must be from the same repository!
+            LogSource.Targets = new GitOrigin[] { new GitOrigin(context, source, target.RepositoryRoot) }; // Must be from the same repository!
             LogSource.MergeTarget = target;
             logRevisionControl1.Reset();
             logChangedPaths1.Reset();
@@ -105,7 +105,7 @@ namespace VisualGit.UI.SvnLog
             logRevisionControl1.Start(LogMode.MergesEligible);
         }
 
-        public void StartMergesMerged(IVisualGitServiceProvider context, SvnOrigin target, SvnTarget source)
+        public void StartMergesMerged(IVisualGitServiceProvider context, GitOrigin target, SvnTarget source)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -114,7 +114,7 @@ namespace VisualGit.UI.SvnLog
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            LogSource.Targets = new SvnOrigin[] { new SvnOrigin(context, source, target.RepositoryRoot) }; // Must be from the same repository!
+            LogSource.Targets = new GitOrigin[] { new GitOrigin(context, source, target.RepositoryRoot) }; // Must be from the same repository!
             LogSource.MergeTarget = target;
             logRevisionControl1.Reset();
             logChangedPaths1.Reset();
@@ -181,24 +181,24 @@ namespace VisualGit.UI.SvnLog
 
         public event EventHandler<BatchFinishedEventArgs> BatchFinished;
 
-        public event EventHandler<CurrentItemEventArgs<ISvnLogItem>> SelectionChanged;
+        public event EventHandler<CurrentItemEventArgs<IGitLogItem>> SelectionChanged;
 
-        public event EventHandler<CurrentItemEventArgs<ISvnLogItem>> FocusChanged;
+        public event EventHandler<CurrentItemEventArgs<IGitLogItem>> FocusChanged;
 
-        public ISvnLogItem FocusedItem
+        public IGitLogItem FocusedItem
         {
             get { return ItemSource == null ? null : ItemSource.FocusedItem; }
         }
 
-        public IList<ISvnLogItem> SelectedItems
+        public IList<IGitLogItem> SelectedItems
         {
             get { return ItemSource == null ? null : ItemSource.SelectedItems; }
         }
 
-        #region ICurrentItemDestination<ISvnLogItem> Members
+        #region ICurrentItemDestination<IGitLogItem> Members
 
-        ICurrentItemSource<ISvnLogItem> _itemSource;
-        public ICurrentItemSource<ISvnLogItem> ItemSource
+        ICurrentItemSource<IGitLogItem> _itemSource;
+        public ICurrentItemSource<IGitLogItem> ItemSource
         {
             [DebuggerStepThrough]
             get { return _itemSource; }
@@ -210,13 +210,13 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        void OnFocusChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void OnFocusChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
             if (FocusChanged != null)
                 FocusChanged(sender, e);
         }
 
-        void OnSelectionChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void OnSelectionChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
             if (SelectionChanged != null)
                 SelectionChanged(sender, e);

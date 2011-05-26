@@ -241,7 +241,7 @@
     <value>4</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
-    <value>Subversion User Settings</value>
+    <value>Git User Settings</value>
   </data>
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
@@ -295,7 +295,7 @@
     <value>0</value>
   </data>
   <data name="autoAddFiles.Text" xml:space="preserve">
-    <value>Directly &amp;add new files to subversion</value>
+    <value>Directly &amp;add new files to Git</value>
   </data>
   <data name="&gt;&gt;autoAddFiles.Name" xml:space="preserve">
     <value>autoAddFiles</value>

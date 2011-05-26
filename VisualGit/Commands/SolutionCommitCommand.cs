@@ -56,7 +56,7 @@ namespace VisualGit.Commands
             readonly HybridCollection<string> folders = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
             readonly IProjectFileMapper _mapper;
 
-            public ProjectListFilter(IVisualGitServiceProvider context, IEnumerable<SvnProject> projects)
+            public ProjectListFilter(IVisualGitServiceProvider context, IEnumerable<GitProject> projects)
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
@@ -64,13 +64,13 @@ namespace VisualGit.Commands
                     throw new ArgumentNullException("projects");
 
                 _mapper = context.GetService<IProjectFileMapper>();
-                List<SvnProject> projectList = new List<SvnProject>(projects);
+                List<GitProject> projectList = new List<GitProject>(projects);
 
                 files.AddRange(_mapper.GetAllFilesOf(projectList));
 
-                foreach (SvnProject p in projectList)
+                foreach (GitProject p in projectList)
                 {
-                    ISvnProjectInfo pi = _mapper.GetProjectInfo(p);
+                    IGitProjectInfo pi = _mapper.GetProjectInfo(p);
 
                     if (pi == null)
                         continue; // Ignore solution and non scc projects

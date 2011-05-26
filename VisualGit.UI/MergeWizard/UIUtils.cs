@@ -56,7 +56,7 @@ namespace VisualGit.UI.MergeWizard
                     comboBox.DropDownWidth = width;
             }
         }
-        public static Uri DisplayBrowseDialogAndGetResult(WizardPage page, SvnItem target, string baseUri)
+        public static Uri DisplayBrowseDialogAndGetResult(WizardPage page, GitItem target, string baseUri)
         {
             Uri u;
             if(Uri.TryCreate(baseUri, UriKind.Absolute, out u))
@@ -66,7 +66,7 @@ namespace VisualGit.UI.MergeWizard
 
             return null;
         }
-        public static Uri DisplayBrowseDialogAndGetResult(WizardPage page, SvnItem target, Uri baseUri)
+        public static Uri DisplayBrowseDialogAndGetResult(WizardPage page, GitItem target, Uri baseUri)
         {
             IVisualGitServiceProvider context = ((MergeWizard)page.Wizard).Context;
 

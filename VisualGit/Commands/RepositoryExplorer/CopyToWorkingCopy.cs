@@ -14,7 +14,7 @@ namespace VisualGit.Commands.RepositoryExplorer
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (item != null && item.Origin != null && !item.Origin.IsRepositoryRoot)
                 return;
@@ -24,7 +24,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            ISvnRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (item == null)
                 return;
@@ -46,7 +46,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                     copyTo = fd.SelectedPath;
                     copyBelow = true;
 
-                    SvnItem dirItem = cache[copyTo];
+                    GitItem dirItem = cache[copyTo];
 
                     if (dirItem == null || !dirItem.IsVersioned)
                         suggestExport = true;
@@ -68,7 +68,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
                     copyTo = SvnTools.GetNormalizedFullPath(sfd.FileName);
 
-                    SvnItem fileItem = cache[copyTo];
+                    GitItem fileItem = cache[copyTo];
 
                     if (File.Exists(copyTo))
                     {
@@ -86,7 +86,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                             File.Delete(copyTo);
                     }
 
-                    SvnItem dir = fileItem.Parent;
+                    GitItem dir = fileItem.Parent;
 
                     if (dir == null || !(dir.IsVersioned && dir.IsVersionable))
                         suggestExport = true;

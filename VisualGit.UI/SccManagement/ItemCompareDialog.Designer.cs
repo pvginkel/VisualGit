@@ -52,7 +52,7 @@
 			// 
 			resources.ApplyResources(this.revisionPickerStart, "revisionPickerStart");
 			this.revisionPickerStart.Name = "revisionPickerStart";
-			this.revisionPickerStart.SvnOrigin = null;
+			this.revisionPickerStart.GitOrigin = null;
 			// 
 			// pendingList
 			// 
@@ -88,7 +88,7 @@
 			// 
 			resources.ApplyResources(this.versionSelector1, "versionSelector1");
 			this.versionSelector1.Name = "versionSelector1";
-			this.versionSelector1.SvnOrigin = null;
+			this.versionSelector1.GitOrigin = null;
 			// 
 			// ItemCompareDialog
 			// 

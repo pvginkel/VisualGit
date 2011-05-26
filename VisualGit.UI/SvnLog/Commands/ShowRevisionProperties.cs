@@ -16,13 +16,13 @@ namespace VisualGit.UI.SvnLog.Commands
     {
         public void OnUpdate(CommandUpdateEventArgs e)
         {
-            if (null == EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>()))
+            if (null == EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>()))
                 e.Enabled = false;
         }
 
         public void OnExecute(CommandEventArgs e)
         {
-            ISvnLogItem selectedLog = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+            IGitLogItem selectedLog = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
             if (selectedLog == null)
                 return;

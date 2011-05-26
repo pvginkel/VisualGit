@@ -9,14 +9,14 @@ using VisualGit.UI.Commands;
 namespace VisualGit.Commands
 {
     /// <summary>
-    /// Command to checkout a Subversion repository.
+    /// Command to checkout a Git repository.
     /// </summary>
     [Command(VisualGitCommand.Checkout, AlwaysAvailable=true)]
     class CheckoutCommand : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (single == null || single.NodeKind == SvnNodeKind.File || single.Origin == null)
                 e.Enabled = false;
@@ -24,7 +24,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            ISvnRepositoryItem selected = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem selected = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if (selected == null)
                 return;

@@ -13,7 +13,7 @@ namespace VisualGit.Commands
         {
             IVisualGitSolutionSettings ss = e.GetService<IVisualGitSolutionSettings>();
 
-            if (ss != null && !string.IsNullOrEmpty(ss.ProjectRoot) && ss.ProjectRootSvnItem.IsVersioned)
+            if (ss != null && !string.IsNullOrEmpty(ss.ProjectRoot) && ss.ProjectRootGitItem.IsVersioned)
             {
                 IVisualGitConfigurationService cs = e.GetService<IVisualGitConfigurationService>();
 

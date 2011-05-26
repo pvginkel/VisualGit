@@ -23,9 +23,9 @@ namespace VisualGit.Commands.RepositoryExplorer
                 string arg = (string)e.Argument;
 
                 info = null;
-                if (SvnItem.IsValidPath(arg, true))
+                if (GitItem.IsValidPath(arg, true))
                 {
-                    SvnItem item = e.GetService<IFileStatusCache>()[arg];
+                    GitItem item = e.GetService<IFileStatusCache>()[arg];
 
                     if (item.IsVersioned)
                     {

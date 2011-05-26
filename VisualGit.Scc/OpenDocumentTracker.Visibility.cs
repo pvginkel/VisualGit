@@ -57,7 +57,7 @@ namespace VisualGit.Scc
 
             if (prj != null)
             {
-                SvnProject project = new VisualGit.Selection.SvnProject(null, prj);
+                GitProject project = new VisualGit.Selection.GitProject(null, prj);
 
                 foreach (string file in GetService<IProjectFileMapper>().GetAllFilesOf(project))
                 {

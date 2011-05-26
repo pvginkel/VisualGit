@@ -45,7 +45,7 @@ namespace VisualGit.Commands
                 context, 
                 selection, 
                 revisions, 
-                delegate(SvnItem item) 
+                delegate(GitItem item) 
                 { 
                     return item.IsVersioned; 
                 });
@@ -58,7 +58,7 @@ namespace VisualGit.Commands
         /// <param name="revisions"></param>
         /// <param name="visibleFilter"></param>
         /// <returns>The diff as a string.</returns>
-        protected virtual string GetDiff(IVisualGitServiceProvider context, ISelectionContext selection, SvnRevisionRange revisions, Predicate<SvnItem> visibleFilter)
+        protected virtual string GetDiff(IVisualGitServiceProvider context, ISelectionContext selection, SvnRevisionRange revisions, Predicate<GitItem> visibleFilter)
         {
             if (selection == null)
                 throw new ArgumentNullException("selection");
@@ -68,7 +68,7 @@ namespace VisualGit.Commands
             IUIShell uiShell = context.GetService<IUIShell>();
 
             bool foundModified = false;
-            foreach (SvnItem item in selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in selection.GetSelectedGitItems(true))
             {
                 if (item.IsModified || item.IsDocumentDirty)
                 {
@@ -77,10 +77,10 @@ namespace VisualGit.Commands
                 }
             }
 
-            PathSelectorInfo info = new PathSelectorInfo("Select items for diffing", selection.GetSelectedSvnItems(true));
+            PathSelectorInfo info = new PathSelectorInfo("Select items for diffing", selection.GetSelectedGitItems(true));
             info.VisibleFilter += visibleFilter;
             if (foundModified)
-                info.CheckedFilter += delegate(SvnItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
+                info.CheckedFilter += delegate(GitItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
 
             info.RevisionStart = revisions == null ? SvnRevision.Base : revisions.StartRevision;
             info.RevisionEnd = revisions == null ? SvnRevision.Working : revisions.EndRevision;
@@ -106,7 +106,7 @@ namespace VisualGit.Commands
 
         private static string DoExternalDiff(IVisualGitServiceProvider context, PathSelectorResult info)
         {
-            foreach (SvnItem item in info.Selection)
+            foreach (GitItem item in info.Selection)
             {
                 // skip unmodified for a diff against the textbase
                 if (info.RevisionStart == SvnRevision.Base &&
@@ -127,7 +127,7 @@ namespace VisualGit.Commands
             return null;
         }
 
-        private static string GetPath(IVisualGitServiceProvider context, SvnRevision revision, SvnItem item, string tempDir)
+        private static string GetPath(IVisualGitServiceProvider context, SvnRevision revision, GitItem item, string tempDir)
         {
             if (revision == SvnRevision.Working)
             {

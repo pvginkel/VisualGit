@@ -390,10 +390,10 @@ namespace VisualGit.Scc.UI
         /// <param name="revision">The revision.</param>
         /// <param name="withProgress">if set to <c>true</c> [with progress].</param>
         /// <returns></returns>
-        string GetTempFile(SvnItem target, SvnRevision revision, bool withProgress);
+        string GetTempFile(GitItem target, SvnRevision revision, bool withProgress);
         string[] GetTempFiles(SvnTarget target, SvnRevision first, SvnRevision last, bool withProgress);
         string GetTitle(SvnTarget target, SvnRevision revision);
-        string GetTitle(SvnItem target, SvnRevision revision);
+        string GetTitle(GitItem target, SvnRevision revision);
 
         /// <summary>
         /// Gets a list of diff tool templates.
@@ -422,6 +422,6 @@ namespace VisualGit.Scc.UI
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        SvnUriTarget GetCopyOrigin(SvnItem item);
+        SvnUriTarget GetCopyOrigin(GitItem item);
     }
 }

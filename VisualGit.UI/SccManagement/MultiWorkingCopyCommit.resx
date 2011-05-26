@@ -136,9 +136,9 @@
     <value>0</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>You are trying to commit files from several Subversion working copies.
+    <value>You are trying to commit files from several Git working copies.
 
-Subversion does not support committing these changes in a single revision, but we can commit it as multiple revisions.
+Git does not support committing these changes in a single revision, but we can commit it as multiple revisions.
 
 Which working copies would you like to commit with the current log message?</value>
   </data>

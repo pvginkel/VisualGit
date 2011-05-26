@@ -13,7 +13,7 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(true))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
             {
                 if (item.IsVersioned)
                     return;
@@ -23,19 +23,19 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> items = new List<SvnItem>(e.Selection.GetSelectedSvnItems(true));
+            List<GitItem> items = new List<GitItem>(e.Selection.GetSelectedGitItems(true));
 
             e.GetService<IProgressRunner>().RunModal("Running Cleanup",
                 delegate(object sender, ProgressWorkerArgs a)
                 {
                     HybridCollection<string> wcs = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
 
-                    foreach (SvnItem item in items)
+                    foreach (GitItem item in items)
                     {
                         if (!item.IsVersioned)
                             continue;
 
-                        SvnWorkingCopy wc = item.WorkingCopy;
+                        GitWorkingCopy wc = item.WorkingCopy;
 
                         if (wc != null && !wcs.Contains(wc.FullPath))
                             wcs.Add(wc.FullPath);

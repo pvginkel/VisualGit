@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutDetails" xml:space="preserve">
-    <value>VisualGit - Subversion Support for Visual Studio {0} 
+    <value>VisualGit - Git Support for Visual Studio {0} 
  * VisualGit.Package {1}
- * Subversion {2} via SharpSvn {3}</value>
+ * Git {2} via SharpSvn {3}</value>
   </data>
   <data name="AboutDynamicallyLinkedTo" xml:space="preserve">
     <value>SharpSvn is dynamically linked to: </value>
@@ -135,12 +135,12 @@
     <value>{0}</value>
   </data>
   <data name="AboutTitleName" xml:space="preserve">
-    <value>VisualGit - Subversion Support for Visual Studio</value>
+    <value>VisualGit - Git Support for Visual Studio</value>
   </data>
   <data name="AboutTitleNameShort" xml:space="preserve">
-    <value>VisualGit - Subversion Support</value>
+    <value>VisualGit - Git Support</value>
   </data>
-  <data name="AddToSubversionCommandName" xml:space="preserve">
+  <data name="AddToGitCommandName" xml:space="preserve">
     <value>Add to Sub&amp;version</value>
   </data>
   <data name="DiffToolWindowTitle" xml:space="preserve">
@@ -158,8 +158,8 @@
   <data name="RepositoryExplorerToolWindowTitle" xml:space="preserve">
     <value>Repository Explorer</value>
   </data>
-  <data name="SubversionInfoToolWindowTitle" xml:space="preserve">
-    <value>Subversion Info</value>
+  <data name="GitInfoToolWindowTitle" xml:space="preserve">
+    <value>Git Info</value>
   </data>
   <data name="WorkingCopyExplorerToolWindowTitle" xml:space="preserve">
     <value>Working Copy Explorer</value>

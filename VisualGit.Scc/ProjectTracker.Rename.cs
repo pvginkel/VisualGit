@@ -25,7 +25,7 @@ namespace VisualGit.Scc
                 {
                     bool ok = true;
 
-                    if(!SvnItem.IsValidPath(rgszMkOldNames[i]))
+                    if(!GitItem.IsValidPath(rgszMkOldNames[i]))
                         continue;
 
                     string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[i]);
@@ -52,7 +52,7 @@ namespace VisualGit.Scc
                 {
                     bool ok = true;
 
-                    if (!SvnItem.IsValidPath(rgszMkOldNames[i]))
+                    if (!GitItem.IsValidPath(rgszMkOldNames[i]))
                         continue;
 
                     string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[i]);
@@ -95,11 +95,11 @@ namespace VisualGit.Scc
             for (int i = 0; i < cFiles; i++)
             {
                 string s = rgszMkOldNames[i];
-                if (!string.IsNullOrEmpty(s) && SvnItem.IsValidPath(s))
+                if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
                     StatusCache.MarkDirty(s);
 
                 s = rgszMkNewNames[i];
-                if (!string.IsNullOrEmpty(s) && SvnItem.IsValidPath(s))
+                if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
                     StatusCache.MarkDirty(s);
             }
 
@@ -122,7 +122,7 @@ namespace VisualGit.Scc
                             if (sccProject == null || !track)
                                 continue; // Not handled by our provider
 
-                            if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !SvnItem.IsValidPath(rgszMkOldNames[iFile]))
+                            if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !GitItem.IsValidPath(rgszMkOldNames[iFile]))
                                 continue;
 
                             string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
@@ -140,7 +140,7 @@ namespace VisualGit.Scc
 
                         for (; iFile < iLastFileThisProject; iFile++)
                         {
-                            if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !SvnItem.IsValidPath(rgszMkOldNames[iFile]))
+                            if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !GitItem.IsValidPath(rgszMkOldNames[iFile]))
                                 continue;
 
                             string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
@@ -173,7 +173,7 @@ namespace VisualGit.Scc
                 string oldName = rgszMkOldNames[i];
                 string newName = rgszMkNewNames[i];
 
-                if (string.IsNullOrEmpty(oldName) || !SvnItem.IsValidPath(oldName))
+                if (string.IsNullOrEmpty(oldName) || !GitItem.IsValidPath(oldName))
                     continue;
 
                 oldName = SvnTools.GetNormalizedFullPath(oldName);
@@ -207,7 +207,7 @@ namespace VisualGit.Scc
                     // We probably fix it with one of the following renames; as paths are included too
                 }
 
-                SvnItem item = StatusCache[oldDir];
+                GitItem item = StatusCache[oldDir];
 
                 if (!item.IsVersioned && item.Status.LocalContentStatus != SvnStatus.Missing)
                     continue; // Item was not cached as versioned or now-missing (Missing implicits Versioned)
@@ -220,11 +220,11 @@ namespace VisualGit.Scc
                 if (item.Status.LocalContentStatus != SvnStatus.Missing)
                     continue;
 
-                SvnItem newItem = StatusCache[newDir];
+                GitItem newItem = StatusCache[newDir];
 
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
-                    SvnWorkingCopyEntryEventArgs wa = svn.SafeGetEntry(newDir);
+                    SvnWorkingCopyEntryEventArgs wa = git.SafeGetEntry(newDir);
                     string newParent = SvnTools.GetNormalizedDirectoryName(newDir);
 
                     if (wa != null)
@@ -232,10 +232,10 @@ namespace VisualGit.Scc
                     else if (!SvnTools.IsManagedPath(newDir))
                         continue; // Not a wc root at all
 
-                    svn.SafeWcDirectoryCopyFixUp(oldDir, newDir, safeRename); // Recreate the old WC directory
+                    git.SafeWcDirectoryCopyFixUp(oldDir, newDir, safeRename); // Recreate the old WC directory
 
                     _delayedDeletes.Add(oldDir); // Delete everything in the old wc when done
-                    // TODO: Once Subversion understands true renames, fixup the renames in the delayed hook
+                    // TODO: Once Git understands true renames, fixup the renames in the delayed hook
                     RegisterForSccCleanup();
 
                     // We have all files of the old wc directory unversioned in the new location now

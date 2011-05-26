@@ -45,7 +45,7 @@ namespace VisualGit.VS.SolutionExplorer
 
         }
 
-        public string GetFileType(SvnItem item)
+        public string GetFileType(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");

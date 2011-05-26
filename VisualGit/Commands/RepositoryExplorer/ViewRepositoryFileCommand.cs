@@ -13,13 +13,13 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            ISvnRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+            IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
             if(single == null || single.NodeKind == SvnNodeKind.Directory || single.Origin == null)
                 e.Enabled = false;            
         }
 
-        protected static bool SaveFile(CommandEventArgs e, ISvnRepositoryItem ri, string toFile)
+        protected static bool SaveFile(CommandEventArgs e, IGitRepositoryItem ri, string toFile)
         {
             ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal(
                 "Saving File",

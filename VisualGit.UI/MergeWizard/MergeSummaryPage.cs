@@ -89,15 +89,15 @@ namespace VisualGit.UI.MergeWizard
 
                 // Populate Depth
                 if (mergeOptions.Depth == SharpSvn.SvnDepth.Children)
-                    depthTextBox.Text = MergeStrings.SvnDepthChildren;
+                    depthTextBox.Text = MergeStrings.GitDepthChildren;
                 else if (mergeOptions.Depth == SharpSvn.SvnDepth.Empty)
-                    depthTextBox.Text = MergeStrings.SvnDepthEmpty;
+                    depthTextBox.Text = MergeStrings.GitDepthEmpty;
                 else if (mergeOptions.Depth == SharpSvn.SvnDepth.Files)
-                    depthTextBox.Text = MergeStrings.SvnDepthFiles;
+                    depthTextBox.Text = MergeStrings.GitDepthFiles;
                 else if (mergeOptions.Depth == SharpSvn.SvnDepth.Infinity)
-                    depthTextBox.Text = MergeStrings.SvnDepthInfinity;
+                    depthTextBox.Text = MergeStrings.GitDepthInfinity;
                 else if (mergeOptions.Depth == SharpSvn.SvnDepth.Unknown)
-                    depthTextBox.Text = MergeStrings.SvnDepthUnknown;
+                    depthTextBox.Text = MergeStrings.GitDepthUnknown;
 
                 // Populate Ignore Ancestry
                 if (mergeOptions.IgnoreAncestry)

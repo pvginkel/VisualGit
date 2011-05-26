@@ -175,7 +175,7 @@ namespace VisualGit.UI.RepositoryOpen
 			this.toolTip.IsBalloon = true;
 			this.toolTip.StripAmpersands = true;
 			this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-			this.toolTip.ToolTipTitle = "Open from Subversion";
+			this.toolTip.ToolTipTitle = "Open from Git";
 			// 
 			// RepositoryOpenDialog
 			// 

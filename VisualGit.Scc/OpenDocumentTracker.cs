@@ -321,7 +321,7 @@ namespace VisualGit.Scc
             if (!string.IsNullOrEmpty(pszMkDocumentNew) && !string.IsNullOrEmpty(pszMkDocumentOld)
                 && pszMkDocumentNew != pszMkDocumentOld)
             {
-                if (SvnItem.IsValidPath(pszMkDocumentNew) && SvnItem.IsValidPath(pszMkDocumentOld))
+                if (GitItem.IsValidPath(pszMkDocumentNew) && GitItem.IsValidPath(pszMkDocumentOld))
                 {
                     string oldFile = SvnTools.GetNormalizedFullPath(pszMkDocumentOld);
                     string newFile = SvnTools.GetNormalizedFullPath(pszMkDocumentNew);

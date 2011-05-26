@@ -118,7 +118,7 @@ namespace VisualGit.UI.IssueTracker
             get { return _index; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Issue Id")]
         public string Issue
         {

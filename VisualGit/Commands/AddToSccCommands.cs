@@ -14,13 +14,13 @@ using System.Diagnostics;
 
 namespace VisualGit.Commands
 {
-    [Command(VisualGitCommand.FileSccAddProjectToSubversion, HideWhenDisabled = false)]
-    [Command(VisualGitCommand.FileSccAddSolutionToSubversion, AlwaysAvailable = true, HideWhenDisabled = false)]
+    [Command(VisualGitCommand.FileSccAddProjectToGit, HideWhenDisabled = false)]
+    [Command(VisualGitCommand.FileSccAddSolutionToGit, AlwaysAvailable = true, HideWhenDisabled = false)]
     sealed class AddToSccCommands : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            if (!e.State.SolutionExists || (e.Command == VisualGitCommand.FileSccAddProjectToSubversion && e.State.EmptySolution))
+            if (!e.State.SolutionExists || (e.Command == VisualGitCommand.FileSccAddProjectToGit && e.State.EmptySolution))
             {
                 e.Visible = e.Enabled = false;
                 return;
@@ -42,17 +42,17 @@ namespace VisualGit.Commands
 
             string solutionFilename = e.Selection.SolutionFilename;
 
-            if (string.IsNullOrEmpty(solutionFilename) || !SvnItem.IsValidPath(solutionFilename))
+            if (string.IsNullOrEmpty(solutionFilename) || !GitItem.IsValidPath(solutionFilename))
                 solutionFilename = null;
 
-            if (e.Command == VisualGitCommand.FileSccAddSolutionToSubversion)
+            if (e.Command == VisualGitCommand.FileSccAddSolutionToGit)
             {
                 if (solutionFilename == null || scc.IsSolutionManaged)
                 {
                     e.Visible = e.Enabled = false; // Already handled
                     return;
                 }
-                SvnItem item = cache[solutionFilename];
+                GitItem item = cache[solutionFilename];
 
                 if (!item.Exists || !item.IsFile)
                 {
@@ -74,18 +74,18 @@ namespace VisualGit.Commands
 
             int n = 0;
             bool foundOne = false;
-            foreach (IEnumerable<SvnProject> projects in
-                new IEnumerable<SvnProject>[] 
+            foreach (IEnumerable<GitProject> projects in
+                new IEnumerable<GitProject>[] 
                 { 
                     e.Selection.GetSelectedProjects(true),
                     e.Selection.GetSelectedProjects(false) 
                 })
             {
-                foreach (SvnProject p in projects)
+                foreach (GitProject p in projects)
                 {
                     foundOne = true;
 
-                    ISvnProjectInfo pi = pfm.GetProjectInfo(p);
+                    IGitProjectInfo pi = pfm.GetProjectInfo(p);
 
                     if (pi == null || !pi.IsSccBindable)
                         continue; // Not an SCC project
@@ -111,10 +111,10 @@ namespace VisualGit.Commands
             e.Visible = e.Enabled = false;
         }
 
-        private static IEnumerable<SvnProject> GetSelection(ISelectionContext iSelectionContext)
+        private static IEnumerable<GitProject> GetSelection(ISelectionContext iSelectionContext)
         {
             bool foundOne = false;
-            foreach (SvnProject pr in iSelectionContext.GetSelectedProjects(true))
+            foreach (GitProject pr in iSelectionContext.GetSelectedProjects(true))
             {
                 yield return pr;
                 foundOne = true;
@@ -123,7 +123,7 @@ namespace VisualGit.Commands
             if (foundOne)
                 yield break;
 
-            foreach (SvnProject pr in iSelectionContext.GetOwnerProjects())
+            foreach (GitProject pr in iSelectionContext.GetOwnerProjects())
             {
                 yield return pr;
             }
@@ -136,18 +136,18 @@ namespace VisualGit.Commands
             if (cache == null || e.Selection.SolutionFilename == null)
                 return;
 
-            SvnItem item = cache[e.Selection.SolutionFilename];
+            GitItem item = cache[e.Selection.SolutionFilename];
 
             if (!HandleUnmanagedOrUnversionedSolution(e, item))
                 return;
 
-            if (e.Command == VisualGitCommand.FileSccAddSolutionToSubversion)
+            if (e.Command == VisualGitCommand.FileSccAddSolutionToGit)
                 return;
 
             SetProjectsManaged(e);
         }
 
-        static bool HandleUnmanagedOrUnversionedSolution(CommandEventArgs e, SvnItem solutionItem)
+        static bool HandleUnmanagedOrUnversionedSolution(CommandEventArgs e, GitItem solutionItem)
         {
             IVisualGitSccService scc = e.GetService<IVisualGitSccService>();
             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
@@ -169,7 +169,7 @@ namespace VisualGit.Commands
 
 
             if (solutionItem.IsVersioned)
-            { /* File is in subversion; just enable */ }
+            { /* File is in Git; just enable */ }
             else if (solutionItem.IsVersionable)
             {
                 if (!AddVersionableSolution(e, solutionItem, ref confirmed))
@@ -193,7 +193,7 @@ namespace VisualGit.Commands
             return true;
         }
 
-        static SvnItem GetVersionedParent(SvnItem child)
+        static GitItem GetVersionedParent(GitItem child)
         {
             if (!child.IsVersionable)
                 return null;
@@ -203,17 +203,17 @@ namespace VisualGit.Commands
             return child;
         }
 
-        static bool AddVersionableSolution(CommandEventArgs e, SvnItem solutionItem, ref bool confirmed)
+        static bool AddVersionableSolution(CommandEventArgs e, GitItem solutionItem, ref bool confirmed)
         {
             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
-            SvnItem parentDir = GetVersionedParent(solutionItem);
+            GitItem parentDir = GetVersionedParent(solutionItem);
 
             // File is not versioned but is inside a versioned directory
             if (!e.DontPrompt && !e.IsInAutomation)
             {
                 if (!solutionItem.Parent.IsVersioned)
                 {
-                    AddPathToSubversion(e, e.Selection.SolutionFilename);
+                    AddPathToGit(e, e.Selection.SolutionFilename);
 
                     return true;
                 }
@@ -232,7 +232,7 @@ namespace VisualGit.Commands
                 if (rslt == DialogResult.Yes)
                 {
                     // default case: Add to existing workingcopy
-                    AddPathToSubversion(e, e.Selection.SolutionFilename);
+                    AddPathToGit(e, e.Selection.SolutionFilename);
 
                     return true;
                 }
@@ -243,9 +243,9 @@ namespace VisualGit.Commands
             return true;
         }
 
-        static void AddPathToSubversion(CommandEventArgs e, string path)
+        static void AddPathToGit(CommandEventArgs e, string path)
         {
-            using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
             {
                 SvnAddArgs aa = new SvnAddArgs();
                 aa.AddParents = true;
@@ -253,7 +253,7 @@ namespace VisualGit.Commands
             }
         }
 
-        static void SetSolutionManaged(bool shouldActivate, SvnItem item, IVisualGitSccService scc)
+        static void SetSolutionManaged(bool shouldActivate, GitItem item, IVisualGitSccService scc)
         {
             if (shouldActivate)
                 scc.RegisterAsPrimarySccProvider();
@@ -264,8 +264,8 @@ namespace VisualGit.Commands
 
         static bool CheckoutWorkingCopyForSolution(CommandEventArgs e, ref bool confirmed)
         {
-            using (SvnClient cl = e.GetService<ISvnClientPool>().GetClient())
-            using (AddToSubversion dialog = new AddToSubversion())
+            using (SvnClient cl = e.GetService<IGitClientPool>().GetClient())
+            using (AddToGit dialog = new AddToGit())
             {
                 dialog.PathToAdd = e.Selection.SolutionFilename;
                 if (dialog.ShowDialog(e.Context) == DialogResult.OK)
@@ -287,7 +287,7 @@ namespace VisualGit.Commands
                     cl.CheckOut(dialog.RepositoryAddUrl, dialog.WorkingCopyDir, coArg);
 
                     // Add solutionfile so we can set properties (set managed)
-                    AddPathToSubversion(e, e.Selection.SolutionFilename);
+                    AddPathToGit(e, e.Selection.SolutionFilename);
 
                     IVisualGitSolutionSettings settings = e.GetService<IVisualGitSolutionSettings>();
                     IProjectFileMapper mapper = e.GetService<IProjectFileMapper>();
@@ -298,13 +298,13 @@ namespace VisualGit.Commands
                     if (monitor != null && mapper != null)
                     {
                         // Make sure all visible glyphs are updated to reflect a new working copy
-                        monitor.ScheduleSvnStatus(mapper.GetAllFilesOfAllProjects());
+                        monitor.ScheduleGitStatus(mapper.GetAllFilesOfAllProjects());
                     }
 
                     return true;
                 }
 
-                return false; // User cancelled the "Add to subversion" dialog, don't set as managed by VisualGit
+                return false; // User cancelled the "Add to Git" dialog, don't set as managed by VisualGit
             }
         }
 
@@ -351,19 +351,19 @@ namespace VisualGit.Commands
             if (mapper == null)
                 return;
 
-            List<SvnProject> projectsToBeManaged = new List<SvnProject>();
-            SvnItem slnItem = cache[e.Selection.SolutionFilename];
+            List<GitProject> projectsToBeManaged = new List<GitProject>();
+            GitItem slnItem = cache[e.Selection.SolutionFilename];
             Uri solutionReposRoot = slnItem.WorkingCopy.RepositoryRoot;
 
-            foreach (SvnProject project in GetSelection(e.Selection))
+            foreach (GitProject project in GetSelection(e.Selection))
             {
-                ISvnProjectInfo projInfo = mapper.GetProjectInfo(project);
+                IGitProjectInfo projInfo = mapper.GetProjectInfo(project);
 
                 if (projInfo == null || projInfo.ProjectDirectory == null
                     || !projInfo.IsSccBindable)
                     continue; // Some projects can't be managed
 
-                SvnItem projectDir = cache[projInfo.ProjectDirectory];
+                GitItem projectDir = cache[projInfo.ProjectDirectory];
 
                 if (projectDir.WorkingCopy == slnItem.WorkingCopy)
                 {
@@ -379,7 +379,7 @@ namespace VisualGit.Commands
                     continue; // We don't have to add this one
                 if (projectDir.IsVersionable)
                 {
-                    SvnItem parentDir = GetVersionedParent(projectDir);
+                    GitItem parentDir = GetVersionedParent(projectDir);
                     Debug.Assert(parentDir != null);
 
                     DialogResult rslt = mb.Show(string.Format(CommandResources.AddXToExistingWcY,
@@ -403,7 +403,7 @@ namespace VisualGit.Commands
                             break;
                         case DialogResult.Yes:
                             projectsToBeManaged.Add(project);
-                            AddPathToSubversion(e, projInfo.ProjectFile ?? projInfo.ProjectDirectory);
+                            AddPathToGit(e, projInfo.ProjectFile ?? projInfo.ProjectDirectory);
                             continue;
                     }
                 }
@@ -425,13 +425,13 @@ namespace VisualGit.Commands
             if (!AskSetManagedSelectionProjects(e, mapper, scc, projectsToBeManaged))
                 return;
 
-            foreach (SvnProject project in projectsToBeManaged)
+            foreach (GitProject project in projectsToBeManaged)
             {
                 if (!scc.IsProjectManaged(project))
                 {
                     scc.SetProjectManaged(project, true);
 
-                    monitor.ScheduleSvnStatus(mapper.GetAllFilesOf(project)); // Update for 'New' status
+                    monitor.ScheduleGitStatus(mapper.GetAllFilesOf(project)); // Update for 'New' status
                 }
             }
         }
@@ -444,7 +444,7 @@ namespace VisualGit.Commands
         /// <param name="scc"></param>
         /// <param name="succeededProjects"></param>
         /// <returns></returns>
-        static bool AskSetManagedSelectionProjects(CommandEventArgs e, IProjectFileMapper mapper, IVisualGitSccService scc, IEnumerable<SvnProject> succeededProjects)
+        static bool AskSetManagedSelectionProjects(CommandEventArgs e, IProjectFileMapper mapper, IVisualGitSccService scc, IEnumerable<GitProject> succeededProjects)
         {
             if (e.DontPrompt || e.IsInAutomation)
                 return true;
@@ -452,9 +452,9 @@ namespace VisualGit.Commands
             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
             StringBuilder sb = new StringBuilder();
             bool foundOne = false;
-            foreach (SvnProject project in succeededProjects)
+            foreach (GitProject project in succeededProjects)
             {
-                ISvnProjectInfo info;
+                IGitProjectInfo info;
                 if (!scc.IsProjectManaged(project) && null != (info = mapper.GetProjectInfo(project)))
                 {
                     if (sb.Length > 0)
@@ -479,7 +479,7 @@ namespace VisualGit.Commands
         }
 
         /// <summary>
-        /// Returns false if the AddToSubversionDialog has been cancelled, true otherwise
+        /// Returns false if the AddToGitDialog has been cancelled, true otherwise
         /// </summary>
         /// <param name="e"></param>
         /// <param name="projectInfo"></param>
@@ -487,18 +487,18 @@ namespace VisualGit.Commands
         /// <param name="shouldMarkAsManaged"></param>
         /// <param name="storeReference"></param>
         /// <returns></returns>
-        static bool CheckoutWorkingCopyForProject(CommandEventArgs e, ISvnProjectInfo projectInfo, Uri solutionReposRoot, out bool shouldMarkAsManaged, out bool storeReference)
+        static bool CheckoutWorkingCopyForProject(CommandEventArgs e, IGitProjectInfo projectInfo, Uri solutionReposRoot, out bool shouldMarkAsManaged, out bool storeReference)
         {
             shouldMarkAsManaged = false;
             storeReference = false;
-            using (SvnClient cl = e.GetService<ISvnClientPool>().GetClient())
-            using (AddProjectToSubversion dialog = new AddProjectToSubversion())
+            using (SvnClient cl = e.GetService<IGitClientPool>().GetClient())
+            using (AddProjectToGit dialog = new AddProjectToGit())
             {
                 dialog.Context = e.Context;
                 dialog.PathToAdd = projectInfo.ProjectDirectory;
                 dialog.RepositoryAddUrl = solutionReposRoot;
                 if (dialog.ShowDialog(e.Context) != DialogResult.OK)
-                    return false; // User cancelled the "Add to subversion" dialog, don't set as managed by VisualGit
+                    return false; // User cancelled the "Add to Git" dialog, don't set as managed by VisualGit
 
 
                 Collection<SvnInfoEventArgs> info;

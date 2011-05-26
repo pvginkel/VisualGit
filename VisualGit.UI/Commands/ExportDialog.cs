@@ -54,21 +54,21 @@ namespace VisualGit.UI.Commands
             get { return _fc ?? (_fc = Context.GetService<IFileStatusCache>()); }
         }
 
-        SvnOrigin _baseOrigin;
+        GitOrigin _baseOrigin;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             if (FileCache != null && !string.IsNullOrEmpty(OriginPath))
             {
-                SvnItem item = FileCache[OriginPath];
+                GitItem item = FileCache[OriginPath];
 
                 if (item.IsVersioned)
-                    _baseOrigin = new SvnOrigin(item);
+                    _baseOrigin = new GitOrigin(item);
 
                 revisionPicker.Context = Context;
                 revisionPicker.Revision = SvnRevision.Working;
-                revisionPicker.SvnOrigin = _baseOrigin;                
+                revisionPicker.GitOrigin = _baseOrigin;                
             }
         }
 
@@ -125,11 +125,11 @@ namespace VisualGit.UI.Commands
                             enable = true;
                         else
                         {
-                            SvnItem i = FileCache[origin];
+                            GitItem i = FileCache[origin];
 
                             if (i != null && i.Exists && i.IsVersioned)
                             {
-                                revisionPicker.SvnOrigin = new SvnOrigin(i);
+                                revisionPicker.GitOrigin = new GitOrigin(i);
                                 _lastOrigin = origin;
                                 enable = true;
                             }
@@ -193,11 +193,11 @@ namespace VisualGit.UI.Commands
 
                 if (origin != null)
                 {
-                    SvnItem i = FileCache[origin];
+                    GitItem i = FileCache[origin];
 
                     if (i != null && i.Exists && i.IsVersioned)
                     {
-                        revisionPicker.SvnOrigin = new SvnOrigin(i);
+                        revisionPicker.GitOrigin = new GitOrigin(i);
                         _lastOrigin = origin;
                         return i.FullPath;
                     }

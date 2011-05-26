@@ -442,7 +442,7 @@
     <value>624, 400</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Commit to Subversion</value>
+    <value>Commit to Git</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ProjectCommitDialog</value>

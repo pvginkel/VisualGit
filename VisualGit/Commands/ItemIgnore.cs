@@ -13,21 +13,21 @@ namespace VisualGit.Commands
     [Command(VisualGitCommand.ItemIgnoreFolder)]
     class ItemIgnore : CommandBase
     {
-        static bool Skip(SvnItem item)
+        static bool Skip(GitItem item)
         {
             return (item.IsVersioned || item.IsIgnored || !item.IsVersionable || !item.Exists);
         }
 
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            SvnItem foundOne = null;
+            GitItem foundOne = null;
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (Skip(item))
                     continue;
 
-                SvnItem parent;
+                GitItem parent;
 
                 switch (e.Command)
                 {
@@ -74,8 +74,8 @@ namespace VisualGit.Commands
                         e.Text = string.Format(CommandStrings.IgnoreFileType, foundOne.Extension);
                         break;
                     case VisualGitCommand.ItemIgnoreFolder:
-                        SvnItem pp;
-                        SvnItem p = foundOne.Parent;
+                        GitItem pp;
+                        GitItem p = foundOne.Parent;
 
                         while (p != null && (pp = p.Parent) != null && !pp.IsVersioned)
                             p = pp;
@@ -90,7 +90,7 @@ namespace VisualGit.Commands
             Dictionary<string, List<string>> add = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
             List<string> refresh = new List<string>();
 
-            foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
             {
                 if (Skip(i))
                     continue;
@@ -107,8 +107,8 @@ namespace VisualGit.Commands
                         AddIgnore(add, i.Parent, "*");
                         break;
                     case VisualGitCommand.ItemIgnoreFolder:
-                        SvnItem p = i.Parent;
-                        SvnItem pp = null;
+                        GitItem p = i.Parent;
+                        GitItem pp = null;
 
                         while (null != p && null != (pp = p.Parent) && !pp.IsVersioned)
                             p = pp;
@@ -164,7 +164,7 @@ namespace VisualGit.Commands
             }
             finally
             {
-                e.GetService<IFileStatusMonitor>().ScheduleSvnStatus(refresh);
+                e.GetService<IFileStatusMonitor>().ScheduleGitStatus(refresh);
             }
         }
 
@@ -207,7 +207,7 @@ namespace VisualGit.Commands
                             foreach (string item in ignores)
                             {
                                 if (next)
-                                    sb.Append('\n'); // Subversion wants only newlines
+                                    sb.Append('\n'); // Git wants only newlines
                                 else
                                     next = true;
 
@@ -228,7 +228,7 @@ namespace VisualGit.Commands
             }
         }
 
-        private static void AddIgnore(Dictionary<string, List<string>> add, SvnItem item, string name)
+        private static void AddIgnore(Dictionary<string, List<string>> add, GitItem item, string name)
         {
             if (item == null)
                 return;

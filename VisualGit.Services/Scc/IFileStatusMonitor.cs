@@ -16,12 +16,12 @@ namespace VisualGit.Scc
         /// Marks the specified path dirty in the file status cache and calls <see cref="ScheduleGlyphUpdate"/> on the path
         /// </summary>
         /// <param name="path">The path.</param>
-        void ScheduleSvnStatus(string path);
+        void ScheduleGitStatus(string path);
         /// <summary>
         /// Marks the specified paths dirty in the file status cache and calls <see cref="ScheduleGlyphUpdate"/> on the paths
         /// </summary>
         /// <param name="path">The path.</param>
-        void ScheduleSvnStatus(IEnumerable<string> path);
+        void ScheduleGitStatus(IEnumerable<string> path);
 
         /// <summary>
         /// Schedules a glyph and pending changes update for the specified path.
@@ -38,7 +38,7 @@ namespace VisualGit.Scc
         /// Schedules a glyph only update for the specified project
         /// </summary>
         /// <param name="projects">The projects.</param>
-        void ScheduleGlyphOnlyUpdate(IEnumerable<SvnProject> projects);
+        void ScheduleGlyphOnlyUpdate(IEnumerable<GitProject> projects);
 
         /// <summary>
         /// Adds the specified path to the paths to monitor for pending changes
@@ -82,9 +82,9 @@ namespace VisualGit.Scc
         void ScheduleAddFile(string path);
 
         /// <summary>
-        /// Schedules the necessary refreshes after a subversion operation
+        /// Schedules the necessary refreshes after a Git operation
         /// </summary>
         /// <param name="actions">The actions.</param>
-        void HandleSvnResult(IDictionary<string, SvnClientAction> actions);
+        void HandleGitResult(IDictionary<string, GitClientAction> actions);
     }
 }

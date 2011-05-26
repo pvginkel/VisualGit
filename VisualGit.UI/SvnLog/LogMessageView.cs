@@ -6,7 +6,7 @@ namespace VisualGit.UI.SvnLog
 {
     public partial class LogMessageView : UserControl
     {
-        ICurrentItemSource<ISvnLogItem> logItemSource;
+        ICurrentItemSource<IGitLogItem> logItemSource;
 
         public LogMessageView()
         {
@@ -19,7 +19,7 @@ namespace VisualGit.UI.SvnLog
             container.Add(this);
         }
 
-        public ICurrentItemSource<ISvnLogItem> ItemSource
+        public ICurrentItemSource<IGitLogItem> ItemSource
         {
             get { return logItemSource; }
             set 
@@ -34,7 +34,7 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        void LogFocusChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void LogFocusChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
             if (ItemSource != null && ItemSource.FocusedItem != null)
                 logMessageEditor.Text = logItemSource.FocusedItem.LogMessage;

@@ -16,7 +16,7 @@ namespace VisualGit.Scc
         /// same tree as the solution; VisualGit stores extra information to track
         /// the reference.
         /// </summary>
-        SvnStateOnly,
+        GitStateOnly,
 
         /// <summary>
         /// The project requires Scc enlistment
@@ -32,7 +32,7 @@ namespace VisualGit.Scc
     /// <summary>
     /// 
     /// </summary>
-    public interface ISvnProjectInfo
+    public interface IGitProjectInfo
     {
         /// <summary>
         /// Gets the name of the project.

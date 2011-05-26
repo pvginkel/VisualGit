@@ -141,11 +141,11 @@ namespace VisualGit.UI.WorkingCopyExplorer
                 {
                     WCFileSystemNode fsNode = item as WCFileSystemNode;
 
-                    //SvnItem svnItem = item.SvnItem;
+                    //GitItem GitItem = item.GitItem;
                     if (fsNode == null)
                         continue;
 
-                    FileSystemListViewItem lvi = new FileSystemListViewItem(this, fsNode.SvnItem);
+                    FileSystemListViewItem lvi = new FileSystemListViewItem(this, fsNode.GitItem);
                     Items.Add(lvi);
                     lvi.Tag = item;
                 }
@@ -198,7 +198,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             lastChangeTime.Sorter = new SortWrapper(
                 delegate(FileSystemListViewItem x, FileSystemListViewItem y)
                 {
-                    return x.SvnItem.Status.LastChangeTime.CompareTo(y.SvnItem.Status.LastChangeTime);
+                    return x.GitItem.Status.LastChangeTime.CompareTo(y.GitItem.Status.LastChangeTime);
                 });
 
             AllColumns.Add(_nameColumn);
@@ -243,7 +243,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         protected override void OnRetrieveSelection(RetrieveSelectionEventArgs e)
         {
-            e.SelectionItem = new SvnItemData(Context, e.Item.SvnItem);
+            e.SelectionItem = new GitItemData(Context, e.Item.GitItem);
         }
 
         public override void OnShowContextMenu(MouseEventArgs e)
@@ -287,14 +287,14 @@ namespace VisualGit.UI.WorkingCopyExplorer
 
         protected override void OnResolveItem(ResolveItemEventArgs e)
         {
-            SvnItemData sid = e.SelectionItem as SvnItemData;
+            GitItemData sid = e.SelectionItem as GitItemData;
 
             if (sid == null)
                 return;
 
             foreach (FileSystemListViewItem lvi in Items)
             {
-                if (lvi.SvnItem == sid.SvnItem)
+                if (lvi.GitItem == sid.GitItem)
                     e.Item = lvi;
             }
         }
@@ -303,7 +303,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
         {
             if (item != null)
             {
-                SvnItem i = item.SvnItem;
+                GitItem i = item.GitItem;
 
                 string name = i.FullPath;
 
@@ -320,7 +320,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
         {
             foreach (FileSystemListViewItem i in Items)
             {
-                if (string.Equals(i.SvnItem.FullPath, path))
+                if (string.Equals(i.GitItem.FullPath, path))
                 {
                     SelectedItems.Clear();
                     i.Selected = true;

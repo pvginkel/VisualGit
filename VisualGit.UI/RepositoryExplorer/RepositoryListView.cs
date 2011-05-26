@@ -93,7 +93,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         protected override string GetCanonicalName(RepositoryListItem item)
         {
-            SvnOrigin origin = item.Origin;
+            GitOrigin origin = item.Origin;
 
             if (origin != null)
                 return origin.Uri.AbsoluteUri;

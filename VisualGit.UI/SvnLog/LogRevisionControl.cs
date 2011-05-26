@@ -16,7 +16,7 @@ namespace VisualGit.UI.SvnLog
     /// <summary>
     /// 
     /// </summary>
-    partial class LogRevisionControl : UserControl, ICurrentItemSource<ISvnLogItem>
+    partial class LogRevisionControl : UserControl, ICurrentItemSource<IGitLogItem>
     {
         readonly Action<SvnLogArgs> _logAction;
         readonly object _instanceLock = new object();
@@ -114,15 +114,15 @@ namespace VisualGit.UI.SvnLog
             ShowBusyIndicator();
             try
             {
-                using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
+                using (SvnClient client = _context.GetService<IGitClientPool>().GetClient())
                 {
-                    SvnOrigin single = EnumTools.GetSingle(LogSource.Targets);
+                    GitOrigin single = EnumTools.GetSingle(LogSource.Targets);
                     if (single != null)
                     {
                         // TODO: Use peg information
                     }
                     List<Uri> uris = new List<Uri>();
-                    foreach (SvnOrigin o in LogSource.Targets)
+                    foreach (GitOrigin o in LogSource.Targets)
                     {
                         uris.Add(o.Uri);
                     }
@@ -363,12 +363,12 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        #region ICurrentItemSource<ISvnLogItem> Members
-        public event EventHandler<CurrentItemEventArgs<ISvnLogItem>> SelectionChanged;
+        #region ICurrentItemSource<IGitLogItem> Members
+        public event EventHandler<CurrentItemEventArgs<IGitLogItem>> SelectionChanged;
 
-        public event EventHandler<CurrentItemEventArgs<ISvnLogItem>> FocusChanged;
+        public event EventHandler<CurrentItemEventArgs<IGitLogItem>> FocusChanged;
 
-        public ISvnLogItem FocusedItem
+        public IGitLogItem FocusedItem
         {
             get
             {
@@ -379,8 +379,8 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        readonly IList<ISvnLogItem> _selectedItems = new List<ISvnLogItem>();
-        public IList<ISvnLogItem> SelectedItems
+        readonly IList<IGitLogItem> _selectedItems = new List<IGitLogItem>();
+        public IList<IGitLogItem> SelectedItems
         {
             get
             {
@@ -393,7 +393,7 @@ namespace VisualGit.UI.SvnLog
         private void logRevisionControl1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (FocusChanged != null)
-                FocusChanged(this, new CurrentItemEventArgs<ISvnLogItem>(this));
+                FocusChanged(this, new CurrentItemEventArgs<IGitLogItem>(this));
 
             FireSelectionChanged();
 
@@ -406,9 +406,9 @@ namespace VisualGit.UI.SvnLog
             foreach (int i in logView.SelectedIndices)
                 _selectedItems.Add(new LogItem((LogRevisionItem)logView.Items[i], LogSource.RepositoryRoot));
 
-            OnSelectionChanged(new CurrentItemEventArgs<ISvnLogItem>(this));
+            OnSelectionChanged(new CurrentItemEventArgs<IGitLogItem>(this));
         }
-        protected virtual void OnSelectionChanged(CurrentItemEventArgs<ISvnLogItem> e)
+        protected virtual void OnSelectionChanged(CurrentItemEventArgs<IGitLogItem> e)
         {
             if (SelectionChanged != null)
                 SelectionChanged(this, e);

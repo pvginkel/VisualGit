@@ -643,7 +643,7 @@
     <value>3</value>
   </data>
   <data name="disclaimerLabel.Text" xml:space="preserve">
-    <value>* Requires Subversion 1.5.x+ server.</value>
+    <value>* Requires Git 1.5.x+ server.</value>
   </data>
   <data name="&gt;&gt;disclaimerLabel.Name" xml:space="preserve">
     <value>disclaimerLabel</value>

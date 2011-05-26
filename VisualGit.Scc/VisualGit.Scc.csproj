@@ -184,7 +184,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SvnSccContext.cs" />
+    <Compile Include="GitSccContext.cs" />
     <Compile Include="Commands\TaskFinisher.cs" />
   </ItemGroup>
   <ItemGroup>

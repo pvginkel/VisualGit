@@ -13,14 +13,14 @@ namespace VisualGit.Scc.UI
         /// </summary>
         /// <param name="origin">The origin.</param>
         /// <returns></returns>
-        IEnumerable<VisualGitRevisionType> GetRevisionTypes(SvnOrigin origin);
+        IEnumerable<VisualGitRevisionType> GetRevisionTypes(GitOrigin origin);
 
         /// <summary>
         /// Resolves the specified revision.
         /// </summary>
         /// <param name="revision">The revision.</param>
         /// <returns></returns>
-        VisualGitRevisionType Resolve(SvnOrigin origin, SvnRevision revision);
+        VisualGitRevisionType Resolve(GitOrigin origin, SvnRevision revision);
 
         /// <summary>
         /// Resolves the specified origin.
@@ -28,7 +28,7 @@ namespace VisualGit.Scc.UI
         /// <param name="origin">The origin.</param>
         /// <param name="from">From.</param>
         /// <returns></returns>
-        VisualGitRevisionType Resolve(SvnOrigin origin, VisualGitRevisionType from);
+        VisualGitRevisionType Resolve(GitOrigin origin, VisualGitRevisionType from);
     }
 
     public interface IVisualGitRevisionResolver : IVisualGitRevisionProvider
@@ -147,7 +147,7 @@ namespace VisualGit.Scc.UI
         /// <returns>
         /// 	<c>true</c> if [is valid on] [the specified SVN origin]; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool IsValidOn(SvnOrigin origin)
+        public virtual bool IsValidOn(GitOrigin origin)
         {
             return true;
         }

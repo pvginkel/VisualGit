@@ -475,7 +475,7 @@
     <value>539, 218</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Checkout from Subversion</value>
+    <value>Checkout from Git</value>
   </data>
   <data name="&gt;&gt;errorProvider.Name" xml:space="preserve">
     <value>errorProvider</value>

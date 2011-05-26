@@ -18,14 +18,14 @@ using VisualGit.VS;
 namespace VisualGit.Scc
 {
     [GuidAttribute(VisualGitId.SccServiceId), ComVisible(true), CLSCompliant(false)]
-    public interface ITheVisualGitSvnSccProvider : IVsSccProvider
+    public interface ITheVisualGitGitSccProvider : IVsSccProvider
     {
     }
 
     [GlobalService(typeof(VisualGitSccProvider))]
     [GlobalService(typeof(IVisualGitSccService))]
-    [GlobalService(typeof(ITheVisualGitSvnSccProvider), true)]
-    partial class VisualGitSccProvider : VisualGitService, ITheVisualGitSvnSccProvider, IVsSccProvider, IVsSccControlNewSolution, IVisualGitSccService, IVsSccEnlistmentPathTranslation
+    [GlobalService(typeof(ITheVisualGitGitSccProvider), true)]
+    partial class VisualGitSccProvider : VisualGitService, ITheVisualGitGitSccProvider, IVsSccProvider, IVsSccControlNewSolution, IVisualGitSccService, IVsSccEnlistmentPathTranslation
     {
         bool _active;
         IFileStatusCache _statusCache;
@@ -135,8 +135,8 @@ namespace VisualGit.Scc
 
                 if (pn != null)
                 {
-                    List<SvnProject> allProjects = new List<SvnProject>(GetAllProjects());
-                    allProjects.Add(SvnProject.Solution);
+                    List<GitProject> allProjects = new List<GitProject>(GetAllProjects());
+                    allProjects.Add(GitProject.Solution);
 
                     pn.ScheduleGlyphOnlyUpdate(allProjects);
                 }
@@ -231,7 +231,7 @@ namespace VisualGit.Scc
                 _projectMap.Add(pscp2Project, data = new SccProjectData(Context, pscp2Project));
             }
 
-            data.IsManaged = (pszProvider == VisualGitId.SubversionSccName);
+            data.IsManaged = (pszProvider == VisualGitId.GitSccName);
             data.IsRegistered = true;
 
             _syncMap = true;

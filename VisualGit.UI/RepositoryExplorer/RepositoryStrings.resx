@@ -139,7 +139,7 @@
     <value>&amp;Revision</value>
   </data>
   <data name="RootName" xml:space="preserve">
-    <value>Subversion Repositories</value>
+    <value>Git Repositories</value>
   </data>
   <data name="SizeColumn" xml:space="preserve">
     <value>&amp;Size</value>

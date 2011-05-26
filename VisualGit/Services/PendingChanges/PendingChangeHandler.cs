@@ -90,8 +90,8 @@ namespace VisualGit.Services.PendingChanges
                     {
                         foreach (PendingChange pc in changes)
                         {
-                            SvnItem item = pc.SvnItem;
-                            SvnWorkingCopy wc;
+                            GitItem item = pc.GitItem;
+                            GitWorkingCopy wc;
                             if (!string.IsNullOrEmpty(relativeToPath)
                                 && item.FullPath.StartsWith(relativeToPathP, StringComparison.OrdinalIgnoreCase))
                                 a.RelativeToPath = relativeToPath;
@@ -123,13 +123,13 @@ namespace VisualGit.Services.PendingChanges
 
         public IEnumerable<PendingCommitState> GetCommitRoots(IEnumerable<PendingChange> changes)
         {
-            List<SvnWorkingCopy> wcs = new List<SvnWorkingCopy>();
+            List<GitWorkingCopy> wcs = new List<GitWorkingCopy>();
             List<List<PendingChange>> pcs = new List<List<PendingChange>>();
 
             foreach (PendingChange pc in changes)
             {
-                SvnItem item = pc.SvnItem;
-                SvnWorkingCopy wc = item.WorkingCopy;
+                GitItem item = pc.GitItem;
+                GitWorkingCopy wc = item.WorkingCopy;
 
                 if (wc != null)
                 {
@@ -264,7 +264,7 @@ namespace VisualGit.Services.PendingChanges
         {
             foreach (PendingChange pc in state.Changes)
             {
-                SvnItem item = pc.SvnItem;
+                GitItem item = pc.GitItem;
 
                 if(item.IsConflicted)
                 {
@@ -281,14 +281,14 @@ namespace VisualGit.Services.PendingChanges
 
         private bool PreCommit_VerifySingleRoot(PendingCommitState state)
         {
-            SvnWorkingCopy wc = null;
+            GitWorkingCopy wc = null;
             foreach (PendingChange pc in state.Changes)
             {
-                SvnItem item = pc.SvnItem;
+                GitItem item = pc.GitItem;
 
                 if (item.IsVersioned || item.IsVersionable)
                 {
-                    SvnWorkingCopy w = item.WorkingCopy;
+                    GitWorkingCopy w = item.WorkingCopy;
 
                     if (wc == null)
                         wc = w;
@@ -389,7 +389,7 @@ namespace VisualGit.Services.PendingChanges
         }
 
         /// <summary>
-        /// Adds all files which are marked as to be added to subversion
+        /// Adds all files which are marked as to be added to Git
         /// </summary>
         /// <param name="state">The state.</param>
         /// <returns></returns>
@@ -399,7 +399,7 @@ namespace VisualGit.Services.PendingChanges
             {
                 if (pc.Change != null && pc.Change.State == PendingChangeKind.New)
                 {
-                    SvnItem item = pc.SvnItem;
+                    GitItem item = pc.GitItem;
 
                     // HACK: figure out why PendingChangeKind.New is still true
                     if (item.IsVersioned)
@@ -427,7 +427,7 @@ namespace VisualGit.Services.PendingChanges
         }
 
         /// <summary>
-        /// Adds all new parents of files to add to subversion
+        /// Adds all new parents of files to add to Git
         /// </summary>
         /// <param name="state">The state.</param>
         /// <returns></returns>
@@ -435,12 +435,12 @@ namespace VisualGit.Services.PendingChanges
         {
             foreach (string path in new List<string>(state.CommitPaths))
             {
-                SvnItem item = state.Cache[path];
+                GitItem item = state.Cache[path];
 
                 if (item.IsNewAddition)
                 {
-                    SvnItem parent = item.Parent;
-                    SvnWorkingCopy wc = item.WorkingCopy;
+                    GitItem parent = item.Parent;
+                    GitWorkingCopy wc = item.WorkingCopy;
 
                     if (wc == null)
                     {
@@ -474,14 +474,14 @@ namespace VisualGit.Services.PendingChanges
         {
             foreach (string path in new List<string>(state.CommitPaths))
             {
-                SvnItem item = state.Cache[path];
+                GitItem item = state.Cache[path];
 
                 if (item.Status.LocalContentStatus != SvnStatus.Missing)
                     continue;
 
                 if (item.IsCasingConflicted)
                 {
-                    string correctCasing = GetSvnCasing(item);
+                    string correctCasing = GetGitCasing(item);
                     string actualCasing = SvnTools.GetTruePath(item.FullPath);
 
                     if (correctCasing == null || actualCasing == null || !string.Equals(correctCasing, actualCasing, StringComparison.OrdinalIgnoreCase))
@@ -530,7 +530,7 @@ namespace VisualGit.Services.PendingChanges
             return true;
         }
 
-        static string GetSvnCasing(SvnItem item)
+        static string GetGitCasing(GitItem item)
         {
             string name = null;
             // Find the correct casing

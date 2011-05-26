@@ -27,7 +27,7 @@ namespace VisualGit.Commands
             if(names != null)
                 found = true; // We have cached names -> We have a selection
             else
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     if (item.IsFile && item.IsVersioned && (item.IsModified || item.IsDocumentDirty))
                     {
@@ -90,7 +90,7 @@ namespace VisualGit.Commands
 
         private static void OnUpdateRemove(CommandUpdateEventArgs e)
         {
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsVersioned && !string.IsNullOrEmpty(item.Status.ChangeList))
                 {
@@ -132,7 +132,7 @@ namespace VisualGit.Commands
 
             List<string> paths = new List<string>();
             
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsVersioned && (name != null) ? (item.IsFile || item.IsModified || item.IsDocumentDirty) : !string.IsNullOrEmpty(item.Status.ChangeList))
                 {
@@ -145,7 +145,7 @@ namespace VisualGit.Commands
 
             e.Selection.Cache.Remove(typeof(ItemMoveToChangeList)); // Remove cached list of items
 
-            using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
             {
                 if (name == null)
                 {

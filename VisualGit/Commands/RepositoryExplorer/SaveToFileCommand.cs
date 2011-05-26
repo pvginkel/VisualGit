@@ -15,9 +15,9 @@ namespace VisualGit.Commands.RepositoryExplorer
     {
         public override void OnExecute(CommandEventArgs e)
         {
-            ISvnRepositoryItem ri = null;
+            IGitRepositoryItem ri = null;
 
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 ri = i;
                 break;

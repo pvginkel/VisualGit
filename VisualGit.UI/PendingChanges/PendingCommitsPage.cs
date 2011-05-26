@@ -459,7 +459,7 @@ namespace VisualGit.UI.PendingChanges
                 if (!pci.Checked)
                     continue;
 
-                if (!keepingLocks || pci.PendingChange.SvnItem.IsLocked)
+                if (!keepingLocks || pci.PendingChange.GitItem.IsLocked)
                     return true;
             }
 
@@ -477,9 +477,9 @@ namespace VisualGit.UI.PendingChanges
                     continue;
                 PendingChange pc = pci.PendingChange;
 
-                if (pc.SvnItem.IsModified)
+                if (pc.GitItem.IsModified)
                     return true;
-                else if (!pc.SvnItem.IsVersioned && pc.SvnItem.IsVersionable && pc.SvnItem.InSolution)
+                else if (!pc.GitItem.IsVersioned && pc.GitItem.IsVersionable && pc.GitItem.InSolution)
                     return true; // Will be added                
             }
 

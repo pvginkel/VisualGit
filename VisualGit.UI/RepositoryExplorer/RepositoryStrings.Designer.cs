@@ -124,7 +124,7 @@ namespace VisualGit.UI.RepositoryExplorer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subversion Repositories.
+        ///   Looks up a localized string similar to Git Repositories.
         /// </summary>
         internal static string RootName {
             get {

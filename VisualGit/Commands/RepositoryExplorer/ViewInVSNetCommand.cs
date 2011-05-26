@@ -29,10 +29,10 @@ namespace VisualGit.Commands.RepositoryExplorer
 
             if (e.Enabled && e.Command == VisualGitCommand.ViewInVsNet)
             {
-                ISvnRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<ISvnRepositoryItem>());
+                IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
                 IVisualGitSolutionSettings settings = e.GetService<IVisualGitSolutionSettings>();
 
-                SvnOrigin origin = single.Origin; // Checked in parent
+                GitOrigin origin = single.Origin; // Checked in parent
 
                 string ext = Path.GetExtension(origin.Target.FileName);
 
@@ -43,9 +43,9 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            ISvnRepositoryItem ri = null;
+            IGitRepositoryItem ri = null;
 
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (i.Origin == null)
                     continue;

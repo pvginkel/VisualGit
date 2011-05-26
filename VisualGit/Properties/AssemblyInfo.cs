@@ -10,8 +10,8 @@ using VisualGit;
 // associated with an assembly.
 
 [assembly: CLSCompliant(true)] 
-[assembly: AssemblyTitle("VisualGit - Subversion support for Visual Studio")]
-[assembly: AssemblyDescription("VisualGit - Subversion support for Visual Studio")]
+[assembly: AssemblyTitle("VisualGit - Git support for Visual Studio")]
+[assembly: AssemblyDescription("VisualGit - Git support for Visual Studio")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(VisualGitId.AssemblyCompany)]
 [assembly: AssemblyProduct(VisualGitId.AssemblyProduct)]

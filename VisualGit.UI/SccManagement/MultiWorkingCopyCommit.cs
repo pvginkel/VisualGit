@@ -32,14 +32,14 @@ namespace VisualGit.UI.SccManagement
             wcList.ResizeColumnsToFit(columnWorkingCopy, columnRepository);
         }
 
-        public void SetInfo(List<SvnWorkingCopy> wcs, List<List<PendingChange>> pcs)
+        public void SetInfo(List<GitWorkingCopy> wcs, List<List<PendingChange>> pcs)
         {
             wcList.Items.Clear();
 
             for (int i = 0; i < wcs.Count; i++)
             {
                 SmartListViewItem lvi = new SmartListViewItem(wcList);
-                SvnWorkingCopy wc = wcs[i];
+                GitWorkingCopy wc = wcs[i];
                 Uri wcRoot = wc.RepositoryRoot;
                 lvi.SetValues(
                     wc.FullPath,

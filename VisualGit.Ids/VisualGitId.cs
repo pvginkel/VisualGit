@@ -14,7 +14,7 @@ namespace VisualGit
         /// The guid the VisualGitSvn package is registered with inside Visual Studio
         /// </summary>
         public const string PackageId = "604ad610-5cf9-4bd5-8acc-f49810e2efd4";
-        public const string PackageDescription = "VisualGit - Subversion Support for Visual Studio";
+        public const string PackageDescription = "VisualGit - Git Support for Visual Studio";
 
         /// <summary>The package version as used in the PLK</summary>
         public const string PlkVersion = "2.0";
@@ -25,18 +25,18 @@ namespace VisualGit
         //**********************************************************************************
 
         public const string AssemblyCopyright = "Copyright © VisualGit 2011";
-        public const string AssemblyProduct = "VisualGit - Subversion Support for Visual Studio";
+        public const string AssemblyProduct = "VisualGit - Git Support for Visual Studio";
         public const string AssemblyCompany = "VisualGit";
         //**********************************************************************************
 
-        /// <summary>The Subversion SCC Provider name as used in the solution file</summary>
-        public const string SubversionSccName = "SubversionScc";
+        /// <summary>The Git SCC Provider name as used in the solution file</summary>
+        public const string GitSccName = "GitScc";
         public const string SccStructureName = "SccStructure";
 
         // Items for the VS 2010 Extension registration
         public const string ExtensionTitle = VisualGitId.AssemblyProduct;
         public const string ExtensionAuthor = VisualGitId.AssemblyCompany;
-        public const string ExtensionDescription = "Open Source Subversion SCC Provider for Visual Studio 2005, 2008 and 2010.";
+        public const string ExtensionDescription = "Open Source Git SCC Provider for Visual Studio 2005, 2008 and 2010.";
         public const string ExtensionMoreInfoUrl = "http://www.ankhsvn.net/";
         public const string ExtensionGettingStartedUrl = "http://www.ankhsvn.net/";
 
@@ -51,7 +51,7 @@ namespace VisualGit
         /// <summary>The GUID of the SCC Service</summary>
         public const string SccServiceId = "d8c473d2-9634-4513-91d5-e1a671fe2df4";
         /// <summary>Language neutral SCC Provider title</summary>
-        public const string SccProviderTitle = "VisualGit - Subversion Support for Visual Studio";
+        public const string SccProviderTitle = "VisualGit - Git Support for Visual Studio";
 
 
         //************ Special contexts managed by our Trigger package *********************        
@@ -96,7 +96,7 @@ namespace VisualGit
         public const string BlameToolWindowId = "A543EA62-696C-4C7C-AB42-78BD7267DA92";
         public const string LogToolWindowId = "2FAC1EBF-6B37-4BE3-9A44-F9ED32D561CD";
         public const string DiffToolWindowId = "8B17630D-72A5-43AE-8105-DB31004D08AD";
-        public const string SvnInfoToolWindowId = "C3630016-F162-4AF5-B165-9F468A642E9A";
+        public const string GitInfoToolWindowId = "C3630016-F162-4AF5-B165-9F468A642E9A";
 
         public const string PendingChangeViewContext = "A02C6D65-1F8B-46AC-8DB3-511AE5DBA374";
         public const string DiffMergeViewContext = "6E66DFC4-CB72-4023-BDF5-6B139DF2F19B";

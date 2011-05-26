@@ -39,7 +39,7 @@ namespace VisualGit.Scc.ProjectMap
         string _projectFile;
         bool _checkedProjectFile;
         VisualGitSccProvider _scc;
-        SvnProject _svnProjectInstance;
+        GitProject _gitProjectInstance;
         string _projectLocation;
         string _projectName;
         string _projectDirectory;
@@ -178,7 +178,7 @@ namespace VisualGit.Scc.ProjectMap
                     {
                         string dir = name as string;
 
-                        if (!string.IsNullOrEmpty(dir) && SvnItem.IsValidPath(dir, true))
+                        if (!string.IsNullOrEmpty(dir) && GitItem.IsValidPath(dir, true))
                             dir = SvnTools.GetNormalizedFullPath(dir);
                         else
                         {
@@ -223,7 +223,7 @@ namespace VisualGit.Scc.ProjectMap
                     if (ErrorHandler.Succeeded(_vsProject.GetMkDocument(VSConstants.VSITEMID_ROOT, out name)))
                     {
                         _projectLocation = name;
-                        if (SvnItem.IsValidPath(name, true))
+                        if (GitItem.IsValidPath(name, true))
                             _projectFile = name;
                     }
                 }
@@ -254,12 +254,12 @@ namespace VisualGit.Scc.ProjectMap
             IVisualGitSolutionSettings settings = GetService<IVisualGitSolutionSettings>();
             IFileStatusCache cache = GetService<IFileStatusCache>();
 
-            SvnItem solutionRoot = settings.ProjectRootSvnItem;
+            GitItem solutionRoot = settings.ProjectRootGitItem;
 
             if (solutionRoot == null)
                 return null; // Fix the solution before we try any SCC, thanks!
 
-            SvnItem projectDirItem = cache[projectDir];
+            GitItem projectDirItem = cache[projectDir];
 
             if (projectDirItem != null && projectDirItem.WorkingCopy != null)
             {
@@ -320,16 +320,16 @@ namespace VisualGit.Scc.ProjectMap
             if (smart && null != (dir = SccBaseDirectory))
             {
                 IVisualGitSolutionSettings settings = GetService<IVisualGitSolutionSettings>();
-                SvnItem dirItem = GetService<IFileStatusCache>()[dir];
+                GitItem dirItem = GetService<IFileStatusCache>()[dir];
 
-                if (dirItem.IsBelowPath(settings.ProjectRootSvnItem))
+                if (dirItem.IsBelowPath(settings.ProjectRootGitItem))
                 {
-                    if (dirItem.WorkingCopy == settings.ProjectRootSvnItem.WorkingCopy)
+                    if (dirItem.WorkingCopy == settings.ProjectRootGitItem.WorkingCopy)
                         return SccEnlistMode.None; // All information available via working copy
                 }
             }
 
-            return SccEnlistMode.SvnStateOnly;
+            return SccEnlistMode.GitStateOnly;
         }
 
         public bool IsSccBindable
@@ -372,14 +372,14 @@ namespace VisualGit.Scc.ProjectMap
             }
         }
 
-        public SvnProject SvnProject
+        public GitProject GitProject
         {
             get
             {
-                if (_svnProjectInstance == null)
-                    _svnProjectInstance = new SvnProject(ProjectFile, SccProject);
+                if (_gitProjectInstance == null)
+                    _gitProjectInstance = new GitProject(ProjectFile, SccProject);
 
-                return _svnProjectInstance;
+                return _gitProjectInstance;
             }
         }
 
@@ -395,7 +395,7 @@ namespace VisualGit.Scc.ProjectMap
             {
                 _checkedProjectFile = false;
                 _projectFile = null;
-                _svnProjectInstance = null;
+                _gitProjectInstance = null;
             }
         }
 
@@ -428,7 +428,7 @@ namespace VisualGit.Scc.ProjectMap
                 return;
 
             if (managed)
-                Marshal.ThrowExceptionForHR(SccProject.SetSccLocation("Svn", "Svn", "Svn", VisualGitId.SubversionSccName));
+                Marshal.ThrowExceptionForHR(SccProject.SetSccLocation("Svn", "Svn", "Svn", VisualGitId.GitSccName));
             else
             {
                 // The managed package framework assumes empty strings for clearing; null will fail there
@@ -482,7 +482,7 @@ namespace VisualGit.Scc.ProjectMap
 
                 _checkedProjectFile = false;
                 _projectFile = null;
-                _svnProjectInstance = null;
+                _gitProjectInstance = null;
                 _loaded = true;
 
                 ISccProjectWalker walker = GetService<ISccProjectWalker>();

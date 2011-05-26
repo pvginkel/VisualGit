@@ -160,7 +160,7 @@ namespace VisualGit.Commands {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignore in Subversion.
+        ///   Looks up a localized string similar to Ignore in Git.
         /// </summary>
         internal static string IgnoreCaption {
             get {

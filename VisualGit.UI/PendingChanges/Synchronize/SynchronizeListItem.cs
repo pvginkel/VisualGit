@@ -10,14 +10,14 @@ namespace VisualGit.UI.PendingChanges.Synchronize
 {
     class SynchronizeListItem : SmartListViewItem
     {
-        SvnItem _item;
+        GitItem _item;
         SvnStatusEventArgs _status;
         PendingChangeKind _localChange;
         PendingChangeKind _remoteChange;
         PendingChangeStatus _localStatus;
         PendingChangeStatus _remoteStatus;
 
-        public SynchronizeListItem(SynchronizeListView list, SvnItem item, SvnStatusEventArgs status)
+        public SynchronizeListItem(SynchronizeListView list, GitItem item, SvnStatusEventArgs status)
             : base(list)
         {
             if (item == null)
@@ -71,7 +71,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
 
         private int GetIcon(IFileIconMapper mapper)
         {
-            if (SvnItem.Exists)
+            if (GitItem.Exists)
                 return mapper.GetIcon(_item.FullPath);
             else if (_status.NodeKind == SvnNodeKind.Directory)
                 return mapper.DirectoryIcon;
@@ -111,7 +111,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             }
         }
 
-        static string SafeWorkingCopy(SvnItem item)
+        static string SafeWorkingCopy(GitItem item)
         {
             if (item != null && item.WorkingCopy != null)
                 return item.WorkingCopy.FullPath;
@@ -119,12 +119,12 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             return "";
         }
 
-        static string GetProject(SvnItem _item)
+        static string GetProject(GitItem _item)
         {
             return "";
         }
 
-        string GetRelativePath(SvnItem item)
+        string GetRelativePath(GitItem item)
         {
             IVisualGitSolutionSettings ss = Context.GetService<IVisualGitSolutionSettings>();
 
@@ -154,7 +154,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             return svnStatus.ToString() + " " + svnStatus_2.ToString();
         }
 
-        public SvnItem SvnItem
+        public GitItem GitItem
         {
             get { return _item; }
         }

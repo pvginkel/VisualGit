@@ -92,7 +92,7 @@ namespace VisualGit.Scc.ProjectMap
                     return _sccBaseUri;
                 else
                 {
-                    SvnItem dirItem = GetService<IFileStatusCache>()[SccBaseDirectory];
+                    GitItem dirItem = GetService<IFileStatusCache>()[SccBaseDirectory];
 
                     if (dirItem != null && dirItem.Uri != null)
                         return dirItem.Uri;
@@ -131,7 +131,7 @@ namespace VisualGit.Scc.ProjectMap
 
             string location = SlnProjectLocation;
 
-            if (SvnItem.IsValidPath(location))
+            if (GitItem.IsValidPath(location))
                 return PackageUtilities.MakeRelative(solutionDirectory, location);
             else
                 return location;

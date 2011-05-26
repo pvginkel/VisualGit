@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,7 +26,7 @@ namespace VisualGit.Commands
                 return; // Always enabled
 
             bool mustOnly = (e.Command == VisualGitCommand.LockMustLock);
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(e.Command != VisualGitCommand.LockMustLock))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(e.Command != VisualGitCommand.LockMustLock))
             {
                 if (item.IsFile && item.IsVersioned && !item.IsLocked)
                 {
@@ -39,19 +39,19 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            IEnumerable<SvnItem> items = e.Argument as IEnumerable<SvnItem>;
+            IEnumerable<GitItem> items = e.Argument as IEnumerable<GitItem>;
 
             if (e.Command == VisualGitCommand.SccLock && items == null)
                 return;
 
             PathSelectorInfo psi = new PathSelectorInfo("Select Files to Lock",
-                                                        items ?? e.Selection.GetSelectedSvnItems(true));
-            psi.VisibleFilter += delegate(SvnItem item)
+                                                        items ?? e.Selection.GetSelectedGitItems(true));
+            psi.VisibleFilter += delegate(GitItem item)
                                      {
                                          return item.IsFile && item.IsVersioned && !item.IsLocked;
                                      };
 
-            psi.CheckedFilter += delegate(SvnItem item)
+            psi.CheckedFilter += delegate(GitItem item)
                                      {
                                          return item.IsFile && item.IsVersioned && !item.IsLocked;
                                      };
@@ -63,7 +63,7 @@ namespace VisualGit.Commands
             IVisualGitConfigurationService cs = e.GetService<IVisualGitConfigurationService>();
             VisualGitConfig config = cs.Instance;
 
-            IEnumerable<SvnItem> selectedItems = null;
+            IEnumerable<GitItem> selectedItems = null;
 
             if (!config.SuppressLockingUI || e.PromptUser)
             {
@@ -94,7 +94,7 @@ namespace VisualGit.Commands
                 selectedItems = psi.DefaultResult.Selection;
 
             List<string> files = new List<string>();
-            foreach (SvnItem item in selectedItems)
+            foreach (GitItem item in selectedItems)
             {
                 if (item.IsFile) // svn lock is only for files
                 {

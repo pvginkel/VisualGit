@@ -71,8 +71,8 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
         /// to the list.
         /// </summary>
         /// <param name="list"></param>
-        public abstract void GetResources(Collection<SvnItem> list, bool getChildItems,
-            Predicate<SvnItem> filter);
+        public abstract void GetResources(Collection<GitItem> list, bool getChildItems,
+            Predicate<GitItem> filter);
 
         public void Refresh()
         {

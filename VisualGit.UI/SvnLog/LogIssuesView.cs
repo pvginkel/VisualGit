@@ -59,9 +59,9 @@ namespace VisualGit.UI.SvnLog
     sealed class LogIssuesViewItem : SmartListViewItem
     {
         readonly string _issueId;
-        readonly ISvnLogItem _logItem;
+        readonly IGitLogItem _logItem;
 
-        public LogIssuesViewItem(LogIssuesView view, ISvnLogItem logItem, string issueId)
+        public LogIssuesViewItem(LogIssuesView view, IGitLogItem logItem, string issueId)
             : base(view)
         {
             _logItem = logItem;
@@ -105,7 +105,7 @@ namespace VisualGit.UI.SvnLog
             get { return _index; }
         }
 
-        [Category("Subversion")]
+        [Category("Git")]
         [DisplayName("Issue Id")]
         public string Issue
         {

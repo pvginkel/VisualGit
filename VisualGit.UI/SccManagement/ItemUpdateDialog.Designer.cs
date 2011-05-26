@@ -72,7 +72,7 @@
 			// 
 			resources.ApplyResources(this.revisionPickerStart, "revisionPickerStart");
 			this.revisionPickerStart.Name = "revisionPickerStart";
-			this.revisionPickerStart.SvnOrigin = null;
+			this.revisionPickerStart.GitOrigin = null;
 			// 
 			// ItemUpdateDialog
 			// 

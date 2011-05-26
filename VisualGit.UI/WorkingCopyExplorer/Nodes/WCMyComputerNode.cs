@@ -21,7 +21,7 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
             get { return "My Computer"; }
         }
 
-        public override void GetResources(System.Collections.ObjectModel.Collection<SvnItem> list, bool getChildItems, Predicate<SvnItem> filter)
+        public override void GetResources(System.Collections.ObjectModel.Collection<GitItem> list, bool getChildItems, Predicate<GitItem> filter)
         {
         }
 

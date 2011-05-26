@@ -17,7 +17,7 @@ namespace VisualGit.Scc
         /// </returns>
         public int AddNewSolutionToSourceControl()
         {
-            CommandService.PostExecCommand(VisualGitCommand.FileSccAddSolutionToSubversion);
+            CommandService.PostExecCommand(VisualGitCommand.FileSccAddSolutionToGit);
 
             return VSConstants.S_OK;
         }
@@ -31,7 +31,7 @@ namespace VisualGit.Scc
         /// </returns>
         public int GetDisplayStringForAction(out string pbstrActionName)
         {
-            pbstrActionName = Resources.AddToSubversionCommandName;
+            pbstrActionName = Resources.AddToGitCommandName;
             return VSConstants.S_OK;
         }
 
@@ -81,7 +81,7 @@ namespace VisualGit.Scc
         public int GetNamespaceExtensionInformation(int vsofsdDlg, out string pbstrNamespaceGUID, out string pbstrTrayDisplayName, out string pbstrProtocolPrefix)
         {
             pbstrNamespaceGUID = Guid.Empty.ToString();
-            pbstrTrayDisplayName = "Subversion";
+            pbstrTrayDisplayName = "Git";
             pbstrProtocolPrefix = "svn://";
             return VSConstants.E_NOTIMPL;
         }

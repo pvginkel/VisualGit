@@ -8,12 +8,12 @@ using VisualGit.UI.RepositoryExplorer.Dialogs;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
-    [Command(VisualGitCommand.SvnNodeDelete, AlwaysAvailable=true)]
+    [Command(VisualGitCommand.GitNodeDelete, AlwaysAvailable=true)]
     class DeleteRepositoryItemCommand : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (i.Origin == null || i.Origin.Target.Revision != SvnRevision.Head || i.Origin.IsRepositoryRoot)
                     break;
@@ -26,9 +26,9 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnOrigin> items = new List<SvnOrigin>();
-            List<ISvnRepositoryItem> refresh = new List<ISvnRepositoryItem>();
-            foreach (ISvnRepositoryItem i in e.Selection.GetSelection<ISvnRepositoryItem>())
+            List<GitOrigin> items = new List<GitOrigin>();
+            List<IGitRepositoryItem> refresh = new List<IGitRepositoryItem>();
+            foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (i.Origin == null || i.Origin.Target.Revision != SvnRevision.Head || i.Origin.IsRepositoryRoot)
                     break;
@@ -68,7 +68,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             finally
             {
                 // TODO: Don't refresh each item; refresh each parent!
-                foreach(ISvnRepositoryItem r in refresh)
+                foreach(IGitRepositoryItem r in refresh)
                 {
                     r.RefreshItem(true);
                 }

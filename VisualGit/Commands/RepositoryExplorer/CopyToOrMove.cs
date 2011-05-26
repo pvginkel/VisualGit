@@ -18,7 +18,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             bool foundOne = false;
             bool ok = true;
             Uri reposRoot = null;
-            foreach (ISvnRepositoryItem item in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (item.Origin == null || item.Origin.IsRepositoryRoot)
                 {
@@ -54,7 +54,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             Uri root = null;
 
             List<SvnUriTarget> copyFrom = new List<SvnUriTarget>();
-            foreach (ISvnRepositoryItem item in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 SvnUriTarget utt = item.Origin.Target as SvnUriTarget;
 

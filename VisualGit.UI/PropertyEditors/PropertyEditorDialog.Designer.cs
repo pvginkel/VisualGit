@@ -20,7 +20,7 @@ namespace VisualGit.UI.PropertyEditors
             this.cancelButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
             this.propGroupBox = new System.Windows.Forms.GroupBox();
-            this.svnItemLabel = new System.Windows.Forms.Label();
+            this.gitItemLabel = new System.Windows.Forms.Label();
             this.revertButton = new System.Windows.Forms.Button();
             this.propListView = new VisualGit.UI.VSSelectionControls.SmartListView();
             this.nameColumn = new System.Windows.Forms.ColumnHeader();
@@ -63,15 +63,15 @@ namespace VisualGit.UI.PropertyEditors
             // propGroupBox
             // 
             resources.ApplyResources(this.propGroupBox, "propGroupBox");
-            this.propGroupBox.Controls.Add(this.svnItemLabel);
+            this.propGroupBox.Controls.Add(this.gitItemLabel);
             this.propGroupBox.Name = "propGroupBox";
             this.propGroupBox.TabStop = false;
             // 
-            // svnItemLabel
+            // gitItemLabel
             // 
-            resources.ApplyResources(this.svnItemLabel, "svnItemLabel");
-            this.svnItemLabel.AutoEllipsis = true;
-            this.svnItemLabel.Name = "svnItemLabel";
+            resources.ApplyResources(this.gitItemLabel, "gitItemLabel");
+            this.gitItemLabel.AutoEllipsis = true;
+            this.gitItemLabel.Name = "gitItemLabel";
             // 
             // revertButton
             // 
@@ -146,7 +146,7 @@ namespace VisualGit.UI.PropertyEditors
         /// </summary>
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.GroupBox propGroupBox;
-        private System.Windows.Forms.Label svnItemLabel;
+        private System.Windows.Forms.Label gitItemLabel;
         private System.Windows.Forms.ColumnHeader stateColumn;
         private System.Windows.Forms.ColumnHeader valueColumn;
         private System.Windows.Forms.Button revertButton;

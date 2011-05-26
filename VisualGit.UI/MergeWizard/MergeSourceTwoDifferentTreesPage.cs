@@ -146,7 +146,7 @@ namespace VisualGit.UI.MergeWizard
         }
 
         /// <summary>
-        /// Displays the Subversion Log Viewer dialog.
+        /// Displays the Git Log Viewer dialog.
         /// </summary>
         private void DisplayLogViewerAndRetrieveRevisions(object sender)
         {
@@ -164,17 +164,17 @@ namespace VisualGit.UI.MergeWizard
                 return;
             }
 
-            using (LogViewerDialog dialog = new LogViewerDialog(new SvnOrigin(Context, new Uri(target), null)))
+            using (LogViewerDialog dialog = new LogViewerDialog(new GitOrigin(Context, new Uri(target), null)))
             {
                 dialog.LogControl.StrictNodeHistory = true;
 
                 if (dialog.ShowDialog(Context) == DialogResult.OK)
                 {
-                    IEnumerable<ISvnLogItem> selected = dialog.SelectedItems;
+                    IEnumerable<IGitLogItem> selected = dialog.SelectedItems;
                     long low = -1;
                     long high = -1;
 
-                    foreach (ISvnLogItem item in selected)
+                    foreach (IGitLogItem item in selected)
                     {
                         // Should happen on first iteration
                         if (low == -1 && high == -1)
@@ -348,14 +348,14 @@ namespace VisualGit.UI.MergeWizard
         }
         #endregion
 
-        SvnItem MergeTarget
+        GitItem MergeTarget
         {
             get { return Wizard.MergeTarget; }
         }
 
         private void wcHistoryBtn_Click(object sender, EventArgs e)
         {
-            using (LogViewerDialog dialog = new LogViewerDialog(new SvnOrigin(MergeTarget)))
+            using (LogViewerDialog dialog = new LogViewerDialog(new GitOrigin(MergeTarget)))
             {
                 dialog.LogControl.StrictNodeHistory = true;
 

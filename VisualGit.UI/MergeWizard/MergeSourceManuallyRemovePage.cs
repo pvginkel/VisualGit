@@ -33,7 +33,7 @@ namespace VisualGit.UI.MergeWizard
             Wizard.LogMode = VisualGit.UI.SvnLog.LogMode.MergesMerged;
         }
 
-        internal override ICollection<Uri> GetMergeSources(SvnItem target)
+        internal override ICollection<Uri> GetMergeSources(GitItem target)
         {
             SvnMergeItemCollection items = Wizard.MergeUtils.GetAppliedMerges(target);
 

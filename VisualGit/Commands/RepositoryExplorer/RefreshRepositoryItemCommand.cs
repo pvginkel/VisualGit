@@ -12,7 +12,7 @@ namespace VisualGit.Commands.RepositoryExplorer
         
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            foreach (ISvnRepositoryItem it in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem it in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (it.Origin != null)
                     return;
@@ -23,7 +23,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
         public override void OnExecute(CommandEventArgs e)
         {
-            foreach (ISvnRepositoryItem it in e.Selection.GetSelection<ISvnRepositoryItem>())
+            foreach (IGitRepositoryItem it in e.Selection.GetSelection<IGitRepositoryItem>())
             {
                 if (it.Origin != null)
                     it.RefreshItem(false);

@@ -28,12 +28,12 @@ namespace VisualGit.UI.PropertyEditors
 
             _propItems = new SortedList<string, PropertyEditItem>();
 
-            this.svnItemLabel.Text = pathText ?? "";
+            this.gitItemLabel.Text = pathText ?? "";
         }
 
-        public PropertyEditorDialog(SvnItem svnItem) : this(svnItem.FullPath)
+        public PropertyEditorDialog(GitItem gitItem) : this(gitItem.FullPath)
         {
-            _currentNodeKind = svnItem.NodeKind;
+            _currentNodeKind = gitItem.NodeKind;
         }
 
         public PropertyEditorDialog(SvnUriTarget target, bool revisionProps)

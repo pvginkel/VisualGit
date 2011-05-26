@@ -33,7 +33,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
         void UpdateForRevChanges(ILogControl logWindow, CommandUpdateEventArgs e)
         {
-            SvnOrigin first = EnumTools.GetSingle(logWindow.Origins);
+            GitOrigin first = EnumTools.GetSingle(logWindow.Origins);
 
             if (first == null)
             {
@@ -58,7 +58,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
         bool UpdateForChangedFiles(CommandUpdateEventArgs e)
         {
-            ISvnLogChangedPathItem change = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogChangedPathItem>());
+            IGitLogChangedPathItem change = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogChangedPathItem>());
 
             if (change == null)
                 return false;
@@ -100,7 +100,7 @@ namespace VisualGit.UI.SvnLog.Commands
             int n = 0;
 
             HybridCollection<string> changedPaths = new HybridCollection<string>();
-            foreach (ISvnLogItem item in e.Selection.GetSelection<ISvnLogItem>())
+            foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
             {
                 min = Math.Min(min, item.Revision);
                 max = Math.Max(max, item.Revision);
@@ -118,7 +118,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
         void PerformFileChanges(CommandEventArgs e)
         {
-            ISvnLogChangedPathItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogChangedPathItem>());
+            IGitLogChangedPathItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogChangedPathItem>());
 
             if (item != null)
             {
@@ -133,11 +133,11 @@ namespace VisualGit.UI.SvnLog.Commands
                         break;
                 }
 
-                ExecuteDiff(e, new SvnOrigin[] { item.Origin }, new SvnRevisionRange(item.Revision - 1, item.Revision));
+                ExecuteDiff(e, new GitOrigin[] { item.Origin }, new SvnRevisionRange(item.Revision - 1, item.Revision));
             }
         }
 
-        void ExecuteDiff(CommandEventArgs e, ICollection<SvnOrigin> targets, SvnRevisionRange range)
+        void ExecuteDiff(CommandEventArgs e, ICollection<GitOrigin> targets, SvnRevisionRange range)
         {
             if (targets.Count != 1)
                 return;
@@ -163,9 +163,9 @@ namespace VisualGit.UI.SvnLog.Commands
 
     public static class LogHelper
     {
-        public static IEnumerable<SvnItem> IntersectWorkingCopyItemsWithChangedPaths(IEnumerable<SvnItem> workingCopyItems, IEnumerable<string> changedPaths)
+        public static IEnumerable<GitItem> IntersectWorkingCopyItemsWithChangedPaths(IEnumerable<GitItem> workingCopyItems, IEnumerable<string> changedPaths)
         {
-            foreach (SvnItem i in workingCopyItems)
+            foreach (GitItem i in workingCopyItems)
             {
                 foreach (string s in changedPaths)
                 {

@@ -189,12 +189,12 @@ namespace VisualGit.Scc
 
             if (_delayedDeletes.Count > 0)
             {
-                using (SvnSccContext svn = new SvnSccContext(Context))
+                using (GitSccContext git = new GitSccContext(Context))
                 {
                     foreach (string d in _delayedDeletes.ToArray())
                     {
                         _delayedDeletes.Remove(d);
-                        svn.WcDelete(d);
+                        git.WcDelete(d);
                     }
                 }
             }

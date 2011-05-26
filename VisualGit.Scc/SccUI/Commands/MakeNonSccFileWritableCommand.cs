@@ -16,7 +16,7 @@ namespace VisualGit.Scc.SccUI.Commands
 
         public void OnExecute(CommandEventArgs e)
         {
-            SvnItem item = e.Argument as SvnItem;
+            GitItem item = e.Argument as GitItem;
             if (item == null)
                 return;
 

@@ -19,7 +19,7 @@ namespace VisualGit.UI.PathSelector
         }
 
         IVisualGitServiceProvider _context;
-        SvnOrigin _origin;
+        GitOrigin _origin;
 
         /// <summary>
         /// Gets or sets the context.
@@ -35,7 +35,7 @@ namespace VisualGit.UI.PathSelector
         /// Gets or sets the SVN origin.
         /// </summary>
         /// <value>The SVN origin.</value>
-        public SvnOrigin SvnOrigin
+        public GitOrigin GitOrigin
         {
             get { return _origin; }
             set { _origin = value; EnableBrowse(); }
@@ -43,17 +43,17 @@ namespace VisualGit.UI.PathSelector
 
         void EnableBrowse()
         {
-            browseButton.Enabled = (SvnOrigin != null) && (Context != null);
+            browseButton.Enabled = (GitOrigin != null) && (Context != null);
         }
 
         private void browseButton_Click(object sender, EventArgs e)
         {
-            using (LogViewerDialog lvd = new LogViewerDialog(SvnOrigin))
+            using (LogViewerDialog lvd = new LogViewerDialog(GitOrigin))
             {
                 if (DialogResult.OK != lvd.ShowDialog(Context))
                     return;
 
-                ISvnLogItem li = EnumTools.GetSingle(lvd.SelectedItems);
+                IGitLogItem li = EnumTools.GetSingle(lvd.SelectedItems);
 
                 if (li == null)
                     return;

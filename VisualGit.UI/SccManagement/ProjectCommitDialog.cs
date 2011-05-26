@@ -147,11 +147,11 @@ namespace VisualGit.UI.SccManagement
 
         class ItemLister : VisualGitService, IEnumerable<PendingChange>
         {
-            readonly IEnumerable<SvnItem> _items;
+            readonly IEnumerable<GitItem> _items;
 
             IPendingChangesManager _pcm;
             readonly PendingChange.RefreshContext _rc;
-            public ItemLister(IVisualGitServiceProvider context, IEnumerable<SvnItem> items)
+            public ItemLister(IVisualGitServiceProvider context, IEnumerable<GitItem> items)
                 : base(context)
             {
                 if (items == null)
@@ -171,7 +171,7 @@ namespace VisualGit.UI.SccManagement
 
             public IEnumerator<PendingChange> GetEnumerator()
             {
-                foreach (SvnItem item in _items)
+                foreach (GitItem item in _items)
                 {
                     if (PendingChange.IsPending(item))
                     {
@@ -204,7 +204,7 @@ namespace VisualGit.UI.SccManagement
             #endregion
         }
 
-        public void LoadItems(IEnumerable<SvnItem> iEnumerable)
+        public void LoadItems(IEnumerable<GitItem> iEnumerable)
         {
             LoadChanges(new ItemLister(Context, iEnumerable));
         }

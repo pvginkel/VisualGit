@@ -61,7 +61,7 @@ namespace VisualGit.Scc.StatusCache
         {
             lock (_lock)
             {
-                SvnItem item;
+                GitItem item;
 
                 if (!string.IsNullOrEmpty(path1) && _map.TryGetValue(path1, out item))
                     item.MarkDirty();

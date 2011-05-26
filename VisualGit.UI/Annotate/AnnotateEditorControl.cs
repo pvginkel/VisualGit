@@ -22,7 +22,7 @@ namespace VisualGit.UI.Annotate
     {
         List<AnnotateRegion> blameSections = new List<AnnotateRegion>();
         SelectionItemMap _map;
-        SvnOrigin _origin;
+        GitOrigin _origin;
 
         public AnnotateEditorControl()
         {
@@ -83,7 +83,7 @@ namespace VisualGit.UI.Annotate
             return PointToClient(p).Y;
         }
 
-        public void AddLines(SvnOrigin origin, Collection<SharpSvn.SvnBlameEventArgs> blameResult, Dictionary<long, string> logMessages)
+        public void AddLines(GitOrigin origin, Collection<SharpSvn.SvnBlameEventArgs> blameResult, Dictionary<long, string> logMessages)
         {
             _origin = origin;
 
@@ -131,7 +131,7 @@ namespace VisualGit.UI.Annotate
             RetrieveLogs(origin, _sources, min, max);
         }
 
-        private void RetrieveLogs(SvnOrigin origin, SortedList<long, AnnotateSource> _sources, long min, long max)
+        private void RetrieveLogs(GitOrigin origin, SortedList<long, AnnotateSource> _sources, long min, long max)
         {
             if (_sources.Count == 0 || min == -1 || max == -1)
                 return;
@@ -146,7 +146,7 @@ namespace VisualGit.UI.Annotate
 
             VisualGitAction aa = delegate()
             {
-                using (SvnClient cl = Context.GetService<ISvnClientPool>().GetClient())
+                using (SvnClient cl = Context.GetService<IGitClientPool>().GetClient())
                 {
                     SvnLogArgs la = new SvnLogArgs();
                     la.OperationalRevision = origin.Target.Revision;

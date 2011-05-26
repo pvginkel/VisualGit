@@ -14,9 +14,9 @@ namespace VisualGit.Scc.Commands
         public void OnUpdate(CommandUpdateEventArgs e)
         {
             if (e.State.SccProviderActive)
-                foreach (SvnProject p in e.Selection.GetSelectedProjects(false))
+                foreach (GitProject p in e.Selection.GetSelectedProjects(false))
                 {
-                    ISvnProjectInfo pi = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
+                    IGitProjectInfo pi = e.GetService<IProjectFileMapper>().GetProjectInfo(p);
 
                     if (p == null || pi == null || string.IsNullOrEmpty(pi.ProjectFile))
                     {
@@ -29,7 +29,7 @@ namespace VisualGit.Scc.Commands
                         break; // Project file is directory
                     }
 
-                    SvnItem item = e.GetService<IFileStatusCache>()[pi.ProjectFile];
+                    GitItem item = e.GetService<IFileStatusCache>()[pi.ProjectFile];
 
                     if (item != null && item.IsDirectory)
                         break; // Project file is not file

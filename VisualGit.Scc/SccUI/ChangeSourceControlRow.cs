@@ -13,14 +13,14 @@ namespace VisualGit.Scc.SccUI
     sealed class ChangeSourceControlRow : DataGridViewRow
     {
         readonly IVisualGitServiceProvider _context;
-        readonly SvnProject _project;
+        readonly GitProject _project;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangeSourceControlRow"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="project">The project.</param>
-        public ChangeSourceControlRow(IVisualGitServiceProvider context, SvnProject project)
+        public ChangeSourceControlRow(IVisualGitServiceProvider context, GitProject project)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -68,7 +68,7 @@ namespace VisualGit.Scc.SccUI
         /// Gets the project.
         /// </summary>
         /// <value>The project.</value>
-        public SvnProject Project
+        public GitProject Project
         {
             get { return _project; }
         }
@@ -107,10 +107,10 @@ namespace VisualGit.Scc.SccUI
         /// </summary>
         public void Refresh()
         {
-            ISvnProjectInfo projectInfo;
+            IGitProjectInfo projectInfo;
             if (_project.IsSolution)
             {
-                SvnItem rootItem = SolutionSettings.ProjectRootSvnItem;
+                GitItem rootItem = SolutionSettings.ProjectRootGitItem;
 
                 SetValues(
                     Scc.IsSolutionManaged,
@@ -124,7 +124,7 @@ namespace VisualGit.Scc.SccUI
             }
             else if (null != (projectInfo = ProjectMap.GetProjectInfo(_project)) && null != (projectInfo.ProjectDirectory))
             {
-                SvnItem dirItem = Cache[projectInfo.SccBaseDirectory];
+                GitItem dirItem = Cache[projectInfo.SccBaseDirectory];
 
                 SetValues(
                     Scc.IsProjectManaged(_project),
@@ -151,7 +151,7 @@ namespace VisualGit.Scc.SccUI
             }
         }
 
-        private string GetStatus(SvnItem dirItem, ISvnProjectInfo projectInfo, string file)
+        private string GetStatus(GitItem dirItem, IGitProjectInfo projectInfo, string file)
         {
             if (dirItem == null || !dirItem.Exists || !dirItem.IsVersioned)
                 return "<not found>";
@@ -164,8 +164,8 @@ namespace VisualGit.Scc.SccUI
                     return "Not Connected";
             }
 
-            if (dirItem.IsBelowPath(SolutionSettings.ProjectRootSvnItem)
-                    && dirItem.WorkingCopy == SolutionSettings.ProjectRootSvnItem.WorkingCopy)
+            if (dirItem.IsBelowPath(SolutionSettings.ProjectRootGitItem)
+                    && dirItem.WorkingCopy == SolutionSettings.ProjectRootGitItem.WorkingCopy)
             {
                 // In master working copy
                 if (Scc.IsSolutionManaged && Scc.IsProjectManaged(_project))
@@ -179,12 +179,12 @@ namespace VisualGit.Scc.SccUI
                 return "Detached"; // Separate working copy
         }
 
-        string SafeRepositoryPath(SvnItem item)
+        string SafeRepositoryPath(GitItem item)
         {
             if (item == null || item.Uri == null)
                 return "";
 
-            SvnWorkingCopy wc = item.WorkingCopy;
+            GitWorkingCopy wc = item.WorkingCopy;
             if (wc != null)
             {
                 Uri root = wc.RepositoryRoot;
@@ -206,7 +206,7 @@ namespace VisualGit.Scc.SccUI
             return item.Uri.ToString();
         }
 
-        string SafeRepositoryRoot(SvnItem item)
+        string SafeRepositoryRoot(GitItem item)
         {
             if (item == null || item.WorkingCopy == null)
                 return "";

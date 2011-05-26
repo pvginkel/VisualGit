@@ -68,7 +68,7 @@ namespace VisualGit.UI.PendingChanges.Commits
             modified.Sorter = new SortWrapper(
                 delegate(PendingCommitItem x, PendingCommitItem y)
                 {
-                    return x.PendingChange.SvnItem.Modified.CompareTo(y.PendingChange.SvnItem.Modified);
+                    return x.PendingChange.GitItem.Modified.CompareTo(y.PendingChange.GitItem.Modified);
                 });
 
             revision.Sorter = new SortWrapper(

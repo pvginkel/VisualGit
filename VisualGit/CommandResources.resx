@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddSolutionXToSubversion" xml:space="preserve">
-    <value>Would you like to add '{0}' to Subversion and mark it as managed?</value>
+  <data name="AddSolutionXToGit" xml:space="preserve">
+    <value>Would you like to add '{0}' to Git and mark it as managed?</value>
   </data>
   <data name="AddXToExistingWcY" xml:space="preserve">
     <value>Would you like to add'{0}' to existing working copy '{1}'? 
@@ -128,6 +128,6 @@ Click Yes to add to the current working copy, and no to create a new working cop
     <value> and </value>
   </data>
   <data name="MarkXAsManaged" xml:space="preserve">
-    <value>Would you like to mark '{0}' as managed by Subversion?</value>
+    <value>Would you like to mark '{0}' as managed by Git?</value>
   </data>
 </root>

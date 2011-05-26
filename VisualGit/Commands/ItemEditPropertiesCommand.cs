@@ -32,7 +32,7 @@ namespace VisualGit.Commands
             {
                 case VisualGitCommand.ItemEditProperties:
                 case VisualGitCommand.ItemShowPropertyChanges:
-                    foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
                     {
                         if (i.IsVersioned)
                         {
@@ -58,15 +58,15 @@ namespace VisualGit.Commands
                 case VisualGitCommand.ProjectEditProperties:
                     IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
                     cache = e.GetService<IFileStatusCache>();
-                    foreach (SvnProject project in e.Selection.GetSelectedProjects(false))
+                    foreach (GitProject project in e.Selection.GetSelectedProjects(false))
                     {
-                        ISvnProjectInfo info = pfm.GetProjectInfo(project);
+                        IGitProjectInfo info = pfm.GetProjectInfo(project);
                         if (info == null || string.IsNullOrEmpty(info.ProjectDirectory))
                         {
                             e.Enabled = false;
                             return;
                         }
-                        SvnItem projectFolder = cache[info.ProjectDirectory];
+                        GitItem projectFolder = cache[info.ProjectDirectory];
 
                         if (projectFolder.IsVersioned)
                             count++;
@@ -83,7 +83,7 @@ namespace VisualGit.Commands
                         e.Enabled = false;
                         return;
                     }
-                    SvnItem solutionItem = cache[solutionSettings.ProjectRoot];
+                    GitItem solutionItem = cache[solutionSettings.ProjectRoot];
                     if (solutionItem.IsVersioned)
                         count = 1;
                     break;
@@ -96,14 +96,14 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            SvnItem firstVersioned = null;
+            GitItem firstVersioned = null;
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
 
             switch (e.Command)
             {
                 case VisualGitCommand.ItemEditProperties:
                 case VisualGitCommand.ItemShowPropertyChanges:
-                    foreach (SvnItem i in e.Selection.GetSelectedSvnItems(false))
+                    foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
                     {
                         if (i.IsVersioned)
                         {
@@ -113,12 +113,12 @@ namespace VisualGit.Commands
                     }
                     break;
                 case VisualGitCommand.ProjectEditProperties: // use project folder
-                    foreach (SvnProject p in e.Selection.GetSelectedProjects(false))
+                    foreach (GitProject p in e.Selection.GetSelectedProjects(false))
                     {
                         IProjectFileMapper pfm = e.GetService<IProjectFileMapper>();
                         if (pfm != null)
                         {
-                            ISvnProjectInfo info = pfm.GetProjectInfo(p);
+                            IGitProjectInfo info = pfm.GetProjectInfo(p);
                             if (info != null && info.ProjectDirectory != null)
                             {
                                 firstVersioned = cache[info.ProjectDirectory];
@@ -141,7 +141,7 @@ namespace VisualGit.Commands
             if (firstVersioned == null)
                 return; // exceptional case
 
-            //using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
+            //using (SvnClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             using (PropertyEditorDialog dialog = new PropertyEditorDialog(firstVersioned))
             {
                 dialog.Context = e.Context;

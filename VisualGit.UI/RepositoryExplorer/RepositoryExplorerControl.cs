@@ -61,7 +61,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         void OnDelete(object sender, CommandEventArgs e)
         {
-            e.GetService<IVisualGitCommandService>().PostExecCommand(VisualGitCommand.SvnNodeDelete);
+            e.GetService<IVisualGitCommandService>().PostExecCommand(VisualGitCommand.GitNodeDelete);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -266,7 +266,7 @@ namespace VisualGit.UI.RepositoryExplorer
             AutoOpenCommand(e, item.Origin);
         }
 
-        private static void AutoOpenCommand(CommandEventArgs e, SvnOrigin origin)
+        private static void AutoOpenCommand(CommandEventArgs e, GitOrigin origin)
         {
             IVisualGitCommandService svc = e.GetService<IVisualGitCommandService>();
             IVisualGitSolutionSettings solutionSettings = e.GetService<IVisualGitSolutionSettings>();
@@ -289,9 +289,9 @@ namespace VisualGit.UI.RepositoryExplorer
             {
                 if (projectExt.TrimStart('*').Trim().Equals(ext, StringComparison.OrdinalIgnoreCase))
                 {
-                    // We found a project or solution, use Open from Subversion to create a checkout
+                    // We found a project or solution, use Open from Git to create a checkout
 
-                    svc.PostExecCommand(VisualGitCommand.FileFileOpenFromSubversion, origin);
+                    svc.PostExecCommand(VisualGitCommand.FileFileOpenFromGit, origin);
                     return;
                 }
             }

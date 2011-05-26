@@ -26,12 +26,12 @@ namespace VisualGit.Scc.SccUI
             IVisualGitSolutionSettings settings = Context.GetService<IVisualGitSolutionSettings>();
             IFileStatusCache cache = Context.GetService<IFileStatusCache>();
 
-            SvnItem slnDirItem = cache[settings.SolutionFilename].Parent;
-            SvnWorkingCopy wc = slnDirItem.WorkingCopy;
+            GitItem slnDirItem = cache[settings.SolutionFilename].Parent;
+            GitWorkingCopy wc = slnDirItem.WorkingCopy;
 
             if (wc != null && slnDirItem.Uri != null)
             {
-                SvnItem dirItem = slnDirItem;
+                GitItem dirItem = slnDirItem;
                 Uri cur = dirItem.Uri;
                 Uri setUri = settings.ProjectRootUri;
 

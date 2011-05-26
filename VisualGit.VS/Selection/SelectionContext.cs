@@ -39,11 +39,11 @@ namespace VisualGit.VS.Selection
         CachedEnumerable<SelectionItem> _selectionItemsRecursive;
         CachedEnumerable<string> _filenames;
         CachedEnumerable<string> _filenamesRecursive;
-        CachedEnumerable<SvnItem> _svnItems;
-        CachedEnumerable<SvnItem> _svnItemsRecursive;
-        CachedEnumerable<SvnProject> _selectedProjects;
-        CachedEnumerable<SvnProject> _selectedProjectsRecursive;
-        CachedEnumerable<SvnProject> _ownerProjects;
+        CachedEnumerable<GitItem> _gitItems;
+        CachedEnumerable<GitItem> _gitItemsRecursive;
+        CachedEnumerable<GitProject> _selectedProjects;
+        CachedEnumerable<GitProject> _selectedProjectsRecursive;
+        CachedEnumerable<GitProject> _ownerProjects;
         Dictionary<Type, IEnumerable> _selectedItemsMap;
         readonly Hashtable _hashCache = new Hashtable();
         IVsHierarchy _miscFiles;
@@ -148,8 +148,8 @@ namespace VisualGit.VS.Selection
             _selectionItemsRecursive = null;
             _filenames = null;
             _filenamesRecursive = null;
-            _svnItems = null;
-            _svnItemsRecursive = null;
+            _gitItems = null;
+            _gitItemsRecursive = null;
             _selectedProjects = null;
             _selectedProjectsRecursive = null;
             _ownerProjects = null;
@@ -208,7 +208,7 @@ namespace VisualGit.VS.Selection
                         {
                             if (!string.IsNullOrEmpty(solutionFile))
                             {
-                                _solutionFilename = SvnItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
+                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
                             }
                             // Assigning  _solutionFilename to "", created a race condition:
                             // SolutionFilename is queried via SolutionSettings#RefreshIfDirty (triggered from VisualGitServiceEvents#SolutionOpened/SolutionClosed events)
@@ -220,7 +220,7 @@ namespace VisualGit.VS.Selection
                             if (string.IsNullOrEmpty(solutionFile))
                                 _solutionFilename = "";
                             else
-                                _solutionFilename = SvnItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
+                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
                             */
                         }
                     }
@@ -606,22 +606,22 @@ namespace VisualGit.VS.Selection
             }
         }
 
-        protected IEnumerable<SvnItem> GetSelectedSvnItems()
+        protected IEnumerable<GitItem> GetSelectedGitItems()
         {
-            return _svnItems ?? (_svnItems = new CachedEnumerable<SvnItem>(InternalGetSelectedSvnItems(false), Disposer));
+            return _gitItems ?? (_gitItems = new CachedEnumerable<GitItem>(InternalGetSelectedGitItems(false), Disposer));
         }
 
-        protected IEnumerable<SvnItem> GetSelectedSvnItemsRecursive()
+        protected IEnumerable<GitItem> GetSelectedGitItemsRecursive()
         {
-            return _svnItemsRecursive ?? (_svnItemsRecursive = new CachedEnumerable<SvnItem>(InternalGetSelectedSvnItems(true), Disposer));
+            return _gitItemsRecursive ?? (_gitItemsRecursive = new CachedEnumerable<GitItem>(InternalGetSelectedGitItems(true), Disposer));
         }
 
-        public IEnumerable<SvnItem> GetSelectedSvnItems(bool recursive)
+        public IEnumerable<GitItem> GetSelectedGitItems(bool recursive)
         {
-            return recursive ? GetSelectedSvnItemsRecursive() : GetSelectedSvnItems();
+            return recursive ? GetSelectedGitItemsRecursive() : GetSelectedGitItems();
         }
 
-        IEnumerable<SvnItem> InternalGetSelectedSvnItems(bool recursive)
+        IEnumerable<GitItem> InternalGetSelectedGitItems(bool recursive)
         {
             if (_cache == null)
                 yield break;
@@ -636,12 +636,12 @@ namespace VisualGit.VS.Selection
 
         #region ISelectionContext Members
 
-        public IEnumerable<SvnProject> GetOwnerProjects()
+        public IEnumerable<GitProject> GetOwnerProjects()
         {
-            return _ownerProjects ?? (_ownerProjects = new CachedEnumerable<SvnProject>(InternalGetOwnerProjects(), Disposer));
+            return _ownerProjects ?? (_ownerProjects = new CachedEnumerable<GitProject>(InternalGetOwnerProjects(), Disposer));
         }
 
-        protected IEnumerable<SvnProject> InternalGetOwnerProjects()
+        protected IEnumerable<GitProject> InternalGetOwnerProjects()
         {
             Hashtable ht = new Hashtable();
             bool searchedProjectMapper = false;
@@ -656,7 +656,7 @@ namespace VisualGit.VS.Selection
 
                 if (si.SccProject != null)
                 {
-                    yield return new SvnProject(null, si.SccProject);
+                    yield return new GitProject(null, si.SccProject);
                     continue;
                 }
                 else if (si.Hierarchy is IVsSccVirtualFolders)
@@ -677,7 +677,7 @@ namespace VisualGit.VS.Selection
                 if (projectMapper != null)
                     foreach (string file in files)
                     {
-                        foreach (SvnProject project in projectMapper.GetAllProjectsContaining(file))
+                        foreach (GitProject project in projectMapper.GetAllProjectsContaining(file))
                         {
                             if (project.RawHandle != null)
                             {
@@ -763,29 +763,29 @@ namespace VisualGit.VS.Selection
 
         #region ISelectionContext Members
 
-        protected IEnumerable<SvnProject> GetSelectedProjects()
+        protected IEnumerable<GitProject> GetSelectedProjects()
         {
-            return _selectedProjects ?? (_selectedProjects = new CachedEnumerable<SvnProject>(InternalGetSelectedProjects(false), Disposer));
+            return _selectedProjects ?? (_selectedProjects = new CachedEnumerable<GitProject>(InternalGetSelectedProjects(false), Disposer));
         }
 
-        protected IEnumerable<SvnProject> GetSelectedProjectsRecursive()
+        protected IEnumerable<GitProject> GetSelectedProjectsRecursive()
         {
-            return _selectedProjectsRecursive ?? (_selectedProjectsRecursive = new CachedEnumerable<SvnProject>(InternalGetSelectedProjects(true), Disposer));
+            return _selectedProjectsRecursive ?? (_selectedProjectsRecursive = new CachedEnumerable<GitProject>(InternalGetSelectedProjects(true), Disposer));
         }
 
-        public IEnumerable<SvnProject> GetSelectedProjects(bool recursive)
+        public IEnumerable<GitProject> GetSelectedProjects(bool recursive)
         {
             return recursive ? GetSelectedProjectsRecursive() : GetSelectedProjects();
         }
 
-        protected IEnumerable<SvnProject> InternalGetSelectedProjects(bool recursive)
+        protected IEnumerable<GitProject> InternalGetSelectedProjects(bool recursive)
         {
             foreach (SelectionItem item in GetSelectedItems(recursive))
             {
                 if (item.Id == VSConstants.VSITEMID_ROOT)
                 {
                     if (!item.IsSolution && item.SccProject != null)
-                        yield return new SvnProject(null, item.SccProject);
+                        yield return new GitProject(null, item.SccProject);
                 }
             }
         }

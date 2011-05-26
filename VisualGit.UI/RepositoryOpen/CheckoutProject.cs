@@ -31,10 +31,10 @@ namespace VisualGit.UI.RepositoryOpen
             version.Context = Context;
         }
 
-        public SvnOrigin SvnOrigin
+        public GitOrigin GitOrigin
         {
-            get { return version.SvnOrigin; }
-            set { version.SvnOrigin = value; }
+            get { return version.GitOrigin; }
+            set { version.GitOrigin = value; }
         }
 
         public SvnRevision Revision
@@ -249,9 +249,9 @@ namespace VisualGit.UI.RepositoryOpen
         {
             string path = directory.Text;
 
-            if (!SvnItem.IsValidPath(path) || File.Exists(path))
+            if (!GitItem.IsValidPath(path) || File.Exists(path))
             {
-                MessageBox.Show(this, "Path is not valid", "Open Project from Subversion", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(this, "Path is not valid", "Open Project from Git", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -263,7 +263,7 @@ namespace VisualGit.UI.RepositoryOpen
                 if (EnumTools.GetFirst(di.GetFileSystemInfos()) != null)
                 {
                     if (MessageBox.Show(this, string.Format("{0} already contains files or directories.\nWould you like to continue?", path)
-                        , "Open Project from Subversion", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
+                        , "Open Project from Git", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
                     {
                         return;
                     }

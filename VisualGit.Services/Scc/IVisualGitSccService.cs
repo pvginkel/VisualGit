@@ -40,15 +40,15 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="project">A reference to the project or null for the solution</param>
         /// <param name="managed"></param>
-        void SetProjectManaged(SvnProject project, bool managed);    
+        void SetProjectManaged(GitProject project, bool managed);    
 
         /// <summary>
         /// Gets a boolean indicating whether the specified project (or the solution) is 
-        /// managed by the Subversion Scc provider
+        /// managed by the Git Scc provider
         /// </summary>
         /// <param name="project">A reference to the project or null for the solution</param>
         /// <returns><c>true</c> if the solution is managed by the scc provider, otherwise <c>false</c></returns>
-        bool IsProjectManaged(SvnProject project);
+        bool IsProjectManaged(GitProject project);
 
         /// <summary>
         /// Gets a value indicating whether this instance is solution managed.
@@ -101,15 +101,15 @@ namespace VisualGit.Scc
         /// Ensures the check out reference for the specified project
         /// </summary>
         /// <param name="project">The project.</param>
-        void EnsureCheckOutReference(SvnProject project);
+        void EnsureCheckOutReference(GitProject project);
 
         /// <summary>
         /// Disables the SVN updates initiated by Scc events while the returned object is not disposed
         /// </summary>
         /// <returns></returns>
-        IDisposable DisableSvnUpdates();
+        IDisposable DisableGitUpdates();
 
-        bool SvnUpdatesDisabled { get; }
+        bool GitUpdatesDisabled { get; }
     }
 
     /// <summary>

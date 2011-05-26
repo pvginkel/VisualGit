@@ -165,7 +165,7 @@ namespace VisualGit.VS.Selection
                     if (ErrorHandler.Succeeded(_activeDocumentFrame.GetProperty((int)__VSFPROPID.VSFPROPID_pszMkDocument, out value))
                         && null != (path = value as string))
                     {
-                        if (SvnItem.IsValidPath(path))
+                        if (GitItem.IsValidPath(path))
                             return _activeDocumentFileName = SvnTools.GetNormalizedFullPath(path);
                     }
                 }
@@ -173,7 +173,7 @@ namespace VisualGit.VS.Selection
             }
         }
 
-        public SvnItem ActiveDocumentItem
+        public GitItem ActiveDocumentItem
         {
             get
             {

@@ -24,7 +24,7 @@ namespace VisualGit.Commands
         {
             if (e.Command == VisualGitCommand.DocumentShowChanges)
             {
-                SvnItem sel = e.Selection.ActiveDocumentItem;
+                GitItem sel = e.Selection.ActiveDocumentItem;
 
                 if (sel == null || sel.IsDirectory ||!sel.IsLocalDiffAvailable)
                     e.Enabled = false;
@@ -34,7 +34,7 @@ namespace VisualGit.Commands
 
             bool noConflictDiff = e.Command == VisualGitCommand.ItemShowChanges;
 
-            foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+            foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
             {
                 if (item.IsDirectory)
                 {
@@ -70,19 +70,19 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            List<SvnItem> selectedFiles = new List<SvnItem>();
+            List<GitItem> selectedFiles = new List<GitItem>();
             bool selectionHasDeleted = false;
 
             if (e.Command == VisualGitCommand.DocumentShowChanges)
             {
-                SvnItem item = e.Selection.ActiveDocumentItem;
+                GitItem item = e.Selection.ActiveDocumentItem;
 
                 if(item == null)
                     return;
                 selectedFiles.Add(item);
             }
             else
-                foreach (SvnItem item in e.Selection.GetSelectedSvnItems(false))
+                foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
                     if (!item.IsVersioned || (item.Status.CombinedStatus == SvnStatus.Added && !item.Status.IsCopied))
                         continue;
@@ -134,7 +134,7 @@ namespace VisualGit.Commands
                 if (selectionHasDeleted)
                 {
                     // do not allow selecting deleted items if the revision combination includes SvnRevision.Working
-                    info.CheckableFilter += new PathSelectorInfo.SelectableFilter(delegate(SvnItem item, SvnRevision from, SvnRevision to)
+                    info.CheckableFilter += new PathSelectorInfo.SelectableFilter(delegate(GitItem item, SvnRevision from, SvnRevision to)
                     {
                         if (item != null
                             && (from == SvnRevision.Working
@@ -175,11 +175,11 @@ namespace VisualGit.Commands
 
                 IVisualGitOpenDocumentTracker tracker = e.GetService<IVisualGitOpenDocumentTracker>();
                 if (tracker != null)
-                    tracker.SaveDocuments(SvnItem.GetPaths(selectedFiles));
+                    tracker.SaveDocuments(GitItem.GetPaths(selectedFiles));
             }
 
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
-            foreach (SvnItem item in selectedFiles)
+            foreach (GitItem item in selectedFiles)
             {
                 VisualGitDiffArgs da = new VisualGitDiffArgs();
 
@@ -235,7 +235,7 @@ namespace VisualGit.Commands
             }
         }
 
-        static bool NotDeletedFilter(SvnItem item)
+        static bool NotDeletedFilter(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");

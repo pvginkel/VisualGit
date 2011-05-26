@@ -12,7 +12,7 @@ namespace VisualGit.UI.SvnLog
     public sealed partial class LogToolWindowControl : VisualGitToolWindowControl, ILogControl
     {
         string _originalText;
-        IList<SvnOrigin> _origins;
+        IList<GitOrigin> _origins;
         public LogToolWindowControl()
         {
             InitializeComponent();
@@ -43,14 +43,14 @@ namespace VisualGit.UI.SvnLog
             logControl.Context = Context;
         }
 
-        public IList<SvnOrigin> Origins
+        public IList<GitOrigin> Origins
         {
             get
             {
                 if (_origins == null)
                     return null;
 
-                return new List<SvnOrigin>(_origins);
+                return new List<GitOrigin>(_origins);
             }
         }
 
@@ -63,7 +63,7 @@ namespace VisualGit.UI.SvnLog
             StringBuilder sb = new StringBuilder(Text);
             int n = 0;
 
-            foreach (SvnOrigin origin in _origins)
+            foreach (GitOrigin origin in _origins)
             {
                 sb.Append((n++ == 0) ? " - " : ", ");
                     
@@ -73,44 +73,44 @@ namespace VisualGit.UI.SvnLog
             Text = sb.ToString();
         }
 
-        public void StartLog(SvnOrigin target, SvnRevision start, SvnRevision end)
+        public void StartLog(GitOrigin target, SvnRevision start, SvnRevision end)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            StartLog(new SvnOrigin[] { target }, start, end);
+            StartLog(new GitOrigin[] { target }, start, end);
         }
 
-        public void StartLog(ICollection<SvnOrigin> targets, SvnRevision start, SvnRevision end)
+        public void StartLog(ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
         {
             if (targets == null)
                 throw new ArgumentNullException("targets");
 
-            _origins = new List<SvnOrigin>(targets);
+            _origins = new List<GitOrigin>(targets);
 
             UpdateTitle();
 
             logControl.StartLog(_origins, start, end);
         }
 
-        public void StartMergesEligible(IVisualGitServiceProvider context, SvnItem target, Uri source)
+        public void StartMergesEligible(IVisualGitServiceProvider context, GitItem target, Uri source)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            SvnOrigin origin = new SvnOrigin(target);
-            _origins = new SvnOrigin[] { origin };
+            GitOrigin origin = new GitOrigin(target);
+            _origins = new GitOrigin[] { origin };
             UpdateTitle();
             logControl.StartMergesEligible(context, origin, source);
         }
 
-        public void StartMergesMerged(IVisualGitServiceProvider context, SvnItem target, Uri source)
+        public void StartMergesMerged(IVisualGitServiceProvider context, GitItem target, Uri source)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            SvnOrigin origin = new SvnOrigin(target);
-            _origins = new SvnOrigin[] { origin };
+            GitOrigin origin = new GitOrigin(target);
+            _origins = new GitOrigin[] { origin };
             UpdateTitle();
             logControl.StartMergesMerged(context, origin, source);
         }

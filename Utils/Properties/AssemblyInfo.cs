@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VisualGit")]
-[assembly: AssemblyProduct("VisualGit - Subversion support for Visual Studio")]
+[assembly: AssemblyProduct("VisualGit - Git support for Visual Studio")]
 [assembly: AssemblyCopyright("Copyright © VisualGit 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

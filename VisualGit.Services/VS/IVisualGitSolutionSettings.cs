@@ -45,7 +45,7 @@ namespace VisualGit.VS
         /// Gets the project root SVN item.
         /// </summary>
         /// <value>The project root SVN item.</value>
-        SvnItem ProjectRootSvnItem { get; }
+        GitItem ProjectRootGitItem { get; }
 
         /// <summary>
         /// Gets all project extensions filter.

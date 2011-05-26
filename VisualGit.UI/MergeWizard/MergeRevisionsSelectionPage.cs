@@ -25,7 +25,7 @@ namespace VisualGit.UI.MergeWizard
             SelectionChanged += new EventHandler<EventArgs>(MergeRevisionsSelectionPage_SelectionChanged);
             InitializeComponent();
 
-            logToolControl1.SelectionChanged += new EventHandler<CurrentItemEventArgs<ISvnLogItem>>(logToolControl1_SelectionChanged);
+            logToolControl1.SelectionChanged += new EventHandler<CurrentItemEventArgs<IGitLogItem>>(logToolControl1_SelectionChanged);
 
             logToolControl1.StrictNodeHistory = true;
         }
@@ -37,13 +37,13 @@ namespace VisualGit.UI.MergeWizard
         {
             get
             {
-                ISvnLogItem start = null;
-                ISvnLogItem end = null;
+                IGitLogItem start = null;
+                IGitLogItem end = null;
                 int previousIndex = -1;
-                List<ISvnLogItem> logitems = new List<ISvnLogItem>(SelectedRevisions);
-                logitems.Sort(delegate(ISvnLogItem a, ISvnLogItem b) { return a.Index.CompareTo(b.Index); });
+                List<IGitLogItem> logitems = new List<IGitLogItem>(SelectedRevisions);
+                logitems.Sort(delegate(IGitLogItem a, IGitLogItem b) { return a.Index.CompareTo(b.Index); });
 
-                foreach (ISvnLogItem item in logitems)
+                foreach (IGitLogItem item in logitems)
                 {
                     if (start == null)
                     {
@@ -91,7 +91,7 @@ namespace VisualGit.UI.MergeWizard
             base.OnPageChanged(e);
         }
 
-        public IList<VisualGit.Scc.ISvnLogItem> SelectedRevisions
+        public IList<VisualGit.Scc.IGitLogItem> SelectedRevisions
         {
             get
             {
@@ -106,7 +106,7 @@ namespace VisualGit.UI.MergeWizard
 
         public event EventHandler<EventArgs> SelectionChanged;
 
-        void logToolControl1_SelectionChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void logToolControl1_SelectionChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
             OnSelectionChanged(EventArgs.Empty);
         }
@@ -121,14 +121,14 @@ namespace VisualGit.UI.MergeWizard
         /// Gets or sets the merge source.
         /// </summary>
         /// <value>The merge source.</value>
-        public SvnOrigin MergeSource
+        public GitOrigin MergeSource
         {
             get { return Wizard.MergeSource; }
         }
 
-        public SvnOrigin MergeTarget
+        public GitOrigin MergeTarget
         {
-            get { return new SvnOrigin(Wizard.MergeTarget); }
+            get { return new GitOrigin(Wizard.MergeTarget); }
         }
 
         protected void PopulateUI()
@@ -144,7 +144,7 @@ namespace VisualGit.UI.MergeWizard
                     logToolControl1.StartMergesMerged(Context, MergeTarget, MergeSource.Target);
                     break;
                 case LogMode.Log:
-                    logToolControl1.StartLog(new SvnOrigin[] { new SvnOrigin(Context, MergeSource.Target, MergeTarget.RepositoryRoot) }, null, null);
+                    logToolControl1.StartLog(new GitOrigin[] { new GitOrigin(Context, MergeSource.Target, MergeTarget.RepositoryRoot) }, null, null);
                     break;
             }
         }
@@ -212,9 +212,9 @@ namespace VisualGit.UI.MergeWizard
             logToolControl1.Restart();
         }
 
-        IList<SvnOrigin> ILogControl.Origins
+        IList<GitOrigin> ILogControl.Origins
         {
-            get { return new SvnOrigin[] { MergeSource }; }
+            get { return new GitOrigin[] { MergeSource }; }
         }
 
         #endregion

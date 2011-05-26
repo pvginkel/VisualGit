@@ -9,7 +9,7 @@ using VisualGit.Commands;
 
 namespace VisualGit.UI.SvnLog
 {
-    partial class LogChangedPaths : UserControl, ICurrentItemDestination<ISvnLogItem>
+    partial class LogChangedPaths : UserControl, ICurrentItemDestination<IGitLogItem>
     {
         public LogChangedPaths()
         {
@@ -41,23 +41,23 @@ namespace VisualGit.UI.SvnLog
             }
         }
 
-        #region ICurrentItemDestination<ISvnLogItem> Members
-        ICurrentItemSource<ISvnLogItem> itemSource;
-        public ICurrentItemSource<ISvnLogItem> ItemSource
+        #region ICurrentItemDestination<IGitLogItem> Members
+        ICurrentItemSource<IGitLogItem> itemSource;
+        public ICurrentItemSource<IGitLogItem> ItemSource
         {
             get { return itemSource; }
             set
             {
                 if (itemSource != null)
                 {
-                    itemSource.SelectionChanged -= new EventHandler<CurrentItemEventArgs<ISvnLogItem>>(SelectionChanged);
-                    itemSource.FocusChanged -= new EventHandler<CurrentItemEventArgs<ISvnLogItem>>(FocusChanged);
+                    itemSource.SelectionChanged -= new EventHandler<CurrentItemEventArgs<IGitLogItem>>(SelectionChanged);
+                    itemSource.FocusChanged -= new EventHandler<CurrentItemEventArgs<IGitLogItem>>(FocusChanged);
                 }
                 itemSource = value;
                 if (itemSource != null)
                 {
-                    itemSource.SelectionChanged += new EventHandler<CurrentItemEventArgs<ISvnLogItem>>(SelectionChanged);
-                    itemSource.FocusChanged += new EventHandler<CurrentItemEventArgs<ISvnLogItem>>(FocusChanged);
+                    itemSource.SelectionChanged += new EventHandler<CurrentItemEventArgs<IGitLogItem>>(SelectionChanged);
+                    itemSource.FocusChanged += new EventHandler<CurrentItemEventArgs<IGitLogItem>>(FocusChanged);
                 }
 
             }
@@ -67,22 +67,22 @@ namespace VisualGit.UI.SvnLog
 
 
 
-        void SelectionChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void SelectionChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
         }
 
-        void FocusChanged(object sender, CurrentItemEventArgs<ISvnLogItem> e)
+        void FocusChanged(object sender, CurrentItemEventArgs<IGitLogItem> e)
         {
             changedPaths.Items.Clear();
 
-            ISvnLogItem item = e.Source.FocusedItem;
+            IGitLogItem item = e.Source.FocusedItem;
 
             if (item != null && item.ChangedPaths != null)
             {
                 List<PathListViewItem> paths = new List<PathListViewItem>();
 
                 List<string> origins = new List<string>();
-                foreach (SvnOrigin o in LogSource.Targets)
+                foreach (GitOrigin o in LogSource.Targets)
                 {
                     string origin = SvnTools.UriPartToPath(o.RepositoryRoot.MakeRelativeUri(o.Uri).ToString()).Replace('\\', '/');
                     if (origin.Length == 0 || origin[0] != '/')

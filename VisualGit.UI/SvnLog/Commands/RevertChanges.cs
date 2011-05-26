@@ -22,7 +22,7 @@ namespace VisualGit.UI.SvnLog.Commands
                 return;
             }
 
-            SvnOrigin origin = EnumTools.GetSingle(logWindow.Origins);
+            GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
             if (origin == null || !(origin.Target is SvnPathTarget))
             {
@@ -31,7 +31,7 @@ namespace VisualGit.UI.SvnLog.Commands
             }
 
             int count = 0;
-            foreach (ISvnLogItem item in e.Selection.GetSelection<ISvnLogItem>())
+            foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
             {
                 count++;
 
@@ -65,7 +65,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
             if (e.Command == VisualGitCommand.LogRevertTo)
             {
-                ISvnLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<ISvnLogItem>());
+                IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
                 if (item == null)
                     return;
@@ -75,7 +75,7 @@ namespace VisualGit.UI.SvnLog.Commands
             }
             else
             {
-                foreach (ISvnLogItem item in e.Selection.GetSelection<ISvnLogItem>())
+                foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
                 {
                     revisions.Add(new SvnRevisionRange(item.Revision, item.Revision - 1));
                 }
@@ -88,7 +88,7 @@ namespace VisualGit.UI.SvnLog.Commands
 
             HybridCollection<string> nodes = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (SvnOrigin o in logWindow.Origins)
+            foreach (GitOrigin o in logWindow.Origins)
             {
                 SvnPathTarget pt = o.Target as SvnPathTarget;
                 if (pt == null)
@@ -113,7 +113,7 @@ namespace VisualGit.UI.SvnLog.Commands
                 progressRunner.RunModal("Reverting",
                 delegate(object sender, ProgressWorkerArgs ee)
                 {
-                    foreach (SvnOrigin item in logWindow.Origins)
+                    foreach (GitOrigin item in logWindow.Origins)
                     {
                         SvnPathTarget target = item.Target as SvnPathTarget;
 

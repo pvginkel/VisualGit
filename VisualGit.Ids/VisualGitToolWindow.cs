@@ -13,6 +13,6 @@ namespace VisualGit
         PendingChanges,
         Log,
         Diff,
-        SvnInfo
+        GitInfo
     }
 }

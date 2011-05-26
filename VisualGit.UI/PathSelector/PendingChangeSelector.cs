@@ -53,9 +53,9 @@ namespace VisualGit.UI.PathSelector
             ConfigurationService.SaveColumnsWidths(GetType(), widths);
         }
 
-        IEnumerable<SvnItem> _allItems;
-        Predicate<SvnItem> _filter;
-        Predicate<SvnItem> _checkedFilter;
+        IEnumerable<GitItem> _allItems;
+        Predicate<GitItem> _filter;
+        Predicate<GitItem> _checkedFilter;
 
         private void Reload()
         {
@@ -68,7 +68,7 @@ namespace VisualGit.UI.PathSelector
             }
 
             pendingList.ClearItems();
-            foreach (SvnItem i in _allItems)
+            foreach (GitItem i in _allItems)
             {
                 if (_filter != null && !_filter(i))
                     continue;
@@ -114,22 +114,22 @@ namespace VisualGit.UI.PathSelector
             }
         }
 
-        public IEnumerable<SvnItem> GetSelectedItems()
+        public IEnumerable<GitItem> GetSelectedItems()
         {
             foreach (PendingChange pc in GetSelection())
             {
-                yield return pc.SvnItem;
+                yield return pc.GitItem;
             }
         }
 
-        public void LoadItems(IEnumerable<SvnItem> allItems, Predicate<SvnItem> visibleFilter, Predicate<SvnItem> checkedFilter)
+        public void LoadItems(IEnumerable<GitItem> allItems, Predicate<GitItem> visibleFilter, Predicate<GitItem> checkedFilter)
         {
             _allItems = allItems;
             _checkedFilter = checkedFilter;
             _filter = visibleFilter;
         }
 
-        public void LoadItems(IEnumerable<SvnItem> allItems)
+        public void LoadItems(IEnumerable<GitItem> allItems)
         {
             LoadItems(allItems, PendingChange.IsPending, null);
         }

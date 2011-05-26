@@ -83,7 +83,7 @@ namespace VisualGit.Scc.ProjectMap
             if (_loaded)
             {
                 if (ErrorHandler.Succeeded(VsProject.GetMkDocument(itemidAdded, out r))
-                    && !string.IsNullOrEmpty(r) && SvnItem.IsValidPath(r))
+                    && !string.IsNullOrEmpty(r) && GitItem.IsValidPath(r))
                 {
                     if (!System.IO.File.Exists(r) && !System.IO.Directory.Exists(r))
                     {
