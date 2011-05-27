@@ -154,7 +154,7 @@
     <value>Working Copy: {0}</value>
   </data>
   <data name="YouCanDownloadVisualGit" xml:space="preserve">
-    <value>You can download the latest VisualGit release on http://ankhsvn.net/downloads</value>
+    <value>You can download the latest VisualGit release on http://github.com/pvginkel/visualgit/</value>
   </data>
   <data name="NoIssueNumber" xml:space="preserve">
     <value>You haven't entered an issue number.

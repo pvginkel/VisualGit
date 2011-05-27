@@ -20,6 +20,9 @@ namespace VisualGit.Services
 
         public void RunHelp(VSDialogForm form)
         {
+            throw new NotImplementedException("Help should not be retrieved from ankhsvn.net");
+            
+            /*
             UriBuilder ub = new UriBuilder("http://svc.ankhsvn.net/svc/go/");
             ub.Query = string.Format("t=dlgHelp&v={0}&l={1}&dt={2}", GetService<IVisualGitPackage>().UIVersion, CultureInfo.CurrentUICulture.LCID, Uri.EscapeUriString(form.DialogHelpTypeName));
 
@@ -42,6 +45,7 @@ namespace VisualGit.Services
                 else
                     throw;
             }
+            */
         }
 
         #endregion

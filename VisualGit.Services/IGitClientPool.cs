@@ -165,7 +165,7 @@ namespace VisualGit
         protected virtual void ReturnClient()
         {
             // In our common implementation this code is not used
-            // Update VisualGitSvnClientPool.AnkhSvnPoolClient
+            // Update VisualGitSvnClientPool.VisualGitSvnPoolClient
 
             if (_nReturns++ > 32 || IsCommandRunning || !_pool.ReturnClient(this))
             {
@@ -236,7 +236,7 @@ namespace VisualGit
         protected virtual void ReturnClient()
         {
             // In our common implementation this code is not used
-            // Update VisualGitSvnClientPool.AnkhSvnPoolClient
+            // Update VisualGitSvnClientPool.VisualGitSvnPoolClient
 
             if (_shouldDispose || _nReturns++ > 1024 || IsCommandRunning || !_pool.ReturnClient(this))
             {

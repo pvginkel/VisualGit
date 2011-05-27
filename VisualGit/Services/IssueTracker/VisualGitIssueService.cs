@@ -375,7 +375,9 @@ namespace VisualGit.Services.IssueTracker
 		public void ShowConnectHelp()
 		{
 			// Shamelessly copied from the VisualGitHelService
-
+			
+			throw new NotImplementedException("Help should not be requested from ankhsvn.net");
+      /*
 			UriBuilder ub = new UriBuilder("http://svc.ankhsvn.net/svc/go/");
 			ub.Query = string.Format("t=ctrlHelp&v={0}&l={1}&dt={2}", GetService<IVisualGitPackage>().UIVersion, CultureInfo.CurrentUICulture.LCID, Uri.EscapeUriString("VisualGit.UI.PendingChanges.PendingIssuesPage"));
 
@@ -398,6 +400,7 @@ namespace VisualGit.Services.IssueTracker
 				else
 					throw;
 			}
+			*/
 		}
 
 		#endregion

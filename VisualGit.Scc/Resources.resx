@@ -154,7 +154,7 @@
     <value>This file must be locked before it can be edited.</value>
   </data>
   <data name="UnsupportedWorkingCopyFound" xml:space="preserve">
-    <value>Git detected an unsupported working copy version while checking the status of '{0}'. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
+    <value>Git detected an unsupported working copy version while checking the status of '{0}'. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://github.com/pvginkel/visualgit/ to find out about newer VisualGit versions supporting this Working Copy.
 
 Most likely VisualGit will not work correctly on this and other upgraded working copies until you upgrade to a newer version.</value>
   </data>

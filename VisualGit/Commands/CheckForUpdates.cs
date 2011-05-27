@@ -128,7 +128,10 @@ namespace VisualGit.Commands
             Version version = GetCurrentVersion(e.Context);
             Version vsVersion = e.GetService<IVisualGitSolutionSettings>().VisualStudioVersion;
             Version osVersion = Environment.OSVersion.Version;
+            
+            throw new NotImplementedException("New versions should not be requested from ankhsvn.net");
 
+            /*
             StringBuilder sb = new StringBuilder();
             sb.Append("http://svc.ankhsvn.net/svc/");
             if (IsDevVersion())
@@ -215,6 +218,7 @@ namespace VisualGit.Commands
             }
 
             wr.BeginGetResponse(OnResponse, wr);
+            */
         }
 
         static bool? _isDevVersion;

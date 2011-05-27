@@ -169,7 +169,7 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Git detected an unsupported working copy version while checking the status of &apos;{0}&apos;. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://ankhsvn.net/ to find out about newer VisualGit versions supporting this Working Copy.
+        ///   Looks up a localized string similar to Git detected an unsupported working copy version while checking the status of &apos;{0}&apos;. Most likely you upgraded another Git client (e.g. TortoiseSVN or the SVN client) to a newer version without upgrading your VisualGit. Please visit http://github.com/pvginkel/visualgit/ to find out about newer VisualGit versions supporting this Working Copy.
         ///
         ///Most likely VisualGit will not work correctly on this and other upgraded working copies until you upgrade to a newer version..
         /// </summary>

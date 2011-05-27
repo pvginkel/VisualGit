@@ -37,8 +37,8 @@ namespace VisualGit
         public const string ExtensionTitle = VisualGitId.AssemblyProduct;
         public const string ExtensionAuthor = VisualGitId.AssemblyCompany;
         public const string ExtensionDescription = "Open Source Git SCC Provider for Visual Studio 2005, 2008 and 2010.";
-        public const string ExtensionMoreInfoUrl = "http://www.ankhsvn.net/";
-        public const string ExtensionGettingStartedUrl = "http://www.ankhsvn.net/";
+        public const string ExtensionMoreInfoUrl = "http://github.com/pvginkel/visualgit/";
+        public const string ExtensionGettingStartedUrl = "http://github.com/pvginkel/visualgit/";
 
         /// <summary>
         /// The guid used for registering the commands registered by the VisualGitSvn package

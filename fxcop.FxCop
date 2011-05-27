@@ -5,9 +5,9 @@
         <SharedProject>False</SharedProject>
     </ProjectOptions>
     <TargetAssemblies>
-        <TargetAssembly Visible="True">ankh.ui\bin\debug\ankh.ui.exe</TargetAssembly>
-        <TargetAssembly Visible="True">ankh.commands\bin\debug\ankh.commands.dll</TargetAssembly>
-        <TargetAssembly Visible="True">ankh\bin\debug\ankh.dll</TargetAssembly>
+        <TargetAssembly Visible="True">VisualGit.UI\bin\Debug\VisualGit.UI.exe</TargetAssembly>
+        <TargetAssembly Visible="True">VisualGit.Commands\bin\Debug\VisualGit.Commands.dll</TargetAssembly>
+        <TargetAssembly Visible="True">VisualGit\bin\Debug\VisualGit.dll</TargetAssembly>
         <TargetAssembly Visible="True">nsvn\bin\debug\nsvn.dll</TargetAssembly>
     </TargetAssemblies>
     <Rules>
