@@ -60,7 +60,7 @@ namespace VisualGit.VSPackage.Attributes
         /// </summary>
         public Guid SccProviderService
         {
-            get { return typeof(VisualGit.Scc.ITheVisualGitGitSccProvider).GUID; }
+            get { return typeof(VisualGit.Scc.ITheVisualGitSccProvider).GUID; }
         }
 
         /// <summary>

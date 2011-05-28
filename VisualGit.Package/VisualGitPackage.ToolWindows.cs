@@ -36,7 +36,7 @@ namespace VisualGit.VSPackage
     [ProvideToolWindow(typeof(GitInfoToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Right, Transient = false, Window = ToolWindowGuids80.PropertiesWindow)]
     [ProvideToolWindowVisibility(typeof(PendingChangesToolWindow), VisualGitId.SccProviderId)]
     [ProvideToolWindowVisibility(typeof(GitInfoToolWindow), VisualGitId.SccProviderId)]
-    public partial class VisualGitGitPackage
+    public partial class VisualGitPackage
     {
         public void ShowToolWindow(VisualGitToolWindow window)
         {

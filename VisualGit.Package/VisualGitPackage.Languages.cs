@@ -28,7 +28,7 @@ namespace VisualGit.VSPackage
     [ProvideLanguageExtension(typeof(UnifiedDiffLanguage), ".patch")]
     [ProvideLanguageExtension(typeof(UnifiedDiffLanguage), ".diff")]
     [ProvideService(typeof(UnifiedDiffLanguage), ServiceName = VisualGitId.UnifiedDiffServiceName)]
-    partial class VisualGitGitPackage
+    partial class VisualGitPackage
     {
         protected override object GetAutomationObject(string name)
         {

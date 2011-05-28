@@ -12,7 +12,7 @@ namespace VisualGit.VSPackage
     [ProvideEditorFactoryAttribute(typeof(VisualGitDiffEditorFactory), 302)]
     [ProvideEditorFactoryAttribute(typeof(VisualGitDynamicEditorFactory), 303)]
     [ProvideEditorLogicalView(typeof(VisualGitDiffEditorFactory), VisualGitId.DiffEditorViewId)]
-    partial class VisualGitGitPackage
+    partial class VisualGitPackage
     {
         void RegisterEditors()
         {

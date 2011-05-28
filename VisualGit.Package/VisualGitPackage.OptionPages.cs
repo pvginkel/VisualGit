@@ -10,7 +10,7 @@ namespace VisualGit.VSPackage
     [ProvideToolsOptionsPageVisibility("Source Control", "Git User Tools", VisualGitId.SccProviderId)]
     [ProvideOptionPage(typeof(EnvironmentSettingsPage), "Source Control", "Git", 106, 107, false)]
     [ProvideToolsOptionsPageVisibility("Source Control", "Git", VisualGitId.SccProviderId)]
-    partial class VisualGitGitPackage
+    partial class VisualGitPackage
     {
     }
 }

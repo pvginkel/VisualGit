@@ -9,7 +9,7 @@ using VisualGit.VS;
 
 namespace VisualGit.VSPackage
 {
-    partial class VisualGitGitPackage : IOleComponent
+    partial class VisualGitPackage : IOleComponent
     {
         uint _componentId;
         void RegisterAsOleComponent()

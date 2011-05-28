@@ -24,7 +24,7 @@ namespace VisualGit
         public const string PlkCompany = "VisualGit";
         //**********************************************************************************
 
-        public const string AssemblyCopyright = "Copyright � VisualGit 2011";
+        public const string AssemblyCopyright = "Copyright © VisualGit 2011";
         public const string AssemblyProduct = "VisualGit - Git Support for Visual Studio";
         public const string AssemblyCompany = "VisualGit";
         //**********************************************************************************
@@ -36,7 +36,7 @@ namespace VisualGit
         // Items for the VS 2010 Extension registration
         public const string ExtensionTitle = VisualGitId.AssemblyProduct;
         public const string ExtensionAuthor = VisualGitId.AssemblyCompany;
-        public const string ExtensionDescription = "Open Source Git SCC Provider for Visual Studio 2005, 2008 and 2010.";
+        public const string ExtensionDescription = "Open Source Git SCC Provider for Visual Studio 2010.";
         public const string ExtensionMoreInfoUrl = "http://github.com/pvginkel/visualgit/";
         public const string ExtensionGettingStartedUrl = "http://github.com/pvginkel/visualgit/";
 

@@ -18,14 +18,14 @@ using VisualGit.VS;
 namespace VisualGit.Scc
 {
     [GuidAttribute(VisualGitId.SccServiceId), ComVisible(true), CLSCompliant(false)]
-    public interface ITheVisualGitGitSccProvider : IVsSccProvider
+    public interface ITheVisualGitSccProvider : IVsSccProvider
     {
     }
 
     [GlobalService(typeof(VisualGitSccProvider))]
     [GlobalService(typeof(IVisualGitSccService))]
-    [GlobalService(typeof(ITheVisualGitGitSccProvider), true)]
-    partial class VisualGitSccProvider : VisualGitService, ITheVisualGitGitSccProvider, IVsSccProvider, IVsSccControlNewSolution, IVisualGitSccService, IVsSccEnlistmentPathTranslation
+    [GlobalService(typeof(ITheVisualGitSccProvider), true)]
+    partial class VisualGitSccProvider : VisualGitService, ITheVisualGitSccProvider, IVsSccProvider, IVsSccControlNewSolution, IVisualGitSccService, IVsSccEnlistmentPathTranslation
     {
         bool _active;
         IFileStatusCache _statusCache;

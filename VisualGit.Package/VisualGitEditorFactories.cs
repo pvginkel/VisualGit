@@ -84,7 +84,7 @@ namespace VisualGit.VSPackage
     [Guid(VisualGitId.DiffEditorId), ComVisible(true)]
     sealed class VisualGitDiffEditorFactory : VisualGitEditorFactory
     {
-        public VisualGitDiffEditorFactory(VisualGitGitPackage package)
+        public VisualGitDiffEditorFactory(VisualGitPackage package)
             : base(package)
         {
 
@@ -119,7 +119,7 @@ namespace VisualGit.VSPackage
     sealed class VisualGitDynamicEditorFactory : VisualGitEditorFactory, IVisualGitDynamicEditorFactory
     {
         readonly Stack<VSEditorControl> _forms = new Stack<VSEditorControl>();
-        public VisualGitDynamicEditorFactory(VisualGitGitPackage package)
+        public VisualGitDynamicEditorFactory(VisualGitPackage package)
             : base(package)
         {
         }

@@ -12,13 +12,13 @@ using System.IO;
 
 namespace VisualGit.VSPackage
 {
-    [ProvideSolutionProperties(VisualGitGitPackage.GitPropertyCategory)]
+    [ProvideSolutionProperties(VisualGitPackage.GitPropertyCategory)]
     [ProvideSolutionProperties(VisualGitId.SccStructureName)]
     //[ProvideSolutionProperties(VisualGitId.IssueTrackerStructureName)]
-    partial class VisualGitGitPackage : IVsPersistSolutionProps
+    partial class VisualGitPackage : IVsPersistSolutionProps
     {
         const string GitPropertyCategory = VisualGitId.GitSccName;
-        const string ManagedPropertyName = "Svn-Managed";
+        const string ManagedPropertyName = "Git-Managed";
         const string ManagerPropertyName = "Manager";
 
         public int OnProjectLoadFailure(IVsHierarchy pStubHierarchy, string pszProjectName, string pszProjectMk, string pszKey)
