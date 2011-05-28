@@ -15,7 +15,7 @@ using VSConstants = Microsoft.VisualStudio.VSConstants;
 namespace VisualGit.VSPackage
 {
     // The command routing at package level
-    public partial class VisualGitGitPackage : IOleCommandTarget
+    public partial class VisualGitPackage : IOleCommandTarget
     {
         static bool GuidRefIsNull(ref Guid pguidCmdGroup)
         {

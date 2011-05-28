@@ -55,9 +55,9 @@ namespace VisualGit.VSPackage
 
     [CLSCompliant(false)]
     [ProvideSourceControlProvider(VisualGitId.SccProviderTitle, "#100")]
-    [ProvideService(typeof(ITheVisualGitGitSccProvider), ServiceName = VisualGitId.GitSccName)]
+    [ProvideService(typeof(ITheVisualGitSccProvider), ServiceName = VisualGitId.GitSccName)]
     [ProvideOutputWindow(VisualGitId.VisualGitOutputPaneId, "#111", InitiallyInvisible = false, Name = VisualGitId.PlkProduct, ClearWithSolution = false)]
-    sealed partial class VisualGitGitPackage : Package, IVisualGitPackage, IVisualGitQueryService
+    sealed partial class VisualGitPackage : Package, IVisualGitPackage, IVisualGitQueryService
     {
         readonly VisualGitRuntime _runtime;
 
@@ -68,7 +68,7 @@ namespace VisualGit.VSPackage
         /// not sited yet inside Visual Studio environment. The place to do all the other 
         /// initialization is the Initialize method.
         /// </summary>
-        public VisualGitGitPackage()
+        public VisualGitPackage()
         {
             _runtime = new VisualGitRuntime(this);
         }

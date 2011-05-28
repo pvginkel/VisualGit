@@ -635,7 +635,7 @@ namespace VisualGit.Scc.ProjectMap
                 if (fileChange == null)
                     fileChange = GetService<IVsFileChangeEx>(typeof(SVsFileChangeEx));
 
-                List<GitItem> items = new List<GitItem>(GetService<VisualGitSccProvider>(typeof(ITheVisualGitGitSccProvider)).GetAllDocumentItems(_name));
+                List<GitItem> items = new List<GitItem>(GetService<VisualGitSccProvider>(typeof(ITheVisualGitSccProvider)).GetAllDocumentItems(_name));
 
                 uint[] cookies = new uint[items.Count];
                 _fileChangeCookies = cookies;

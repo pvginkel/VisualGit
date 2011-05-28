@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -156,15 +156,15 @@
     <Compile Include="OptionPages\UserToolsSettingsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="VisualGitGitPackage.cs" />
-    <Compile Include="VisualGitGitPackage.About.cs" />
-    <Compile Include="VisualGitGitPackage.Commands.cs" />
-    <Compile Include="VisualGitGitPackage.Editors.cs" />
-    <Compile Include="VisualGitGitPackage.Languages.cs" />
-    <Compile Include="VisualGitGitPackage.OptionPages.cs" />
-    <Compile Include="VisualGitGitPackage.ToolWindows.cs" />
-    <Compile Include="VisualGitGitPackage.SolutionProperties.cs" />
-    <Compile Include="VisualGitGitPackage.OleComponent.cs" />
+    <Compile Include="VisualGitPackage.cs" />
+    <Compile Include="VisualGitPackage.About.cs" />
+    <Compile Include="VisualGitPackage.Commands.cs" />
+    <Compile Include="VisualGitPackage.Editors.cs" />
+    <Compile Include="VisualGitPackage.Languages.cs" />
+    <Compile Include="VisualGitPackage.OptionPages.cs" />
+    <Compile Include="VisualGitPackage.ToolWindows.cs" />
+    <Compile Include="VisualGitPackage.SolutionProperties.cs" />
+    <Compile Include="VisualGitPackage.OleComponent.cs" />
     <Compile Include="Attributes\ProvideLanguageSettings.cs" />
     <Compile Include="Attributes\ProvideMenuResourceEx.cs" />
     <Compile Include="Attributes\ProvideSolutionProperties.cs" />

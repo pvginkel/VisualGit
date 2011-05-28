@@ -97,7 +97,7 @@ namespace VisualGit.Services
             if (DialogOwner == null)
                 hookUI = false;
 
-            VisualGitGitPoolClient client = new VisualGitGitPoolClient(this, hookUI, _returnCookie);
+            VisualGitPoolClient client = new VisualGitPoolClient(this, hookUI, _returnCookie);
 
             if (hookUI)
                 HookUI(client);
@@ -106,7 +106,7 @@ namespace VisualGit.Services
         }
 
         // Use separate function to delay loading the SharpSvn.UI.dll
-        private void HookUI(VisualGitGitPoolClient client)
+        private void HookUI(VisualGitPoolClient client)
         {
             // Let SharpSvnUI handle login and SSL dialogs
             SvnUIBindArgs bindArgs = new SvnUIBindArgs();
@@ -117,7 +117,7 @@ namespace VisualGit.Services
             SvnUI.Bind(client, bindArgs);
         }
 
-		private void HookUI(VisualGitGitPoolRemoteSession client)
+		private void HookUI(VisualGitPoolRemoteSession client)
 		{
 			// Let SharpSvnUI handle login and SSL dialogs
 			SvnUIBindArgs bindArgs = new SvnUIBindArgs();
@@ -135,7 +135,7 @@ namespace VisualGit.Services
 
         public bool ReturnClient(GitPoolClient poolClient)
         {
-            VisualGitGitPoolClient pc = poolClient as VisualGitGitPoolClient;
+            VisualGitPoolClient pc = poolClient as VisualGitPoolClient;
 
             if (pc != null && pc.ReturnCookie == _returnCookie)
             {
@@ -252,7 +252,7 @@ namespace VisualGit.Services
                 // else -> GC will cleanup
             }
 
-            VisualGitGitPoolRemoteSession session = new VisualGitGitPoolRemoteSession(this, true, _returnCookie);
+            VisualGitPoolRemoteSession session = new VisualGitPoolRemoteSession(this, true, _returnCookie);
             HookUI(session);
             session.Open(sessionUri);
             return session;
@@ -260,7 +260,7 @@ namespace VisualGit.Services
 
         public bool ReturnClient(GitPoolRemoteSession session)
         {
-            VisualGitGitPoolRemoteSession pc = session as VisualGitGitPoolRemoteSession;
+            VisualGitPoolRemoteSession pc = session as VisualGitPoolRemoteSession;
 
             if (pc != null && pc.ReturnCookie == _returnCookie && pc.SessionUri != null)
             {
@@ -309,7 +309,7 @@ namespace VisualGit.Services
             {
                 DateTime now = DateTime.Now;
 
-                foreach (VisualGitGitPoolRemoteSession rs in _remoteSessions)
+                foreach (VisualGitPoolRemoteSession rs in _remoteSessions)
                 {
                     bool dispose = false;
                     switch (rs.SessionUri.Scheme)
@@ -346,7 +346,7 @@ namespace VisualGit.Services
             }
 
             if (toDispose != null)
-                foreach (VisualGitGitPoolRemoteSession rs in toDispose)
+                foreach (VisualGitPoolRemoteSession rs in toDispose)
                 {
                     try
                     {
@@ -359,12 +359,12 @@ namespace VisualGit.Services
 
         #endregion
 
-        sealed class VisualGitGitPoolClient : GitPoolClient
+        sealed class VisualGitPoolClient : GitPoolClient
         {
             readonly SortedDictionary<string, GitClientAction> _changes = new SortedDictionary<string, GitClientAction>(StringComparer.OrdinalIgnoreCase);
             readonly bool _uiEnabled;
             readonly int _returnCookie;
-            public VisualGitGitPoolClient(VisualGitClientPool pool, bool uiEnabled, int returnCookie)
+            public VisualGitPoolClient(VisualGitClientPool pool, bool uiEnabled, int returnCookie)
                 : base(pool)
             {
                 _uiEnabled = uiEnabled;
@@ -471,12 +471,12 @@ namespace VisualGit.Services
             }
         }
 
-        sealed class VisualGitGitPoolRemoteSession : GitPoolRemoteSession
+        sealed class VisualGitPoolRemoteSession : GitPoolRemoteSession
         {
             readonly bool _uiEnabled;
             readonly int _returnCookie;
             DateTime _returnTime;
-            public VisualGitGitPoolRemoteSession(VisualGitClientPool pool, bool uiEnabled, int returnCookie)
+            public VisualGitPoolRemoteSession(VisualGitClientPool pool, bool uiEnabled, int returnCookie)
                 : base(pool)
             {
                 _uiEnabled = uiEnabled;

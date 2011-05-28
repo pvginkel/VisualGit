@@ -16,7 +16,7 @@ namespace VisualGit.VSPackage
     [InstalledProductRegistration(true, null, null, null)]
 #pragma warning restore 618
     [VisualGit.VSPackage.Attributes.ProvideUIVersion]
-    public partial class VisualGitGitPackage : IVsInstalledProduct
+    public partial class VisualGitPackage : IVsInstalledProduct
     {
         Version _uiVersion, _packageVersion;
         /// <summary>
@@ -55,7 +55,7 @@ namespace VisualGit.VSPackage
                 baseKey = Registry.CurrentUser;
             }
 
-            using (RegistryKey rk = baseKey.OpenSubKey(root + "\\Packages\\" + typeof(VisualGitGitPackage).GUID.ToString("b"), RegistryKeyPermissionCheck.ReadSubTree))
+            using (RegistryKey rk = baseKey.OpenSubKey(root + "\\Packages\\" + typeof(VisualGitPackage).GUID.ToString("b"), RegistryKeyPermissionCheck.ReadSubTree))
             {
                 if(rk == null)
                     return null;
@@ -85,7 +85,7 @@ namespace VisualGit.VSPackage
         /// <value>The package version.</value>
         public Version PackageVersion
         {
-            get { return _packageVersion ?? (_packageVersion = typeof(VisualGitGitPackage).Assembly.GetName().Version); }
+            get { return _packageVersion ?? (_packageVersion = typeof(VisualGitPackage).Assembly.GetName().Version); }
         }
 
         #region IVsInstalledProduct Members
