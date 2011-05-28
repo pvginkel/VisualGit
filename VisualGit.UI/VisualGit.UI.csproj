@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,7 +11,7 @@
     <FileAlignment>512</FileAlignment>
     <RootNamespace>VisualGit.UI</RootNamespace>
     <AssemblyName>VisualGit.UI</AssemblyName>
-    <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
     <SccProjectName>
@@ -42,7 +41,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="$(MsVsShellAssembly)" />
+    <Reference Include="Microsoft.VisualStudio.Shell.10.0" />
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 2008 SDK\VisualStudioIntegration\Common\Assemblies\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
@@ -195,8 +194,7 @@
       <DependentUpon>MergeWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="MergeWizard\WizardFramework\Properties\Resources.Designer.cs" />
-    <Compile Include="MergeWizard\WizardFramework\WizardPageCollection.cs">
-    </Compile>
+    <Compile Include="MergeWizard\WizardFramework\WizardPageCollection.cs" />
     <Compile Include="MergeWizard\WizardFramework\Wizard.cs">
       <SubType>Form</SubType>
     </Compile>
