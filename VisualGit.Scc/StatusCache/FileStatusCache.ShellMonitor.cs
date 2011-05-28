@@ -26,7 +26,14 @@ namespace VisualGit.Scc.StatusCache
 
                 // TortoiseSVN has to notify the shell for all his updates, and we just listen to what TortoiseSVN sends us :)
 
-                cookie = NativeMethods.SHChangeNotifyRegister(nw.Handle, 0x0002 | 0x8000, NativeMethods.SHCNE.SHCNE_ALLEVENTS, 0xDEDE, 1, ref what);
+                cookie = NativeMethods.SHChangeNotifyRegister(
+                    nw.Handle,
+                    NativeMethods.SHCNRF_ShellLevel | NativeMethods.SHCNRF_NewDelivery,
+                    NativeMethods.SHCNE.SHCNE_ALLEVENTS,
+                    0xDEDE,
+                    1,
+                    ref what
+                );
             }
             catch(Exception e)
             {
@@ -115,6 +122,11 @@ namespace VisualGit.Scc.StatusCache
 
         static class NativeMethods
         {
+            public const int SHCNRF_InterruptLevel = 0x0001;
+            public const int SHCNRF_ShellLevel = 0x0002;
+            public const int SHCNRF_RecursiveInterrupt = 0x1000;
+            public const int SHCNRF_NewDelivery = 0x8000;
+
             // Most of these imports are publicly available since Windows XP SP2, but were already available since NT 4 via a numeric import
 
             [DllImport("shell32.dll", SetLastError = true, EntryPoint = "#2", CharSet = CharSet.Auto)]
