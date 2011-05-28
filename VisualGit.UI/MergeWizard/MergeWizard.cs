@@ -4,7 +4,7 @@ using System.Text;
 using VisualGit.UI.WizardFramework;
 using System.Windows.Forms;
 using SharpSvn;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitLog;
 using System.Collections.ObjectModel;
 using VisualGit.Scc;
 using System.ComponentModel;

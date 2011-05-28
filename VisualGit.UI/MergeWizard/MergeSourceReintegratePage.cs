@@ -27,7 +27,7 @@ namespace VisualGit.UI.MergeWizard
         {
             base.OnPageChanging(e);
 
-            Wizard.LogMode = VisualGit.UI.SvnLog.LogMode.MergesEligible;
+            Wizard.LogMode = VisualGit.UI.GitLog.LogMode.MergesEligible;
         }
 
         internal override ICollection<Uri> GetMergeSources(GitItem target)

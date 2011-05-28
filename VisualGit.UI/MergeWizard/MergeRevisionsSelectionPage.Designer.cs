@@ -30,7 +30,7 @@ namespace VisualGit.UI.MergeWizard
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MergeRevisionsSelectionPage));
-            this.logToolControl1 = new VisualGit.UI.SvnLog.LogControl(this.components);
+            this.logToolControl1 = new VisualGit.UI.GitLog.LogControl(this.components);
             this.SuspendLayout();
             // 
             // logToolControl1
@@ -40,10 +40,10 @@ namespace VisualGit.UI.MergeWizard
             resources.ApplyResources(this.logToolControl1, "logToolControl1");
             this.logToolControl1.IncludeMergedRevisions = false;
             this.logToolControl1.ShowLogMessage = true;
-            this.logToolControl1.Mode = VisualGit.UI.SvnLog.LogMode.Log;
+            this.logToolControl1.Mode = VisualGit.UI.GitLog.LogMode.Log;
             this.logToolControl1.Name = "logToolControl1";
             this.logToolControl1.StrictNodeHistory = false;
-            this.logToolControl1.BatchFinished += new System.EventHandler<VisualGit.UI.SvnLog.BatchFinishedEventArgs>(this.logToolControl1_BatchFinished);
+            this.logToolControl1.BatchFinished += new System.EventHandler<VisualGit.UI.GitLog.BatchFinishedEventArgs>(this.logToolControl1_BatchFinished);
             // 
             // MergeRevisionsSelectionPageControl
             // 
@@ -57,6 +57,6 @@ namespace VisualGit.UI.MergeWizard
 
         #endregion
 
-        private VisualGit.UI.SvnLog.LogControl logToolControl1;
+        private VisualGit.UI.GitLog.LogControl logToolControl1;
     }
 }

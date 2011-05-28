@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using VisualGit.Scc;
 using System.Globalization;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitLog;
 
 namespace VisualGit.UI.PathSelector
 {

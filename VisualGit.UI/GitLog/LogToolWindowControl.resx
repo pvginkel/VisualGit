@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="logToolControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="logControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="logToolControl1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="logControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="logToolControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>500, 405</value>
+  <data name="logControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>482, 254</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="logToolControl1.TabIndex" type="System.Int32, mscorlib">
+  <data name="logControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;logToolControl1.Name" xml:space="preserve">
-    <value>logToolControl1</value>
+  <data name="&gt;&gt;logControl.Name" xml:space="preserve">
+    <value>logControl</value>
   </data>
-  <data name="&gt;&gt;logToolControl1.Type" xml:space="preserve">
-    <value>VisualGit.UI.GitLog.LogControl, VisualGit.UI, Version=2.0.3257.26367, Culture=neutral, PublicKeyToken=d0beed809dd9333a</value>
+  <data name="&gt;&gt;logControl.Type" xml:space="preserve">
+    <value>VisualGit.UI.GitLog.LogControl, VisualGit.UI, Version=2.2.3790.25434, Culture=neutral, PublicKeyToken=d0beed809dd9333a</value>
   </data>
-  <data name="&gt;&gt;logToolControl1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;logControl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;logToolControl1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;logControl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -150,16 +150,13 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>500, 405</value>
+    <value>482, 254</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MergeRevisionsSelectionPageControl</value>
+    <value>LogToolWindowControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.MergeWizard.BasePageControl, VisualGit.UI, Version=2.0.3257.26367, Culture=neutral, PublicKeyToken=d0beed809dd9333a</value>
+    <value>VisualGit.UI.VisualGitToolWindowControl, VisualGit.Services, Version=2.2.3790.25433, Culture=neutral, PublicKeyToken=a8604ba8fc87eddd</value>
   </data>
 </root>

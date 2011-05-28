@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 using VisualGit.Scc;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitLog;
 using VisualGit.UI.WizardFramework;
 
 namespace VisualGit.UI.MergeWizard

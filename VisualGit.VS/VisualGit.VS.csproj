@@ -106,15 +106,9 @@
     <Compile Include="LanguageServices\UnifiedDiff\UnifiedDiffLanguage.cs" />
     <Compile Include="OutputPane\OutputPaneManager.cs" />
     <Compile Include="Selection\VisualGitCommandService.cs" />
-    <Compile Include="Selection\SelectionContext.Active.cs">
-      <DependentUpon>SelectionContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Selection\SelectionContext.Delay.cs">
-      <DependentUpon>SelectionContext.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Selection\SelectionContext.SelectionItem.cs">
-      <DependentUpon>SelectionContext.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Selection\SelectionContext.Active.cs" />
+    <Compile Include="Selection\SelectionContext.Delay.cs" />
+    <Compile Include="Selection\SelectionContext.SelectionItem.cs" />
     <Compile Include="SolutionExplorer\SolutionExplorerStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

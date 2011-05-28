@@ -19,8 +19,8 @@ using VisualGit.Scc.UI;
 using VisualGit.UI;
 using VisualGit.UI.DiffWindow;
 using VisualGit.UI.RepositoryExplorer;
-using VisualGit.UI.SvnInfoGrid;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitInfoGrid;
+using VisualGit.UI.GitLog;
 using VisualGit.UI.WorkingCopyExplorer;
 
 namespace VisualGit.VSPackage

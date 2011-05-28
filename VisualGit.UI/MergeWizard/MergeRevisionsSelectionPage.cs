@@ -5,7 +5,7 @@ using SharpSvn;
 
 using VisualGit.Scc;
 using VisualGit.Scc.UI;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitLog;
 using VisualGit.UI.WizardFramework;
 
 namespace VisualGit.UI.MergeWizard

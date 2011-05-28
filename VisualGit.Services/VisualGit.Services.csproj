@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
@@ -91,7 +91,7 @@
     <Compile Include="Scc\IVisualGitTextEditingTracker.cs" />
     <Compile Include="Scc\ISccSettingsStore.cs" />
     <Compile Include="Scc\SccFileSystemNode.cs" />
-    <Compile Include="Scc\SvnItemData.ChangeList.cs" />
+    <Compile Include="Scc\GitItemData.ChangeList.cs" />
     <Compile Include="Scc\UI\IVisualGitRevisionResolver.cs" />
     <Compile Include="UI\VisualGitPropertyGridItem.cs" />
     <Compile Include="Scc\UI\IAnnotateSection.cs" />
@@ -166,9 +166,7 @@
     <Compile Include="Scc\IProjectFileMapper.cs" />
     <Compile Include="Scc\IStatusImageMapper.cs" />
     <Compile Include="Scc\GitItem.cs" />
-    <Compile Include="Scc\SvnItem.State.cs">
-      <DependentUpon>GitItem.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Scc\GitItem.State.cs" />
     <Compile Include="Selection\ISelectionContext.cs" />
     <Compile Include="Selection\GitProject.cs" />
     <Compile Include="UI\IVisualGitConfigurationService.cs" />

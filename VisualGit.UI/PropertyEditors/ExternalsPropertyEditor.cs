@@ -401,7 +401,7 @@ namespace VisualGit.UI.PropertyEditors
                             SvnRevision rr = string.IsNullOrEmpty(rev) ? SvnRevision.None : long.Parse(rev);
                             SvnUriTarget svnTarget = new SvnUriTarget(selectedUri, rr);
                             VisualGit.Scc.GitOrigin origin = new VisualGit.Scc.GitOrigin(svnTarget, repoRoot);
-                            using (VisualGit.UI.SvnLog.LogViewerDialog dlg = new VisualGit.UI.SvnLog.LogViewerDialog(origin))
+                            using (VisualGit.UI.GitLog.LogViewerDialog dlg = new VisualGit.UI.GitLog.LogViewerDialog(origin))
                             {
                                 if (dlg.ShowDialog(Context) == DialogResult.OK)
                                 {

@@ -2,7 +2,7 @@ using System.Diagnostics;
 using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.UI;
-using VisualGit.UI.SvnLog;
+using VisualGit.UI.GitLog;
 using VisualGit.Selection;
 using VisualGit.VS;
 using VisualGit.Scc;

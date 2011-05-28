@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="../tools/VisualGit-Common.targets" />
   <PropertyGroup>
@@ -378,27 +378,27 @@
     <Compile Include="SccManagement\UpdateAvailableDialog.Designer.cs">
       <DependentUpon>UpdateAvailableDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnInfoGrid\InfoPropertyGrid.cs">
+    <Compile Include="GitInfoGrid\InfoPropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnLog\Commands\CompareWithWorkingCopy.cs" />
-    <Compile Include="SvnLog\Commands\RevertChanges.cs" />
-    <Compile Include="SvnLog\Commands\ShowRevisionProperties.cs" />
-    <Compile Include="SvnLog\LogDataSource.cs">
+    <Compile Include="GitLog\Commands\CompareWithWorkingCopy.cs" />
+    <Compile Include="GitLog\Commands\RevertChanges.cs" />
+    <Compile Include="GitLog\Commands\ShowRevisionProperties.cs" />
+    <Compile Include="GitLog\LogDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogDataSource.Designer.cs">
+    <Compile Include="GitLog\LogDataSource.Designer.cs">
       <DependentUpon>LogDataSource.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\LogIssuesView.cs">
+    <Compile Include="GitLog\LogIssuesView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogRequest.cs" />
-    <Compile Include="SvnLog\LogRevisionItem.cs" />
-    <Compile Include="SvnLog\LogViewerDialog.cs">
+    <Compile Include="GitLog\LogRequest.cs" />
+    <Compile Include="GitLog\LogRevisionItem.cs" />
+    <Compile Include="GitLog\LogViewerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogViewerDialog.Designer.cs">
+    <Compile Include="GitLog\LogViewerDialog.Designer.cs">
       <DependentUpon>LogViewerDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="MergeWizard\BaseWizardPage.cs">
@@ -537,26 +537,26 @@
     <Compile Include="SccManagement\SccEditEnlistment.Designer.cs">
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\Commands\ChangeLogMessage.cs" />
-    <Compile Include="SvnLog\Commands\FetchAll.cs" />
-    <Compile Include="SvnLog\Commands\IncludeMergedRevisions.cs" />
-    <Compile Include="SvnLog\Commands\LogStrictNodeHistory.cs" />
-    <Compile Include="SvnLog\Commands\ShowChangedPaths.cs" />
-    <Compile Include="SvnLog\Commands\ShowChanges.cs" />
-    <Compile Include="SvnLog\Commands\ShowLogMessage.cs" />
-    <Compile Include="SvnLog\EditLogMessageDialog.cs">
+    <Compile Include="GitLog\Commands\ChangeLogMessage.cs" />
+    <Compile Include="GitLog\Commands\FetchAll.cs" />
+    <Compile Include="GitLog\Commands\IncludeMergedRevisions.cs" />
+    <Compile Include="GitLog\Commands\LogStrictNodeHistory.cs" />
+    <Compile Include="GitLog\Commands\ShowChangedPaths.cs" />
+    <Compile Include="GitLog\Commands\ShowChanges.cs" />
+    <Compile Include="GitLog\Commands\ShowLogMessage.cs" />
+    <Compile Include="GitLog\EditLogMessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SvnLog\EditLogMessageDialog.Designer.cs">
+    <Compile Include="GitLog\EditLogMessageDialog.Designer.cs">
       <DependentUpon>EditLogMessageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\LogChangedPathsView.cs">
+    <Compile Include="GitLog\LogChangedPathsView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogToolWindowControl.cs">
+    <Compile Include="GitLog\LogToolWindowControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogToolWindowControl.Designer.cs">
+    <Compile Include="GitLog\LogToolWindowControl.Designer.cs">
       <DependentUpon>LogToolWindowControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\SwitchDialog.cs">
@@ -566,19 +566,19 @@
       <DependentUpon>SwitchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="MergeWizard\UIUtils.cs" />
-    <Compile Include="SvnLog\LogRevisionControl.cs">
+    <Compile Include="GitLog\LogRevisionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogRevisionControl.Designer.cs">
+    <Compile Include="GitLog\LogRevisionControl.Designer.cs">
       <DependentUpon>LogRevisionControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\LogRevisionView.cs">
+    <Compile Include="GitLog\LogRevisionView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnInfoGrid\GitInfoGridControl.cs">
+    <Compile Include="GitInfoGrid\GitInfoGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnInfoGrid\GitInfoGridControl.Designer.cs">
+    <Compile Include="GitInfoGrid\GitInfoGridControl.Designer.cs">
       <DependentUpon>GitInfoGridControl.cs</DependentUpon>
     </Compile>
     <Compile Include="VSSelectionControls\Commands\ListViewCommandBase.cs" />
@@ -769,25 +769,25 @@
     <Compile Include="PathSelector\VersionSelector.Designer.cs">
       <DependentUpon>VersionSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\LogControl.cs">
+    <Compile Include="GitLog\LogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogControl.Designer.cs">
+    <Compile Include="GitLog\LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SccManagement\LockDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogChangedPaths.cs">
+    <Compile Include="GitLog\LogChangedPaths.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogChangedPaths.Designer.cs">
+    <Compile Include="GitLog\LogChangedPaths.Designer.cs">
       <DependentUpon>LogChangedPaths.cs</DependentUpon>
     </Compile>
-    <Compile Include="SvnLog\LogMessageView.cs">
+    <Compile Include="GitLog\LogMessageView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogMessageView.Designer.cs">
+    <Compile Include="GitLog\LogMessageView.Designer.cs">
       <DependentUpon>LogMessageView.cs</DependentUpon>
     </Compile>
     <Compile Include="OptionsPages\ToolArgumentDialog.cs">
@@ -811,7 +811,7 @@
     <Compile Include="RepositoryExplorer\RepositoryTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SvnLog\LogStrings.Designer.cs">
+    <Compile Include="GitLog\LogStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LogStrings.resx</DependentUpon>
@@ -1019,7 +1019,7 @@
       <DependentUpon>UpdateAvailableDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogViewerDialog.resx">
+    <EmbeddedResource Include="GitLog\LogViewerDialog.resx">
       <DependentUpon>LogViewerDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1102,15 +1102,15 @@
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\EditLogMessageDialog.resx">
+    <EmbeddedResource Include="GitLog\EditLogMessageDialog.resx">
       <DependentUpon>EditLogMessageDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogRevisionControl.resx">
+    <EmbeddedResource Include="GitLog\LogRevisionControl.resx">
       <DependentUpon>LogRevisionControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogToolWindowControl.resx">
+    <EmbeddedResource Include="GitLog\LogToolWindowControl.resx">
       <DependentUpon>LogToolWindowControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1126,11 +1126,11 @@
       <DependentUpon>UserToolSettingsControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogChangedPaths.resx">
+    <EmbeddedResource Include="GitLog\LogChangedPaths.resx">
       <DependentUpon>LogChangedPaths.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogMessageView.resx">
+    <EmbeddedResource Include="GitLog\LogMessageView.resx">
       <DependentUpon>LogMessageView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1198,12 +1198,12 @@
       <DependentUpon>RepositoryOpenDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogStrings.resx">
+    <EmbeddedResource Include="GitLog\LogStrings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnLog\LogControl.resx">
+    <EmbeddedResource Include="GitLog\LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1272,7 +1272,7 @@
     <EmbeddedResource Include="SccManagement\ItemCompareDialog.resx">
       <DependentUpon>ItemCompareDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SvnInfoGrid\GitInfoGridControl.resx">
+    <EmbeddedResource Include="GitInfoGrid\GitInfoGridControl.resx">
       <DependentUpon>GitInfoGridControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1296,7 +1296,7 @@
     <Content Include="MergeWizard\WizardFramework\README.txt" />
     <Content Include="PropertyEditors\Images\Properties.ico" />
     <Content Include="Resources\TabConflicts.png" />
-    <None Include="SvnLog\Plus.png" />
+    <None Include="GitLog\Plus.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
