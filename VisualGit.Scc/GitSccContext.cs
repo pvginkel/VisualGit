@@ -145,7 +145,7 @@ namespace VisualGit.Scc
             GitItem item = StatusCache[path];
             item.MarkDirty();
 
-            if (!item.IsFile || item.Status.LocalContentStatus != SvnStatus.Replaced)
+            if (!item.IsFile || item.Status.State != SvnStatus.Replaced)
                 return;
 
             SvnInfoEventArgs info = null;

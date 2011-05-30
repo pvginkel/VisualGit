@@ -50,8 +50,6 @@ namespace VisualGit.VS.SolutionExplorer
 
             if (item.IsConflicted || item.IsObstructed || item.IsTreeConflicted)
                 return VisualGitGlyph.InConflict;
-            else if (item.IsReadOnlyMustLock)
-                return VisualGitGlyph.MustLock;
             else if (!item.IsVersioned)
             {
                 if (!item.Exists)
@@ -64,17 +62,15 @@ namespace VisualGit.VS.SolutionExplorer
                     return VisualGitGlyph.None;
             }
             
-			switch (item.Status.CombinedStatus)
+			switch (item.Status.State)
             {
                 case SvnStatus.Normal:
                     if (item.IsDocumentDirty)
                         return VisualGitGlyph.FileDirty;
-                    else if (item.IsLocked)
-                        return VisualGitGlyph.LockedNormal;
                     else
                         return VisualGitGlyph.Normal;
                 case SvnStatus.Modified:
-                    return item.IsLocked ? VisualGitGlyph.LockedModified : VisualGitGlyph.Modified;
+                    return VisualGitGlyph.Modified;
                 case SvnStatus.Replaced:
                     return VisualGitGlyph.CopiedOrMoved;
                 case SvnStatus.Added:

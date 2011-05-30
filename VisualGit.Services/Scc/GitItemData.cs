@@ -122,7 +122,7 @@ namespace VisualGit.Scc
             get
             {
                 VisualGitStatus status = _item.Status;
-                PendingChangeKind kind = PendingChange.CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, GitItem.IsTreeConflicted, GitItem);
+                PendingChangeKind kind = PendingChange.CombineStatus(status.State, GitItem.IsTreeConflicted, GitItem);
 
                 if (kind == PendingChangeKind.None)
                     return "";

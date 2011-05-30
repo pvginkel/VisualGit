@@ -46,7 +46,7 @@ namespace VisualGit.UI.WorkingCopyExplorer
             string name = string.IsNullOrEmpty(GitItem.Name) ? GitItem.FullPath : GitItem.Name;
 
             VisualGitStatus status = GitItem.Status;
-            PendingChangeKind kind = PendingChange.CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, GitItem.IsTreeConflicted, GitItem);
+            PendingChangeKind kind = PendingChange.CombineStatus(status.State, GitItem.IsTreeConflicted, GitItem);
 
             if (_chg == null || _chg.State != kind)
                 _chg = new PendingChangeStatus(kind);
@@ -56,13 +56,13 @@ namespace VisualGit.UI.WorkingCopyExplorer
                 Modified.ToString("g"),
                 View.Context.GetService<IFileIconMapper>().GetFileType(GitItem),
                 _chg.ExplorerText,
-                GitItem.Status.IsLockedLocal ? VisualGit.UI.PendingChanges.PCStrings.LockedValue : "",
+                "",
                 GitItem.Status.Revision.ToString(),
                 GitItem.Status.LastChangeTime.ToLocalTime().ToString(),
                 GitItem.Status.LastChangeRevision.ToString(),
                 GitItem.Status.LastChangeAuthor,
-                GitItem.Status.LocalContentStatus.ToString(),
-                GitItem.Status.LocalPropertyStatus.ToString(),
+                GitItem.Status.State.ToString(),
+                "",
                 GitItem.Status.IsCopied.ToString(),
                 GitItem.IsConflicted.ToString(),
                 GitItem.FullPath

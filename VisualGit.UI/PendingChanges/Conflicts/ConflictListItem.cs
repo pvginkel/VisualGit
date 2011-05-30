@@ -44,7 +44,7 @@ namespace VisualGit.UI.PendingChanges.Conflicts
                 PendingChange.ChangeList,
                 GetDirectory(item),
                 PendingChange.FullPath,
-                item.IsLocked ? PCStrings.LockedValue : "", // Locked
+                "", // Locked
                 SafeDate(item.Modified), // Modified
                 PendingChange.Name,
                 PendingChange.RelativePath,

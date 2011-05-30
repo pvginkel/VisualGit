@@ -37,11 +37,6 @@ namespace VisualGit.Scc
         Versioned               = 0x00000004,
 
         /// <summary>
-        /// File is locked locally
-        /// </summary>
-        HasLockToken            = 0x00000008,
-
-        /// <summary>
         /// File is of the wrong kind
         /// </summary>
         Obstructed              = 0x00000010,
@@ -86,10 +81,6 @@ namespace VisualGit.Scc
         /// </summary>
         Modified                = 0x00001000,
         /// <summary>
-        /// The properties on disk are dirty
-        /// </summary>
-        PropertyModified        = 0x00002000,
-        /// <summary>
         /// The node is scheduled for addition
         /// </summary>
         Added                   = 0x00004000,
@@ -105,24 +96,11 @@ namespace VisualGit.Scc
         /// The node is replaced
         /// </summary>
         Replaced                = 0x00020000,
-        /// <summary>
-        /// The file must be locked before editing
-        /// </summary>
-        MustLock                = 0x00040000,
-
-        /// <summary>
-        /// The node has properties
-        /// </summary>
-        HasProperties           = 0x00080000,
 
         /// <summary>
         /// The content is marked as conflicted
         /// </summary>
         ContentConflicted       = 0x00100000,
-        /// <summary>
-        /// The properties are marked as conflicted
-        /// </summary>
-        PropertiesConflicted    = 0x00200000,
 
         /// <summary>
         /// The GitItem is part of a tree conflict

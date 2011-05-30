@@ -476,7 +476,7 @@ namespace VisualGit.Services.PendingChanges
             {
                 GitItem item = state.Cache[path];
 
-                if (item.Status.LocalContentStatus != SvnStatus.Missing)
+                if (item.Status.State != SvnStatus.Missing)
                     continue;
 
                 if (item.IsCasingConflicted)

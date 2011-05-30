@@ -13,16 +13,14 @@ namespace VisualGit
         NotExisting
     }
 
-    [DebuggerDisplay("Content={LocalContentStatus}, Property={LocalPropertyStatus}, Uri={Uri}")]
+    [DebuggerDisplay("Content={State}, Uri={Uri}")]
     public sealed class VisualGitStatus
     {
         readonly SvnConflictData _treeConflict;
         readonly SvnNodeKind _nodeKind;        
         readonly string _changeList;
-        readonly SvnStatus _localContentStatus;
+        readonly SvnStatus _state;
         readonly bool _localCopied;
-        readonly bool _localLocked;
-        readonly SvnStatus _localPropertyStatus;
         readonly Uri _uri;
 
         readonly DateTime _lastChangeTime;
@@ -36,9 +34,8 @@ namespace VisualGit
                 throw new ArgumentNullException("args");
 
             _nodeKind = args.NodeKind;
-            _localContentStatus = args.LocalContentStatus;
+            _state = args.LocalContentStatus;
             _localCopied = args.LocalCopied;
-            _localPropertyStatus = args.LocalPropertyStatus;
             _uri = args.Uri;
 
             if (args.WorkingCopyInfo != null)
@@ -48,7 +45,6 @@ namespace VisualGit
                 _lastChangeAuthor = args.WorkingCopyInfo.LastChangeAuthor;
                 _revision = args.WorkingCopyInfo.Revision;
                 _changeList = args.WorkingCopyInfo.ChangeList;
-                _localLocked = args.WorkingCopyInfo.LockToken != null;
             }
 
             _treeConflict = args.TreeConflict;
@@ -62,8 +58,7 @@ namespace VisualGit
         /// <param name="allStatuses"></param>
         private VisualGitStatus(SvnStatus allStatuses)
         {
-            _localContentStatus = allStatuses;
-            _localPropertyStatus = SvnStatus.None;
+            _state = allStatuses;
             //_localLocked = false;
             //_localCopied = false;
         }
@@ -91,46 +86,9 @@ namespace VisualGit
         /// <summary>
         /// Content status in working copy
         /// </summary>
-        public SvnStatus LocalContentStatus
+        public SvnStatus State
         {
-            get { return _localContentStatus; }
-        }
-
-        /// <summary>
-        /// Property status in working copy
-        /// </summary>
-        public SvnStatus LocalPropertyStatus
-        {
-            get { return _localPropertyStatus; }
-        }
-
-        public SvnStatus CombinedStatus
-        {
-            get
-            {
-                switch(_localContentStatus)
-                {
-                    // High priority statuses on the content
-                    case SvnStatus.Obstructed:
-                    case SvnStatus.Missing:
-                    case SvnStatus.Incomplete: 
-                        return _localContentStatus;
-                }
-
-                switch(_localPropertyStatus)
-                {
-                    // High priority on the properties
-                    case SvnStatus.Conflicted:
-                        return _localPropertyStatus;
-                }
-
-                if (_localContentStatus != SvnStatus.Normal)
-                    return _localContentStatus;
-                else if (_localPropertyStatus != SvnStatus.None)
-                    return _localPropertyStatus;
-                else
-                    return _localContentStatus;
-            }
+            get { return _state; }
         }
 
         /// <summary>
@@ -174,14 +132,6 @@ namespace VisualGit
         public bool IsCopied
         {
             get { return _localCopied; }
-        }
-        
-        /// <summary>
-        /// Gets a boolean indicating whether the workingcopy is locked in the local working copy
-        /// </summary>
-        public bool IsLockedLocal
-        {
-            get { return _localLocked; }
         }
 
         internal Uri Uri

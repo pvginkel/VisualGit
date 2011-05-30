@@ -47,7 +47,7 @@ namespace VisualGit.UI.PendingChanges.Commits
                 _lastChangeList = PendingChange.ChangeList,
                 GetDirectory(item),
                 PendingChange.FullPath,
-                item.IsLocked ? PCStrings.LockedValue : "", // Locked
+                "", // Locked
                 SafeDate(item.Modified), // Modified
                 PendingChange.Name,
                 PendingChange.RelativePath,
@@ -64,7 +64,7 @@ namespace VisualGit.UI.PendingChanges.Commits
                     clr = System.Drawing.Color.Red;
                 else if (item.IsDeleteScheduled)
                     clr = System.Drawing.Color.DarkRed;
-                else if (item.Status.IsCopied || item.Status.CombinedStatus == SharpSvn.SvnStatus.Added)
+                else if (item.Status.IsCopied || item.Status.State == SharpSvn.SvnStatus.Added)
                     clr = System.Drawing.Color.FromArgb(100, 0, 100);
                 else if (!item.IsVersioned)
                 {

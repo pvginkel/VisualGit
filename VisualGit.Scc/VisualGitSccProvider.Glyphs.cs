@@ -112,7 +112,7 @@ namespace VisualGit.Scc
         {
             while (item != null)
             {
-                SvnStatus lc = item.Status.LocalContentStatus;
+                SvnStatus lc = item.Status.State;
                 if (lc == SvnStatus.Ignored)
                     return true;
                 else if (lc != SvnStatus.NotVersioned)
@@ -128,19 +128,11 @@ namespace VisualGit.Scc
             SccStatus status;
             switch (glyph)
             {
-                case VisualGitGlyph.MustLock:
-                    status = SccStatus.SCC_STATUS_CONTROLLED | SccStatus.SCC_STATUS_LOCKED;
-                    break;
                 case VisualGitGlyph.None:
                 case VisualGitGlyph.Blank:
                 case VisualGitGlyph.Ignored:
                 case VisualGitGlyph.FileMissing:
                     status = SccStatus.SCC_STATUS_NOTCONTROLLED;
-                    break;
-                case VisualGitGlyph.LockedModified:
-                case VisualGitGlyph.LockedNormal:
-                    status = SccStatus.SCC_STATUS_CONTROLLED | SccStatus.SCC_STATUS_CHECKEDOUT
-                        | SccStatus.SCC_STATUS_OUTBYUSER | SccStatus.SCC_STATUS_OUTEXCLUSIVE;
                     break;
                 default:
                     status = SccStatus.SCC_STATUS_CONTROLLED | SccStatus.SCC_STATUS_CHECKEDOUT
@@ -286,9 +278,6 @@ namespace VisualGit.Scc
 
                 if (!item.Exists && item.IsVersioned)
                     sb.AppendFormat(format, item.Name, Resources.ToolTipDoesNotExist).AppendLine();
-
-                if (item.IsLocked)
-                    sb.AppendFormat(format, item.Name, Resources.ToolTipLocked).AppendLine();
             }
 
             if (sb.Length > 0)

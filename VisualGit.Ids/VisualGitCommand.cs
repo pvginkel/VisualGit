@@ -80,8 +80,6 @@ namespace VisualGit
         DocumentShowChanges,
         DiffLocalItem,
         Export,
-        ItemShowPropertyChanges,
-        Lock,
         Log,
         LogItem,
         NewDirectory,
@@ -101,7 +99,6 @@ namespace VisualGit
         ShowWorkingCopyExplorer,
         SwitchItem,
         RenameRepositoryItem,
-        Unlock,
         UpdateItemSpecific,
         UpdateItemLatest,
         ViewInVsNet,
@@ -113,7 +110,6 @@ namespace VisualGit
         ItemSelectInSolutionExplorer,
 
         CommitPendingChanges,
-        CommitPendingChangesKeepingLocks,
 
         PendingChangesUpdateLatest,
         SolutionUpdateSpecific,
@@ -192,11 +188,9 @@ namespace VisualGit
         LogUpdateTo,
         LogRevertTo,
         LogMergeTo,
-        LogShowProperties,
 
         ItemIgnoreFolder,
 
-        LockMustLock,
         GitNodeDelete,
         SolutionUpdateLatest,
 
@@ -218,7 +212,6 @@ namespace VisualGit
         RepositoryShowChanges,
         RepositoryCompareWithWc,
         UpdateItemLatestRecursive,
-        SccLock,
 
         ItemRename,
         ItemDelete,
@@ -236,7 +229,6 @@ namespace VisualGit
         LogShowChanges,
 
         MigrateSettings,
-        ItemEditProperties,
         ReposExplorerLog,
         LogAnnotateRevision,
 
@@ -255,11 +247,6 @@ namespace VisualGit
         ListViewGroupMax = ListViewGroup0 + 64,
         ListViewShow0,
         ListViewShowMax = ListViewShow0 + 64,
-
-        SolutionEditProperties,
-        ProjectEditProperties,
-
-        LogShowRevisionProperties,
 
         MoveToNewChangeList,
         MoveToExistingChangeList0,

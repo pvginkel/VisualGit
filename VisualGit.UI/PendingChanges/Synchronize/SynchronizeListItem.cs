@@ -26,8 +26,8 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             _item = item;
             _status = status;
 
-            _localChange = PendingChange.CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, item.IsTreeConflicted, item);
-            _remoteChange = PendingChange.CombineStatus(status.RemoteContentStatus, status.RemotePropertyStatus, false, null);
+            _localChange = PendingChange.CombineStatus(status.LocalContentStatus, item.IsTreeConflicted, item);
+            _remoteChange = PendingChange.CombineStatus(status.RemoteContentStatus, false, null);
 
             if (_remoteChange == PendingChangeKind.None)
             {

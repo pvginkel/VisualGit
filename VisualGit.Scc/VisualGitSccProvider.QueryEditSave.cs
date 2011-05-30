@@ -263,9 +263,7 @@ namespace VisualGit.Scc
                 if ((queryFlags & tagVSQueryEditFlags.QEF_ForceEdit_NoPrompting) != 0)
                     return QueryEditForceWritable(rgpszMkDocuments);
 
-                HybridCollection<string> mustLockFiles = null;
                 HybridCollection<string> readOnlyEditFiles = null;
-                List<GitItem> mustLockItems = null;
                 List<GitItem> readOnlyItems = null;
 
                 for (int i = 0; i < cFiles; i++)
@@ -281,30 +279,7 @@ namespace VisualGit.Scc
 
                     GitItem item = StatusCache[file];
 
-                    if (item.IsReadOnlyMustLock && !item.IsDirectory)
-                    {
-                        if (!allowUI)
-                        {
-                            pfEditVerdict = (uint)tagVSQueryEditResult.QER_EditNotOK;
-                            prgfMoreInfo = (uint)(tagVSQueryEditResultFlags.QER_ReadOnlyUnderScc
-                                                   | tagVSQueryEditResultFlags.QER_NoisyCheckoutRequired);
-
-                            return VSConstants.S_OK;
-                        }
-
-                        if (mustLockItems == null)
-                        {
-                            mustLockFiles = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
-                            mustLockItems = new List<GitItem>();
-                        }
-
-                        if (!mustLockFiles.Contains(item.FullPath))
-                        {
-                            mustLockFiles.Add(item.FullPath);
-                            mustLockItems.Add(item);
-                        }
-                    }
-                    else if (item.IsReadOnly)
+                    if (item.IsReadOnly)
                     {
                         if (!allowReadOnlyNonSccWrites.HasValue)
                             allowReadOnlyNonSccWrites = AllowReadOnlyNonSccWrites();
@@ -334,38 +309,6 @@ namespace VisualGit.Scc
                             }
                         }
                         // else // allow editting
-                    }
-                }
-                if (mustLockItems != null)
-                {
-                    List<GitItem> mustBeLocked = new List<GitItem>(mustLockItems);
-
-                    // Look at all subfiles of the must be locked document and add these to the dialog
-                    // to make it easier to lock them too
-                    foreach (string lockFile in new List<string>(mustLockFiles))
-                    {
-                        foreach (GitItem item in GetAllDocumentItems(lockFile))
-                        {
-                            if (!mustLockFiles.Contains(item.FullPath))
-                            {
-                                mustLockFiles.Add(item.FullPath);
-                                mustLockItems.Add(item);
-                            }
-                        }
-                    }
-
-                    CommandService.DirectlyExecCommand(VisualGitCommand.SccLock, mustLockItems, CommandPrompt.DoDefault);
-                    // Only check the original list; the rest of the items in mustLockItems is optional
-                    foreach (GitItem i in mustBeLocked)
-                    {
-                        if (i.IsReadOnlyMustLock)
-                        {
-                            // User has probably canceled the lock operation, or it failed.
-                            pfEditVerdict = (uint)tagVSQueryEditResult.QER_EditNotOK;
-                            prgfMoreInfo = (uint)(tagVSQueryEditResultFlags.QER_CheckoutCanceledOrFailed
-                                | tagVSQueryEditResultFlags.QER_ReadOnlyUnderScc);
-                            break;
-                        }
                     }
                 }
                 if (readOnlyItems != null)
@@ -477,8 +420,6 @@ namespace VisualGit.Scc
             pdwQSResult = (uint)tagVSQuerySaveResult.QSR_SaveOK;
             bool silent = (rgfQuerySave & (uint)tagVSQuerySaveFlags.QSF_SilentMode) != 0;
 
-            List<GitItem> toBeSvnLocked = new List<GitItem>();
-
             if (rgpszMkDocuments == null)
                 return VSConstants.E_POINTER;
 
@@ -503,17 +444,7 @@ namespace VisualGit.Scc
                     file = SvnTools.GetNormalizedFullPath(file);
 
                     GitItem item = StatusCache[file];
-                    if (item.IsReadOnlyMustLock)
-                    {
-                        if (silent)
-                        {
-                            pdwQSResult = (uint)tagVSQuerySaveResult.QSR_NoSave_NoisyPromptRequired;
-                            return VSConstants.S_OK;
-                        }
-                        toBeSvnLocked.Add(item);
-                        continue;
-                    }
-                    else if (!item.IsReadOnly)
+                    if (!item.IsReadOnly)
                         continue;
                     else if (silent)
                     {
@@ -545,22 +476,6 @@ namespace VisualGit.Scc
                 else
                     pdwQSResult = (uint)tagVSQuerySaveResult.QSR_SaveOK;
 
-                if (toBeSvnLocked.Count > 0)
-                {
-                    // File(s) need to be locked
-                    CommandService.DirectlyExecCommand(VisualGitCommand.SccLock, toBeSvnLocked.ToArray());
-
-                    bool notWritable = false;
-                    foreach (GitItem item in toBeSvnLocked)
-                    {
-                        if (item.IsReadOnlyMustLock)
-                            notWritable = true;
-                    }
-
-                    if (notWritable)
-                        pdwQSResult = (uint)tagVSQuerySaveResult.QSR_NoSave_Cancel;
-                }
-
                 return VSConstants.S_OK;
             }
             finally
@@ -579,8 +494,6 @@ namespace VisualGit.Scc
 
         tagVSQuerySaveResult QueryReadOnlyFile(GitItem item)
         {
-            Debug.Assert(item.IsReadOnly && !item.IsReadOnlyMustLock, "item.IsReadOnly && !item.IsReadOnlyMustLock");
-
             // Now we have to ask the user wether to overwrite, or to save as
             using (SccQuerySaveReadonlyDialog dlg = new SccQuerySaveReadonlyDialog())
             {

@@ -7,7 +7,6 @@ using VisualGit.UI.PendingChanges.Commits;
 namespace VisualGit.UI.PendingChanges.Commands
 {
     [Command(VisualGitCommand.CommitPendingChanges)]
-    [Command(VisualGitCommand.CommitPendingChangesKeepingLocks)]
     [Command(VisualGitCommand.PendingChangesApplyWorkingCopy)]
     class CommitPendingChanges : ICommandHandler
     {
@@ -24,7 +23,6 @@ namespace VisualGit.UI.PendingChanges.Commands
             switch (e.Command)
             {
                 case VisualGitCommand.CommitPendingChanges:
-                case VisualGitCommand.CommitPendingChangesKeepingLocks:
                     e.Enabled = true
                         // check if commit page or issues page is visible
                         && (false
@@ -32,7 +30,7 @@ namespace VisualGit.UI.PendingChanges.Commands
                              || (issuesPage != null && issuesPage.Visible)
                              )
                          // make sure commit page can commit
-                         && commitPage.CanCommit(e.Command == VisualGitCommand.CommitPendingChangesKeepingLocks)
+                         && commitPage.CanCommit()
                          ;
                     break;
                 case VisualGitCommand.PendingChangesApplyWorkingCopy:
@@ -49,8 +47,7 @@ namespace VisualGit.UI.PendingChanges.Commands
                 switch (e.Command)
                 {
                     case VisualGitCommand.CommitPendingChanges:
-                    case VisualGitCommand.CommitPendingChangesKeepingLocks:
-                        page.DoCommit(e.Command == VisualGitCommand.CommitPendingChangesKeepingLocks);
+                        page.DoCommit();
                         break;
                     case VisualGitCommand.PendingChangesApplyWorkingCopy:
                         page.ApplyToWorkingCopy();

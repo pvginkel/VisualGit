@@ -282,21 +282,6 @@
     <Compile Include="PendingChanges\Synchronize\SynchronizeListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PropertyEditors\NeedsLockPropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\NeedsLockPropertyEditor.Designer.cs">
-      <DependentUpon>NeedsLockPropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\PropertyEditControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\PropertyEditItem.cs" />
-    <Compile Include="PropertyEditors\PropertyEditStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PropertyEditStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="RecentMessageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -381,7 +366,6 @@
     </Compile>
     <Compile Include="GitLog\Commands\CompareWithWorkingCopy.cs" />
     <Compile Include="GitLog\Commands\RevertChanges.cs" />
-    <Compile Include="GitLog\Commands\ShowRevisionProperties.cs" />
     <Compile Include="GitLog\LogDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -490,12 +474,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\PropertyDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\PropertyDialog.Designer.cs">
-      <DependentUpon>PropertyDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="RepositoryExplorer\AddRepositoryRootDialog.cs">
       <SubType>Form</SubType>
@@ -634,9 +612,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WorkingCopyExplorer\FileSystemTreeNode.cs" />
-    <Compile Include="SccManagement\LockDialog.Designer.cs">
-      <DependentUpon>LockDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="OptionsPages\ToolArgumentDialog.Designer.cs">
       <DependentUpon>ToolArgumentDialog.cs</DependentUpon>
     </Compile>
@@ -704,51 +679,6 @@
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyEditors\PropertyEditorDialog.Designer.cs">
-      <DependentUpon>PropertyEditorDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\EolStylePropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\EolStylePropertyEditor.Designer.cs">
-      <DependentUpon>EolStylePropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\ExecutablePropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\ExecutablePropertyEditor.Designer.cs">
-      <DependentUpon>ExecutablePropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\ExternalsPropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\ExternalsPropertyEditor.Designer.cs">
-      <DependentUpon>ExternalsPropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\IgnorePropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\IgnorePropertyEditor.Designer.cs">
-      <DependentUpon>IgnorePropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\KeywordsPropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\KeywordsPropertyEditor.Designer.cs">
-      <DependentUpon>KeywordsPropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\MimeTypePropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\MimeTypePropertyEditor.Designer.cs">
-      <DependentUpon>MimeTypePropertyEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PropertyEditors\PlainPropertyEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\PlainPropertyEditor.Designer.cs">
-      <DependentUpon>PlainPropertyEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="RepositoryExplorer\RepositoryExplorerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -772,9 +702,6 @@
     </Compile>
     <Compile Include="GitLog\LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SccManagement\LockDialog.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GitLog\LogChangedPaths.cs">
       <SubType>UserControl</SubType>
@@ -801,9 +728,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProgressDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PropertyEditors\PropertyEditorDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RepositoryExplorer\RepositoryTreeView.cs">
@@ -852,10 +776,6 @@
       <DependentUpon>ExportDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SccManagement\LockDialog.resx">
-      <DependentUpon>LockDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="PathSelector\PathSelectionTreeView.resx">
       <DependentUpon>PathSelectionTreeView.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -870,10 +790,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\PropertyEditorDialog.resx">
-      <DependentUpon>PropertyEditorDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RepositoryExplorer\RepositoryTreeView.resx">
@@ -962,15 +878,6 @@
     <EmbeddedResource Include="PendingChanges\PCStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>PCStrings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\NeedsLockPropertyEditor.resx">
-      <DependentUpon>NeedsLockPropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\PropertyEditStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PropertyEditStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RecentMessageDialog.resx">
@@ -1079,10 +986,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\PropertyDialog.resx">
-      <DependentUpon>PropertyDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="RepositoryExplorer\RepositoryFolderBrowserDialog.resx">
       <DependentUpon>RepositoryFolderBrowserDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1154,34 +1057,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\PendingIssuesPage.resx">
       <DependentUpon>PendingIssuesPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\EolStylePropertyEditor.resx">
-      <DependentUpon>EolStylePropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\ExecutablePropertyEditor.resx">
-      <DependentUpon>ExecutablePropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\ExternalsPropertyEditor.resx">
-      <DependentUpon>ExternalsPropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\IgnorePropertyEditor.resx">
-      <DependentUpon>IgnorePropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\KeywordsPropertyEditor.resx">
-      <DependentUpon>KeywordsPropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\MimeTypePropertyEditor.resx">
-      <DependentUpon>MimeTypePropertyEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PropertyEditors\PlainPropertyEditor.resx">
-      <DependentUpon>PlainPropertyEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RepositoryExplorer\RepositoryExplorerControl.resx">
@@ -1292,7 +1167,6 @@
     <Content Include="MergeWizard\WizardFramework\images\message_info.gif" />
     <Content Include="MergeWizard\WizardFramework\images\message_warning.gif" />
     <Content Include="MergeWizard\WizardFramework\README.txt" />
-    <Content Include="PropertyEditors\Images\Properties.ico" />
     <Content Include="Resources\TabConflicts.png" />
     <None Include="GitLog\Plus.png" />
   </ItemGroup>

@@ -191,7 +191,7 @@ namespace VisualGit.Scc
         PendingChangeStatus GetStatus(RefreshContext context, GitItem item)
         {
             VisualGitStatus status = item.Status;
-            _kind = CombineStatus(status.LocalContentStatus, status.LocalPropertyStatus, item.IsTreeConflicted, item);
+            _kind = CombineStatus(status.State, item.IsTreeConflicted, item);
 
             if (_kind != PendingChangeKind.None)
                 return new PendingChangeStatus(_kind);
@@ -231,8 +231,6 @@ namespace VisualGit.Scc
             else if (item.InSolution && !item.IsVersioned && !item.IsIgnored && item.IsVersionable)
                 create = true; // To be added
             else if (item.IsVersioned && item.IsDocumentDirty)
-                create = true;
-            else if (item.IsLocked)
                 create = true;
 
             return create;
@@ -367,12 +365,12 @@ namespace VisualGit.Scc
         /// <param name="treeConflict">if set to <c>true</c> [tree conflict].</param>
         /// <param name="item">The item or null if no on disk representation is availavke</param>
         /// <returns></returns>
-        public static PendingChangeKind CombineStatus(SvnStatus contentStatus, SvnStatus propertyStatus, bool treeConflict, GitItem item)
+        public static PendingChangeKind CombineStatus(SvnStatus contentStatus, bool treeConflict, GitItem item)
         {
             // item can be null!
             if (treeConflict || (item != null && item.IsTreeConflicted))
                 return PendingChangeKind.TreeConflict;
-            else if (contentStatus == SvnStatus.Conflicted || propertyStatus == SvnStatus.Conflicted)
+            else if (contentStatus == SvnStatus.Conflicted)
                 return PendingChangeKind.Conflicted;
 
             switch (contentStatus)
@@ -421,27 +419,8 @@ namespace VisualGit.Scc
                     throw new ArgumentOutOfRangeException("contentStatus", contentStatus, "Invalid content status");
             }
 
-            switch (propertyStatus)
-            {
-                case SvnStatus.Modified:
-                    return PendingChangeKind.PropertyModified;
-                case SvnStatus.Normal:
-                case SvnStatus.None:
-                    // No usefull status / No change
-                    break;
-                case SvnStatus.Zero:
-                case SvnStatus.Conflicted:
-                default: // Give error on missed values
-                    throw new ArgumentOutOfRangeException("propertyStatus", propertyStatus, "Invalid content status");
-            }
-
-            if (item != null)
-            {
-                if (item.IsDocumentDirty)
-                    return PendingChangeKind.EditorDirty;
-                else if (item.IsLocked)
-                    return PendingChangeKind.LockedOnly;
-            }
+            if (item != null && item.IsDocumentDirty)
+                return PendingChangeKind.EditorDirty;
 
             return PendingChangeKind.None;
         }

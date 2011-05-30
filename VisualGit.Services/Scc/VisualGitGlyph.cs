@@ -16,9 +16,9 @@ namespace VisualGit.Scc
         None, // Icon 0 is drawn as icon 5
 
         /// <summary>
-        /// The file must be locked before editing is allowed (STATEICON_CHECKEDIN /0x1)
+        /// Unused (was MustLock)
         /// </summary>
-        MustLock,
+        Unused1,
 
         /// <summary>
         /// Path is versioned and modified (STATEICON_CHECKEDOUT /0x2)
@@ -57,14 +57,14 @@ namespace VisualGit.Scc
         CopiedOrMoved,        
 
         /// <summary>
-        /// File is versioned and locally locked but not modified (STATEICON_CHECKEDOUTSHAREDOTHER /0x9)
+        /// Unused (was LockedNormal)
         /// </summary>
-        LockedNormal,        
+        Unused2,        
 
         /// <summary>
-        /// File is versioned, locally locked and modified (STATEICON_CHECKEDOUTEXCLUSIVEOTHER /0xA)
+        /// Unused (was LockedModified)
         /// </summary>
-        LockedModified,        
+        Unused3,        
 
         /// <summary>
         /// File is marked as explicitly ignored (STATEICON_EXCLUDEDFROMSCC /0xB)

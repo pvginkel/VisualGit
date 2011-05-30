@@ -392,7 +392,7 @@ namespace VisualGit.UI.PendingChanges
 
         #endregion
 
-        public void DoCommit(bool keepLocks)
+        public void DoCommit()
         {
             List<PendingChange> changes = new List<PendingChange>();
 
@@ -408,7 +408,6 @@ namespace VisualGit.UI.PendingChanges
 
             PendingChangeCommitArgs a = new PendingChangeCommitArgs();
             a.LogMessage = logMessageEditor.Text;
-            a.KeepLocks = keepLocks;
 
             if (issueNumberBox.Visible)
                 a.IssueText = issueNumberBox.Text; // The pc handler verifies if it should be used            
@@ -449,7 +448,7 @@ namespace VisualGit.UI.PendingChanges
             }
         }
 
-        internal bool CanCommit(bool keepingLocks)
+        internal bool CanCommit()
         {
             if (_listItems.Count == 0)
                 return false;
@@ -459,8 +458,7 @@ namespace VisualGit.UI.PendingChanges
                 if (!pci.Checked)
                     continue;
 
-                if (!keepingLocks || pci.PendingChange.GitItem.IsLocked)
-                    return true;
+                return true;
             }
 
             return false;
@@ -468,7 +466,7 @@ namespace VisualGit.UI.PendingChanges
 
         internal bool CanCreatePatch()
         {
-            if (!CanCommit(false))
+            if (!CanCommit())
                 return false;
 
             foreach (PendingCommitItem pci in _listItems.Values)

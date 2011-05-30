@@ -21,8 +21,8 @@ namespace VisualGit
         GitItemState _validState;
         GitItemState _onceValid;
 
-        const GitItemState MaskRefreshTo = GitItemState.Versioned | GitItemState.HasLockToken | GitItemState.Obstructed | GitItemState.Modified | GitItemState.PropertyModified | GitItemState.Added | GitItemState.HasCopyOrigin
-            | GitItemState.Deleted | GitItemState.Replaced | GitItemState.HasProperties | GitItemState.ContentConflicted | GitItemState.PropertyModified | GitItemState.GitDirty | GitItemState.Ignored;
+        const GitItemState MaskRefreshTo = GitItemState.Versioned | GitItemState.Obstructed | GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
+            | GitItemState.Deleted | GitItemState.Replaced | GitItemState.ContentConflicted | GitItemState.GitDirty | GitItemState.Ignored;
 
         public GitItemState GetState(GitItemState flagsToGet)
         {
@@ -75,15 +75,6 @@ namespace VisualGit
                 unavailable = flagsToGet & ~_validState;
 
                 Debug.Assert((~_validState & MaskVersionable) == 0, "UpdateVersionable() set all attributes it should");
-            }
-
-            if (0 != (unavailable & MaskMustLock))
-            {
-                UpdateMustLock();
-
-                unavailable = flagsToGet & ~_validState;
-
-                Debug.Assert((~_validState & MaskMustLock) == 0, "UpdateMustLock() set all attributes it should");
             }
 
             if (0 != (unavailable & MaskTextFile))
@@ -274,48 +265,6 @@ namespace VisualGit
 
         #endregion
 
-        #region Must Lock
-        const GitItemState MaskMustLock = GitItemState.MustLock;
-        void UpdateMustLock()
-        {
-            GitItemState fastValue = GitItemState.IsDiskFile | GitItemState.ReadOnly;
-            GitItemState slowValue = GitItemState.Versioned;
-            GitItemState v;
-
-            bool mustLock;
-
-            if (TryGetState(GitItemState.Versioned, out v) && (v == 0))
-                mustLock = false;
-            else if (TryGetState(GitItemState.HasProperties, out v) && (v == 0))
-                mustLock = false;
-            else if (TryGetState(GitItemState.ReadOnly, out v) && (v == 0))
-                mustLock = false;
-            else if (GetState(fastValue) != fastValue)
-                mustLock = false;
-            else if (GetState(slowValue) != slowValue)
-                mustLock = false;
-            else
-            {
-                using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
-                {
-                    string propVal;
-
-                    if (client.TryGetProperty(new SvnPathTarget(_fullPath), SvnPropertyNames.SvnNeedsLock, out propVal))
-                    {
-                        mustLock = propVal != null; // Value should be equal to SvnPropertyNames.SvnBooleanValue
-                    }
-                    else
-                        mustLock = false;
-                }
-            }
-
-            if (mustLock)
-                SetState(GitItemState.MustLock, GitItemState.None);
-            else
-                SetState(GitItemState.None, GitItemState.MustLock);
-        }
-        #endregion
-
         #region TextFile File
         const GitItemState MaskTextFile = GitItemState.IsTextFile;
         void UpdateTextFile()
@@ -367,7 +316,7 @@ namespace VisualGit
                 // File does not exist / no rights, etc.
 
                 SetState(GitItemState.None,
-                    GitItemState.Exists | GitItemState.ReadOnly | GitItemState.MustLock | GitItemState.Versionable | GitItemState.IsDiskFolder | GitItemState.IsDiskFile);
+                    GitItemState.Exists | GitItemState.ReadOnly | GitItemState.Versionable | GitItemState.IsDiskFolder | GitItemState.IsDiskFile);
 
                 return;
             }

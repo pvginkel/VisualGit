@@ -209,7 +209,7 @@ namespace VisualGit.Scc
 
                 GitItem item = StatusCache[oldDir];
 
-                if (!item.IsVersioned && item.Status.LocalContentStatus != SvnStatus.Missing)
+                if (!item.IsVersioned && item.Status.State != SvnStatus.Missing)
                     continue; // Item was not cached as versioned or now-missing (Missing implicits Versioned)
 
                 StatusCache.MarkDirty(oldDir);
@@ -217,7 +217,7 @@ namespace VisualGit.Scc
 
                 item = StatusCache[oldDir];
 
-                if (item.Status.LocalContentStatus != SvnStatus.Missing)
+                if (item.Status.State != SvnStatus.Missing)
                     continue;
 
                 GitItem newItem = StatusCache[newDir];

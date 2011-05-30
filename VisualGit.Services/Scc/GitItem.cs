@@ -98,7 +98,7 @@ namespace VisualGit
                     SetState(GitItemState.IsDiskFile | GitItemState.Exists, GitItemState.IsDiskFolder);
                     break;
                 case SvnNodeKind.Directory:
-                    SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.MustLock);
+                    SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.IsDiskFile | GitItemState.ReadOnly);
                     break;
             }
         }
@@ -118,10 +118,8 @@ namespace VisualGit
             GitItemState unset = GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
                 | GitItemState.Deleted | GitItemState.ContentConflicted | GitItemState.Ignored
                 | GitItemState.Obstructed | GitItemState.Replaced | GitItemState.Versioned
-                | GitItemState.GitDirty | GitItemState.PropertyModified | GitItemState.PropertiesConflicted
-                | GitItemState.Obstructed | GitItemState.MustLock | GitItemState.IsNested
-                | GitItemState.HasProperties | GitItemState.HasLockToken | GitItemState.HasCopyOrigin
-                | GitItemState.TreeConflicted;
+                | GitItemState.GitDirty | GitItemState.Obstructed | GitItemState.IsNested
+                | GitItemState.HasCopyOrigin | GitItemState.TreeConflicted;
 
             switch (status)
             {
@@ -156,13 +154,13 @@ namespace VisualGit
             if (status == null)
                 throw new ArgumentNullException("status");
 
-            if (status.LocalContentStatus == SvnStatus.External)
+            if (status.State == SvnStatus.External)
             {
                 // When iterating the status of an external in it's parent directory
                 // We get an external status and no really usefull information
 
                 SetState(GitItemState.Exists | GitItemState.Versionable | GitItemState.IsDiskFolder,
-                            GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.MustLock | GitItemState.IsTextFile);
+                            GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.IsTextFile);
 
                 if (_statusDirty != XBool.False)
                     _statusDirty = XBool.True; // Walk the path itself to get the data you want
@@ -183,7 +181,7 @@ namespace VisualGit
                     // Extract useful information we got anyway
 
                     SetState(GitItemState.Exists | GitItemState.Versionable | GitItemState.IsDiskFolder,
-                                GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.MustLock | GitItemState.IsTextFile);
+                                GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.IsTextFile);
 
                     return;
                 }
@@ -207,7 +205,7 @@ namespace VisualGit
             bool svnDirty = true;
             bool exists = true;
             bool provideDiskInfo = true;
-            switch (status.LocalContentStatus)
+            switch (status.State)
             {
                 case SvnStatus.None:
                     SetState(GitItemState.None, managed | unset);
@@ -266,7 +264,7 @@ namespace VisualGit
                     SetState(managed, unset);
                     break;
                 default:
-                    Trace.WriteLine(string.Format("Ignoring undefined status {0} in GitItem.Refresh()", status.LocalContentStatus));
+                    Trace.WriteLine(string.Format("Ignoring undefined status {0} in GitItem.Refresh()", status.State));
                     provideDiskInfo = false; // Can't trust an unknown status
                     goto case SvnStatus.Normal;
                 case SvnStatus.Normal:
@@ -285,37 +283,10 @@ namespace VisualGit
             else
                 SetState(GitItemState.None, GitItemState.TreeConflicted);
 
-            bool hasProperties = true;
-            switch (status.LocalPropertyStatus)
-            {
-                case SvnStatus.None:
-                    hasProperties = false;
-                    SetState(GitItemState.None, GitItemState.PropertiesConflicted | GitItemState.PropertyModified | GitItemState.HasProperties);
-                    break;
-                case SvnStatus.Modified:
-                    SetState(GitItemState.PropertyModified | GitItemState.HasProperties,
-                             GitItemState.PropertiesConflicted);
-                    svnDirty = true;
-                    break;
-                case SvnStatus.Conflicted:
-                    SetState(GitItemState.PropertyModified | GitItemState.PropertiesConflicted | GitItemState.HasProperties,
-                             GitItemState.None);
-                    svnDirty = true;
-                    break;
-                case SvnStatus.Normal:
-                default:
-                    SetState(GitItemState.HasProperties,
-                             GitItemState.PropertiesConflicted | GitItemState.PropertyModified);
-                    break;
-            }
-
             if (svnDirty)
                 SetState(GitItemState.GitDirty, GitItemState.None);
             else
                 SetState(GitItemState.None, GitItemState.GitDirty);
-
-            if (!hasProperties)
-                SetState(GitItemState.None, GitItemState.MustLock);
 
             if (provideDiskInfo)
             {
@@ -323,7 +294,7 @@ namespace VisualGit
                     switch (status.NodeKind)
                     {
                         case SvnNodeKind.Directory:
-                            SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.ReadOnly | GitItemState.MustLock | GitItemState.IsTextFile | GitItemState.IsDiskFile);
+                            SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.ReadOnly| GitItemState.IsTextFile | GitItemState.IsDiskFile);
                             break;
                         case SvnNodeKind.File:
                             SetState(GitItemState.IsDiskFile | GitItemState.Exists, GitItemState.IsDiskFolder);
@@ -332,16 +303,11 @@ namespace VisualGit
                 else
                     SetState(GitItemState.None, GitItemState.Exists);
             }
-
-            if (status.IsLockedLocal)
-                SetState(GitItemState.HasLockToken, GitItemState.None);
-            else
-                SetState(GitItemState.None, GitItemState.HasLockToken);
         }
 
         static bool MightBeNestedWorkingCopy(VisualGitStatus status)
         {
-            switch (status.LocalContentStatus)
+            switch (status.State)
             {
                 case SvnStatus.NotVersioned:
                 case SvnStatus.Ignored:
@@ -590,7 +556,7 @@ namespace VisualGit
 
         static bool GetIsVersioned(VisualGitStatus status)
         {
-            switch (status.LocalContentStatus)
+            switch (status.State)
             {
                 case SvnStatus.Added:
                 case SvnStatus.Conflicted:
@@ -617,11 +583,6 @@ namespace VisualGit
             }
         }
 
-        public bool IsPropertyModified
-        {
-            get { return GetState(GitItemState.PropertyModified) != 0; }
-        }
-
         /// <summary>
         /// Gets a value indicating whether this instance is diff available.
         /// </summary>
@@ -637,7 +598,7 @@ namespace VisualGit
                 if (!IsModified)
                     return IsDocumentDirty;
 
-                switch (Status.LocalContentStatus)
+                switch (Status.State)
                 {
                     case SvnStatus.Normal:
                         // Probably property modified
@@ -692,29 +653,11 @@ namespace VisualGit
         }
 
         /// <summary>
-        /// Gets a boolean indicating whether you must lock the <see cref="GitItem"/> before editing
-        /// </summary>
-        /// <remarks>Assumes a mustlock file is readonly to speed up testing</remarks>
-        public bool IsReadOnlyMustLock
-        {
-            get { return GetState(GitItemState.MustLock) != 0; }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         public bool IsAdded
         {
             get { return GetState(GitItemState.Added) != 0; }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whether the <see cref="GitItem"/> is locally locked
-        /// </summary>
-        /// <returns></returns>
-        public bool IsLocked
-        {
-            get { return GetState(GitItemState.HasLockToken) != 0; }
         }
 
         /// <summary>
@@ -738,7 +681,7 @@ namespace VisualGit
         /// </summary>
         public bool IsConflicted
         {
-            get { return 0 != GetState(GitItemState.ContentConflicted | GitItemState.PropertiesConflicted | GitItemState.TreeConflicted); }
+            get { return 0 != GetState(GitItemState.ContentConflicted | GitItemState.TreeConflicted); }
         }
 
         /// <summary>
@@ -760,7 +703,7 @@ namespace VisualGit
         /// </value>
         public bool IsCasingConflicted
         {
-            get { return IsVersioned && Status.LocalContentStatus == SvnStatus.Missing && Status.NodeKind == SvnNodeKind.File && IsFile && Exists; }
+            get { return IsVersioned && Status.State == SvnStatus.Missing && Status.NodeKind == SvnNodeKind.File && IsFile && Exists; }
         }
 
         /// <summary>

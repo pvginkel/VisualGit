@@ -526,7 +526,7 @@ namespace VisualGit.Scc.StatusCache
             if (fullPath == item.FullPath)
                 return true;
 
-            switch (status.LocalContentStatus)
+            switch (status.State)
             {
                 case SvnStatus.Added:
                 case SvnStatus.Conflicted:

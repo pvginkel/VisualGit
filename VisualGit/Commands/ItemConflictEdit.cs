@@ -22,7 +22,7 @@ namespace VisualGit.Commands
             else
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
-                    if (item.IsConflicted && item.Status.LocalContentStatus == SvnStatus.Conflicted)
+                    if (item.IsConflicted && item.Status.State == SvnStatus.Conflicted)
                         return;
                 }
 
@@ -55,7 +55,7 @@ namespace VisualGit.Commands
                 return;
 
             conflict.MarkDirty();
-            if (conflict.Status.LocalContentStatus != SvnStatus.Conflicted)
+            if (conflict.Status.State != SvnStatus.Conflicted)
             {
                 VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
 
