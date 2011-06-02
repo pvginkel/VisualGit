@@ -189,7 +189,7 @@ namespace VisualGit.UI.PendingChanges
                 if (refreshFromList)
                 {
                     throw new NotImplementedException();
-#if SUBVERSION
+#if false
                     OnRecentChangesFetched(resultList);
 #endif
                 }
@@ -207,7 +207,7 @@ namespace VisualGit.UI.PendingChanges
             Dictionary<string, string> found)
         {
             throw new NotImplementedException();
-#if SUBVERSION
+#if false
             foreach (string path in roots)
             {
                 // TODO: Find some way to get this information safely in the status cache

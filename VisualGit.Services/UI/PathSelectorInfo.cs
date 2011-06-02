@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using VisualGit.UI;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit
 {
@@ -17,12 +18,12 @@ namespace VisualGit
         readonly string _caption;
         bool _singleSelection;
         bool _enableRecursive;
-        SvnDepth _depth = SvnDepth.Empty;
+        GitDepth _depth = GitDepth.Empty;
         readonly ICollection<GitItem> _items;
         readonly Dictionary<string, GitItem> _checkedItems = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
         readonly Dictionary<string, GitItem> _visibleItems = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
-        SvnRevision _revisionStart;
-        SvnRevision _revisionEnd;
+        GitRevision _revisionStart;
+        GitRevision _revisionEnd;
         Predicate<GitItem> _checkedFilter;
         Predicate<GitItem> _visibleFilter;
         SelectableFilter _checkableFilter;
@@ -87,7 +88,7 @@ namespace VisualGit
             return EvaluateFilter(item, _checkedFilter);
         }
 
-        public bool EvaluateCheckable(GitItem item, SvnRevision from, SvnRevision to)
+        public bool EvaluateCheckable(GitItem item, GitRevision from, GitRevision to)
         {
             if (_checkableFilter == null)
                 return true;
@@ -151,19 +152,19 @@ namespace VisualGit
             set { _enableRecursive = value; }
         }
 
-        public SvnDepth Depth
+        public GitDepth Depth
         {
             get { return _depth; }
             set { _depth = value; }
         }
 
-        public SvnRevision RevisionStart
+        public GitRevision RevisionStart
         {
             get { return _revisionStart; }
             set { _revisionStart = value; }
         }
 
-        public SvnRevision RevisionEnd
+        public GitRevision RevisionEnd
         {
             get { return _revisionEnd; }
             set { _revisionEnd = value; }
@@ -193,7 +194,7 @@ namespace VisualGit
             }
         }
 
-        public delegate bool SelectableFilter(GitItem item, SvnRevision from, SvnRevision to);
+        public delegate bool SelectableFilter(GitItem item, GitRevision from, GitRevision to);
 
         public static bool EvaluateFilter(GitItem item, Predicate<GitItem> filter)
         {

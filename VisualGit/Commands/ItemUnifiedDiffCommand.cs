@@ -6,6 +6,7 @@ using System.IO;
 using VisualGit.VS;
 using Microsoft.VisualStudio.Shell;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -29,7 +30,7 @@ namespace VisualGit.Commands
             if (!result.Succeeded)
                 return;
 
-            SvnRevisionRange revRange = new SvnRevisionRange(result.RevisionStart, result.RevisionEnd);
+            GitRevisionRange revRange = new GitRevisionRange(result.RevisionStart, result.RevisionEnd);
 
             IVisualGitTempFileManager tempfiles = e.GetService<IVisualGitTempFileManager>();
             string tempFile = tempfiles.GetTempFile(".patch");
@@ -38,6 +39,8 @@ namespace VisualGit.Commands
             string slndir = ss.ProjectRoot;
             string slndirP = slndir + "\\";
 
+            throw new NotImplementedException();
+#if false
             SvnDiffArgs args = new SvnDiffArgs();
             args.IgnoreAncestry = true;
             args.NoDeleted = false;
@@ -71,6 +74,7 @@ namespace VisualGit.Commands
                     VsShellUtilities.OpenDocument(e.Context, tempFile);
                 }
             }
+#endif
         }
 
         static PathSelectorResult ShowDialog(CommandEventArgs e)
@@ -80,8 +84,8 @@ namespace VisualGit.Commands
             info.VisibleFilter += delegate { return true; };
             info.CheckedFilter += delegate(GitItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
 
-            info.RevisionStart = SvnRevision.Base;
-            info.RevisionEnd = SvnRevision.Working;
+            info.RevisionStart = GitRevision.Base;
+            info.RevisionEnd = GitRevision.Working;
 
             // should we show the path selector?
             if (!Shift)

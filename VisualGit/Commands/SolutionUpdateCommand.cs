@@ -7,6 +7,7 @@ using VisualGit.Scc;
 using VisualGit.UI.Commands;
 using System.Diagnostics;
 using System.Windows.Forms;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -166,7 +167,7 @@ namespace VisualGit.Commands
             if (ci != null)
                 ci.SetLastChange(null, null);
 
-            SvnRevision rev;
+            GitRevision rev;
             bool allowUnversionedObstructions = false;
             bool updateExternals = true;
             bool setDepthInfinity = true;
@@ -177,7 +178,7 @@ namespace VisualGit.Commands
             Uri reposRoot = null;
 
             if (IsHeadCommand(e.Command) || e.DontPrompt)
-                rev = SvnRevision.Head;
+                rev = GitRevision.Head;
             else if (IsSolutionCommand(e.Command))
             {
                 GitItem projectItem = settings.ProjectRootGitItem;
@@ -187,7 +188,7 @@ namespace VisualGit.Commands
                 using (UpdateDialog ud = new UpdateDialog())
                 {
                     ud.ItemToUpdate = projectItem;
-                    ud.Revision = SvnRevision.Head;
+                    ud.Revision = GitRevision.Head;
 
                     if (ud.ShowDialog(e.Context) != DialogResult.OK)
                         return;
@@ -209,7 +210,7 @@ namespace VisualGit.Commands
                     ud.Text = CommandStrings.UpdateFolder;
                     ud.FolderLabelText = CommandStrings.UpdateFolderLabel;
                     ud.ItemToUpdate = dirItem;
-                    ud.Revision = SvnRevision.Head;
+                    ud.Revision = GitRevision.Head;
 
                     if (ud.ShowDialog(e.Context) != DialogResult.OK)
                         return;
@@ -277,7 +278,7 @@ namespace VisualGit.Commands
                         ud.SetMultiple(true);
                     }
 
-                    ud.Revision = SvnRevision.Head;
+                    ud.Revision = GitRevision.Head;
 
                     if (ud.ShowDialog(e.Context) != DialogResult.OK)
                         return;
@@ -362,9 +363,12 @@ namespace VisualGit.Commands
             }
         }
 
-        private static void PerformUpdate(CommandEventArgs e, ProgressWorkerArgs wa, SvnRevision rev, bool allowUnversionedObstructions, bool updateExternals, bool setDepthInfinity, IEnumerable<List<string>> groups, out SvnUpdateResult updateResult)
+        private static void PerformUpdate(CommandEventArgs e, ProgressWorkerArgs wa, GitRevision rev, bool allowUnversionedObstructions, bool updateExternals, bool setDepthInfinity, IEnumerable<List<string>> groups, out SvnUpdateResult updateResult)
         {
             SvnUpdateArgs ua = new SvnUpdateArgs();
+
+            throw new NotImplementedException();
+#if false
             ua.Revision = rev;
             ua.AllowObstructions = allowUnversionedObstructions;
             ua.IgnoreExternals = !updateExternals;
@@ -400,6 +404,7 @@ namespace VisualGit.Commands
                         updateResult = result; // Return the primary update as version for output
                 }
             }
+#endif
         }
 
         private static IEnumerable<GitItem> GetAllUpdateRoots(CommandEventArgs e)

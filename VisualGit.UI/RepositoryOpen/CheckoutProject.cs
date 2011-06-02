@@ -12,6 +12,7 @@ using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.UI.SccManagement;
 using System.Text.RegularExpressions;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryOpen
 {
@@ -22,7 +23,7 @@ namespace VisualGit.UI.RepositoryOpen
         public CheckoutProject()
         {
             InitializeComponent();
-            version.Revision = SvnRevision.Head;
+            version.Revision = GitRevision.Head;
         }
 
         protected override void OnContextChanged(EventArgs e)
@@ -37,7 +38,7 @@ namespace VisualGit.UI.RepositoryOpen
             set { version.GitOrigin = value; }
         }
 
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get { return version.Revision; }
             set { version.Revision = value; }

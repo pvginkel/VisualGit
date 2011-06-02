@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using VisualGit.UI.RepositoryExplorer;
 using VisualGit.Scc;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
@@ -16,7 +17,7 @@ namespace VisualGit.UI.Commands
         public SwitchDialog()
         {
             InitializeComponent();
-            versionSelector.Revision = SvnRevision.Head;
+            versionSelector.Revision = GitRevision.Head;
         }
 
         private void browseUrl_Click(object sender, EventArgs e)
@@ -32,7 +33,7 @@ namespace VisualGit.UI.Commands
             }
         }
 
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get { return versionSelector.Revision; }
             set { versionSelector.Revision = value; }

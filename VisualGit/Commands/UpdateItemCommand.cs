@@ -4,6 +4,8 @@ using SharpSvn;
 using VisualGit.UI;
 using VisualGit.Scc;
 using System.Windows.Forms;
+using SharpGit;
+using System;
 
 namespace VisualGit.Commands
 {
@@ -47,8 +49,8 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            SvnRevision updateTo;
-            SvnDepth depth;
+            GitRevision updateTo;
+            GitDepth depth;
             List<string> files = new List<string>();
             if (e.Command == VisualGitCommand.UpdateItemSpecific)
             {
@@ -60,8 +62,8 @@ namespace VisualGit.Commands
                 info.CheckedFilter += delegate(GitItem item) { return item.IsVersioned; };
                 info.VisibleFilter += delegate(GitItem item) { return item.IsVersioned; };
                 info.EnableRecursive = true;
-                info.RevisionStart = SvnRevision.Head;
-                info.Depth = SvnDepth.Infinity;
+                info.RevisionStart = GitRevision.Head;
+                info.Depth = GitDepth.Infinity;
 
                 PathSelectorResult result = !Shift ? uiShell.ShowPathSelector(info) : info.DefaultResult;
 
@@ -79,7 +81,7 @@ namespace VisualGit.Commands
 
                     if (item.IsDirectory)
                     {
-                        if (result.Depth < SvnDepth.Infinity)
+                        if (result.Depth < GitDepth.Infinity)
                         {
                             VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
 
@@ -88,7 +90,7 @@ namespace VisualGit.Commands
                             if (dr != DialogResult.Yes)
                                 return;
 
-                            depth = SvnDepth.Infinity;
+                            depth = GitDepth.Infinity;
                         }
                     }
 
@@ -115,8 +117,8 @@ namespace VisualGit.Commands
             }
             else
             {
-                updateTo = SvnRevision.Head;
-                depth = SvnDepth.Infinity;
+                updateTo = GitRevision.Head;
+                depth = GitDepth.Infinity;
                 List<GitItem> dirs = new List<GitItem>();
 
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
@@ -153,6 +155,8 @@ namespace VisualGit.Commands
                 ProgressRunnerArgs pa = new ProgressRunnerArgs();
                 pa.CreateLog = true;
 
+                throw new NotImplementedException();
+#if false
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.UpdatingTitle, pa,
                                                          delegate(object sender, ProgressWorkerArgs ee)
                                                          {
@@ -163,6 +167,7 @@ namespace VisualGit.Commands
                                                                  RegisterConflictHandler(ua, ee.Synchronizer);
                                                              ee.SvnClient.Update(files, ua, out ur);
                                                          });
+#endif
             }
         }
     }

@@ -113,19 +113,5 @@ namespace SharpGit
         {
             return _stream.ToString();
         }
-
-        public void CopyTo(Stream stream)
-        {
-            if (stream == null)
-                throw new ArgumentNullException("stream");
-
-            byte[] buffer = new byte[4096];
-            int read;
-
-            while ((read = Read(buffer, 0, buffer.Length)) > 0)
-            {
-                stream.Write(buffer, 0, read);
-            }
-        }
     }
 }

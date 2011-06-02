@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.PathSelector
 {
@@ -73,7 +74,7 @@ namespace VisualGit.UI.PathSelector
             EnableRecursive = _info.EnableRecursive;
             Items = _info.VisibleItems;
             //selector.CheckedFilter = _info.CheckedFilter;
-            Recursive = _info.Depth == SvnDepth.Infinity;
+            Recursive = _info.Depth == GitDepth.Infinity;
             SingleSelection = _info.SingleSelection;
             Caption = _info.Caption;
 
@@ -197,14 +198,14 @@ namespace VisualGit.UI.PathSelector
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SvnRevision RevisionStart
+        public GitRevision RevisionStart
         {
             get { return this.revisionPickerStart.Revision; }
             set { this.revisionPickerStart.Revision = value; }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SvnRevision RevisionEnd
+        public GitRevision RevisionEnd
         {
             get { return this.revisionPickerEnd.Revision; }
             set { this.revisionPickerEnd.Revision = value; }

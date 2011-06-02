@@ -705,7 +705,7 @@ namespace VisualGit.Services
 
         #endregion
 
-        public string GetTitle(GitItem target, SvnRevision revision)
+        public string GetTitle(GitItem target, GitRevision revision)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -725,22 +725,22 @@ namespace VisualGit.Services
             return GetTitle(target.FileName, revision);
         }
 
-        static string GetTitle(string fileName, SvnRevision revision)
+        static string GetTitle(string fileName, GitRevision revision)
         {
-            string strRev = revision.RevisionType == SvnRevisionType.Time ?
+            string strRev = revision.RevisionType == GitRevisionType.Time ?
                 revision.Time.ToLocalTime().ToString("g") : revision.ToString();
 
             return fileName + " - " + strRev;
         }
 
-        static string PathSafeRevision(SvnRevision revision)
+        static string PathSafeRevision(GitRevision revision)
         {
-            if (revision.RevisionType == SvnRevisionType.Time)
+            if (revision.RevisionType == GitRevisionType.Time)
                 return revision.Time.ToLocalTime().ToString("yyyyMMdd_hhmmss");
             return revision.ToString();
         }
 
-        string GetName(string filename, SvnRevision rev)
+        string GetName(string filename, GitRevision rev)
         {
             if (string.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
@@ -750,7 +750,7 @@ namespace VisualGit.Services
             return (Path.GetFileNameWithoutExtension(filename) + "." + PathSafeRevision(rev) + Path.GetExtension(filename)).Trim('.');
         }
 
-        string GetTempPath(string filename, SvnRevision rev)
+        string GetTempPath(string filename, GitRevision rev)
         {
             string name = GetName(filename, rev);
             string file;
@@ -765,7 +765,7 @@ namespace VisualGit.Services
         }
 
         string _lastDir;
-        public string GetTempFile(GitItem target, SharpSvn.SvnRevision revision, bool withProgress)
+        public string GetTempFile(GitItem target, GitRevision revision, bool withProgress)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -780,11 +780,11 @@ namespace VisualGit.Services
             ProgressRunnerResult r = GetService<IProgressRunner>().RunModal("Getting file",
                 delegate(object sender, ProgressWorkerArgs aa)
                 {
-                    SvnWriteArgs wa = new SvnWriteArgs();
+                    GitWriteArgs wa = new GitWriteArgs();
                     wa.Revision = revision;
 
                     using (Stream s = File.Create(file))
-                        aa.SvnClient.Write(new SvnPathTarget(target.FullPath), s, wa);
+                        aa.Client.Write(new GitPathTarget(target.FullPath), s, wa);
                 });
 
             if (!r.Succeeded)
@@ -803,6 +803,8 @@ namespace VisualGit.Services
             else if (revision == null)
                 throw new ArgumentNullException("revision");
 
+            throw new NotImplementedException();
+#if false
             string file = GetTempPath(target.FileName, revision);
             bool unrelated = false;
 
@@ -828,6 +830,7 @@ namespace VisualGit.Services
                 File.SetAttributes(file, FileAttributes.ReadOnly); // A readonly file does not allow editting from many diff tools
 
             return file;
+#endif
         }
 
         public string[] GetTempFiles(SvnTarget target, SvnRevision from, SvnRevision to, bool withProgress)
@@ -842,6 +845,8 @@ namespace VisualGit.Services
             string f1;
             string f2;
 
+            throw new NotImplementedException();
+#if false
             if (from.RevisionType == SvnRevisionType.Number && to.RevisionType == SvnRevisionType.Number && from.Revision + 1 == to.Revision)
             {
                 f1 = GetTempPath(target.FileName, from);
@@ -898,6 +903,7 @@ namespace VisualGit.Services
             }
 
             return files;
+#endif
         }
     }
 }

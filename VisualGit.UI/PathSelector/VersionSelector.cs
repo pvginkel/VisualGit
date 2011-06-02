@@ -10,6 +10,7 @@ using SharpSvn;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
 using System.Collections.Generic;
+using SharpGit;
 
 namespace VisualGit.UI.PathSelector
 {
@@ -81,12 +82,12 @@ namespace VisualGit.UI.PathSelector
 
         VisualGitRevisionType _currentRevType;
         List<VisualGitRevisionType> _revTypes;
-        SvnRevision _newValue;
+        GitRevision _newValue;
         /// <summary>
         /// The revision selected by the user.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get
             {
@@ -158,15 +159,18 @@ namespace VisualGit.UI.PathSelector
                 typeCombo.Items.Add(rt);
             }
 
-            if (_currentRevType == null && _newValue != null && _newValue != SvnRevision.None)
+            if (_currentRevType == null && _newValue != null && _newValue != GitRevision.None)
             {
                 VisualGitRevisionType rt = RevisionResolver.Resolve(GitOrigin, _newValue);
 
                 if (rt != null && !rt.IsValidOn(GitOrigin))
                 {
+                    throw new NotImplementedException();
+#if false
                     _newValue = GitOrigin.Target.Revision;
-                    if (_newValue == null || _newValue == SvnRevision.None)
-                        _newValue = (GitOrigin.Target is SvnUriTarget) ? SvnRevision.Head : SvnRevision.Base;
+#endif
+                    if (_newValue == null || _newValue == GitRevision.None)
+                        _newValue = (GitOrigin.Target is SvnUriTarget) ? GitRevision.Head : GitRevision.Base;
 
                     rt = RevisionResolver.Resolve(GitOrigin, _newValue);
                 }

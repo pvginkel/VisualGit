@@ -7,6 +7,7 @@ using VisualGit.Scc;
 using System.IO;
 using VisualGit.UI.RepositoryExplorer;
 using System.Windows.Forms.Design;
+using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
@@ -67,7 +68,7 @@ namespace VisualGit.UI.Commands
                     _baseOrigin = new GitOrigin(item);
 
                 revisionPicker.Context = Context;
-                revisionPicker.Revision = SvnRevision.Working;
+                revisionPicker.Revision = GitRevision.Working;
                 revisionPicker.GitOrigin = _baseOrigin;                
             }
         }
@@ -76,7 +77,7 @@ namespace VisualGit.UI.Commands
         /// The revision to check out.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get { return this.revisionPicker.Revision; }
         }

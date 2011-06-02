@@ -5,6 +5,7 @@ using VisualGit.Scc.UI;
 using System.Collections;
 using SharpSvn;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.PathSelector
 {
@@ -63,7 +64,7 @@ namespace VisualGit.UI.PathSelector
         /// <param name="origin"></param>
         /// <param name="revision">The revision.</param>
         /// <returns></returns>
-        public VisualGitRevisionType Resolve(GitOrigin origin, SharpSvn.SvnRevision revision)
+        public VisualGitRevisionType Resolve(GitOrigin origin, GitRevision revision)
         {
             if (revision == null)
                 throw new ArgumentNullException("revision");
@@ -78,7 +79,7 @@ namespace VisualGit.UI.PathSelector
 
             switch (revision.RevisionType)
             {
-                case SvnRevisionType.Number:
+                case GitRevisionType.Hash:
                     ExplicitRevisionType ert = new ExplicitRevisionType(Context, origin);
                     ert.CurrentValue = revision;
                     return ert;
@@ -107,11 +108,11 @@ namespace VisualGit.UI.PathSelector
 
         sealed class StandardVersionResolverService : VisualGitService, IVisualGitRevisionProvider
         {
-            static readonly SimpleRevisionType _head = new SimpleRevisionType(SvnRevision.Head, VersionStrings.HeadVersion);
-            static readonly SimpleRevisionType _working = new SimpleRevisionType(SvnRevision.Working, VersionStrings.WorkingVersion);
-            static readonly SimpleRevisionType _base = new SimpleRevisionType(SvnRevision.Base, VersionStrings.BaseVersion);
-            static readonly SimpleRevisionType _committed = new SimpleRevisionType(SvnRevision.Committed, VersionStrings.CommittedVersion);
-            static readonly SimpleRevisionType _previous = new SimpleRevisionType(SvnRevision.Previous, VersionStrings.PreviousVersion);
+            static readonly SimpleRevisionType _head = new SimpleRevisionType(GitRevision.Head, VersionStrings.HeadVersion);
+            static readonly SimpleRevisionType _working = new SimpleRevisionType(GitRevision.Working, VersionStrings.WorkingVersion);
+            static readonly SimpleRevisionType _base = new SimpleRevisionType(GitRevision.Base, VersionStrings.BaseVersion);
+            static readonly SimpleRevisionType _committed = new SimpleRevisionType(GitRevision.Committed, VersionStrings.CommittedVersion);
+            static readonly SimpleRevisionType _previous = new SimpleRevisionType(GitRevision.Previous, VersionStrings.PreviousVersion);
 
             public StandardVersionResolverService(VersionResolverService context)
                 : base(context)
@@ -152,22 +153,22 @@ namespace VisualGit.UI.PathSelector
                 yield return new ExplicitRevisionType(this, origin);
             }
 
-            public VisualGitRevisionType Resolve(GitOrigin origin, SharpSvn.SvnRevision revision)
+            public VisualGitRevisionType Resolve(GitOrigin origin, GitRevision revision)
             {
                 if (revision == null)
                     throw new ArgumentNullException("revision");
 
                 switch (revision.RevisionType)
                 {
-                    case SvnRevisionType.Head:
+                    case GitRevisionType.Head:
                         return _head;
-                    case SvnRevisionType.Base:
+                    case GitRevisionType.Base:
                         return _base;
-                    case SvnRevisionType.Committed:
+                    case GitRevisionType.Committed:
                         return _committed;
-                    case SvnRevisionType.Previous:
+                    case GitRevisionType.Previous:
                         return _previous;
-                    case SvnRevisionType.Working:
+                    case GitRevisionType.Working:
                         return _working;
                 }
 
@@ -183,9 +184,9 @@ namespace VisualGit.UI.PathSelector
 
             sealed class SimpleRevisionType : VisualGitRevisionType
             {
-                readonly SvnRevision _rev;
+                readonly GitRevision _rev;
                 readonly string _title;
-                public SimpleRevisionType(SvnRevision rev, string title)
+                public SimpleRevisionType(GitRevision rev, string title)
                 {
                     if (rev == null)
                         throw new ArgumentNullException("rev");
@@ -200,7 +201,7 @@ namespace VisualGit.UI.PathSelector
                 /// Gets the current value.
                 /// </summary>
                 /// <value>The current value.</value>
-                public override SvnRevision CurrentValue
+                public override GitRevision CurrentValue
                 {
                     get { return _rev; }
                     set { throw new InvalidOperationException(); }
@@ -233,10 +234,10 @@ namespace VisualGit.UI.PathSelector
                 {
                     switch (_rev.RevisionType)
                     {
-                        case SvnRevisionType.Base:
-                        case SvnRevisionType.Committed:
-                        case SvnRevisionType.Previous:
-                        case SvnRevisionType.Working:
+                        case GitRevisionType.Base:
+                        case GitRevisionType.Committed:
+                        case GitRevisionType.Previous:
+                        case GitRevisionType.Working:
                             return origin.Target is SvnPathTarget;
                         default:
                             return base.IsValidOn(origin);
@@ -262,12 +263,12 @@ namespace VisualGit.UI.PathSelector
                 _date = DateTime.Today;
             }
 
-            public override SvnRevision CurrentValue
+            public override GitRevision CurrentValue
             {
-                get { return _date != DateTime.MinValue ? new SvnRevision(_date) : null; }
+                get { return _date != DateTime.MinValue ? new GitRevision(_date) : null; }
                 set
                 {
-                    if (value == null || value.RevisionType != SvnRevisionType.Time)
+                    if (value == null || value.RevisionType != GitRevisionType.Time)
                         _date = DateTime.MinValue;
                     else
                         _date = value.Time;
@@ -322,7 +323,7 @@ namespace VisualGit.UI.PathSelector
         {
             readonly GitOrigin _origin;
             readonly IVisualGitServiceProvider _context;
-            long _rev;
+            string _rev;
 
             public ExplicitRevisionType(IVisualGitServiceProvider context, GitOrigin origin)
             {
@@ -335,13 +336,13 @@ namespace VisualGit.UI.PathSelector
                 _origin = origin;
             }
 
-            public override SvnRevision CurrentValue
+            public override GitRevision CurrentValue
             {
-                get { return _rev >= 0 ? new SvnRevision(_rev) : null; }
+                get { return !String.IsNullOrEmpty(_rev) ? new GitRevision(_rev) : null; }
                 set
                 {
-                    if (value == null || value.RevisionType != SvnRevisionType.Number)
-                        _rev = -1;
+                    if (value == null || value.RevisionType != GitRevisionType.Hash)
+                        _rev = null;
                     else
                         _rev = value.Revision;
                 }
@@ -382,10 +383,10 @@ namespace VisualGit.UI.PathSelector
             {
                 if (_sel != null)
                 {
-                    long? value = _sel.Revision;
+                    string value = _sel.Revision;
 
-                    if (value.HasValue)
-                        _rev = value.Value;
+                    if (!String.IsNullOrEmpty(value))
+                        _rev = value;
                 }
             }
 

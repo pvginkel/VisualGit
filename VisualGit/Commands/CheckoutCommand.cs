@@ -47,11 +47,14 @@ namespace VisualGit.Commands
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         SvnCheckOutArgs args = new SvnCheckOutArgs();
+                        throw new NotImplementedException();
+#if false
                         args.Revision = dlg.Revision;
                         args.Depth = dlg.Recursive ? SvnDepth.Infinity : SvnDepth.Files;
                         args.IgnoreExternals = dlg.IgnoreExternals;
 
                         a.SvnClient.CheckOut(dlg.Uri, dlg.LocalPath, args);
+#endif
                     });
             }
         }

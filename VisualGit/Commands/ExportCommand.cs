@@ -2,6 +2,7 @@ using System.Windows.Forms;
 using SharpSvn;
 
 using VisualGit.UI.Commands;
+using System;
 
 namespace VisualGit.Commands
 {
@@ -33,10 +34,15 @@ namespace VisualGit.Commands
                     delegate(object sender, ProgressWorkerArgs wa)
                     {
                         SvnExportArgs args = new SvnExportArgs();
+
+                        throw new NotImplementedException();
+
+#if false
                         args.Depth = depth;
                         args.Revision = dlg.Revision;
 
                         wa.SvnClient.Export(dlg.ExportSource, dlg.LocalPath, args);
+#endif
                     });
             }
         }

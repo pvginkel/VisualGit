@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using System.Windows.Forms;
+using SharpGit;
 
 namespace VisualGit.Scc.UI
 {
@@ -20,7 +21,7 @@ namespace VisualGit.Scc.UI
         /// </summary>
         /// <param name="revision">The revision.</param>
         /// <returns></returns>
-        VisualGitRevisionType Resolve(GitOrigin origin, SvnRevision revision);
+        VisualGitRevisionType Resolve(GitOrigin origin, GitRevision revision);
 
         /// <summary>
         /// Resolves the specified origin.
@@ -46,7 +47,7 @@ namespace VisualGit.Scc.UI
         /// Gets the current value.
         /// </summary>
         /// <value>The current value.</value>
-        public abstract SvnRevision CurrentValue
+        public abstract GitRevision CurrentValue
         {
             get;
             set;

@@ -27,5 +27,7 @@ namespace SharpGit
         public static readonly GitErrorCode OperationCancelled = new GitErrorCode(GitErrorCategory.None, Properties.Resources.OperationCancelled);
         public static readonly GitErrorCode OutOfDate = new GitErrorCode(GitErrorCategory.None, Properties.Resources.OutOfDate);
         public static readonly GitErrorCode UnexpectedMultipleRepositories = new GitErrorCode(GitErrorCategory.None, Properties.Resources.UnexpectedMultipleRepositories);
+        public static readonly GitErrorCode RevisionNotFound = new GitErrorCode(GitErrorCategory.None, Properties.Resources.RevisionNotFound);
+        public static readonly GitErrorCode CouldNotFindPathInRevision = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CouldNotFindPathInRevision);
     }
 }

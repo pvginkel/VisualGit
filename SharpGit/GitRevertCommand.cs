@@ -145,7 +145,7 @@ namespace SharpGit
                         // to restore them later on.
 
                         TreeWalk tw = new TreeWalk(objectReader);
-
+                        
                         tw.AddTree(new CanonicalTreeParser(new byte[0], objectReader, commit.Tree.ToObjectId()));
                         tw.Recursive = true;
 

@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using VisualGit.Scc;
 using SharpSvn;
 using VisualGit.UI.RepositoryExplorer;
+using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
@@ -50,13 +51,13 @@ namespace VisualGit.UI.Commands
             get { return targetBox.SelectedItem as GitOrigin; }
         }
 
-        public SvnRevision StartRevision
+        public GitRevision StartRevision
         {
             get { return startRevision.Revision; }
             set { startRevision.Revision = value; }
         }
 
-        public SvnRevision EndRevision
+        public GitRevision EndRevision
         {
             get { return toRevision.Revision; }
             set { toRevision.Revision = value; }

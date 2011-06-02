@@ -48,7 +48,7 @@ namespace SharpGit
         //Switch = 38,
         //Unlock = 39,
         //Update = 40,
-        //Write = 41,
+        Write = 41,
         //CropWorkingCopy = 42,
         //GetWorkingCopyInfo = 4097,
         //GetWorkingCopyVersion = 4098,

@@ -104,6 +104,9 @@ namespace VisualGit.Commands
                 using (AnnotateDialog dlg = new AnnotateDialog())
                 {
                     dlg.SetTargets(targets);
+
+                    throw new NotImplementedException();
+#if false
                     dlg.StartRevision = startRev;
                     dlg.EndRevision = endRev;
 
@@ -116,6 +119,7 @@ namespace VisualGit.Commands
                     ignoreEols = dlg.IgnoreEols;
                     ignoreSpacing = dlg.IgnoreSpacing;
                     retrieveMergeInfo = dlg.RetrieveMergeInfo;
+#endif
                 }
             else
             {

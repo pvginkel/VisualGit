@@ -7,6 +7,7 @@ using VisualGit.Scc;
 using VisualGit.Selection;
 using VisualGit.UI.Commands;
 using VisualGit.VS;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -131,13 +132,13 @@ namespace VisualGit.Commands
             if (uri == null)
                 return; // Should never happen on a real workingcopy
 
-            SvnUriTarget target;
-            SvnRevision revision = SvnRevision.None;
+            GitUriTarget target;
+            GitRevision revision = GitRevision.None;
 
             if (e.Argument is string)
             {
-                target = SvnUriTarget.FromString((string)e.Argument, true);
-                revision = (target.Revision != SvnRevision.None) ? target.Revision : SvnRevision.Head;
+                target = GitUriTarget.FromString((string)e.Argument);
+                revision = (target.Revision != GitRevision.None) ? target.Revision : GitRevision.Head;
             }
             else if (e.Argument is Uri)
                 target = (Uri)e.Argument;
@@ -149,7 +150,7 @@ namespace VisualGit.Commands
                     dlg.LocalPath = path;
                     dlg.RepositoryRoot = e.GetService<IFileStatusCache>()[path].WorkingCopy.RepositoryRoot;
                     dlg.SwitchToUri = uri;
-                    dlg.Revision = SvnRevision.Head;
+                    dlg.Revision = GitRevision.Head;
 
                     if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                         return;
@@ -180,10 +181,14 @@ namespace VisualGit.Commands
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         SvnSwitchArgs args = new SvnSwitchArgs();
+
+                        throw new NotImplementedException();
+
+#if false
                         args.AllowObstructions = allowObstructions;
                         args.AddExpectedError(SvnErrorCode.SVN_ERR_WC_INVALID_SWITCH);
 
-                        if (revision != SvnRevision.None)
+                        if (revision != GitRevision.None)
                             args.Revision = revision;
 
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
@@ -214,6 +219,7 @@ namespace VisualGit.Commands
                                 }
                             }
                         }
+#endif
                     });
 
                 if (newRepositoryRoot != null && DialogResult.Yes == e.Context.GetService<IVisualGitDialogOwner>()
@@ -251,13 +257,16 @@ namespace VisualGit.Commands
                         {
                             SvnSwitchArgs args = new SvnSwitchArgs();
 
-                            if (revision != SvnRevision.None)
+                            throw new NotImplementedException();
+#if false
+                            if (revision != GitRevision.None)
                                 args.Revision = revision;
 
                             args.AllowObstructions = allowObstructions;
 
                             e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
                             a.SvnClient.Switch(path, target, args);
+#endif
                         });
                     }
                 }

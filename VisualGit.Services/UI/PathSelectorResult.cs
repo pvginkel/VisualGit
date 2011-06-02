@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.UI
 {
@@ -10,9 +11,9 @@ namespace VisualGit.UI
     {
         readonly bool _succeeded;
         readonly List<GitItem> _selection;
-        SvnDepth _depth = SvnDepth.Unknown;
-        SvnRevision _start;
-        SvnRevision _end;
+        GitDepth _depth = GitDepth.Unknown;
+        GitRevision _start;
+        GitRevision _end;
 
         public PathSelectorResult(bool succeeded, IEnumerable<GitItem> items)
         {
@@ -23,21 +24,21 @@ namespace VisualGit.UI
             _selection = new List<GitItem>(items);
         }
 
-        public SvnDepth Depth
+        public GitDepth Depth
         {
             [DebuggerStepThrough]
             get { return _depth; }
             set { _depth = value; }
         }
 
-        public SvnRevision RevisionStart
+        public GitRevision RevisionStart
         {
             [DebuggerStepThrough]
             get { return _start; }
             set { _start = value; }
         }
 
-        public SvnRevision RevisionEnd
+        public GitRevision RevisionEnd
         {
             [DebuggerStepThrough]
             get { return _end; }

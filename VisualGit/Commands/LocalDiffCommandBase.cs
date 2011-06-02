@@ -6,6 +6,7 @@ using VisualGit.Selection;
 using VisualGit.UI;
 using VisualGit.VS;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -82,8 +83,10 @@ namespace VisualGit.Commands
             if (foundModified)
                 info.CheckedFilter += delegate(GitItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
 
-            info.RevisionStart = revisions == null ? SvnRevision.Base : revisions.StartRevision;
-            info.RevisionEnd = revisions == null ? SvnRevision.Working : revisions.EndRevision;
+            throw new NotImplementedException();
+#if false
+            info.RevisionStart = revisions == null ? GitRevision.Base : revisions.StartRevision;
+            info.RevisionEnd = revisions == null ? GitRevision.Working : revisions.EndRevision;
 
             PathSelectorResult result;
             // should we show the path selector?
@@ -102,6 +105,7 @@ namespace VisualGit.Commands
             SaveAllDirtyDocuments(selection, context);
 
             return DoExternalDiff(context, result);
+#endif
         }
 
         private static string DoExternalDiff(IVisualGitServiceProvider context, PathSelectorResult info)
@@ -109,8 +113,8 @@ namespace VisualGit.Commands
             foreach (GitItem item in info.Selection)
             {
                 // skip unmodified for a diff against the textbase
-                if (info.RevisionStart == SvnRevision.Base &&
-                    info.RevisionEnd == SvnRevision.Working && !item.IsModified)
+                if (info.RevisionStart == GitRevision.Base &&
+                    info.RevisionEnd == GitRevision.Working && !item.IsModified)
                     continue;
 
                 string tempDir = context.GetService<IVisualGitTempDirManager>().GetTempDir();
@@ -127,15 +131,15 @@ namespace VisualGit.Commands
             return null;
         }
 
-        private static string GetPath(IVisualGitServiceProvider context, SvnRevision revision, GitItem item, string tempDir)
+        private static string GetPath(IVisualGitServiceProvider context, GitRevision revision, GitItem item, string tempDir)
         {
-            if (revision == SvnRevision.Working)
+            if (revision == GitRevision.Working)
             {
                 return item.FullPath;
             }
 
             string strRevision;
-            if (revision.RevisionType == SvnRevisionType.Time)
+            if (revision.RevisionType == GitRevisionType.Time)
                 strRevision = revision.Time.ToLocalTime().ToString("yyyyMMdd_hhmmss");
             else
                 strRevision = revision.ToString();
@@ -144,26 +148,25 @@ namespace VisualGit.Commands
             // we need to get it from the repos
             context.GetService<IProgressRunner>().RunModal("Retrieving file for diffing", delegate(object o, ProgressWorkerArgs ee)
             { 
-                SvnTarget target;
+                GitTarget target;
 
                 switch(revision.RevisionType)
                 {
-                    case SvnRevisionType.Head:
-                    case SvnRevisionType.Number:
-                    case SvnRevisionType.Time:
-                        target = new SvnUriTarget(item.Uri);
+                    case GitRevisionType.Head:
+                    case GitRevisionType.Hash:
+                    case GitRevisionType.Time:
+                        target = new GitUriTarget(item.Uri);
                         break;
                     default:
-                        target = new SvnPathTarget(item.FullPath);
+                        target = new GitPathTarget(item.FullPath);
                         break;
                 }
-                SvnWriteArgs args = new SvnWriteArgs();
+                GitWriteArgs args = new GitWriteArgs();
                 args.Revision = revision;
-                args.AddExpectedError(SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES);
                 
                 using (FileStream stream = File.Create(tempFile))
                 {
-                    ee.SvnClient.Write(target, stream, args);
+                    ee.Client.Write(target, stream, args);
                 }
             });
 

@@ -99,10 +99,20 @@
     <Compile Include="GitNotifyState.cs" />
     <Compile Include="GitNoRepositoryException.cs" />
     <Compile Include="GitOperationCancelledException.cs" />
+    <Compile Include="GitPathTarget.cs" />
     <Compile Include="GitRevertArgs.cs" />
     <Compile Include="GitRevertCommand.cs" />
+    <Compile Include="GitRevision.cs" />
+    <Compile Include="GitRevisionRange.cs" />
+    <Compile Include="GitRevisionType.cs" />
+    <Compile Include="GitTarget.cs" />
+    <Compile Include="GitTools.cs" />
     <Compile Include="GitUI.cs" />
     <Compile Include="GitUIBindArgs.cs" />
+    <Compile Include="GitUriTarget.cs" />
+    <Compile Include="GitWriteArgs.cs" />
+    <Compile Include="GitWriteCommand.cs" />
+    <Compile Include="IGitOrigin.cs" />
     <Compile Include="PathFilterNotRecurse.cs" />
     <Compile Include="RepositoryUtil.cs" />
     <Compile Include="GitSchedule.cs" />
@@ -122,6 +132,7 @@
     <Compile Include="RepositoryEntry.cs" />
     <Compile Include="RepositoryManager.cs" />
     <Compile Include="RepositoryExtensions.cs" />
+    <Compile Include="StreamExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Key.snk">

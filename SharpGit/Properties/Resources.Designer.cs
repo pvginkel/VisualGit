@@ -70,6 +70,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requested path could not be found in provided revision.
+        /// </summary>
+        internal static string CouldNotFindPathInRevision {
+            get {
+                return ResourceManager.GetString("CouldNotFindPathInRevision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to lock the repository.
         /// </summary>
         internal static string CouldNotLock {
@@ -102,6 +111,15 @@ namespace SharpGit.Properties {
         internal static string PathNoRepository {
             get {
                 return ResourceManager.GetString("PathNoRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find specified revision.
+        /// </summary>
+        internal static string RevisionNotFound {
+            get {
+                return ResourceManager.GetString("RevisionNotFound", resourceCulture);
             }
         }
         

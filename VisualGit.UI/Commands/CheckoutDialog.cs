@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using SharpSvn;
 using VisualGit.UI.RepositoryExplorer;
+using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
@@ -20,7 +21,7 @@ namespace VisualGit.UI.Commands
             InitializeComponent();
 
             this.ControlsChanged(this, EventArgs.Empty);
-            revisionPicker.Revision = SvnRevision.Head;
+            revisionPicker.Revision = GitRevision.Head;
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace VisualGit.UI.Commands
         /// The revision to check out.
         /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get { return this.revisionPicker.Revision; }
         }

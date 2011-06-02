@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SharpSvn;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
@@ -58,7 +59,7 @@ namespace VisualGit.UI.Commands
             }
         }
 
-        public SvnRevision Revision
+        public GitRevision Revision
         {
             get { return versionBox.Revision; }
             set { versionBox.Revision = value; }

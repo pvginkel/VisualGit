@@ -58,32 +58,28 @@ namespace VisualGit.UI.PathSelector
                 if (li == null)
                     return;
 
-                Revision = li.Revision;
+                throw new NotImplementedException("IGitLogItem revisions must become a string");
+
+                Revision = li.Revision.ToString();
             }
         }
 
         public event EventHandler Changed;
 
-        public long? Revision
+        public string Revision
         {
             get
             {
-                long rev;
                 string text = revisionBox.Text;
-                if (string.IsNullOrEmpty(text))
-                    return null;
 
-                if (long.TryParse(text.Trim(), out rev))
-                    return rev;
-                else
+                if (String.IsNullOrEmpty(text))
                     return null;
+                else
+                    return text.Trim();
             }
             set
             {
-                if (value.HasValue)
-                    revisionBox.Text = value.Value.ToString(CultureInfo.InvariantCulture);
-                else
-                    revisionBox.Text = "";
+                revisionBox.Text = value;
             }
         }
 

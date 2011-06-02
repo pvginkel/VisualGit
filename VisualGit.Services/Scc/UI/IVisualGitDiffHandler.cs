@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using SharpSvn;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.Scc.UI
 {
@@ -390,10 +391,10 @@ namespace VisualGit.Scc.UI
         /// <param name="revision">The revision.</param>
         /// <param name="withProgress">if set to <c>true</c> [with progress].</param>
         /// <returns></returns>
-        string GetTempFile(GitItem target, SvnRevision revision, bool withProgress);
+        string GetTempFile(GitItem target, GitRevision revision, bool withProgress);
         string[] GetTempFiles(SvnTarget target, SvnRevision first, SvnRevision last, bool withProgress);
         string GetTitle(SvnTarget target, SvnRevision revision);
-        string GetTitle(GitItem target, SvnRevision revision);
+        string GetTitle(GitItem target, GitRevision revision);
 
         /// <summary>
         /// Gets a list of diff tool templates.

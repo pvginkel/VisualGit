@@ -105,7 +105,7 @@ namespace VisualGit.Commands
                     selectedFiles.Add(item);
                 }
 
-            SvnRevisionRange revRange = null;
+            GitRevisionRange revRange = null;
             switch (e.Command)
             {
                 case VisualGitCommand.DiffLocalItem:
@@ -113,16 +113,16 @@ namespace VisualGit.Commands
                 case VisualGitCommand.ItemCompareBase:
                 case VisualGitCommand.ItemShowChanges:
                 case VisualGitCommand.DocumentShowChanges:
-                    revRange = new SvnRevisionRange(SvnRevision.Base, SvnRevision.Working);
+                    revRange = new GitRevisionRange(GitRevision.Base, GitRevision.Working);
                     break;
                 case VisualGitCommand.ItemCompareCommitted:
-                    revRange = new SvnRevisionRange(SvnRevision.Committed, SvnRevision.Working);
+                    revRange = new GitRevisionRange(GitRevision.Committed, GitRevision.Working);
                     break;
                 case VisualGitCommand.ItemCompareLatest:
-                    revRange = new SvnRevisionRange(SvnRevision.Head, SvnRevision.Working);
+                    revRange = new GitRevisionRange(GitRevision.Head, GitRevision.Working);
                     break;
                 case VisualGitCommand.ItemComparePrevious:
-                    revRange = new SvnRevisionRange(SvnRevision.Previous, SvnRevision.Working);
+                    revRange = new GitRevisionRange(GitRevision.Previous, GitRevision.Working);
                     break;
             }
 
@@ -130,16 +130,16 @@ namespace VisualGit.Commands
             {
                 PathSelectorInfo info = new PathSelectorInfo("Select item for Diff", selectedFiles);
                 info.SingleSelection = false;
-                info.RevisionStart = revRange == null ? SvnRevision.Base : revRange.StartRevision;
-                info.RevisionEnd = revRange == null ? SvnRevision.Working : revRange.EndRevision;
+                info.RevisionStart = revRange == null ? GitRevision.Base : revRange.StartRevision;
+                info.RevisionEnd = revRange == null ? GitRevision.Working : revRange.EndRevision;
                 if (selectionHasDeleted)
                 {
-                    // do not allow selecting deleted items if the revision combination includes SvnRevision.Working
-                    info.CheckableFilter += new PathSelectorInfo.SelectableFilter(delegate(GitItem item, SvnRevision from, SvnRevision to)
+                    // do not allow selecting deleted items if the revision combination includes GitRevision.Working
+                    info.CheckableFilter += new PathSelectorInfo.SelectableFilter(delegate(GitItem item, GitRevision from, GitRevision to)
                     {
                         if (item != null
-                            && (from == SvnRevision.Working
-                                || to == SvnRevision.Working
+                            && (from == GitRevision.Working
+                                || to == GitRevision.Working
                                 )
                             )
                         {
@@ -149,7 +149,7 @@ namespace VisualGit.Commands
                     });
                 }
                 info.EnableRecursive = false;
-                info.Depth = SvnDepth.Infinity;
+                info.Depth = GitDepth.Infinity;
 
                 PathSelectorResult result;
                 // should we show the path selector?
@@ -166,11 +166,11 @@ namespace VisualGit.Commands
 
                 selectedFiles.Clear();
                 selectedFiles.AddRange(result.Selection);
-                revRange = new SvnRevisionRange(result.RevisionStart, result.RevisionEnd);
+                revRange = new GitRevisionRange(result.RevisionStart, result.RevisionEnd);
             }
 
-            if (revRange.EndRevision.RevisionType == SvnRevisionType.Working ||
-                revRange.StartRevision.RevisionType == SvnRevisionType.Working)
+            if (revRange.EndRevision.RevisionType == GitRevisionType.Working ||
+                revRange.StartRevision.RevisionType == GitRevisionType.Working)
             {
                 // Save only the files needed
 
@@ -187,6 +187,8 @@ namespace VisualGit.Commands
                 if ((item.Status.IsCopied || item.IsReplaced) &&
                     (!revRange.StartRevision.RequiresWorkingCopy || !revRange.EndRevision.RequiresWorkingCopy))
                 {
+                    throw new NotImplementedException();
+#if false
                     // The file is copied, use its origins history instead of that of the new file
                     SvnUriTarget copiedFrom = diff.GetCopyOrigin(item);
 
@@ -205,11 +207,12 @@ namespace VisualGit.Commands
                             return; // Canceled
                         da.MineTitle = diff.GetTitle(copiedFrom, revRange.EndRevision);
                     }
+#endif
                 }
 
                 if (da.BaseFile == null)
                 {
-                    if (null == (da.BaseFile = (revRange.StartRevision == SvnRevision.Working) ? item.FullPath :
+                    if (null == (da.BaseFile = (revRange.StartRevision == GitRevision.Working) ? item.FullPath :
                         diff.GetTempFile(item, revRange.StartRevision, true)))
                     {
                         return; // Canceled
@@ -220,7 +223,7 @@ namespace VisualGit.Commands
 
                 if (da.MineFile == null)
                 {
-                    if (null == (da.MineFile = (revRange.EndRevision == SvnRevision.Working) ? item.FullPath :
+                    if (null == (da.MineFile = (revRange.EndRevision == GitRevision.Working) ? item.FullPath :
                         diff.GetTempFile(item, revRange.EndRevision, true)))
                     {
                         return; // Canceled

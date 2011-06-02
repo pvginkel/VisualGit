@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace SharpGit
 {
@@ -78,6 +79,18 @@ namespace SharpGit
                 throw new ArgumentNullException("args");
 
             return ExecuteCommand<GitCommitCommand, GitCommitResult>(args, p => p.Execute(paths), out result);
+        }
+
+        public bool Write(GitTarget path, Stream stream, GitWriteArgs args)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitWriteCommand>(args, p => p.Execute(path, stream));
         }
 
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
