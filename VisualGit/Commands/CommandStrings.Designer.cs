@@ -331,7 +331,7 @@ namespace VisualGit.Commands {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Would you like to add {0} to the svn:ignore property on &apos;{1}&apos;?.
+        ///   Looks up a localized string similar to Would you like to add {0} to .gitignore on &apos;{1}&apos;?.
         /// </summary>
         internal static string WouldYouLikeToAddXToTheIgnorePropertyOnY {
             get {

@@ -4,6 +4,9 @@ using System.Text;
 using VisualGit.UI;
 using SharpSvn;
 using VisualGit.Scc;
+using System.IO;
+using SharpGit;
+using System.Collections;
 
 namespace VisualGit.Commands
 {
@@ -175,47 +178,47 @@ namespace VisualGit.Commands
                 context.GetService<IProgressRunner>().RunModal(CommandStrings.IgnoreCaption,
                     delegate(object sender, ProgressWorkerArgs e)
                     {
-                        SvnGetPropertyArgs pa = new SvnGetPropertyArgs();
-                        pa.ThrowOnError = false;
-                        SvnTargetPropertyCollection tpc;
-                        if (e.SvnClient.GetProperty(path, SvnPropertyNames.SvnIgnore, pa, out tpc))
+                        string ignoreFilename = Path.Combine(path, GitConstants.IgnoreFilename);
+
+                        if (File.Exists(ignoreFilename))
                         {
-                            SvnPropertyValue pv;
-                            if (tpc.Count > 0 && null != (pv = tpc[0]) && pv.StringValue != null)
+                            int n = 0;
+                            foreach (string oldItem in File.ReadAllText(ignoreFilename).Split('\n'))
                             {
-                                int n = 0;
-                                foreach (string oldItem in pv.StringValue.Split('\n'))
-                                {
-                                    string item = oldItem.TrimEnd('\r');
+                                string item = oldItem.TrimEnd('\r');
 
-                                    if (item.Trim().Length == 0)
-                                        continue;
+                                if (item.Trim().Length == 0)
+                                    continue;
 
-                                    // Don't add duplicates
-                                    while (n < ignores.Count && ignores.IndexOf(item, n) >= 0)
-                                        ignores.RemoveAt(ignores.IndexOf(item, n));
+                                // Don't add duplicates
+                                while (n < ignores.Count && ignores.IndexOf(item, n) >= 0)
+                                    ignores.RemoveAt(ignores.IndexOf(item, n));
 
-                                    if (ignores.Contains(item))
-                                        continue;
+                                if (ignores.Contains(item))
+                                    continue;
 
-                                    ignores.Insert(n++, item);
-                                }
+                                ignores.Insert(n++, item);
                             }
-
-                            StringBuilder sb = new StringBuilder();
-                            bool next = false;
-                            foreach (string item in ignores)
-                            {
-                                if (next)
-                                    sb.Append('\n'); // Git wants only newlines
-                                else
-                                    next = true;
-
-                                sb.Append(item);
-                            }
-
-                            e.SvnClient.SetProperty(path, SvnPropertyNames.SvnIgnore, sb.ToString());
                         }
+
+                        StringBuilder sb = new StringBuilder();
+                        bool next = false;
+                        foreach (string item in ignores)
+                        {
+                            if (next)
+                                sb.Append('\n'); // Git wants only newlines
+                            else
+                                next = true;
+
+                            sb.Append(item);
+                        }
+
+                        File.WriteAllText(ignoreFilename, sb.ToString());
+
+                        // .gitignore files need to be in the project, otherwise
+                        // they won't be committed.
+
+                        EnsureProjectItemPresent(context, ignoreFilename);
                     });
 
                 // Make sure a changed directory is visible in the PC Window
@@ -244,6 +247,29 @@ namespace VisualGit.Commands
 
             if (!toAdd.Contains(name))
                 toAdd.Add(name);
+        }
+
+        private static void EnsureProjectItemPresent(IVisualGitServiceProvider context, string ignoreFilename)
+        {
+            var dte = context.GetService<IVisualGitServiceProvider>().GetService<EnvDTE.DTE>();
+
+            foreach (EnvDTE.Project project in (IEnumerable)dte.ActiveSolutionProjects)
+            {
+                // FullName is the name of the project file; need to get the
+                // containing directory.
+
+                string projectPath = Path.GetDirectoryName(project.FullName);
+
+                if (!projectPath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                    projectPath += Path.DirectorySeparatorChar;
+
+                // We add the ignore file to all projects that have the ignore
+                // file located under its root. If the file is already part
+                // of the project, this is a no-op.
+
+                if (ignoreFilename.StartsWith(projectPath, StringComparison.OrdinalIgnoreCase))
+                    project.ProjectItems.AddFromFile(ignoreFilename);
+            }
         }
     }
 }

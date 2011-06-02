@@ -81,6 +81,7 @@
     <Compile Include="GitCommittingEventArgs.cs" />
     <Compile Include="GitCommitTypes.cs" />
     <Compile Include="GitConflictData.cs" />
+    <Compile Include="GitConstants.cs" />
     <Compile Include="GitCouldNotLockException.cs" />
     <Compile Include="GitDeleteArgs.cs" />
     <Compile Include="GitDeleteCommand.cs" />
