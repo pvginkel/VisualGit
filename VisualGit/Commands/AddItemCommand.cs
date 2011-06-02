@@ -4,6 +4,7 @@ using VisualGit.UI.PathSelector;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -77,13 +78,13 @@ namespace VisualGit.Commands
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.AddTaskDialogTitle,
                     delegate(object sender, ProgressWorkerArgs ee)
                     {
-                        SvnAddArgs args = new SvnAddArgs();
-                        args.Depth = SvnDepth.Empty;
+                        GitAddArgs args = new GitAddArgs();
+                        args.Depth = GitDepth.Empty;
                         args.AddParents = true;
 
                         foreach (GitItem item in selection)
                         {
-                            ee.SvnClient.Add(item.FullPath, args);
+                            ee.Client.Add(item.FullPath, args);
                         }
                     });
         }

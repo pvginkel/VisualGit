@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystemUtil.cs" />
+    <Compile Include="GitAddArgs.cs" />
+    <Compile Include="GitAddCommand.cs" />
     <Compile Include="GitChangeItem.cs" />
     <Compile Include="GitChangeListCollection.cs" />
     <Compile Include="GitCommand.cs" />

@@ -67,11 +67,7 @@ namespace SharpGit
 
                     var entryIndex = dirCache.FindEntry(path);
 
-                    if (entryIndex < 0)
-                    {
-                        File.Delete(fullPath);
-                    }
-                    else
+                    if (entryIndex >= 0)
                     {
                         // When it is in the disk cache, we need to overwrite
                         // the current contents with that of the disk cache.

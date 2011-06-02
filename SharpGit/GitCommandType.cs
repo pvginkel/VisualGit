@@ -8,7 +8,7 @@ namespace SharpGit
     public enum GitCommandType
     {
         //Unknown = 0,
-        //Add = 1,
+        Add = 1,
         //AddToChangeList = 2,
         //Blame = 3,
         //CheckOut = 4,

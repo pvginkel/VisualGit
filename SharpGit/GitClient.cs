@@ -91,7 +91,37 @@ namespace SharpGit
             }
         }
         
-        public bool Revert(IEnumerable<string> path, GitRevertArgs args)
+        public bool Revert(IEnumerable<string> paths, GitRevertArgs args)
+        {
+            if (paths == null)
+                throw new ArgumentNullException("paths");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            try
+            {
+                IsCommandRunning = true;
+
+                new GitRevertCommand(this, args).Execute(paths);
+
+                return true;
+            }
+            catch (GitException ex)
+            {
+                args.SetError(ex);
+
+                if (args.ShouldThrow(ex.ErrorCode))
+                    throw;
+
+                return false;
+            }
+            finally
+            {
+                IsCommandRunning = false;
+            }
+        }
+
+        public bool Add(string path, GitAddArgs args)
         {
             if (path == null)
                 throw new ArgumentNullException("path");
@@ -102,7 +132,7 @@ namespace SharpGit
             {
                 IsCommandRunning = true;
 
-                new GitRevertCommand(this, args).Execute(path);
+                new GitAddCommand(this, args).Execute(path);
 
                 return true;
             }
