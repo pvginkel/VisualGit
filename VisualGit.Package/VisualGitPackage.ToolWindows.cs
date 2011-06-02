@@ -32,7 +32,7 @@ namespace VisualGit.VSPackage
     [ProvideToolWindow(typeof(RepositoryExplorerToolWindow), Style = VsDockStyle.MDI, Transient = true)]
     [ProvideToolWindow(typeof(PendingChangesToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = false, Window = ToolWindowGuids80.Outputwindow)]
     [ProvideToolWindow(typeof(LogToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = true)]
-    [ProvideToolWindow(typeof(DiffToolWindow), Style = VsDockStyle.Float, Transient = true)]
+    [ProvideToolWindow(typeof(DiffToolWindow), Style = VsDockStyle.MDI, Transient = true)]
     [ProvideToolWindow(typeof(GitInfoToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Right, Transient = false, Window = ToolWindowGuids80.PropertiesWindow)]
     [ProvideToolWindowVisibility(typeof(PendingChangesToolWindow), VisualGitId.SccProviderId)]
     [ProvideToolWindowVisibility(typeof(GitInfoToolWindow), VisualGitId.SccProviderId)]
