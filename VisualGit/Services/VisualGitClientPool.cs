@@ -1,14 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-
-using SharpSvn;
-using SharpSvn.Remote;
-using SharpSvn.UI;
-
+using SharpGit;
 using VisualGit.Scc;
 using VisualGit.UI;
 using VisualGit.VS;
@@ -20,7 +16,6 @@ namespace VisualGit.Services
     {
         readonly Stack<GitPoolClient> _clients = new Stack<GitPoolClient>();
         readonly Stack<GitPoolClient> _uiClients = new Stack<GitPoolClient>();
-        readonly List<GitPoolRemoteSession> _remoteSessions = new List<GitPoolRemoteSession>();
         readonly Control _syncher;
         const int MaxPoolSize = 10;
         int _returnCookie;
@@ -59,8 +54,8 @@ namespace VisualGit.Services
                 return;
             _ensuredNames = true;
 
-            SvnClient.AddClientName("VisualStudio", GetService<IVisualGitSolutionSettings>().VisualStudioVersion);
-            SvnClient.AddClientName("VisualGit", GetService<IVisualGitPackage>().UIVersion);
+            GitClient.AddClientName("VisualStudio", GetService<IVisualGitSolutionSettings>().VisualStudioVersion);
+            GitClient.AddClientName("VisualGit", GetService<IVisualGitPackage>().UIVersion);
         }
 
         public GitPoolClient GetClient()
@@ -85,11 +80,6 @@ namespace VisualGit.Services
             }
         }
 
-        public SvnWorkingCopyClient GetWcClient()
-        {
-            return new SvnWorkingCopyClient();
-        }
-
         private GitPoolClient CreateClient(bool hookUI)
         {
             EnsureNames();
@@ -105,28 +95,17 @@ namespace VisualGit.Services
             return client;
         }
 
-        // Use separate function to delay loading the SharpSvn.UI.dll
+        // Use separate function to delay loading the SharpGit.UI.dll
         private void HookUI(VisualGitPoolClient client)
         {
-            // Let SharpSvnUI handle login and SSL dialogs
-            SvnUIBindArgs bindArgs = new SvnUIBindArgs();
+            // Let SharpGitUI handle login and SSL dialogs
+            GitUIBindArgs bindArgs = new GitUIBindArgs();
             bindArgs.ParentWindow = new OwnerWrapper(DialogOwner);
             bindArgs.UIService = GetService<IUIService>();
             bindArgs.Synchronizer = _syncher;
 
-            SvnUI.Bind(client, bindArgs);
+            GitUI.Bind(client, bindArgs);
         }
-
-		private void HookUI(VisualGitPoolRemoteSession client)
-		{
-			// Let SharpSvnUI handle login and SSL dialogs
-			SvnUIBindArgs bindArgs = new SvnUIBindArgs();
-			bindArgs.ParentWindow = new OwnerWrapper(DialogOwner);
-			bindArgs.UIService = GetService<IUIService>();
-			bindArgs.Synchronizer = _syncher;
-
-			SvnUI.Bind(client, bindArgs);
-		}
 
         internal void NotifyChanges(IDictionary<string, GitClientAction> actions)
         {
@@ -174,190 +153,11 @@ namespace VisualGit.Services
                     toDispose.Add(_clients.Pop());
             }
 
-            lock (_remoteSessions)
-            {
-                foreach (GitPoolRemoteSession rs in _remoteSessions)
-                    toDispose.Add(rs);
-                _remoteSessions.Clear();
-            }
-
             foreach (IDisposable d in toDispose)
             {
                 d.Dispose();
             }
         }
-
-        #region IGitClientPool Members
-
-
-        public GitPoolRemoteSession GetRemoteSession(Uri sessionUri, bool parentOk)
-        {
-            if (sessionUri == null)
-                throw new ArgumentNullException("sessionUri");
-
-            GitPoolRemoteSession reuse = null;
-            lock (_remoteSessions)
-            {
-                if (_remoteSessions.Count > 0)
-                {
-                    foreach (GitPoolRemoteSession rs in _remoteSessions)
-                    {
-                        if (rs.SessionUri == sessionUri)
-                        {
-                            reuse = rs;
-                            _remoteSessions.Remove(rs);
-                            break;
-                        }
-                    }
-
-                    if (reuse == null)
-                    {
-                        string schemeAndServer = sessionUri.GetComponents(UriComponents.SchemeAndServer, UriFormat.UriEscaped);
-                        foreach (GitPoolRemoteSession rs in _remoteSessions)
-                        {
-                            Uri reposUri = rs.RepositoryRootUri ?? rs.SessionUri;
-
-                            if (reposUri == null || reposUri.GetComponents(UriComponents.SchemeAndServer, UriFormat.UriEscaped) != schemeAndServer)
-                                continue;
-
-                            if (sessionUri.AbsolutePath.StartsWith(reposUri.AbsolutePath, StringComparison.Ordinal))
-                            {
-                                reuse = rs;
-                            }
-                        }
-                    }
-
-                    if (reuse != null)
-                        _remoteSessions.Remove(reuse);
-                }
-            }
-
-            if (reuse != null)
-            {
-                if (sessionUri != reuse.SessionUri)
-                {
-                    if (!parentOk || !sessionUri.AbsolutePath.StartsWith(reuse.SessionUri.AbsolutePath))
-                    {
-                        SvnRemoteCommonArgs rca = new SvnRemoteCommonArgs();
-                        rca.ThrowOnError = false;
-
-                        if (!reuse.Reparent(sessionUri, rca))
-                            reuse = null;
-                    }
-                }
-
-                if (reuse != null)
-                    return reuse;
-
-                // else -> GC will cleanup
-            }
-
-            VisualGitPoolRemoteSession session = new VisualGitPoolRemoteSession(this, true, _returnCookie);
-            HookUI(session);
-            session.Open(sessionUri);
-            return session;
-        }
-
-        public bool ReturnClient(GitPoolRemoteSession session)
-        {
-            VisualGitPoolRemoteSession pc = session as VisualGitPoolRemoteSession;
-
-            if (pc != null && pc.ReturnCookie == _returnCookie && pc.SessionUri != null)
-            {
-                pc.ReturnTime = DateTime.Now;
-
-                lock (_remoteSessions)
-                {
-                    _remoteSessions.Insert(0, pc);
-
-                    ScheduleDisposeSessions();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        IVisualGitScheduler _scheduler;
-        IVisualGitScheduler Scheduler
-        {
-            get { return _scheduler ?? (_scheduler = GetService<IVisualGitScheduler>()); }
-        }
-
-
-        DateTime? nextCleanup;
-        private void ScheduleDisposeSessions()
-        {
-            if (nextCleanup.HasValue)
-            {
-                TimeSpan ts = nextCleanup.Value - DateTime.Now;
-
-                if (ts.Minutes < 5 && ts.Minutes > -1)
-                    return;
-            }
-
-            DateTime nextTime = DateTime.Now + new TimeSpan(0, 2, 0);
-            nextCleanup = nextTime;
-
-            Scheduler.ScheduleAt(nextTime, OnCleanup);
-        }
-
-        void OnCleanup()
-        {
-            List<GitPoolRemoteSession> toDispose = null;
-            bool left = false;
-            lock (_remoteSessions)
-            {
-                DateTime now = DateTime.Now;
-
-                foreach (VisualGitPoolRemoteSession rs in _remoteSessions)
-                {
-                    bool dispose = false;
-                    switch (rs.SessionUri.Scheme)
-                    {
-                        case "svn":
-                            dispose = (now - rs.ReturnTime) > new TimeSpan(0, 3, 0);
-                            break;
-                        case "https":
-                        case "http":
-                            dispose = (now - rs.ReturnTime) > new TimeSpan(0, 8, 0);
-                            break;
-                        default:
-                            dispose = (now - rs.ReturnTime) > new TimeSpan(0, 1, 0);
-                            break;
-                    }
-
-                    if (!dispose)
-                        left = true;
-                    else
-                    {
-                        if (toDispose == null)
-                            toDispose = new List<GitPoolRemoteSession>();
-
-                        toDispose.Add(rs);
-                    }
-                }
-
-                if (toDispose != null)
-                    foreach (GitPoolRemoteSession rs in toDispose)
-                        _remoteSessions.Remove(rs);
-
-                if (left)
-                    ScheduleDisposeSessions();
-            }
-
-            if (toDispose != null)
-                foreach (VisualGitPoolRemoteSession rs in toDispose)
-                {
-                    try
-                    {
-                        rs.DisposeSession();
-                    }
-                    catch
-                    { }
-                }
-        }
-
-        #endregion
 
         sealed class VisualGitPoolClient : GitPoolClient
         {
@@ -376,7 +176,7 @@ namespace VisualGit.Services
                 get { return _uiEnabled; }
             }
 
-            protected override void OnNotify(SvnNotifyEventArgs e)
+            protected override void OnNotify(GitNotifyEventArgs e)
             {
                 base.OnNotify(e);
 
@@ -391,33 +191,33 @@ namespace VisualGit.Services
 
                 switch (e.Action)
                 {
-                    case SvnNotifyAction.CommitDeleted:
-                    case SvnNotifyAction.Revert:
-                    case SvnNotifyAction.TreeConflict:
+                    case GitNotifyAction.CommitDeleted:
+                    case GitNotifyAction.Revert:
+                    case GitNotifyAction.TreeConflict:
                         action.Recursive = true;
                         break;
-                    case SvnNotifyAction.UpdateDelete:
+                    case GitNotifyAction.UpdateDelete:
                         action.Recursive = true;
                         action.AddOrRemove = true;
                         break;
-                    case SvnNotifyAction.UpdateReplace:
-                    case SvnNotifyAction.UpdateAdd:
+                    case GitNotifyAction.UpdateReplace:
+                    case GitNotifyAction.UpdateAdd:
                         action.AddOrRemove = true;
                         break;
-                    case SvnNotifyAction.UpdateUpdate:
-                        action.OldRevision = e.OldRevision;
+                    case GitNotifyAction.UpdateUpdate:
+                        // action.OldRevision = e.OldRevision;
                         break;
                 }
             }
 
-            protected override void OnCommitting(SvnCommittingEventArgs e)
+            protected override void OnCommitting(GitCommittingEventArgs e)
             {
                 base.OnCommitting(e);
 
-                if (e.CurrentCommandType != SvnCommandType.Commit)
+                if (e.CurrentCommandType != GitCommandType.Commit)
                     return;
 
-                foreach (SvnCommitItem item in e.Items)
+                foreach (GitCommitItem item in e.Items)
                 {
                     string fp = item.FullPath;
 
@@ -468,67 +268,6 @@ namespace VisualGit.Services
             public int ReturnCookie
             {
                 get { return _returnCookie; }
-            }
-        }
-
-        sealed class VisualGitPoolRemoteSession : GitPoolRemoteSession
-        {
-            readonly bool _uiEnabled;
-            readonly int _returnCookie;
-            DateTime _returnTime;
-            public VisualGitPoolRemoteSession(VisualGitClientPool pool, bool uiEnabled, int returnCookie)
-                : base(pool)
-            {
-                _uiEnabled = uiEnabled;
-                _returnCookie = returnCookie;
-            }
-
-            public bool UIEnabled
-            {
-                get { return _uiEnabled; }
-            }
-
-            protected override void ReturnClient()
-            {
-                VisualGitClientPool pool = (VisualGitClientPool)GitClientPool;
-                GitClientPool = null;
-
-                if (pool == null)
-                {
-                    Debug.Assert(false, "Returning pool client a second time");
-                    return;
-                }
-
-                if (base.IsCommandRunning || base.IsDisposed)
-                {
-                    Debug.Assert(!IsCommandRunning, "Returning pool client while it is running");
-                    Debug.Assert(!IsDisposed, "Returning pool client while it is disposed");
-
-                    return; // No return on these errors.. Leave it to the GC to clean it up eventually
-                }
-                else if (!pool.ReturnClient(this))
-                    InnerDispose(); // The pool wants to get rid of us
-                else
-                    GitClientPool = pool; // Reinstated
-            }
-
-            public int ReturnCookie
-            {
-                get { return _returnCookie; }
-            }
-
-            public DateTime ReturnTime
-            {
-                get { return _returnTime.ToLocalTime(); }
-                set { _returnTime = value.ToUniversalTime(); }
-            }
-
-            /// <summary>
-            /// Really dispose the session (.Dispose() returns to the pool)
-            /// </summary>
-            internal void DisposeSession()
-            {
-                InnerDispose();
             }
         }
     }

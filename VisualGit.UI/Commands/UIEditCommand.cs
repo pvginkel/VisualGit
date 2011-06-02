@@ -16,7 +16,7 @@ namespace VisualGit.UI.Commands
 
         public void OnExecute(CommandEventArgs e)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

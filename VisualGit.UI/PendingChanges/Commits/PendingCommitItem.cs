@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using VisualGit.Scc;
 using VisualGit.VS;
 using VisualGit.UI.VSSelectionControls;
+using SharpGit;
 
 namespace VisualGit.UI.PendingChanges.Commits
 {
@@ -64,7 +65,7 @@ namespace VisualGit.UI.PendingChanges.Commits
                     clr = System.Drawing.Color.Red;
                 else if (item.IsDeleteScheduled)
                     clr = System.Drawing.Color.DarkRed;
-                else if (item.Status.IsCopied || item.Status.State == SharpSvn.SvnStatus.Added)
+                else if (item.Status.IsCopied || item.Status.State == GitStatus.Added)
                     clr = System.Drawing.Color.FromArgb(100, 0, 100);
                 else if (!item.IsVersioned)
                 {

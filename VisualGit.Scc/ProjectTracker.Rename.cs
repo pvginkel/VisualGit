@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 using System.IO;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -209,7 +210,7 @@ namespace VisualGit.Scc
 
                 GitItem item = StatusCache[oldDir];
 
-                if (!item.IsVersioned && item.Status.State != SvnStatus.Missing)
+                if (!item.IsVersioned && item.Status.State != GitStatus.Missing)
                     continue; // Item was not cached as versioned or now-missing (Missing implicits Versioned)
 
                 StatusCache.MarkDirty(oldDir);
@@ -217,14 +218,14 @@ namespace VisualGit.Scc
 
                 item = StatusCache[oldDir];
 
-                if (item.Status.State != SvnStatus.Missing)
+                if (item.Status.State != GitStatus.Missing)
                     continue;
 
                 GitItem newItem = StatusCache[newDir];
 
                 using (GitSccContext git = new GitSccContext(Context))
                 {
-                    SvnWorkingCopyEntryEventArgs wa = git.SafeGetEntry(newDir);
+                    GitStatusEventArgs wa = git.SafeGetEntry(newDir);
                     string newParent = SvnTools.GetNormalizedDirectoryName(newDir);
 
                     if (wa != null)

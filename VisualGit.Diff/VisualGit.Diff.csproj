@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -195,6 +195,10 @@
     <None Include="DiffUtils\Docs\MyersDiff.pdf" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpGit\SharpGit.csproj">
+      <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
+      <Name>SharpGit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
       <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>

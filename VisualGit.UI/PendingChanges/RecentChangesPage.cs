@@ -7,6 +7,7 @@ using VisualGit.UI.PendingChanges.Synchronize;
 using VisualGit.UI.RepositoryExplorer;
 using VisualGit.Commands;
 using VisualGit.Configuration;
+using SharpGit;
 
 namespace VisualGit.UI.PendingChanges
 {
@@ -170,7 +171,7 @@ namespace VisualGit.UI.PendingChanges
                 else
                 {
                     ShowBusyIndicator();
-                    using (SvnClient client = Context.GetService<IGitClientPool>().GetClient())
+                    using (SvnClient client = Context.GetService<ISvnClientPool>().GetClient())
                     {
                         SvnStatusArgs sa = new SvnStatusArgs();
                         sa.RetrieveRemoteStatus = true;
@@ -187,7 +188,10 @@ namespace VisualGit.UI.PendingChanges
             {
                 if (refreshFromList)
                 {
+                    throw new NotImplementedException();
+#if SUBVERSION
                     OnRecentChangesFetched(resultList);
+#endif
                 }
                 if (!showProgressDialog)
                 {
@@ -202,6 +206,8 @@ namespace VisualGit.UI.PendingChanges
             List<SvnStatusEventArgs> resultList,
             Dictionary<string, string> found)
         {
+            throw new NotImplementedException();
+#if SUBVERSION
             foreach (string path in roots)
             {
                 // TODO: Find some way to get this information safely in the status cache
@@ -219,6 +225,7 @@ namespace VisualGit.UI.PendingChanges
                         found.Add(stat.FullPath, "");
                     });
             }
+#endif
         }
 
         void ShowBusyIndicator()
@@ -246,30 +253,28 @@ namespace VisualGit.UI.PendingChanges
                 _busyOverlay.Hide();
         }
 
-        static bool IgnoreStatus(SvnStatusEventArgs stat)
+        static bool IgnoreStatus(GitStatusEventArgs stat)
         {
             switch (stat.LocalContentStatus)
             {
-                case SvnStatus.NotVersioned:
-                case SvnStatus.Ignored:
-                case SvnStatus.External: // External root will be handled inside
-                    return (stat.RemoteContentStatus == SvnStatus.None);
-                case SvnStatus.None:
+                case GitStatus.NotVersioned:
+                case GitStatus.Ignored:
+                case GitStatus.None:
                     // Hide remote locked files
-                    return (stat.RemoteContentStatus == SvnStatus.None);
+                    return true;
                 default:
                     return false;
             }
         }
 
-        private void RefreshFromList(List<SvnStatusEventArgs> resultList)
+        private void RefreshFromList(List<GitStatusEventArgs> resultList)
         {
             syncView.Items.Clear();
             if (resultList != null && resultList.Count > 0)
             {
                 IFileStatusCache fs = Context.GetService<IFileStatusCache>();
                 List<SynchronizeListItem> items = new List<SynchronizeListItem>(resultList.Count);
-                foreach (SvnStatusEventArgs s in resultList)
+                foreach (GitStatusEventArgs s in resultList)
                 {
                     GitItem item = fs[s.FullPath];
 
@@ -330,11 +335,11 @@ namespace VisualGit.UI.PendingChanges
             _recentChangesAction.BeginInvoke(null, null);
         }
 
-        void OnRecentChangesFetched(List<SvnStatusEventArgs> resultList)
+        void OnRecentChangesFetched(List<GitStatusEventArgs> resultList)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<List<SvnStatusEventArgs>>(OnRecentChangesFetched), resultList);
+                BeginInvoke(new Action<List<GitStatusEventArgs>>(OnRecentChangesFetched), resultList);
                 return;
             }
 

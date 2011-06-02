@@ -247,7 +247,7 @@ namespace VisualGit.Scc
 
             if (maybeAdd != null)
             {
-                using (SvnClient cl = GetService<IGitClientPool>().GetNoUIClient())
+                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
                 {
                     foreach (string file in maybeAdd)
                     {
@@ -455,7 +455,7 @@ namespace VisualGit.Scc
                         switch (dr)
                         {
                             case DialogResult.Yes:
-                                using (SvnClient c = Context.GetService<IGitClientPool>().GetNoUIClient())
+                                using (SvnClient c = Context.GetService<ISvnClientPool>().GetNoUIClient())
                                 {
                                     SvnResolveArgs ra = new SvnResolveArgs();
                                     ra.ThrowOnError = false;

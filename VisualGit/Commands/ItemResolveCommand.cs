@@ -69,7 +69,7 @@ namespace VisualGit.Commands
                     Resolved(e);
                     break;
                 case VisualGitCommand.ItemResolveMergeTool:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 case VisualGitCommand.ItemResolveMineFull:
                     Resolve(e, SvnAccept.MineFull);
                     break;
@@ -89,7 +89,7 @@ namespace VisualGit.Commands
                     Resolve(e, SvnAccept.Theirs);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
             }
         }
 
@@ -112,7 +112,7 @@ namespace VisualGit.Commands
 
             using (DocumentLock lck = documentTracker.LockDocuments(paths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
-            using (SvnClient client = e.GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnResolveArgs a = new SvnResolveArgs();
                 a.Depth = SvnDepth.Empty;
@@ -126,7 +126,7 @@ namespace VisualGit.Commands
 
         static void Resolved(CommandEventArgs e)
         {
-            using (SvnClient client = e.GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
                 {

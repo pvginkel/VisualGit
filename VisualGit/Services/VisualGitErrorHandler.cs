@@ -238,7 +238,7 @@ namespace VisualGit.Services
                             subject += " (" + ErrorToString(sx) + "-" + ErrorToString(rc) + ")";
                     }
                     
-                    throw new NotImplementedException("Error e-mails should not be send to ankhsvn.net");
+                    throw new NotSupportedException("Error e-mails should not be send to ankhsvn.net");
                     /*
                     VisualGitErrorMessage.SendByMail(_errorReportMailAddress,
                         subject, ex, typeof(VisualGitErrorHandler).Assembly, additionalInfo);

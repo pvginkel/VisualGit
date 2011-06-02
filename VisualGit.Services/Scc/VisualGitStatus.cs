@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit
 {
@@ -16,10 +17,10 @@ namespace VisualGit
     [DebuggerDisplay("Content={State}, Uri={Uri}")]
     public sealed class VisualGitStatus
     {
-        readonly SvnConflictData _treeConflict;
-        readonly SvnNodeKind _nodeKind;        
+        readonly GitConflictData _treeConflict;
+        readonly GitNodeKind _nodeKind;        
         readonly string _changeList;
-        readonly SvnStatus _state;
+        readonly GitStatus _state;
         readonly bool _localCopied;
         readonly Uri _uri;
 
@@ -28,7 +29,7 @@ namespace VisualGit
         readonly long _lastChangeRevision;
         readonly long _revision;
 
-        public VisualGitStatus(SvnStatusEventArgs args)
+        public VisualGitStatus(GitStatusEventArgs args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
@@ -56,7 +57,7 @@ namespace VisualGit
         /// Create non-locked, non-copied item with status specified
         /// </summary>
         /// <param name="allStatuses"></param>
-        private VisualGitStatus(SvnStatus allStatuses)
+        private VisualGitStatus(GitStatus allStatuses)
         {
             _state = allStatuses;
             //_localLocked = false;
@@ -64,8 +65,8 @@ namespace VisualGit
         }
 
         #region Static instances
-        readonly static VisualGitStatus _unversioned = new VisualGitStatus(SvnStatus.NotVersioned);
-        readonly static VisualGitStatus _none = new VisualGitStatus(SvnStatus.None);
+        readonly static VisualGitStatus _unversioned = new VisualGitStatus(GitStatus.NotVersioned);
+        readonly static VisualGitStatus _none = new VisualGitStatus(GitStatus.None);
         /// <summary>
         /// Default status for nodes which do exist but are not managed
         /// </summary>
@@ -86,7 +87,7 @@ namespace VisualGit
         /// <summary>
         /// Content status in working copy
         /// </summary>
-        public SvnStatus State
+        public GitStatus State
         {
             get { return _state; }
         }
@@ -101,7 +102,7 @@ namespace VisualGit
             get { return _changeList; }
         }
 
-        public SvnNodeKind NodeKind
+        public GitNodeKind NodeKind
         {
             get { return _nodeKind; }
         }
@@ -144,7 +145,7 @@ namespace VisualGit
             get { return _treeConflict != null; }
         }
 
-        public SvnConflictData TreeConflict
+        public GitConflictData TreeConflict
         {
             get { return _treeConflict; }
         }

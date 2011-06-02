@@ -9,6 +9,7 @@ using VisualGit.Selection;
 using VisualGit.VS;
 using SharpSvn;
 using System.IO;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -177,12 +178,12 @@ namespace VisualGit.Scc
         {
             if (GitItem.Exists)
             {
-                if (GitItem.IsDirectory || GitItem.NodeKind == SvnNodeKind.Directory)
+                if (GitItem.IsDirectory || GitItem.NodeKind == GitNodeKind.Directory)
                     return context.IconMapper.DirectoryIcon; // Is or was a directory
                 else
                     return context.IconMapper.GetIcon(FullPath);
             }
-            else if (GitItem.Status != null && GitItem.Status.NodeKind == SvnNodeKind.Directory)
+            else if (GitItem.Status != null && GitItem.Status.NodeKind == GitNodeKind.Directory)
                 return context.IconMapper.DirectoryIcon;
             else
                 return context.IconMapper.GetIconForExtension(GitItem.Extension);
@@ -365,17 +366,17 @@ namespace VisualGit.Scc
         /// <param name="treeConflict">if set to <c>true</c> [tree conflict].</param>
         /// <param name="item">The item or null if no on disk representation is availavke</param>
         /// <returns></returns>
-        public static PendingChangeKind CombineStatus(SvnStatus contentStatus, bool treeConflict, GitItem item)
+        public static PendingChangeKind CombineStatus(GitStatus contentStatus, bool treeConflict, GitItem item)
         {
             // item can be null!
             if (treeConflict || (item != null && item.IsTreeConflicted))
                 return PendingChangeKind.TreeConflict;
-            else if (contentStatus == SvnStatus.Conflicted)
+            else if (contentStatus == GitStatus.Conflicted)
                 return PendingChangeKind.Conflicted;
 
             switch (contentStatus)
             {
-                case SvnStatus.NotVersioned:
+                case GitStatus.NotVersioned:
                     if (item != null)
                     {
                         if (item.IsIgnored)
@@ -384,37 +385,35 @@ namespace VisualGit.Scc
                             return PendingChangeKind.New;
                     }
                     return PendingChangeKind.None;
-                case SvnStatus.Modified:
+                case GitStatus.Modified:
                     return PendingChangeKind.Modified;
-                case SvnStatus.Replaced:
+                case GitStatus.Replaced:
                     return PendingChangeKind.Replaced;
-                case SvnStatus.Added:
+                case GitStatus.Added:
                     if (item != null && item.HasCopyableHistory)
                         return PendingChangeKind.Copied;
 
                     return PendingChangeKind.Added;
-                case SvnStatus.Deleted:
+                case GitStatus.Deleted:
                     return PendingChangeKind.Deleted;
-                case SvnStatus.Missing:
+                case GitStatus.Missing:
                     if (item != null && item.IsCasingConflicted)
                         return PendingChangeKind.WrongCasing;
                     else
                         return PendingChangeKind.Missing;
-                case SvnStatus.Obstructed:
+                case GitStatus.Obstructed:
                     return PendingChangeKind.Obstructed;
-                case SvnStatus.Incomplete:
+                case GitStatus.Incomplete:
                     return PendingChangeKind.Incomplete;
-                case SvnStatus.None:
-                case SvnStatus.Normal:
-                case SvnStatus.Ignored:
+                case GitStatus.None:
+                case GitStatus.Normal:
+                case GitStatus.Ignored:
                     // No usefull status / No change
                     break;
-                case SvnStatus.External:
-                    return PendingChangeKind.None;
 
-                case SvnStatus.Zero:
-                case SvnStatus.Conflicted:
-                case SvnStatus.Merged:
+                case GitStatus.Zero:
+                case GitStatus.Conflicted:
+                case GitStatus.Merged:
                 default: // Give error on missed values
                     throw new ArgumentOutOfRangeException("contentStatus", contentStatus, "Invalid content status");
             }

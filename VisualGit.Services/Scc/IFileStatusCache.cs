@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -40,13 +41,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="diskNodeKind">The on-disk node kind if it is known to be correct.</param>
-        void RefreshItem(GitItem item, SvnNodeKind diskNodeKind);
-
-        /// <summary>
-        /// Refreshes the nested status of the <see cref="GitItem"/>
-        /// </summary>
-        /// <param name="item"></param>
-        void RefreshNested(GitItem item);
+        void RefreshItem(GitItem item, GitNodeKind diskNodeKind);
 
         /// <summary>
         /// Gets the <see cref="GitDirectory"/> of the specified path

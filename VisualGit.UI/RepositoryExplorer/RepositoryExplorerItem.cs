@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using VisualGit.Scc;
 using SharpSvn;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryExplorer
 {
@@ -160,7 +161,7 @@ namespace VisualGit.UI.RepositoryExplorer
             get { return _tn; }
         }
 
-        SharpSvn.SvnNodeKind IGitRepositoryItem.NodeKind
+        SvnNodeKind IGitRepositoryItem.NodeKind
         {
             get
             {

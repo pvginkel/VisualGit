@@ -118,7 +118,7 @@ namespace VisualGit.UI.PendingChanges
 
         public virtual void RefreshList()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

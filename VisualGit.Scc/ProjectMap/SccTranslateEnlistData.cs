@@ -84,12 +84,12 @@ namespace VisualGit.Scc.ProjectMap
 
             internal void LoadUserData(List<string> values)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             internal bool ShouldSerialize()
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             internal string[] GetUserData()
@@ -99,7 +99,7 @@ namespace VisualGit.Scc.ProjectMap
 
             internal bool HasPaths()
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 

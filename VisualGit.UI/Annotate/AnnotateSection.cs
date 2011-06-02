@@ -6,6 +6,7 @@ using VisualGit.Scc;
 using System.ComponentModel;
 using VisualGit.Scc.UI;
 using System.Globalization;
+using SharpGit;
 
 namespace VisualGit.UI.Annotate
 {

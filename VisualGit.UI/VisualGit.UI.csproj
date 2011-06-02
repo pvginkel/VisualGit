@@ -74,6 +74,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\SharpGit\SharpGit.csproj">
+      <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
+      <Name>SharpGit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Diff\VisualGit.Diff.csproj">
       <Project>{69301E7D-F47F-42F4-8CB6-4A5CA3101785}</Project>
       <Name>VisualGit.Diff</Name>

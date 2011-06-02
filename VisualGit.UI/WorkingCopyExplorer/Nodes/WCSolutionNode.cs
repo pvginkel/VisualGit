@@ -63,12 +63,12 @@ namespace VisualGit.UI.WorkingCopyExplorer.Nodes
 
         public override void GetResources(System.Collections.ObjectModel.Collection<GitItem> list, bool getChildItems, Predicate<GitItem> filter)
         {
-//            throw new NotImplementedException();
+//            throw new NotSupportedException();
         }
 
         protected override void RefreshCore(bool rescan)
         {
-//            throw new NotImplementedException();
+//            throw new NotSupportedException();
         }
 
         public override int ImageIndex

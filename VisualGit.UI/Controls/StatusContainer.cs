@@ -112,7 +112,7 @@ namespace VisualGit.UI.Controls
 
         internal void DoAddPanel(Control value)
         {
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
         }
 
         internal bool InsertingItem()

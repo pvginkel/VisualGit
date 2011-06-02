@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -12,7 +13,7 @@ namespace VisualGit.Scc
         /// </summary>
         Uri Uri { get; }
         /// <summary>
-        /// Gets the <see cref="SvnNodeKind"/> of the item (Optional)
+        /// Gets the <see cref="GitNodeKind"/> of the item (Optional)
         /// </summary>
         SvnNodeKind NodeKind { get; }
         /// <summary>

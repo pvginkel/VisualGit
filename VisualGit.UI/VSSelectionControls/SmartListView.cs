@@ -167,7 +167,7 @@ namespace VisualGit.UI.VSSelectionControls
                 }
             }
             //else
-            //    throw new NotImplementedException();
+            //    throw new NotSupportedException();
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
@@ -414,7 +414,7 @@ namespace VisualGit.UI.VSSelectionControls
             get
             {
                 if (View != View.Details)
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 if (_itemsPerPage == 0 && ItemHeight > 0)
                 {
                     _itemsPerPage = (Height + ItemHeight - 1) / ItemHeight;

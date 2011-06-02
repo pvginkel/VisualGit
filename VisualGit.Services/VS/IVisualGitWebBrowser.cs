@@ -50,12 +50,12 @@ namespace VisualGit.VS
         [CLSCompliant(false)]
         public virtual IVsWebBrowser WebBrowser 
         { 
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
         [CLSCompliant(false)]
         public virtual IVsWindowFrame Frame
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
     }
 }

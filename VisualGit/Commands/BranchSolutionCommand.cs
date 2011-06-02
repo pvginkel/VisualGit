@@ -6,6 +6,7 @@ using VisualGit.UI.SccManagement;
 using System.Windows.Forms;
 using VisualGit.UI;
 using VisualGit.Selection;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -17,7 +18,7 @@ namespace VisualGit.Commands
         {
             GitItem item = GetRoot(e);
 
-            if(item == null || !item.IsVersioned || item.IsDeleteScheduled || item.Status.State == SvnStatus.Added || item.Uri == null)
+            if(item == null || !item.IsVersioned || item.IsDeleteScheduled || item.Status.State == GitStatus.Added || item.Uri == null)
                 e.Enabled = false;
         }
 

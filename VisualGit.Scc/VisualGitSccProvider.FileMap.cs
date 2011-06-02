@@ -9,6 +9,7 @@ using System.Collections;
 using VisualGit.Selection;
 using SharpSvn;
 using VisualGit.VS;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -212,7 +213,7 @@ namespace VisualGit.Scc
 
             using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!git.CouldAdd(newName, SvnNodeKind.File))
+                if (!git.CouldAdd(newName, GitNodeKind.File))
                 {
                     ok = false;
                     return;
@@ -236,7 +237,7 @@ namespace VisualGit.Scc
 
             using (GitSccContext git = new GitSccContext(Context))
             {
-                if (!git.CouldAdd(newName, SvnNodeKind.File))
+                if (!git.CouldAdd(newName, GitNodeKind.File))
                 {
                     ok = false;
                     return;

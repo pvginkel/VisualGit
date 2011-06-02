@@ -5,6 +5,7 @@ using SharpSvn;
 using VisualGit.Scc;
 using System.ComponentModel;
 using System.Drawing;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {

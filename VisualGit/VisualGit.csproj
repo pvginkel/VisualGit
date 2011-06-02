@@ -59,6 +59,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <ProjectReference Include="..\SharpGit\SharpGit.csproj">
+      <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
+      <Name>SharpGit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
       <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
       <Name>VisualGit.ExtensionPoints</Name>
@@ -95,8 +99,9 @@
     <Compile Include="Commands\RepositoryExplorer\DeleteRepositoryItemCommand.cs" />
     <Compile Include="Commands\RepositoryExplorer\RenameNode.cs" />
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />
-    <Compile Include="Services\VisualGitHelpService.cs" />
     <Compile Include="Services\VisualGitClientPool.cs" />
+    <Compile Include="Services\VisualGitHelpService.cs" />
+    <Compile Include="Services\VisualSvnClientPool.cs" />
     <Compile Include="Services\VisualGitErrorMessage.cs" />
     <Compile Include="Services\IssueTracker\VisualGitIssueService.cs" />
     <Compile Include="Services\IssueTracker\IssueRepositoryConnectorProxy.cs" />

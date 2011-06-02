@@ -42,7 +42,7 @@ namespace VisualGit.VS.Dialogs
 
         public int IsDocDataDirty(out int pfDirty)
         {
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
             pfDirty = 0;
             return VSConstants.S_OK;
         }
@@ -55,13 +55,13 @@ namespace VisualGit.VS.Dialogs
 
         public int LoadDocData(string pszMkDocument)
         {
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
             return VSConstants.S_OK;
         }
 
         public int OnRegisterDocData(uint docCookie, IVsHierarchy pHierNew, uint itemidNew)
         {
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
             return VSConstants.S_OK;
         }
 

@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using SharpSvn;
 using VisualGit.VS;
+using SharpGit;
 
 namespace VisualGit.Services
 {
@@ -241,7 +242,7 @@ namespace VisualGit.Services
             // TODO: Maybe handle cases where the parent was copied instead of the child?
 
             SvnUriTarget copiedFrom = null;
-            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnInfoArgs ia = new SvnInfoArgs();
                 ia.ThrowOnError = false;
@@ -773,7 +774,7 @@ namespace VisualGit.Services
 
             string file = GetTempPath(target.Name, revision);
 
-            if (target.NodeKind != SvnNodeKind.File)
+            if (target.NodeKind != GitNodeKind.File)
                 throw new InvalidOperationException("Can't create a tempfile from a directory");
 
             ProgressRunnerResult r = GetService<IProgressRunner>().RunModal("Getting file",

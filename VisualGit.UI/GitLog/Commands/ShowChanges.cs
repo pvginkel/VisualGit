@@ -9,6 +9,7 @@ using System.CodeDom.Compiler;
 using Microsoft.VisualStudio.Shell.Interop;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog.Commands
 {

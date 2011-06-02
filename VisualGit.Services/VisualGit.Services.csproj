@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGitClientPool.cs" />
     <Compile Include="VisualGitModule.cs" />
     <Compile Include="VisualGitRuntime.cs" />
     <Compile Include="VisualGitService.cs" />
@@ -154,7 +155,7 @@
     <Compile Include="IVisualGitRuntimeInfo.cs" />
     <Compile Include="Scc\IVisualGitSccService.cs" />
     <Compile Include="IVisualGitServiceProvider.cs" />
-    <Compile Include="IGitClientPool.cs" />
+    <Compile Include="ISvnClientPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scc\VisualGitGlyph.cs" />
     <Compile Include="Scc\VisualGitStatus.cs" />
@@ -186,6 +187,10 @@
     <Compile Include="VS\IProjectCommitSettings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpGit\SharpGit.csproj">
+      <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
+      <Name>SharpGit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
       <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
       <Name>VisualGit.ExtensionPoints</Name>

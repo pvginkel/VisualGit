@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3483D848-0E50-445A-92B6-BDA2320BEA52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharpGit</RootNamespace>
+    <AssemblyName>SharpGit</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <HintPath>lib\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>lib\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit">
+      <HintPath>lib\NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="NSch">
+      <HintPath>lib\NSch.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen">
+      <HintPath>lib\Sharpen.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileSystemUtil.cs" />
+    <Compile Include="GitChangeItem.cs" />
+    <Compile Include="GitCommand.cs" />
+    <Compile Include="GitCommitItem.cs" />
+    <Compile Include="GitCommitItemCollection.cs" />
+    <Compile Include="GitCommittingEventArgs.cs" />
+    <Compile Include="GitCommitTypes.cs" />
+    <Compile Include="GitConflictData.cs" />
+    <Compile Include="GitDeleteArgs.cs" />
+    <Compile Include="GitDeleteCommand.cs" />
+    <Compile Include="GitDepth.cs" />
+    <Compile Include="GitErrorCode.cs" />
+    <Compile Include="GitClient.cs" />
+    <Compile Include="GitClientArgs.cs" />
+    <Compile Include="GitCommandType.cs" />
+    <Compile Include="GitErrorCategory.cs" />
+    <Compile Include="GitErrorEventArgs.cs" />
+    <Compile Include="GitException.cs" />
+    <Compile Include="GitNodeKind.cs" />
+    <Compile Include="GitNotifyAction.cs" />
+    <Compile Include="GitNotifyEventArgs.cs" />
+    <Compile Include="GitNotifyState.cs" />
+    <Compile Include="GitNoRepositoryException.cs" />
+    <Compile Include="GitUI.cs" />
+    <Compile Include="GitUIBindArgs.cs" />
+    <Compile Include="PathFilterNotRecurse.cs" />
+    <Compile Include="RepositoryUtil.cs" />
+    <Compile Include="GitSchedule.cs" />
+    <Compile Include="GitStatus.cs" />
+    <Compile Include="GitStatusArgs.cs" />
+    <Compile Include="GitStatusCommand.cs" />
+    <Compile Include="GitStatusEventArgs.cs" />
+    <Compile Include="GitWorkingCopyInfo.cs" />
+    <Compile Include="ObjectStreamWrapper.cs" />
+    <Compile Include="ObjectUtil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RepositoryEntry.cs" />
+    <Compile Include="RepositoryManager.cs" />
+    <Compile Include="RepositoryExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Key.snk">
+      <Link>Key.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

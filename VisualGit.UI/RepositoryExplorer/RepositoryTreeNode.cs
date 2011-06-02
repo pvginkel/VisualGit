@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using VisualGit.Scc;
 using System.Diagnostics;
 using SharpSvn.Remote;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryExplorer
 {
@@ -109,7 +110,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         internal void Preload(SvnNodeKind kind)
         {
-			if (kind == SvnNodeKind.Directory)
+            if (kind == SvnNodeKind.Directory)
 			{
 				if (Nodes.Count == 0 && _dummy == null)
 				{

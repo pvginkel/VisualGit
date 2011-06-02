@@ -126,7 +126,7 @@ namespace VisualGit.Scc
                     _reposRoot = reposRoot;
                 else
                 {
-                    using (SvnClient client = context.GetService<IGitClientPool>().GetClient())
+                    using (SvnClient client = context.GetService<ISvnClientPool>().GetClient())
                     {
                         _reposRoot = client.GetRepositoryRoot(ut.Uri);
 

@@ -7,6 +7,7 @@ using VisualGit.Selection;
 using System.IO;
 using SharpSvn;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -49,7 +50,7 @@ namespace VisualGit.Scc
                     continue;
 
                 // TODO: Verify the new names do not give invalid Git state (Double casings, etc.)
-                if (track && !GitCanAddPath(SvnTools.GetNormalizedFullPath(rgpszMkDocuments[i]), SvnNodeKind.File))
+                if (track && !GitCanAddPath(SvnTools.GetNormalizedFullPath(rgpszMkDocuments[i]), GitNodeKind.File))
                     ok = false;
 
                 if (rgResults != null)
@@ -115,7 +116,7 @@ namespace VisualGit.Scc
                     _fileOrigins[newDoc] = origDoc;
                 }
 
-                if (track && !GitCanAddPath(newDoc, SvnNodeKind.File))
+                if (track && !GitCanAddPath(newDoc, GitNodeKind.File))
                     ok = false;
 
                 if (rgResults != null)
@@ -139,7 +140,7 @@ namespace VisualGit.Scc
             return VSConstants.S_OK;
         }
 
-        protected bool GitCanAddPath(string fullpath, SvnNodeKind nodeKind)
+        protected bool GitCanAddPath(string fullpath, GitNodeKind nodeKind)
         {
             using (GitSccContext git = new GitSccContext(Context))
             {
@@ -491,7 +492,7 @@ namespace VisualGit.Scc
 
                 dir = SvnTools.GetNormalizedFullPath(dir);
 
-                if (track && !GitCanAddPath(dir, SvnNodeKind.Directory))
+                if (track && !GitCanAddPath(dir, GitNodeKind.Directory))
                     ok = false;
 
                 if (rgResults != null)
@@ -548,9 +549,9 @@ namespace VisualGit.Scc
                 using (GitSccContext git = new GitSccContext(Context))
                 {
                     // Ok; we have a 'new' directory here.. Lets check if VS broke the Git working copy
-                    SvnWorkingCopyEntryEventArgs entry = git.SafeGetEntry(dir);
+                    GitStatusEventArgs entry = git.SafeGetEntry(dir);
 
-                    if (entry != null && entry.NodeKind == SvnNodeKind.Directory) // Entry exists, valid dir
+                    if (entry != null && entry.NodeKind == GitNodeKind.Directory) // Entry exists, valid dir
                         continue;
 
                     // VS Added a versioned dir below our project -> Unversion the directory to allow adding files

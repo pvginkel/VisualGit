@@ -394,7 +394,7 @@ namespace VisualGit.Settings
             // all at once is always faster than loading a few
             // We must change this algorithm if Gits implementation changes
             SvnPropertyCollection pc = null;
-            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnPropertyListArgs pl = new SvnPropertyListArgs();
                 pl.ThrowOnError = false;
@@ -465,7 +465,7 @@ namespace VisualGit.Settings
                 || !Uri.TryCreate("file:///" + v.Replace('\\', '/'), UriKind.Absolute, out resUri))
                 return;
 
-            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnSetPropertyArgs ps = new SvnSetPropertyArgs();
                 ps.ThrowOnError = false;
@@ -692,7 +692,7 @@ namespace VisualGit.Settings
             if (cache.SolutionFilename == null)
                 return null;
 
-            using (SvnClient client = GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 return cache.RepositoryRoot = client.GetRepositoryRoot(cache.SolutionFilename);
             }

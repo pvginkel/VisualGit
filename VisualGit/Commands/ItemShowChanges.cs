@@ -4,6 +4,7 @@ using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -41,7 +42,7 @@ namespace VisualGit.Commands
                     e.Enabled = false;
                     return;
                 }
-                if (item.IsVersioned && (item.Status.State != SvnStatus.Added || item.Status.IsCopied))
+                if (item.IsVersioned && (item.Status.State != GitStatus.Added || item.Status.IsCopied))
                 {
                     if (e.Command == VisualGitCommand.ItemCompareBase 
                         || e.Command == VisualGitCommand.ItemShowChanges
@@ -84,7 +85,7 @@ namespace VisualGit.Commands
             else
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
-                    if (!item.IsVersioned || (item.Status.State == SvnStatus.Added && !item.Status.IsCopied))
+                    if (!item.IsVersioned || (item.Status.State == GitStatus.Added && !item.Status.IsCopied))
                         continue;
 
                     if ( e.Command == VisualGitCommand.ItemCompareBase

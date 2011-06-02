@@ -114,11 +114,6 @@ namespace VisualGit.Scc
         #endregion
 
         /// <summary>
-        /// The item is the root of a nested working copy
-        /// </summary>
-        IsNested                = 0x01000000,
-
-        /// <summary>
         /// The item is a textfile
         /// </summary>
         IsTextFile              = 0x02000000,

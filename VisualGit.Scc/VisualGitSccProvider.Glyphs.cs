@@ -7,6 +7,7 @@ using SharpSvn;
 using System.Windows.Forms;
 using VisualGit.Scc.ProjectMap;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -112,10 +113,10 @@ namespace VisualGit.Scc
         {
             while (item != null)
             {
-                SvnStatus lc = item.Status.State;
-                if (lc == SvnStatus.Ignored)
+                GitStatus lc = item.Status.State;
+                if (lc == GitStatus.Ignored)
                     return true;
-                else if (lc != SvnStatus.NotVersioned)
+                else if (lc != GitStatus.NotVersioned)
                     return false;
 
                 item = item.Parent;

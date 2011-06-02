@@ -145,7 +145,7 @@ namespace VisualGit.Commands
 
             e.Selection.Cache.Remove(typeof(ItemMoveToChangeList)); // Remove cached list of items
 
-            using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 if (name == null)
                 {

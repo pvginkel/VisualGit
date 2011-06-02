@@ -93,7 +93,7 @@ namespace VisualGit.UI.MergeWizard
         /// </summary>
         public SvnClient GetClient()
         {
-            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
+            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
 
             if (pool != null)
                 return pool.GetClient();
@@ -103,7 +103,7 @@ namespace VisualGit.UI.MergeWizard
 
         public SvnWorkingCopyClient GetWcClient()
         {
-            IGitClientPool pool = (Context != null) ? Context.GetService<IGitClientPool>() : null;
+            ISvnClientPool pool = (Context != null) ? Context.GetService<ISvnClientPool>() : null;
 
             if (pool != null)
                 return pool.GetWcClient();

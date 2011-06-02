@@ -2,6 +2,7 @@ using SharpSvn;
 using VisualGit.Scc.UI;
 using System.IO;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -22,7 +23,7 @@ namespace VisualGit.Commands
             else
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                 {
-                    if (item.IsConflicted && item.Status.State == SvnStatus.Conflicted)
+                    if (item.IsConflicted && item.Status.State == GitStatus.Conflicted)
                         return;
                 }
 
@@ -55,7 +56,7 @@ namespace VisualGit.Commands
                 return;
 
             conflict.MarkDirty();
-            if (conflict.Status.State != SvnStatus.Conflicted)
+            if (conflict.Status.State != GitStatus.Conflicted)
             {
                 VisualGitMessageBox mb = new VisualGitMessageBox(e.Context);
 

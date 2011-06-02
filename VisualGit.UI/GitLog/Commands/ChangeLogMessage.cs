@@ -53,7 +53,7 @@ namespace VisualGit.UI.GitLog.Commands
                             config.GetRecentLogMessages().Add(dialog.LogMessage);
                     }
 
-                    using (SvnClient client = e.GetService<IGitClientPool>().GetClient())
+                    using (SvnClient client = e.GetService<ISvnClientPool>().GetClient())
                     {
                         SvnSetRevisionPropertyArgs sa = new SvnSetRevisionPropertyArgs();
                         sa.AddExpectedError(SvnErrorCode.SVN_ERR_REPOS_DISABLED_FEATURE);

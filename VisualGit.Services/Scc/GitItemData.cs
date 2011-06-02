@@ -54,7 +54,7 @@ namespace VisualGit.Scc
                 {
                     if (value != _item.Status.ChangeList)
                     {
-                        using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
+                        using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             if (cl != null)
                             {

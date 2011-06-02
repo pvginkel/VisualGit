@@ -177,7 +177,7 @@ namespace VisualGit.Commands
         {
             VisualGitAction ds = delegate
             {
-                using (SvnClient client = context.GetService<IGitClientPool>().GetClient())
+                using (SvnClient client = context.GetService<ISvnClientPool>().GetClient())
                 {
                     string value;
                     if (client.TryGetProperty(selectedUri, VisualGitSccPropertyNames.ProjectRoot, out value))

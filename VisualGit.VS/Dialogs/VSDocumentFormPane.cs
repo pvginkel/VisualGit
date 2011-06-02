@@ -211,7 +211,7 @@ namespace VisualGit.VS.Dialogs
         internal void Show()
         {
             base.Initialize();
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
         }
 
         IOleCommandTarget _baseTarget;

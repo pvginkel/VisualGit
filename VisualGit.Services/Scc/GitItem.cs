@@ -9,13 +9,14 @@ using SharpSvn;
 using VisualGit.Commands;
 using VisualGit.Scc;
 using VisualGit.Selection;
+using SharpGit;
 
 namespace VisualGit
 {
     public interface IGitItemUpdate
     {
         void RefreshTo(VisualGitStatus status);
-        void RefreshTo(NoSccStatus status, SvnNodeKind nodeKind);
+        void RefreshTo(NoSccStatus status, GitNodeKind nodeKind);
         void RefreshTo(GitItem lead);
         void TickItem();
         void UntickItem();
@@ -76,7 +77,7 @@ namespace VisualGit
             _enqueued = false;
         }
 
-        public GitItem(IFileStatusCache context, string fullPath, NoSccStatus status, SvnNodeKind nodeKind)
+        public GitItem(IFileStatusCache context, string fullPath, NoSccStatus status, GitNodeKind nodeKind)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -90,14 +91,14 @@ namespace VisualGit
             _enqueued = false;
         }
 
-        void InitializeFromKind(SvnNodeKind nodeKind)
+        void InitializeFromKind(GitNodeKind nodeKind)
         {
             switch (nodeKind) // We assume the caller checked this for us
             {
-                case SvnNodeKind.File:
+                case GitNodeKind.File:
                     SetState(GitItemState.IsDiskFile | GitItemState.Exists, GitItemState.IsDiskFolder);
                     break;
-                case SvnNodeKind.Directory:
+                case GitNodeKind.Directory:
                     SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.IsDiskFile | GitItemState.ReadOnly);
                     break;
             }
@@ -109,7 +110,7 @@ namespace VisualGit
             get { return _context; }
         }
 
-        void RefreshTo(NoSccStatus status, SvnNodeKind nodeKind)
+        void RefreshTo(NoSccStatus status, GitNodeKind nodeKind)
         {
             _cookie = NextCookie();
             _statusDirty = XBool.False;
@@ -118,7 +119,7 @@ namespace VisualGit
             GitItemState unset = GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
                 | GitItemState.Deleted | GitItemState.ContentConflicted | GitItemState.Ignored
                 | GitItemState.Obstructed | GitItemState.Replaced | GitItemState.Versioned
-                | GitItemState.GitDirty | GitItemState.Obstructed | GitItemState.IsNested
+                | GitItemState.GitDirty | GitItemState.Obstructed
                 | GitItemState.HasCopyOrigin | GitItemState.TreeConflicted;
 
             switch (status)
@@ -142,7 +143,7 @@ namespace VisualGit
             InitializeFromKind(nodeKind);
         }
 
-        void IGitItemUpdate.RefreshTo(NoSccStatus status, SvnNodeKind nodeKind)
+        void IGitItemUpdate.RefreshTo(NoSccStatus status, GitNodeKind nodeKind)
         {
             Debug.Assert(status == NoSccStatus.NotExisting || status == NoSccStatus.NotVersioned);
             _ticked = false;
@@ -153,40 +154,6 @@ namespace VisualGit
         {
             if (status == null)
                 throw new ArgumentNullException("status");
-
-            if (status.State == SvnStatus.External)
-            {
-                // When iterating the status of an external in it's parent directory
-                // We get an external status and no really usefull information
-
-                SetState(GitItemState.Exists | GitItemState.Versionable | GitItemState.IsDiskFolder,
-                            GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.IsTextFile);
-
-                if (_statusDirty != XBool.False)
-                    _statusDirty = XBool.True; // Walk the path itself to get the data you want
-
-                return;
-            }
-            else if (MightBeNestedWorkingCopy(status) && IsDirectory)
-            {
-                // A not versioned directory might be a working copy by itself!
-
-                if (_statusDirty == XBool.False)
-                    return; // No need to remove valid cache entries
-
-                if (SvnTools.IsManagedPath(FullPath))
-                {
-                    _statusDirty = XBool.True; // Walk the path itself to get the data
-
-                    // Extract useful information we got anyway
-
-                    SetState(GitItemState.Exists | GitItemState.Versionable | GitItemState.IsDiskFolder,
-                                GitItemState.IsDiskFile | GitItemState.ReadOnly | GitItemState.IsTextFile);
-
-                    return;
-                }
-                // Fall through
-            }
 
             _cookie = NextCookie();
             _statusDirty = XBool.False;
@@ -207,67 +174,64 @@ namespace VisualGit
             bool provideDiskInfo = true;
             switch (status.State)
             {
-                case SvnStatus.None:
+                case GitStatus.None:
                     SetState(GitItemState.None, managed | unset);
                     svnDirty = false;
                     exists = false;
                     provideDiskInfo = false;
                     break;
-                case SvnStatus.NotVersioned:
+                case GitStatus.NotVersioned:
                     // Node exists but is not managed by us in this directory
                     // (Might be from an other location as in the nested case)
                     SetState(GitItemState.None, unset | managed);
                     svnDirty = false;
                     break;
-                case SvnStatus.Ignored:
+                case GitStatus.Ignored:
                     // Node exists but is not managed by us in this directory
                     // (Might be from an other location as in the nested case)
                     SetState(GitItemState.Ignored, unset | managed);
                     svnDirty = false;
                     break;
-                case SvnStatus.Modified:
+                case GitStatus.Modified:
                     SetState(managed | GitItemState.Modified, unset);
                     break;
-                case SvnStatus.Added:
+                case GitStatus.Added:
                     if (status.IsCopied)
                         SetState(managed | GitItemState.Added | GitItemState.HasCopyOrigin, unset);
                     else
                         SetState(managed | GitItemState.Added, unset);
                     break;
-                case SvnStatus.Replaced:
+                case GitStatus.Replaced:
                     if (status.IsCopied)
                         SetState(managed | GitItemState.Replaced | GitItemState.HasCopyOrigin, unset);
                     else
                         SetState(managed | GitItemState.Replaced, unset);
                     break;
-                case SvnStatus.Conflicted:
+                case GitStatus.Conflicted:
                     SetState(managed | GitItemState.ContentConflicted, unset);
                     break;
-                case SvnStatus.Obstructed: // node exists but is of the wrong type
+                case GitStatus.Obstructed: // node exists but is of the wrong type
                     SetState(GitItemState.None, managed | unset);
                     provideDiskInfo = false; // Info is wrong
                     break;
-                case SvnStatus.Missing:
+                case GitStatus.Missing:
                     exists = false;
                     provideDiskInfo = false; // Info is wrong
                     SetState(managed, unset);
                     break;
-                case SvnStatus.Deleted:
+                case GitStatus.Deleted:
                     SetState(managed | GitItemState.Deleted, unset);
                     exists = false;
                     provideDiskInfo = false; // File/folder might still exist
                     break;
-                case SvnStatus.External:
-                    // Should be handled above
-                    throw new InvalidOperationException();
-                case SvnStatus.Incomplete:
+                case GitStatus.Incomplete:
                     SetState(managed, unset);
                     break;
                 default:
                     Trace.WriteLine(string.Format("Ignoring undefined status {0} in GitItem.Refresh()", status.State));
                     provideDiskInfo = false; // Can't trust an unknown status
-                    goto case SvnStatus.Normal;
-                case SvnStatus.Normal:
+                    goto case GitStatus.Normal;
+                case GitStatus.Normal:
                     SetState(managed | GitItemState.Exists, unset);
                     svnDirty = false;
                     break;
@@ -293,10 +257,10 @@ namespace VisualGit
                 if (exists) // Behaviour must match updating from UpdateAttributeInfo()
                     switch (status.NodeKind)
                     {
-                        case SvnNodeKind.Directory:
+                        case GitNodeKind.Directory:
                             SetState(GitItemState.IsDiskFolder | GitItemState.Exists, GitItemState.ReadOnly| GitItemState.IsTextFile | GitItemState.IsDiskFile);
                             break;
-                        case SvnNodeKind.File:
+                        case GitNodeKind.File:
                             SetState(GitItemState.IsDiskFile | GitItemState.Exists, GitItemState.IsDiskFolder);
                             break;
                     }
@@ -309,8 +273,8 @@ namespace VisualGit
         {
             switch (status.State)
             {
-                case SvnStatus.NotVersioned:
-                case SvnStatus.Ignored:
+                case GitStatus.NotVersioned:
+                case GitStatus.Ignored:
                     return true;
 
                 // TODO: Handle obstructed and tree conflicts!
@@ -477,7 +441,7 @@ namespace VisualGit
         /// <summary>
         /// Gets the node kind of the file in Git
         /// </summary>
-        public SvnNodeKind NodeKind
+        public GitNodeKind NodeKind
         {
             get { return Status.NodeKind; }
         }
@@ -497,7 +461,7 @@ namespace VisualGit
         /// <summary>
         /// Gets a boolean indicating whether the item (on disk) is a file
         /// </summary>
-        /// <remarks>Use <see cref="Status"/>.<see cref="VisualGitStatus.SvnNodeKind"/> to retrieve the svn type</remarks>
+        /// <remarks>Use <see cref="Status"/>.<see cref="VisualGitStatus.GitNodeKind"/> to retrieve the svn type</remarks>
         public bool IsFile
         {
             get { return GetState(GitItemState.IsDiskFile) == GitItemState.IsDiskFile; }
@@ -506,7 +470,7 @@ namespace VisualGit
         /// <summary>
         /// Gets a boolean indicating whether the item (on disk) is a directory
         /// </summary>
-        /// <remarks>Use <see cref="Status"/>.<see cref="VisualGitStatus.SvnNodeKind"/> to retrieve the svn type</remarks>
+        /// <remarks>Use <see cref="Status"/>.<see cref="VisualGitStatus.GitNodeKind"/> to retrieve the svn type</remarks>
         public bool IsDirectory
         {
             get { return GetState(GitItemState.IsDiskFolder) == GitItemState.IsDiskFolder; }
@@ -537,7 +501,7 @@ namespace VisualGit
 
             try
             {
-                statusCache.RefreshItem(this, IsFile ? SvnNodeKind.File : SvnNodeKind.Directory); // We can check this less expensive than the statuscache!
+                statusCache.RefreshItem(this, IsFile ? GitNodeKind.File : GitNodeKind.Directory); // We can check this less expensive than the statuscache!
             }
             finally
             {
@@ -558,14 +522,14 @@ namespace VisualGit
         {
             switch (status.State)
             {
-                case SvnStatus.Added:
-                case SvnStatus.Conflicted:
-                case SvnStatus.Merged:
-                case SvnStatus.Modified:
-                case SvnStatus.Normal:
-                case SvnStatus.Replaced:
-                case SvnStatus.Deleted:
-                case SvnStatus.Incomplete:
+                case GitStatus.Added:
+                case GitStatus.Conflicted:
+                case GitStatus.Merged:
+                case GitStatus.Modified:
+                case GitStatus.Normal:
+                case GitStatus.Replaced:
+                case GitStatus.Deleted:
+                case GitStatus.Incomplete:
                     return true;
                 default:
                     return false;
@@ -600,16 +564,16 @@ namespace VisualGit
 
                 switch (Status.State)
                 {
-                    case SvnStatus.Normal:
+                    case GitStatus.Normal:
                         // Probably property modified
                         return IsDocumentDirty;
-                    case SvnStatus.Added:
-                    case SvnStatus.Replaced:
+                    case GitStatus.Added:
+                    case GitStatus.Replaced:
                         return HasCopyableHistory;
-                    case SvnStatus.Deleted:
+                    case GitStatus.Deleted:
                         // To be replaced
                         return Exists;
-                    case SvnStatus.NotVersioned:
+                    case GitStatus.NotVersioned:
                         return false;
                     default:
                         return true;
@@ -703,7 +667,7 @@ namespace VisualGit
         /// </value>
         public bool IsCasingConflicted
         {
-            get { return IsVersioned && Status.State == SvnStatus.Missing && Status.NodeKind == SvnNodeKind.File && IsFile && Exists; }
+            get { return IsVersioned && Status.State == GitStatus.Missing && Status.NodeKind == GitNodeKind.File && IsFile && Exists; }
         }
 
         /// <summary>
@@ -737,17 +701,6 @@ namespace VisualGit
         public bool IsDocumentDirty
         {
             get { return GetState(GitItemState.DocumentDirty) != 0; }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this node is a nested working copy.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this instance is nested working copy; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsNestedWorkingCopy
-        {
-            get { return GetState(GitItemState.IsNested) != 0; }
         }
 
         /// <summary>

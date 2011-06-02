@@ -20,7 +20,7 @@ namespace VisualGit.Services
 
         public void RunHelp(VSDialogForm form)
         {
-            throw new NotImplementedException("Help should not be retrieved from ankhsvn.net");
+            throw new NotSupportedException("Help should not be retrieved from ankhsvn.net");
             
             /*
             UriBuilder ub = new UriBuilder("http://svc.ankhsvn.net/svc/go/");

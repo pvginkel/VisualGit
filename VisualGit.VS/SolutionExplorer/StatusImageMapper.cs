@@ -7,6 +7,7 @@ using VisualGit.Scc;
 using SharpSvn;
 using System.IO;
 using System.Diagnostics;
+using SharpGit;
 
 namespace VisualGit.VS.SolutionExplorer
 {
@@ -64,38 +65,37 @@ namespace VisualGit.VS.SolutionExplorer
             
 			switch (item.Status.State)
             {
-                case SvnStatus.Normal:
+                case GitStatus.Normal:
                     if (item.IsDocumentDirty)
                         return VisualGitGlyph.FileDirty;
                     else
                         return VisualGitGlyph.Normal;
-                case SvnStatus.Modified:
+                case GitStatus.Modified:
                     return VisualGitGlyph.Modified;
-                case SvnStatus.Replaced:
+                case GitStatus.Replaced:
                     return VisualGitGlyph.CopiedOrMoved;
-                case SvnStatus.Added:
+                case GitStatus.Added:
                     return item.Status.IsCopied ? VisualGitGlyph.CopiedOrMoved : VisualGitGlyph.Added;
 
-                case SvnStatus.Missing:
+                case GitStatus.Missing:
                     if (item.IsCasingConflicted)
                         return VisualGitGlyph.InConflict;
                     else
-                        goto case SvnStatus.Deleted;
-                case SvnStatus.Deleted:
+                        goto case GitStatus.Deleted;
+                case GitStatus.Deleted:
                     return VisualGitGlyph.Deleted;
 
-                case SvnStatus.Conflicted: // Should have been handled above
-                case SvnStatus.Obstructed:
+                case GitStatus.Conflicted: // Should have been handled above
+                case GitStatus.Obstructed:
                     return VisualGitGlyph.InConflict;
 
-                case SvnStatus.Ignored: // Should have been handled above
+                case GitStatus.Ignored: // Should have been handled above
                     return VisualGitGlyph.Ignored;
 
-                case SvnStatus.External:
-                case SvnStatus.Incomplete:
+                case GitStatus.Incomplete:
                     return VisualGitGlyph.InConflict;
 
-                case SvnStatus.Zero:
+                case GitStatus.Zero:
                 default:
                     return VisualGitGlyph.None;
             }

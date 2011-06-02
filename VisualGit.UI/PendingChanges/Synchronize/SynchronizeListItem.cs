@@ -5,19 +5,18 @@ using VisualGit.UI.VSSelectionControls;
 using SharpSvn;
 using VisualGit.VS;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.PendingChanges.Synchronize
 {
     class SynchronizeListItem : SmartListViewItem
     {
         GitItem _item;
-        SvnStatusEventArgs _status;
+        GitStatusEventArgs _status;
         PendingChangeKind _localChange;
-        PendingChangeKind _remoteChange;
         PendingChangeStatus _localStatus;
-        PendingChangeStatus _remoteStatus;
 
-        public SynchronizeListItem(SynchronizeListView list, GitItem item, SvnStatusEventArgs status)
+        public SynchronizeListItem(SynchronizeListView list, GitItem item, GitStatusEventArgs status)
             : base(list)
         {
             if (item == null)
@@ -27,16 +26,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
             _status = status;
 
             _localChange = PendingChange.CombineStatus(status.LocalContentStatus, item.IsTreeConflicted, item);
-            _remoteChange = PendingChange.CombineStatus(status.RemoteContentStatus, false, null);
-
-            if (_remoteChange == PendingChangeKind.None)
-            {
-                if (status.RemoteLock != null)
-                    _remoteChange = PendingChangeKind.LockedOnly;
-            }
-
             _localStatus = new PendingChangeStatus(_localChange);
-            _remoteStatus = new PendingChangeStatus(_remoteChange);
 
             UpdateText();
         }
@@ -59,12 +49,12 @@ namespace VisualGit.UI.PendingChanges.Synchronize
                 _item.Directory,
                 _item.FullPath,
                 _localStatus.PendingCommitText,
-                (_status.RemoteLock != null) ? PCStrings.LockedValue : "", // Locked
+                "", // Locked
                 SafeDate(_item.Modified),
                 _item.Name,
                 GetRelativePath(_item),
                 GetProject(_item),
-                _remoteStatus.PendingCommitText,
+                "",
                 Context.GetService<IFileIconMapper>().GetFileType(_item),
                 SafeWorkingCopy(_item));
         }
@@ -73,38 +63,31 @@ namespace VisualGit.UI.PendingChanges.Synchronize
         {
             if (GitItem.Exists)
                 return mapper.GetIcon(_item.FullPath);
-            else if (_status.NodeKind == SvnNodeKind.Directory)
-                return mapper.DirectoryIcon;
-            else if (_status.NodeKind == SvnNodeKind.None && _status.RemoteUpdateNodeKind == SvnNodeKind.Directory)
+            else if (_status.NodeKind == GitNodeKind.Directory)
                 return mapper.DirectoryIcon;
             else
                 return mapper.GetIconForExtension(_item.Extension);
         }
 
-        private StateIcon GetIcon(SvnStatusEventArgs status)
+        private StateIcon GetIcon(GitStatusEventArgs status)
         {
             // TODO: Handle more special cases
-            SvnStatus st = status.LocalContentStatus;
+            GitStatus st = status.LocalContentStatus;
 
-            bool localModified = IsMod(status.LocalContentStatus) || IsMod(status.LocalPropertyStatus);
-            bool remoteModified = IsMod(status.RemoteContentStatus) || IsMod(status.RemotePropertyStatus);
+            bool localModified = IsMod(status.LocalContentStatus);
 
-            if (localModified && remoteModified)
-                return StateIcon.Collision;
-            else if (localModified)
+            if (localModified)
                 return StateIcon.Outgoing;
-            else if (remoteModified)
-                return StateIcon.Incoming;
             else
                 return StateIcon.Blank;
         }
 
-        private bool IsMod(SvnStatus svnStatus)
+        private bool IsMod(GitStatus svnStatus)
         {
             switch (svnStatus)
             {
-                case SvnStatus.None:
-                case SvnStatus.Normal:
+                case GitStatus.None:
+                case GitStatus.Normal:
                     return false;
                 default:
                     return true;
@@ -149,7 +132,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
                 return n.ToString("T");
         }
 
-        static string CombineChange(SvnStatus svnStatus, SvnStatus svnStatus_2)
+        static string CombineChange(GitStatus svnStatus, GitStatus svnStatus_2)
         {
             return svnStatus.ToString() + " " + svnStatus_2.ToString();
         }

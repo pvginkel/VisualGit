@@ -15,7 +15,7 @@ namespace VisualGit.Commands
         {
             IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
-            if(single == null || single.NodeKind == SvnNodeKind.Directory || single.Origin == null)
+            if (single == null || single.NodeKind == SvnNodeKind.Directory || single.Origin == null)
                 e.Enabled = false;            
         }
 

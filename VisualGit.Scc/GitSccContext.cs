@@ -6,6 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Runtime.InteropServices;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -15,13 +16,15 @@ namespace VisualGit.Scc
     /// </summary>
     sealed class GitSccContext : VisualGitService
     {
-        readonly SvnClient _client;
+        readonly SvnClient _svnClient;
+        readonly GitClient _client;
         readonly IFileStatusCache _statusCache;
         bool _disposed;
 
         public GitSccContext(IVisualGitServiceProvider context)
             : base(context)
         {
+            _svnClient = context.GetService<ISvnClientPool>().GetNoUIClient();
             _client = context.GetService<IGitClientPool>().GetNoUIClient();
             _statusCache = GetService<IFileStatusCache>();
         }
@@ -31,6 +34,7 @@ namespace VisualGit.Scc
             if (!_disposed)
             {
                 _disposed = true;
+                ((IDisposable)_svnClient).Dispose();
                 ((IDisposable)_client).Dispose();
             }
             base.Dispose(disposing);
@@ -46,7 +50,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public SvnWorkingCopyEntryEventArgs SafeGetEntry(string path)
+        public GitStatusEventArgs SafeGetEntry(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -56,25 +60,24 @@ namespace VisualGit.Scc
 
             string dir = SvnTools.GetNormalizedDirectoryName(path);
 
-            using (SvnWorkingCopyClient wcc = GetService<IGitClientPool>().GetWcClient())
-            {
-                SvnWorkingCopyEntryEventArgs entry = null;
-                SvnWorkingCopyEntriesArgs wa = new SvnWorkingCopyEntriesArgs();
-                wa.ThrowOnError = false;
-                wa.ThrowOnCancel = false;
-                wcc.ListEntries(dir, wa,
-                    delegate(object sender, SvnWorkingCopyEntryEventArgs e)
-                    {
-                        if (entry == null && path == e.FullPath)
-                        {
-                            e.Detach();
-                            entry = e;
-                            e.Cancel = true;
-                        }
-                    });
+            var sa = new GitStatusArgs();
+            sa.Depth = GitDepth.Files;
+            sa.RetrieveAllEntries = false;
+            sa.RetrieveIgnoredEntries = false;
+            sa.ThrowOnError = false;
 
-                return entry;
-            }
+            GitStatusEventArgs entry = null;
+
+            _client.Status(dir, sa, (sender, e) =>
+                {
+                    if (entry == null && path == e.FullPath)
+                    {
+                        entry = e;
+                        e.Cancel = true;
+                    }
+                });
+
+            return entry;
         }
 
         /// <summary>
@@ -111,7 +114,7 @@ namespace VisualGit.Scc
                     a.ThrowOnError = false;
                     a.Depth = SvnDepth.Empty;
 
-                    if (_client.Info(new SvnPathTarget(path),
+                    if (_svnClient.Info(new SvnPathTarget(path),
                         delegate(object sender, SvnInfoEventArgs e)
                         {
                             repId = e.RepositoryId;
@@ -145,7 +148,7 @@ namespace VisualGit.Scc
             GitItem item = StatusCache[path];
             item.MarkDirty();
 
-            if (!item.IsFile || item.Status.State != SvnStatus.Replaced)
+            if (!item.IsFile || item.Status.State != GitStatus.Replaced)
                 return;
 
             SvnInfoEventArgs info = null;
@@ -153,7 +156,7 @@ namespace VisualGit.Scc
             ia.ThrowOnError = false;
             ia.Depth = SvnDepth.Empty;
 
-            if (!_client.Info(new SvnPathTarget(path), ia,
+            if (!_svnClient.Info(new SvnPathTarget(path), ia,
                 delegate(object sender, SvnInfoEventArgs e)
                 {
                     e.Detach();
@@ -180,7 +183,7 @@ namespace VisualGit.Scc
             // Our callers should move away the file, but we can't be to sure here
             using (MoveAway(path, true))
             {
-                _client.Revert(path, ra);
+                _svnClient.Revert(path, ra);
             }
         }
 
@@ -234,7 +237,7 @@ namespace VisualGit.Scc
                         ca.ThrowOnError = false;
                         ca.AlwaysCopyAsChild = true;
 
-                        _client.Copy(toCopy, toDir, ca);
+                        _svnClient.Copy(toCopy, toDir, ca);
                     }
 
                     if (toMove.Count > 0)
@@ -243,7 +246,7 @@ namespace VisualGit.Scc
                         ma.ThrowOnError = false;
                         ma.AlwaysMoveAsChild = true;
 
-                        _client.Move(toMove, toDir, ma);
+                        _svnClient.Move(toMove, toDir, ma);
                     }
 
                     foreach (string f in files.Keys)
@@ -294,7 +297,7 @@ namespace VisualGit.Scc
                     ca.CreateParents = false; // We just did that ourselves. Use Svn for this?
                     ca.ThrowOnError = false;
 
-                    ok = _client.Copy(fromPath, toPath, ca);
+                    ok = _svnClient.Copy(fromPath, toPath, ca);
 
                     if (ok && File.Exists(toPath))
                     {
@@ -321,7 +324,7 @@ namespace VisualGit.Scc
                 aa.Force = true;
                 aa.ThrowOnError = false;
 
-                if (!_client.Add(toDir, aa))
+                if (!_svnClient.Add(toDir, aa))
                     throw new InvalidOperationException();
             }
 
@@ -334,7 +337,7 @@ namespace VisualGit.Scc
             da.ThrowOnError = false;
             da.Force = true;
 
-            return _client.Delete(path, da);
+            return _svnClient.Delete(path, da);
         }
 
         internal bool SafeWcMoveFixup(string fromPath, string toPath)
@@ -365,7 +368,7 @@ namespace VisualGit.Scc
                         aa.Force = true;
                         aa.ThrowOnError = false;
 
-                        if (!_client.Add(toDir, aa))
+                        if (!_svnClient.Add(toDir, aa))
                             return false;
                     }
 
@@ -377,7 +380,7 @@ namespace VisualGit.Scc
                     ma.Force = true;
                     ma.ThrowOnError = false;
 
-                    ok = _client.Move(fromPath, toPath, ma);
+                    ok = _svnClient.Move(fromPath, toPath, ma);
 
                     if (ok)
                     {
@@ -516,7 +519,7 @@ namespace VisualGit.Scc
             ca.AlwaysCopyAsChild = false;
             ca.CreateParents = false;
             ca.ThrowOnError = false;
-            _client.Copy(from, to, ca);
+            _svnClient.Copy(from, to, ca);
 
             // Now copy everything unversioned from our local backup back
             // into the new workingcopy, to be 100% sure VS finds what it expects
@@ -529,7 +532,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            SvnDeleteArgs da = new SvnDeleteArgs();
+            GitDeleteArgs da = new GitDeleteArgs();
             da.Force = true;
             da.KeepLocal = false;
             da.ThrowOnError = false;
@@ -543,14 +546,14 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            SvnWorkingCopyEntryEventArgs status = SafeGetEntry(name);
+            GitStatusEventArgs status = SafeGetEntry(name);
 
             if (status == null)
                 return true;
 
-            switch (status.Schedule)
+            switch (status.WorkingCopyInfo.Schedule)
             {
-                case SvnSchedule.Delete:
+                case GitSchedule.Delete:
                     return true; // The item was already deleted
                 default:
                     return false;
@@ -665,7 +668,7 @@ namespace VisualGit.Scc
 
             foreach (string p in paths)
             {
-                if (_client.Revert(p, ra))
+                if (_svnClient.Revert(p, ra))
                     deletePaths.Add(p);
             }
 
@@ -683,7 +686,7 @@ namespace VisualGit.Scc
                             item.MarkDirty();
 
                             if (item.Exists && !item.IsDeleteScheduled)
-                                _client.Delete(p, da);
+                                _svnClient.Delete(p, da);
                         }
                     });
             }
@@ -856,7 +859,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="path"></param>
         /// <returns><c>false</c> when adding the file will fail, <c>true</c> if it could succeed</returns>
-        public bool CouldAdd(string path, SvnNodeKind nodeKind)
+        public bool CouldAdd(string path, GitNodeKind nodeKind)
         {
             if (path == null)
                 throw new ArgumentNullException("path");
@@ -883,7 +886,7 @@ namespace VisualGit.Scc
 
             bool ok = true;
 
-            using (SvnWorkingCopyClient wcc = GetService<IGitClientPool>().GetWcClient())
+            using (SvnWorkingCopyClient wcc = GetService<ISvnClientPool>().GetWcClient())
             {
                 wcc.ListEntries(parentDir, wa,
                 delegate(object sender, SvnWorkingCopyEntryEventArgs e)

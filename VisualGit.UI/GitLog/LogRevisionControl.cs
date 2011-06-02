@@ -114,7 +114,7 @@ namespace VisualGit.UI.GitLog
             ShowBusyIndicator();
             try
             {
-                using (SvnClient client = _context.GetService<IGitClientPool>().GetClient())
+                using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
                 {
                     GitOrigin single = EnumTools.GetSingle(LogSource.Targets);
                     if (single != null)

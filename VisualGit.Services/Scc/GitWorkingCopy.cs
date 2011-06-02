@@ -139,7 +139,7 @@ namespace VisualGit.Scc
                 if (!gitItem.IsVersioned)
                     return parent;
 
-                if (parent.IsVersioned && !gitItem.IsNestedWorkingCopy)
+                if (parent.IsVersioned)
                     return parent;
             }
 
@@ -158,7 +158,7 @@ namespace VisualGit.Scc
 
 
             _checkedUri = true;
-            using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 return _repositoryRoot = client.GetRepositoryRoot(FullPath);
             }
@@ -177,7 +177,7 @@ namespace VisualGit.Scc
             _checkedId = true;
 
             // Theoretically this can connect the server (if upgraded from a really old workingcopy)
-            using (SvnClient client = _context.GetService<IGitClientPool>().GetClient())
+            using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
             {
                 Guid value;
 

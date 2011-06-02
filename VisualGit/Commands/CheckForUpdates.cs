@@ -129,7 +129,7 @@ namespace VisualGit.Commands
             Version vsVersion = e.GetService<IVisualGitSolutionSettings>().VisualStudioVersion;
             Version osVersion = Environment.OSVersion.Version;
             
-            throw new NotImplementedException("New versions should not be requested from ankhsvn.net");
+            // throw new NotImplementedException("New versions should not be requested from ankhsvn.net");
 
             /*
             StringBuilder sb = new StringBuilder();
@@ -475,8 +475,8 @@ namespace VisualGit.Commands
 
         event EventHandler IComponent.Disposed
         {
-            add { throw new NotImplementedException(); }
-            remove { throw new NotImplementedException(); }
+            add { throw new NotSupportedException(); }
+            remove { throw new NotSupportedException(); }
         }
 
         ISite _site;

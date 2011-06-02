@@ -93,7 +93,7 @@ namespace VisualGit.UI.SccManagement
         SvnClient _client;
         SvnClient Client
         {
-            get { return _client ?? (_client = Context.GetService<IGitClientPool>().GetClient()); }
+            get { return _client ?? (_client = Context.GetService<ISvnClientPool>().GetClient()); }
         }
 
         private void createFolderButton_Click(object sender, EventArgs e)
@@ -191,7 +191,7 @@ namespace VisualGit.UI.SccManagement
 
         protected virtual void ValidateAdd(object sender, CancelEventArgs e)
         {
-            IGitClientPool clientPool = Context.GetService<IGitClientPool>();
+            ISvnClientPool clientPool = Context.GetService<ISvnClientPool>();
             if (localFolder.SelectedItem == null)
             {
                 errorProvider1.SetError(localFolder, "Please select a working copy path");

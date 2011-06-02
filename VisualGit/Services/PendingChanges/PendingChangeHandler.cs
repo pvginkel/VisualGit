@@ -10,6 +10,7 @@ using VisualGit.Services.PendingChanges;
 using VisualGit.VS;
 using VisualGit.UI.SccManagement;
 using VisualGit.ExtensionPoints.IssueTracker;
+using SharpGit;
 
 namespace VisualGit.Services.PendingChanges
 {
@@ -476,7 +477,7 @@ namespace VisualGit.Services.PendingChanges
             {
                 GitItem item = state.Cache[path];
 
-                if (item.Status.State != SvnStatus.Missing)
+                if (item.Status.State != GitStatus.Missing)
                     continue;
 
                 if (item.IsCasingConflicted)

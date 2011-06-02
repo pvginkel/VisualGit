@@ -146,7 +146,7 @@ namespace VisualGit.UI.Annotate
 
             VisualGitAction aa = delegate()
             {
-                using (SvnClient cl = Context.GetService<IGitClientPool>().GetClient())
+                using (SvnClient cl = Context.GetService<ISvnClientPool>().GetClient())
                 {
                     SvnLogArgs la = new SvnLogArgs();
                     la.OperationalRevision = origin.Target.Revision;

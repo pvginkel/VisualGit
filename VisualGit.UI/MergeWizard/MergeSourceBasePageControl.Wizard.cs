@@ -63,7 +63,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Returns the merge type for the subclass' page.
         /// </summary>
-        internal virtual MergeWizard.MergeType MergeType { get { throw new NotImplementedException(); } }
+        internal virtual MergeWizard.MergeType MergeType { get { throw new NotSupportedException(); } }
 
         internal virtual ICollection<Uri> GetMergeSources(GitItem target)
         {

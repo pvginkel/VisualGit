@@ -29,17 +29,17 @@ namespace VisualGit.VSPackage.OptionPages
 
 		public void Activate(IntPtr hWndParent, RECT[] pRect, int bModal)
 		{
-			//throw new NotImplementedException();
+			//throw new NotSupportedException();
 		}
 
 		public int Apply()
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		public void Deactivate()
 		{
-			//throw new NotImplementedException();
+			//throw new NotSupportedException();
 		}
 
 		public void GetPageInfo(PROPPAGEINFO[] pPageInfo)
@@ -54,7 +54,7 @@ namespace VisualGit.VSPackage.OptionPages
 
 		public void Help(string pszHelpDir)
 		{
-			//throw new NotImplementedException();
+			//throw new NotSupportedException();
 		}
 
 		public int IsPageDirty()
@@ -64,12 +64,12 @@ namespace VisualGit.VSPackage.OptionPages
 
 		public void Move(RECT[] pRect)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		public void SetObjects(uint cObjects, object[] ppunk)
 		{
-			//throw new NotImplementedException();
+			//throw new NotSupportedException();
 		}
 
 		public void SetPageSite(IPropertyPageSite pPageSite)
@@ -79,7 +79,7 @@ namespace VisualGit.VSPackage.OptionPages
 
 		public void Show(uint nCmdShow)
 		{
-			//throw new NotImplementedException();
+			//throw new NotSupportedException();
 		}
 
 		public int TranslateAccelerator(MSG[] pMsg)
@@ -102,7 +102,7 @@ namespace VisualGit.VSPackage.OptionPages
 
 		public void EditProperty(int DISPID)
 		{
-			throw new NotImplementedException();
+			throw new NotSupportedException();
 		}
 
 		#endregion

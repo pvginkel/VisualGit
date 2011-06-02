@@ -86,15 +86,6 @@ namespace VisualGit
                 Debug.Assert((~_validState & MaskTextFile) == 0, "UpdateTextFile() set all attributes it should");
             }
 
-            if (0 != (unavailable & MaskNested))
-            {
-                UpdateNested();
-
-                unavailable = flagsToGet & ~_validState;
-
-                Debug.Assert((~_validState & MaskNested) == 0, "UpdateNested() set all attributes it should");
-            }
-
             if (0 != (unavailable & MaskIsAdministrativeArea))
             {
                 UpdateAdministrativeArea();
@@ -280,7 +271,7 @@ namespace VisualGit
                 isTextFile = false;
             else
             {
-                using (SvnWorkingCopyClient client = _context.GetService<IGitClientPool>().GetWcClient())
+                using (SvnWorkingCopyClient client = _context.GetService<ISvnClientPool>().GetWcClient())
                 {
                     SvnWorkingCopyStateArgs a = new SvnWorkingCopyStateArgs();
                     a.ThrowOnError = false;
@@ -341,35 +332,6 @@ namespace VisualGit
             }
 
             SetState(set, unset);
-        }
-        #endregion
-
-        #region Nested Info
-        const GitItemState MaskNested = GitItemState.IsNested;
-        static readonly Uri parentRefUri = new Uri("../", UriKind.Relative);
-
-        void UpdateNested()
-        {
-            GitItem parentItem;
-
-            if (IsDirectory && IsVersioned &&
-                null != (parentItem = Parent) && parentItem.IsVersioned)
-            {
-                StatusCache.RefreshNested(this);
-
-                GitItemState r;
-
-                bool foundNestedState = TryGetState(GitItemState.IsNested, out r);
-
-                Debug.Assert(foundNestedState, "StatusCache.RefreshNested() should have updated status");
-
-                if (foundNestedState)
-                    return;
-
-                // Fall through to at least have some state
-            }
-
-            SetState(GitItemState.None, GitItemState.IsNested);
         }
         #endregion
 

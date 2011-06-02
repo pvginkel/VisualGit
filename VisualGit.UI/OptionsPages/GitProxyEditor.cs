@@ -69,7 +69,7 @@ namespace VisualGit.UI.OptionsPages
                     rk.DeleteValue(SvnConfigNames.HttpProxyExceptions);
                 }
             }
-            Context.GetService<IGitClientPool>().FlushAllClients();
+            Context.GetService<ISvnClientPool>().FlushAllClients();
         }
 
         private string NormalizeExceptionText(string exceptionText, bool forDialog)

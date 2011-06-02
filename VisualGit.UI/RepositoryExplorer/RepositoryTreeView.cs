@@ -14,6 +14,7 @@ using VisualGit.Scc;
 using VisualGit.UI.RepositoryExplorer.Dialogs;
 using VisualGit.Commands;
 using SharpSvn.Remote;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryExplorer
 {
@@ -334,7 +335,7 @@ namespace VisualGit.UI.RepositoryExplorer
                     la.ThrowOnError = false;
 
                     Collection<SvnListEventArgs> items;
-                    using (SvnClient client = Context.GetService<IGitClientPool>().GetClient())
+                    using (SvnClient client = Context.GetService<ISvnClientPool>().GetClient())
                     {
                         client.GetList(uri, la, out items);
                     }

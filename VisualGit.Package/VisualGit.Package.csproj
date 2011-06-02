@@ -65,6 +65,10 @@
     <ApplyXslTemplatesDependsOn>ResolveAssemblyReferences;$(ResolveAssemblyReferences)</ApplyXslTemplatesDependsOn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
@@ -75,6 +79,26 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="NSch, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\NSch.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpGit\lib\Sharpen.dll</HintPath>
+    </Reference>
     <Reference Include="SharpSvn">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\autolib\SharpSvn\SharpSvn.dll</HintPath>
@@ -244,6 +268,10 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpGit\SharpGit.csproj">
+      <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
+      <Name>SharpGit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Diff\VisualGit.Diff.csproj">
       <Project>{69301E7D-F47F-42F4-8CB6-4A5CA3101785}</Project>
       <Name>VisualGit.Diff</Name>

@@ -9,6 +9,7 @@ using VisualGit.VS;
 using VisualGit.Commands;
 using System.Windows.Forms;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.Services.PendingChanges
 {
@@ -42,7 +43,7 @@ namespace VisualGit.Services.PendingChanges
             get
             {
                 if (_client == null)
-                    _client = GetService<IGitClientPool>().GetNoUIClient();
+                    _client = GetService<ISvnClientPool>().GetNoUIClient();
 
                 return _client;
             }
@@ -119,7 +120,7 @@ namespace VisualGit.Services.PendingChanges
 
         bool IsDirectory(GitItem item)
         {
-            return item.IsDirectory || item.NodeKind == SvnNodeKind.Directory;
+            return item.IsDirectory || item.NodeKind == GitNodeKind.Directory;
         }
 
         public SvnDepth CalculateCommitDepth()
@@ -160,7 +161,7 @@ namespace VisualGit.Services.PendingChanges
 
                 // Let's see if committing with depth infinity would go wrong
                 bool hasOther = false;
-                using (SvnClient cl = GetService<IGitClientPool>().GetNoUIClient())
+                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
                 {
                     bool cancel = false;
                     SvnStatusArgs sa = new SvnStatusArgs();

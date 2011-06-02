@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.ExtensionPoints",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.GenerateVSIXManifest", "tools\VisualGit.GenerateVSIXManifest\VisualGit.GenerateVSIXManifest.csproj", "{28C030E0-0298-44EB-9434-4B5565EB33AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGit", "SharpGit\SharpGit.csproj", "{3483D848-0E50-445A-92B6-BDA2320BEA52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,12 @@ Global
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Release (With MSI)|Any CPU.ActiveCfg = Release|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3483D848-0E50-445A-92B6-BDA2320BEA52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

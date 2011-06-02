@@ -245,7 +245,7 @@ namespace VisualGit.Commands
 
         static void AddPathToGit(CommandEventArgs e, string path)
         {
-            using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
+            using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnAddArgs aa = new SvnAddArgs();
                 aa.AddParents = true;
@@ -264,7 +264,7 @@ namespace VisualGit.Commands
 
         static bool CheckoutWorkingCopyForSolution(CommandEventArgs e, ref bool confirmed)
         {
-            using (SvnClient cl = e.GetService<IGitClientPool>().GetClient())
+            using (SvnClient cl = e.GetService<ISvnClientPool>().GetClient())
             using (AddToGit dialog = new AddToGit())
             {
                 dialog.PathToAdd = e.Selection.SolutionFilename;
@@ -491,7 +491,7 @@ namespace VisualGit.Commands
         {
             shouldMarkAsManaged = false;
             storeReference = false;
-            using (SvnClient cl = e.GetService<IGitClientPool>().GetClient())
+            using (SvnClient cl = e.GetService<ISvnClientPool>().GetClient())
             using (AddProjectToGit dialog = new AddProjectToGit())
             {
                 dialog.Context = e.Context;

@@ -67,7 +67,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
                 {
                     if (value != GitItem.Status.ChangeList)
                     {
-                        using (SvnClient client = _context.GetService<IGitClientPool>().GetNoUIClient())
+                        using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             if (cl != null)
                             {

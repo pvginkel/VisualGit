@@ -64,7 +64,7 @@ namespace VisualGit.Commands
                 {
                     if (item.IsVersioned)
                     {
-                        using (SvnClient cl = e.GetService<IGitClientPool>().GetNoUIClient())
+                        using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             SvnDeleteArgs da = new SvnDeleteArgs();
                             da.Force = true;

@@ -111,7 +111,7 @@ namespace VisualGit.VSPackage
 
         protected override VSEditorControl CreateForm()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 

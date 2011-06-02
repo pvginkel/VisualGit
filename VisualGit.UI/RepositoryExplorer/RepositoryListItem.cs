@@ -7,6 +7,7 @@ using VisualGit.VS;
 using System.IO;
 using VisualGit.UI.VSSelectionControls;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryExplorer
 {

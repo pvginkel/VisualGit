@@ -92,7 +92,7 @@ namespace VisualGit.UI.DiffWindow
 
         private void Clear()
         {
-            //throw new NotImplementedException();
+            //throw new NotSupportedException();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

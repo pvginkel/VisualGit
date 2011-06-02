@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using SharpSvn;
 using System.Diagnostics;
 using System.Drawing;
+using SharpGit;
 
 namespace VisualGit.UI.MergeWizard
 {
