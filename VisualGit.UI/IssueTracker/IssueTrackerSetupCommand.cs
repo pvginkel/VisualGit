@@ -66,11 +66,11 @@ namespace VisualGit.UI.IssueTracker
             return context.GetService<IProgressRunner>().RunModal("Removing Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
                 {
-                    wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryConnector);
-                    wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryUri);
-                    wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId);
-                    wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames);
-                    wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues);
+                    wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryConnector);
+                    wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryUri);
+                    wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId);
+                    wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames);
+                    wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues);
                 }).Succeeded;
         }
 
@@ -79,24 +79,24 @@ namespace VisualGit.UI.IssueTracker
             return context.GetService<IProgressRunner>().RunModal("Applying Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
                 {
-                    wa.Client.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryConnector, settings.ConnectorName);
-                    wa.Client.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryUri, settings.RepositoryUri.ToString());
+                    wa.SvnClient.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryConnector, settings.ConnectorName);
+                    wa.SvnClient.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryUri, settings.RepositoryUri.ToString());
                     string repositoryId = settings.RepositoryId;
                     if (string.IsNullOrEmpty(repositoryId))
                     {
-                        wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId);
+                        wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId);
                     }
                     else
                     {
-                        wa.Client.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId, settings.RepositoryId);
+                        wa.SvnClient.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryId, settings.RepositoryId);
                     }
                     IDictionary<string, object> customProperties = settings.CustomProperties;
                     if (customProperties == null
                         || customProperties.Count == 0
                         )
                     {
-                        wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames);
-                        wa.Client.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues);
+                        wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames);
+                        wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues);
                     }
                     else
                     {
@@ -115,8 +115,8 @@ namespace VisualGit.UI.IssueTracker
                             propValueList.Add(propValue == null ? string.Empty : propValue.ToString());
                         }
                         string propValues = string.Join(",", propValueList.ToArray());
-                        wa.Client.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames, propNames);
-                        wa.Client.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues, propValues);
+                        wa.SvnClient.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames, propNames);
+                        wa.SvnClient.SetProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues, propValues);
                     }
 
                 }).Succeeded;

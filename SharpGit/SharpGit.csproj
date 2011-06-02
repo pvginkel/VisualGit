@@ -67,12 +67,14 @@
   <ItemGroup>
     <Compile Include="FileSystemUtil.cs" />
     <Compile Include="GitChangeItem.cs" />
+    <Compile Include="GitChangeListCollection.cs" />
     <Compile Include="GitCommand.cs" />
     <Compile Include="GitCommitItem.cs" />
     <Compile Include="GitCommitItemCollection.cs" />
     <Compile Include="GitCommittingEventArgs.cs" />
     <Compile Include="GitCommitTypes.cs" />
     <Compile Include="GitConflictData.cs" />
+    <Compile Include="GitCouldNotLockException.cs" />
     <Compile Include="GitDeleteArgs.cs" />
     <Compile Include="GitDeleteCommand.cs" />
     <Compile Include="GitDepth.cs" />
@@ -88,6 +90,8 @@
     <Compile Include="GitNotifyEventArgs.cs" />
     <Compile Include="GitNotifyState.cs" />
     <Compile Include="GitNoRepositoryException.cs" />
+    <Compile Include="GitRevertArgs.cs" />
+    <Compile Include="GitRevertCommand.cs" />
     <Compile Include="GitUI.cs" />
     <Compile Include="GitUIBindArgs.cs" />
     <Compile Include="PathFilterNotRecurse.cs" />

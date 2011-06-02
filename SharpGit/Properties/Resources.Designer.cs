@@ -61,11 +61,29 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to lock the repository.
+        /// </summary>
+        internal static string CouldNotLock {
+            get {
+                return ResourceManager.GetString("CouldNotLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path is not (part of) a Git repository.
         /// </summary>
         internal static string PathNoRepository {
             get {
                 return ResourceManager.GetString("PathNoRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unspecified exception occured.
+        /// </summary>
+        internal static string Unspecified {
+            get {
+                return ResourceManager.GetString("Unspecified", resourceCulture);
             }
         }
     }

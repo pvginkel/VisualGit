@@ -59,7 +59,7 @@ namespace VisualGit.Commands
                             else
                                 args.RelativeToPath = null;
 
-                            ee.Client.Diff(item.FullPath, revRange, args, stream);
+                            ee.SvnClient.Diff(item.FullPath, revRange, args, stream);
                         }
 
                         stream.Flush();

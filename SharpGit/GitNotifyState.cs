@@ -8,7 +8,7 @@ namespace SharpGit
     public enum GitNotifyState
     {
         None,
-        //Unknown,
+        Unknown,
         //Unchanged,
         //Missing,
         //Obstructed,

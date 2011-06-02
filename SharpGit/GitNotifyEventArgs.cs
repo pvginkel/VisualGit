@@ -11,7 +11,7 @@ namespace SharpGit
         // public string ChangeListName { get; internal set; }
         public string FullPath { get; internal set; }
         public GitNodeKind NodeKind { get; internal set; }
-        public GitNotifyState State { get; internal set; }
+        public GitNotifyState ContentState { get; internal set; }
         public GitNotifyAction Action { get; internal set; }
         public GitCommandType CommandType { get; internal set; }
         public GitException Error { get; internal set; }

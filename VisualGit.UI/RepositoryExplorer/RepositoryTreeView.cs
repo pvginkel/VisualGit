@@ -815,7 +815,7 @@ namespace VisualGit.UI.RepositoryExplorer
                         args.CreateParents = true;
 
                         args.LogMessage = dialog.LogMessage;
-                        a.Client.RemoteCreateDirectory(newDir, args);
+                        a.SvnClient.RemoteCreateDirectory(newDir, args);
                     });
 
                 AddRoot(newDir);

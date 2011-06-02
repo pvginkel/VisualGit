@@ -71,7 +71,7 @@ namespace VisualGit.Commands
             ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal("Retrieving Conflict Information",
                 delegate(object sender, ProgressWorkerArgs a)
                 {
-                    ok = a.Client.GetInfo(conflict.FullPath, out conflictInfo);
+                    ok = a.SvnClient.GetInfo(conflict.FullPath, out conflictInfo);
                 });
 
             if (!ok || !r.Succeeded || conflictInfo == null)

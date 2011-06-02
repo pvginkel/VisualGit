@@ -40,7 +40,7 @@ namespace SharpGit
                     CommandType = Args.CommandType,
                     FullPath = path,
                     NodeKind = GitNodeKind.File,
-                    State= GitNotifyState.None
+                    ContentState= GitNotifyState.None
                 });
             }
         }

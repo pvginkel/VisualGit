@@ -162,7 +162,7 @@ namespace VisualGit.UI.PendingChanges
                         {
                             SvnStatusArgs sa = new SvnStatusArgs();
                             sa.RetrieveRemoteStatus = true;
-                            DoFetchRecentChanges(e.Client, sa, roots, resultList, found);
+                            DoFetchRecentChanges(e.SvnClient, sa, roots, resultList, found);
                         }).Succeeded)
                     {
                         refreshFromList = true;

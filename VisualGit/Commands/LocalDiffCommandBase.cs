@@ -163,7 +163,7 @@ namespace VisualGit.Commands
                 
                 using (FileStream stream = File.Create(tempFile))
                 {
-                    ee.Client.Write(target, stream, args);
+                    ee.SvnClient.Write(target, stream, args);
                 }
             });
 

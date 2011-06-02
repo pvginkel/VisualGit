@@ -50,7 +50,7 @@ namespace SharpGit
             {
                 args.SetError(ex);
 
-                if (args.ThrowOnError)
+                if (args.ShouldThrow(ex.ErrorCode))
                     throw;
 
                 return false;
@@ -80,7 +80,37 @@ namespace SharpGit
             {
                 args.SetError(ex);
 
-                if (args.ThrowOnError)
+                if (args.ShouldThrow(ex.ErrorCode))
+                    throw;
+
+                return false;
+            }
+            finally
+            {
+                IsCommandRunning = false;
+            }
+        }
+        
+        public bool Revert(IEnumerable<string> path, GitRevertArgs args)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            try
+            {
+                IsCommandRunning = true;
+
+                new GitRevertCommand(this, args).Execute(path);
+
+                return true;
+            }
+            catch (GitException ex)
+            {
+                args.SetError(ex);
+
+                if (args.ShouldThrow(ex.ErrorCode))
                     throw;
 
                 return false;

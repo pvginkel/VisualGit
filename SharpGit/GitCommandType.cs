@@ -40,7 +40,7 @@ namespace SharpGit
         //Relocate = 30,
         //RemoveFromChangeList = 31,
         //Resolved = 32,
-        //Revert = 33,
+        Revert = 33,
         //RevisionPropertyList = 34,
         //SetProperty = 35,
         //SetRevisionProperty = 36,

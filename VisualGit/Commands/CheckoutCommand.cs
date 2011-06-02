@@ -51,7 +51,7 @@ namespace VisualGit.Commands
                         args.Depth = dlg.Recursive ? SvnDepth.Infinity : SvnDepth.Files;
                         args.IgnoreExternals = dlg.IgnoreExternals;
 
-                        a.Client.CheckOut(dlg.Uri, dlg.LocalPath, args);
+                        a.SvnClient.CheckOut(dlg.Uri, dlg.LocalPath, args);
                     });
             }
         }

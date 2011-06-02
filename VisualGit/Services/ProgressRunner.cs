@@ -12,6 +12,7 @@ using System.Text;
 using System.IO;
 using VisualGit.VS.OutputPane;
 using System.Runtime.InteropServices;
+using SharpGit;
 
 namespace VisualGit
 {
@@ -116,13 +117,15 @@ namespace VisualGit
             public void Start(string caption)
             {
                 Thread thread = new Thread(new ParameterizedThreadStart(this.Run));
-                ISvnClientPool pool = _context.GetService<ISvnClientPool>();
+                ISvnClientPool svnPool = _context.GetService<ISvnClientPool>();
+                IGitClientPool pool = _context.GetService<IGitClientPool>();
                 IVisualGitDialogOwner dialogOwner = _context.GetService<IVisualGitDialogOwner>();
 
                 using (ProgressDialog dialog = new ProgressDialog())
-                using (SvnClient client = pool.GetClient())
-                using (CreateUpdateReport ? BindOutputPane(client) : null)
-                using (dialog.Bind(client))
+                using (SvnClient svnClient = svnPool.GetClient())
+                using (GitClient client = pool.GetClient())
+                using (CreateUpdateReport ? BindOutputPane(svnClient) : null)
+                using (dialog.Bind(svnClient))
                 {
                     _sync = dialog;
                     dialog.Caption = caption;
@@ -135,7 +138,7 @@ namespace VisualGit
                         if (!threadStarted)
                         {
                             threadStarted = true;
-                            thread.Start(client);
+                            thread.Start(new ClientPasser(svnClient, client));
                         }
                     };
                     _invoker = dialog;
@@ -173,10 +176,10 @@ namespace VisualGit
 
             private void Run(object arg)
             {
-                SvnClient client = (SvnClient)arg;
+                ClientPasser clients = (ClientPasser)arg;
                 try
                 {
-                    ProgressWorkerArgs awa = new ProgressWorkerArgs(_context, client, _sync);
+                    ProgressWorkerArgs awa = new ProgressWorkerArgs(_context, clients.Client, clients.SvnClient, _sync);
                     _action(null, awa);
 
                     if (_exception == null && awa.Exception != null)
@@ -259,6 +262,18 @@ namespace VisualGit
                         }
                     }
                 }
+            }
+
+            private class ClientPasser
+            {
+                public ClientPasser(SvnClient svnClient, GitClient client)
+                {
+                    SvnClient = svnClient;
+                    Client = client;
+                }
+
+                public SvnClient SvnClient { get; private set; }
+                public GitClient Client { get; private set; }
             }
         }
         

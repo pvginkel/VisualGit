@@ -131,7 +131,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         try
                         {
                             // First try with the full new name
-                            a.Client.RemoteMove(uris, toUri, ma);
+                            a.SvnClient.RemoteMove(uris, toUri, ma);
                         }
                         catch (SvnFileSystemException fs)
                         {
@@ -140,7 +140,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
                             // If exists retry below this directory with the existing name                            
                             ma.AlwaysMoveAsChild = true;
-                            a.Client.RemoteMove(uris, toUri, ma);
+                            a.SvnClient.RemoteMove(uris, toUri, ma);
                         }
                     }
                     else
@@ -152,7 +152,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         try
                         {
                             // First try with the full new name
-                            a.Client.RemoteCopy(copyFrom, toUri, ca);
+                            a.SvnClient.RemoteCopy(copyFrom, toUri, ca);
                         }
                         catch (SvnFileSystemException fs)
                         {
@@ -161,7 +161,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
                             // If exists retry below this directory with the existing name
                             ca.AlwaysCopyAsChild = true;
-                            a.Client.RemoteCopy(copyFrom, toUri, ca);
+                            a.SvnClient.RemoteCopy(copyFrom, toUri, ca);
                         }
                     }
                 });

@@ -120,7 +120,7 @@ namespace VisualGit.UI.GitLog.Commands
                         if (target == null)
                             continue;
 
-                        ee.Client.Merge(target.FullPath, target, revisions, ma);
+                        ee.SvnClient.Merge(target.FullPath, target, revisions, ma);
                     }
                 });
             }

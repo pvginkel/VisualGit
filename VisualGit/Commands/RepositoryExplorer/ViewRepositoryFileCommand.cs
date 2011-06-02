@@ -31,7 +31,7 @@ namespace VisualGit.Commands
                         if(ri.Revision != null)
                             args.Revision = ri.Revision;
 
-                        ee.Client.Write(ri.Origin.Target, fs, args);
+                        ee.SvnClient.Write(ri.Origin.Target, fs, args);
                     }
                 });
 

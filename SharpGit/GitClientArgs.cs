@@ -8,6 +8,9 @@ namespace SharpGit
 {
     public abstract class GitClientArgs
     {
+        private HashSet<GitErrorCategory> _expectedErrorCategories;
+        private HashSet<GitErrorCode> _expectedErrorCodes;
+
         internal GitClientArgs(GitCommandType commandType)
         {
             ThrowOnError = true;
@@ -45,6 +48,56 @@ namespace SharpGit
             {
                 AddExpectedError(item);
             }
+        }
+
+        public void AddExpectedError(GitErrorCategory errorCategory)
+        {
+            if (_expectedErrorCategories == null)
+                _expectedErrorCategories = new HashSet<GitErrorCategory>();
+
+            if (!_expectedErrorCategories.Contains(errorCategory))
+                _expectedErrorCategories.Add(errorCategory);
+        }
+
+        public void AddExpectedError(params GitErrorCode[] errorCodes)
+        {
+            if (errorCodes == null)
+                throw new ArgumentNullException("errorCodes");
+
+            foreach (var item in errorCodes)
+            {
+                AddExpectedError(item);
+            }
+        }
+
+        public void AddExpectedError(GitErrorCode errorCode)
+        {
+            if (errorCode == null)
+                throw new ArgumentNullException("errorCode");
+
+            if (_expectedErrorCodes == null)
+                _expectedErrorCodes = new HashSet<GitErrorCode>();
+
+            if (!_expectedErrorCodes.Contains(errorCode))
+                _expectedErrorCodes.Add(errorCode);
+        }
+
+        internal bool ShouldThrow(GitErrorCode errorCode)
+        {
+            if (errorCode == null)
+                throw new ArgumentNullException("errorCode");
+
+            return ThrowOnError && !IsExpected(errorCode);
+        }
+
+        internal bool IsExpected(GitErrorCode errorCode)
+        {
+            if (errorCode == null)
+                throw new ArgumentNullException("errorCode");
+
+            return
+                (_expectedErrorCodes != null && _expectedErrorCodes.Contains(errorCode)) ||
+                (_expectedErrorCategories != null && _expectedErrorCategories.Contains(errorCode.Category));
         }
 
         public event EventHandler<GitErrorEventArgs> GitError;

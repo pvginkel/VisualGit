@@ -80,7 +80,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                                 {
                                     SvnDeleteArgs da = new SvnDeleteArgs();
                                     da.Force = true;
-                                    a.Client.Delete(copyTo, da);
+                                    a.SvnClient.Delete(copyTo, da);
                                 });
                         else
                             File.Delete(copyTo);
@@ -103,7 +103,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         if (copyBelow)
                             ca.AlwaysCopyAsChild = true;
 
-                        a.Client.Copy(item.Origin.Target, copyTo, ca);
+                        a.SvnClient.Copy(item.Origin.Target, copyTo, ca);
                     });
             }
             else
@@ -119,7 +119,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         SvnExportArgs ea = new SvnExportArgs();
                         ea.Revision = item.Revision;
 
-                        a.Client.Export(item.Origin.Target, copyTo, ea);
+                        a.SvnClient.Export(item.Origin.Target, copyTo, ea);
                     });
                 }
             }

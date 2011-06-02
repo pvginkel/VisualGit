@@ -83,7 +83,7 @@ namespace VisualGit.Commands
 
                         foreach (GitItem item in selection)
                         {
-                            ee.Client.Add(item.FullPath, args);
+                            ee.SvnClient.Add(item.FullPath, args);
                         }
                     });
         }

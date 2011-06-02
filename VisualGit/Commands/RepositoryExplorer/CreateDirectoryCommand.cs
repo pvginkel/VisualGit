@@ -55,7 +55,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         args.ThrowOnError = false;
                         args.CreateParents = true;
                         args.LogMessage = log;
-                        ee.Client.RemoteCreateDirectory(uri, args);
+                        ee.SvnClient.RemoteCreateDirectory(uri, args);
                     }
                     );
 

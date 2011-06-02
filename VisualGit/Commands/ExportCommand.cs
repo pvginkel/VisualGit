@@ -36,7 +36,7 @@ namespace VisualGit.Commands
                         args.Depth = depth;
                         args.Revision = dlg.Revision;
 
-                        wa.Client.Export(dlg.ExportSource, dlg.LocalPath, args);
+                        wa.SvnClient.Export(dlg.ExportSource, dlg.LocalPath, args);
                     });
             }
         }

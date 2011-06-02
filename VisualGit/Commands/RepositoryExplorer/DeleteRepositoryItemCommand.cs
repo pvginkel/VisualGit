@@ -62,7 +62,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                         SvnDeleteArgs da = new SvnDeleteArgs();
                         da.LogMessage = logMessage;
 
-                        a.Client.RemoteDelete(uris, da);
+                        a.SvnClient.RemoteDelete(uris, da);
                     });
             }
             finally

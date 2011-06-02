@@ -187,14 +187,14 @@ namespace VisualGit.Commands
                             args.Revision = revision;
 
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-                        if (!a.Client.Switch(path, target, args))
+                        if (!a.SvnClient.Switch(path, target, args))
                         {
                             if (args.LastException.SvnErrorCode != SvnErrorCode.SVN_ERR_WC_INVALID_SWITCH)
                                 return;
 
                             // source/target repository is different, check if we can fix this by relocating
                             SvnInfoEventArgs iea;
-                            if (a.Client.GetInfo(target, out iea))
+                            if (a.SvnClient.GetInfo(target, out iea))
                             {
                                 if (pathItem.WorkingCopy.RepositoryId != iea.RepositoryId)
                                 {
@@ -229,7 +229,7 @@ namespace VisualGit.Commands
                             "Relocating",
                             delegate(object sender, ProgressWorkerArgs a)
                             {
-                                a.Client.Relocate(path, pathItem.WorkingCopy.RepositoryRoot, newRepositoryRoot);
+                                a.SvnClient.Relocate(path, pathItem.WorkingCopy.RepositoryRoot, newRepositoryRoot);
                             });
                     }
                     finally
@@ -257,7 +257,7 @@ namespace VisualGit.Commands
                             args.AllowObstructions = allowObstructions;
 
                             e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-                            a.Client.Switch(path, target, args);
+                            a.SvnClient.Switch(path, target, args);
                         });
                     }
                 }

@@ -178,7 +178,7 @@ namespace VisualGit.Commands
                         SvnGetPropertyArgs pa = new SvnGetPropertyArgs();
                         pa.ThrowOnError = false;
                         SvnTargetPropertyCollection tpc;
-                        if (e.Client.GetProperty(path, SvnPropertyNames.SvnIgnore, pa, out tpc))
+                        if (e.SvnClient.GetProperty(path, SvnPropertyNames.SvnIgnore, pa, out tpc))
                         {
                             SvnPropertyValue pv;
                             if (tpc.Count > 0 && null != (pv = tpc[0]) && pv.StringValue != null)
@@ -214,7 +214,7 @@ namespace VisualGit.Commands
                                 sb.Append(item);
                             }
 
-                            e.Client.SetProperty(path, SvnPropertyNames.SvnIgnore, sb.ToString());
+                            e.SvnClient.SetProperty(path, SvnPropertyNames.SvnIgnore, sb.ToString());
                         }
                     });
 

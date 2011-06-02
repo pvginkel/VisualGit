@@ -3,29 +3,37 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using System.ComponentModel;
+using SharpGit;
 
 namespace VisualGit
 {
     public class ProgressWorkerArgs : EventArgs
     {
         readonly IVisualGitServiceProvider _context;
-        readonly SvnClient _client;
+        readonly GitClient _client;
+        readonly SvnClient _svnClient;
         readonly ISynchronizeInvoke _sync;
         Exception _exception;
 
-        public ProgressWorkerArgs(IVisualGitServiceProvider context, SvnClient client, ISynchronizeInvoke sync)
+        public ProgressWorkerArgs(IVisualGitServiceProvider context, GitClient client, SvnClient svnClient, ISynchronizeInvoke sync)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
 
             _context = context;
             _client = client;
+            _svnClient = svnClient;
             _sync = sync;
         }
 
-        public SvnClient Client
+        public GitClient Client
         {
             get { return _client; }
+        }
+
+        public SvnClient SvnClient
+        {
+            get { return _svnClient; }
         }
 
         public IVisualGitServiceProvider Context

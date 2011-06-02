@@ -44,7 +44,7 @@ namespace VisualGit.Commands
                     SvnCleanUpArgs args = new SvnCleanUpArgs();
                     args.ThrowOnError = false;
                     foreach (string path in wcs)
-                        a.Client.CleanUp(path, args);
+                        a.SvnClient.CleanUp(path, args);
                 });
         }
     }

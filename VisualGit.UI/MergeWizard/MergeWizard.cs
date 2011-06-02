@@ -222,14 +222,14 @@ namespace VisualGit.UI.MergeWizard
                         if (!PerformDryRun)
                         {
                             // Attach the conflict handler
-                            ee.Client.Conflict += new EventHandler<SvnConflictEventArgs>(conflictHandler.OnConflict);
+                            ee.SvnClient.Conflict += new EventHandler<SvnConflictEventArgs>(conflictHandler.OnConflict);
                         }
 
                         // Attach the cancel handler
-                        ee.Client.Cancel += new EventHandler<SvnCancelEventArgs>(this.OnCancel);
+                        ee.SvnClient.Cancel += new EventHandler<SvnCancelEventArgs>(this.OnCancel);
 
                         // Attach the notify handler
-                        ee.Client.Notify += new EventHandler<SvnNotifyEventArgs>(this.OnNotify);
+                        ee.SvnClient.Notify += new EventHandler<SvnNotifyEventArgs>(this.OnNotify);
 
                         if (mergeType == MergeType.TwoDifferentTrees)
                         {
@@ -259,7 +259,7 @@ namespace VisualGit.UI.MergeWizard
                             else
                                 toUri = fromUri;
 
-                            ee.Client.DiffMerge(MergeTarget.FullPath,
+                            ee.SvnClient.DiffMerge(MergeTarget.FullPath,
                                 new SvnUriTarget(fromUri, (page.MergeFromRevision > -1 ?
                                     new SvnRevision(page.MergeFromRevision - 1) :
                                     SvnRevision.Head)),
@@ -275,7 +275,7 @@ namespace VisualGit.UI.MergeWizard
                             // Set whether or not this is a dry run
                             args.DryRun = PerformDryRun;
 
-                            ee.Client.ReintegrationMerge(MergeTarget.FullPath, MergeSource.Target, args);
+                            ee.SvnClient.ReintegrationMerge(MergeTarget.FullPath, MergeSource.Target, args);
                         }
                         else
                         {
@@ -307,7 +307,7 @@ namespace VisualGit.UI.MergeWizard
                             if (MergeRevisions == null)
                             {
                                 // Merge all eligible
-                                ee.Client.Merge(
+                                ee.SvnClient.Merge(
                                     MergeTarget.FullPath,
                                     MergeSource.Target,
                                     new SvnRevisionRange(SvnRevision.Zero, SvnRevision.Head),
@@ -316,7 +316,7 @@ namespace VisualGit.UI.MergeWizard
                             else
                             {
                                 // Cherrypicking
-                                ee.Client.Merge(
+                                ee.SvnClient.Merge(
                                     MergeTarget.FullPath,
                                     MergeSource.Target,
                                     new List<SvnRevisionRange>(MergeRevisions),
@@ -329,14 +329,14 @@ namespace VisualGit.UI.MergeWizard
                         if (!PerformDryRun)
                         {
                             // Detach the conflict handler
-                            ee.Client.Conflict -= new EventHandler<SvnConflictEventArgs>(conflictHandler.OnConflict);
+                            ee.SvnClient.Conflict -= new EventHandler<SvnConflictEventArgs>(conflictHandler.OnConflict);
                         }
 
                         // Detach the notify handler
-                        ee.Client.Notify -= new EventHandler<SvnNotifyEventArgs>(OnNotify);
+                        ee.SvnClient.Notify -= new EventHandler<SvnNotifyEventArgs>(OnNotify);
 
                         // Detach the cancel handler
-                        ee.Client.Cancel -= new EventHandler<SvnCancelEventArgs>(this.OnCancel);
+                        ee.SvnClient.Cancel -= new EventHandler<SvnCancelEventArgs>(this.OnCancel);
 
                         if (mergeConflictHandler != null)
                         {

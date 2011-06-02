@@ -74,7 +74,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                     {
                         SvnMoveArgs ma = new SvnMoveArgs();
                         ma.LogMessage = logMessage;
-                        we.Client.RemoteMove(itemUri, new Uri(itemUri, newName), ma);
+                        we.SvnClient.RemoteMove(itemUri, new Uri(itemUri, newName), ma);
                     });
             }
             finally

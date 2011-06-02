@@ -94,7 +94,7 @@ namespace VisualGit.Commands
                             SvnInfoArgs ia = new SvnInfoArgs();
                             ia.ThrowOnError = false;
 
-                            if (ee.Client.Info(dlg.NewDirectoryName, ia, null))
+                            if (ee.SvnClient.Info(dlg.NewDirectoryName, ia, null))
                             {
                                 DialogResult dr = DialogResult.Cancel;
 
@@ -119,8 +119,8 @@ namespace VisualGit.Commands
                                 ca.LogMessage = msg;
 
                                 ok = dlg.CopyFromUri ?
-                                    ee.Client.RemoteCopy(new SvnUriTarget(dlg.SrcUri, dlg.SelectedRevision), dlg.NewDirectoryName, ca) :
-                                    ee.Client.RemoteCopy(new SvnPathTarget(dlg.SrcFolder), dlg.NewDirectoryName, ca);
+                                    ee.SvnClient.RemoteCopy(new SvnUriTarget(dlg.SrcUri, dlg.SelectedRevision), dlg.NewDirectoryName, ca) :
+                                    ee.SvnClient.RemoteCopy(new SvnPathTarget(dlg.SrcFolder), dlg.NewDirectoryName, ca);
                             }
                         });
 

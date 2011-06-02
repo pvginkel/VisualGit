@@ -22,5 +22,7 @@ namespace SharpGit
         }
 
         public static readonly GitErrorCode PathNoRepository = new GitErrorCode(GitErrorCategory.None, Properties.Resources.PathNoRepository);
+        public static readonly GitErrorCode CouldNotLock = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CouldNotLock);
+        public static readonly GitErrorCode Unspecified = new GitErrorCode(GitErrorCategory.None, Properties.Resources.Unspecified);
     }
 }

@@ -74,7 +74,7 @@ namespace VisualGit.Commands
                     delegate(object sender, ProgressWorkerArgs a)
                     {
 
-                        rootUri = a.Client.GetRepositoryRoot(selectedUri);
+                        rootUri = a.SvnClient.GetRepositoryRoot(selectedUri);
 
                     }).Succeeded)
                 {
@@ -170,7 +170,7 @@ namespace VisualGit.Commands
             SvnCheckOutArgs a = new SvnCheckOutArgs();
             a.Revision = revision;
 
-            e.Client.CheckOut(projectTop, localDir, a);
+            e.SvnClient.CheckOut(projectTop, localDir, a);
         }
 
         private static void FindRoot(IVisualGitServiceProvider context, Uri selectedUri, CheckoutProject dlg)

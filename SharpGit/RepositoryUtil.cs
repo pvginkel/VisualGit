@@ -74,5 +74,33 @@ namespace SharpGit
             else
                 return path.StartsWith(rootPath, FileSystemUtil.StringComparison);
         }
+
+        internal static Dictionary<RepositoryEntry, ICollection<string>> CollectPaths(IEnumerable<string> paths)
+        {
+            if (paths == null)
+                throw new ArgumentNullException("paths");
+
+            var result = new Dictionary<RepositoryEntry, ICollection<string>>();
+
+            foreach (string path in paths)
+            {
+                var repositoryEntry = RepositoryManager.GetRepository(path);
+
+                if (repositoryEntry != null)
+                {
+                    ICollection<string> repositoryPaths;
+
+                    if (!result.TryGetValue(repositoryEntry, out repositoryPaths))
+                    {
+                        repositoryPaths = new List<string>();
+                        result.Add(repositoryEntry, repositoryPaths);
+                    }
+
+                    repositoryPaths.Add(repositoryEntry.Repository.GetRepositoryPath(path));
+                }
+            }
+
+            return result;
+        }
     }
 }

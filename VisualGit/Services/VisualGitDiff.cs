@@ -784,7 +784,7 @@ namespace VisualGit.Services
                     wa.Revision = revision;
 
                     using (Stream s = File.Create(file))
-                        aa.Client.Write(new SvnPathTarget(target.FullPath), s, wa);
+                        aa.SvnClient.Write(new SvnPathTarget(target.FullPath), s, wa);
                 });
 
             if (!r.Succeeded)
@@ -814,7 +814,7 @@ namespace VisualGit.Services
                     wa.AddExpectedError(SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES);
 
                     using (Stream s = File.Create(file))
-                        if (!aa.Client.Write(target, s, wa))
+                        if (!aa.SvnClient.Write(target, s, wa))
                         {
                             if (wa.LastException.SvnErrorCode == SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES)
                                 unrelated = true;
@@ -855,7 +855,7 @@ namespace VisualGit.Services
                         ea.Start = from;
                         ea.End = to;
 
-                        e.Client.FileVersions(target, ea,
+                        e.SvnClient.FileVersions(target, ea,
                             delegate(object sender2, SvnFileVersionEventArgs e2)
                             {
                                 if (n++ == 0)

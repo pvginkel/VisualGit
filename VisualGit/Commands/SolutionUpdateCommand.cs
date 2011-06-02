@@ -394,7 +394,7 @@ namespace VisualGit.Commands
                         continue;
 
                     SvnUpdateResult result;
-                    wa.Client.Update(path, ua, out result);
+                    wa.SvnClient.Update(path, ua, out result);
 
                     if (updateResult == null)
                         updateResult = result; // Return the primary update as version for output

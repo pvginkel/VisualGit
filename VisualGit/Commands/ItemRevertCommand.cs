@@ -6,6 +6,7 @@ using VisualGit.VS;
 using VisualGit.UI;
 using System.Collections.Generic;
 using VisualGit.UI.PathSelector;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -96,13 +97,20 @@ namespace VisualGit.Commands
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.Reverting,
                 delegate(object sender, ProgressWorkerArgs a)
                 {
-                    SvnRevertArgs ra = new SvnRevertArgs();
-                    ra.Depth = SvnDepth.Empty;
-                    ra.AddExpectedError(SvnErrorCode.SVN_ERR_WC_NOT_DIRECTORY); // Parent revert invalidated this change
+                    GitRevertArgs ra = new GitRevertArgs();
+                    ra.Depth = GitDepth.Empty;
+                    ra.AddExpectedError(GitErrorCode.PathNoRepository); // Parent revert invalidated this change
+
+                    List<string> toRevertPaths = new List<string>();
 
                     foreach (GitItem item in toRevert)
                     {
-                        a.Client.Revert(item.FullPath, ra);
+                        toRevertPaths.Add(item.FullPath);
+                    }
+
+                    foreach (GitItem item in toRevert)
+                    {
+                        a.Client.Revert(toRevertPaths, ra);
                     }
                 });
             }

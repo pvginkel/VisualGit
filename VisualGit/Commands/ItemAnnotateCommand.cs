@@ -164,7 +164,7 @@ namespace VisualGit.Commands
             {
                 using (FileStream fs = File.Create(tempFile))
                 {
-                    ee.Client.Write(target, fs, wa);
+                    ee.SvnClient.Write(target, fs, wa);
                 }
 
                 ba.SvnError +=
@@ -176,7 +176,7 @@ namespace VisualGit.Commands
                             errorEventArgs.Cancel = true;
                         }
                     };
-                ee.Client.GetBlame(target, ba, out blameResult);
+                ee.SvnClient.GetBlame(target, ba, out blameResult);
             });
 
             if (retry)
@@ -193,7 +193,7 @@ namespace VisualGit.Commands
                                       delegate(object sender, ProgressWorkerArgs ee)
                                       {
                                           ba.IgnoreMimeType = true;
-                                          ee.Client.GetBlame(target, ba, out blameResult);
+                                          ee.SvnClient.GetBlame(target, ba, out blameResult);
                                       });
                     }
                 }

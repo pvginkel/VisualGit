@@ -101,7 +101,7 @@ namespace VisualGit.Services.PendingChanges
                             else
                                 a.RelativeToPath = null;
 
-                            e.Client.Diff(item.FullPath, revRange, a, stream);
+                            e.SvnClient.Diff(item.FullPath, revRange, a, stream);
                         }
 
                         stream.Flush();
@@ -582,7 +582,7 @@ namespace VisualGit.Services.PendingChanges
                     ca.AddExpectedError(SvnErrorCode.SVN_ERR_WC_NOT_UP_TO_DATE);
                     ca.AddExpectedError(SvnErrorCode.SVN_ERR_FS_TXN_OUT_OF_DATE);
 
-                    ok = e.Client.Commit(
+                    ok = e.SvnClient.Commit(
                         state.CommitPaths,
                         ca, out rslt);
 
