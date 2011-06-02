@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CommittingUnstagedFile" xml:space="preserve">
-    <value>Attempting to commit an unstaged file</value>
+  <data name="CommittingUnstagedFileX" xml:space="preserve">
+    <value>Attempting to commit unstaged file '{0}'</value>
   </data>
   <data name="CouldNotLock" xml:space="preserve">
     <value>Unable to lock the repository</value>

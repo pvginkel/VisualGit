@@ -36,10 +36,30 @@ namespace SharpGit
                 {
                     var repository = item.Key.Repository;
 
-                    // Calculate the notification actions. This also verifies
-                    // that all files to be committed are staged.
+                    // Calculate the notification actions.
 
-                    var commitActions = CalculateDiff(item.Value, repository);
+                    var notifyActions = CalculateDiff(item.Value, repository);
+
+                    // Verify all files were staged.
+
+                    var sb = new StringBuilder();
+
+                    foreach (var notifyAction in notifyActions)
+                    {
+                        if (notifyAction.Value == GitNotifyAction.Unknown)
+                        {
+                            sb.AppendLine(String.Format(
+                                Properties.Resources.CommittingUnstagedFileX, notifyAction.Key
+                            ));
+                        }
+                    }
+
+                    if (sb.Length > 0)
+                    {
+                        result.PostCommitError = sb.ToString();
+
+                        return result;
+                    }
 
                     // Prepare the commit command.
 
@@ -79,7 +99,7 @@ namespace SharpGit
                     {
                         commitCommand.Call();
 
-                        foreach (var commitAction in commitActions)
+                        foreach (var commitAction in notifyActions)
                         {
                             RaiseNotify(new GitNotifyEventArgs
                             {
@@ -149,12 +169,6 @@ namespace SharpGit
             {
                 if (notifyActions.ContainsKey(path))
                     notifyActions[path] = GitNotifyAction.CommitDeleted;
-            }
-
-            foreach (var notifyAction in notifyActions)
-            {
-                if (notifyAction.Value == GitNotifyAction.Unknown)
-                    throw new GitException(GitErrorCode.CommittingUnstagedFile);
             }
 
             return notifyActions;

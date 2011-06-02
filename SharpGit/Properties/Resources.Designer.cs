@@ -61,11 +61,11 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attempting to commit an unstaged file.
+        ///   Looks up a localized string similar to Attempting to commit unstaged file &apos;{0}&apos;.
         /// </summary>
-        internal static string CommittingUnstagedFile {
+        internal static string CommittingUnstagedFileX {
             get {
-                return ResourceManager.GetString("CommittingUnstagedFile", resourceCulture);
+                return ResourceManager.GetString("CommittingUnstagedFileX", resourceCulture);
             }
         }
         
