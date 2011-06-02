@@ -262,10 +262,7 @@ namespace VisualGit.UI
 
         public void OnClientNotify(object sender, GitNotifyEventArgs e)
         {
-            //e.Detach();
-
             string path = e.FullPath;
-            Uri uri = e.Uri;
             GitNotifyAction action = e.Action;
             long rev = e.Revision;
 
@@ -278,19 +275,13 @@ namespace VisualGit.UI
                 {
                     case GitNotifyAction.BlameRevision:
                         {
-                            string file;
-                            if (uri != null)
-                                file = SvnTools.GetFileName(uri);
-                            else
-                                file = Path.GetFileName(path);
+                            string file = Path.GetFileName(path);
 
                             item.SubItems.Add(string.Format("{0} - r{1}", file, rev));
                             break;
                         }
                     default:
-                        if (uri != null)
-                            item.SubItems.Add(uri.ToString());
-                        else if (!string.IsNullOrEmpty(path))
+                        if (!string.IsNullOrEmpty(path))
                         {
                             string sr = SplitRoot;
                             if (!string.IsNullOrEmpty(sr))

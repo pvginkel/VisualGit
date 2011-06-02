@@ -202,7 +202,7 @@
     <value>pendingCommits</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4170.19659, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4170.19750, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -280,7 +280,7 @@
     <value>logMessageEditor</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4170.19659, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4170.19750, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
     <value>topLayoutPanel</value>
@@ -436,16 +436,16 @@
     <value>Fill</value>
   </data>
   <data name="logMessageEditor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 22</value>
+    <value>0, 20</value>
   </data>
   <data name="logMessageEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 2, 0, 0</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Name" xml:space="preserve">
     <value>pendingCommits</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4170.19659, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4170.19750, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -454,7 +454,7 @@
     <value>0</value>
   </data>
   <data name="logMessageEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>766, 59</value>
+    <value>766, 61</value>
   </data>
   <data name="logMessageEditor.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -463,7 +463,7 @@
     <value>logMessageEditor</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4170.19659, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4170.19750, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
     <value>topLayoutPanel</value>
@@ -544,7 +544,7 @@
     <value>False</value>
   </data>
   <data name="lastRevBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>300, 4</value>
+    <value>300, 2</value>
   </data>
   <data name="lastRevBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 3</value>
@@ -607,6 +607,6 @@
     <value>PendingCommitsPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4170.19659, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4170.19750, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>
