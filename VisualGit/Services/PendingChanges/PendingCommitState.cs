@@ -15,7 +15,8 @@ namespace VisualGit.Services.PendingChanges
 {
     class PendingCommitState : VisualGitService, IDisposable
     {
-        SvnClient _client;
+        SvnClient _svnClient;
+        GitClient _client;
         bool _keepLocks;
         bool _keepChangeLists;
         HybridCollection<PendingChange> _changes = new HybridCollection<PendingChange>();
@@ -38,14 +39,25 @@ namespace VisualGit.Services.PendingChanges
             }
         }
 
-        public SvnClient Client
+        public GitClient Client
         {
             get
             {
                 if (_client == null)
-                    _client = GetService<ISvnClientPool>().GetNoUIClient();
+                    _client = GetService<IGitClientPool>().GetNoUIClient();
 
                 return _client;
+            }
+        }
+
+        public SvnClient SvnClient
+        {
+            get
+            {
+                if (_svnClient == null)
+                    _svnClient = GetService<ISvnClientPool>().GetNoUIClient();
+
+                return _svnClient;
             }
         }
 
@@ -123,9 +135,9 @@ namespace VisualGit.Services.PendingChanges
             return item.IsDirectory || item.NodeKind == GitNodeKind.Directory;
         }
 
-        public SvnDepth CalculateCommitDepth()
+        public GitDepth CalculateCommitDepth()
         {
-            SvnDepth depth = SvnDepth.Empty;
+            GitDepth depth = GitDepth.Empty;
             bool requireInfinity = false;
             bool noDepthInfinity = false;
             string dirToDelete = null;
@@ -148,7 +160,7 @@ namespace VisualGit.Services.PendingChanges
             }
 
             if (requireInfinity && !noDepthInfinity)
-                depth = SvnDepth.Infinity;
+                depth = GitDepth.Infinity;
 
             if (requireInfinity && noDepthInfinity)
             {
@@ -161,16 +173,14 @@ namespace VisualGit.Services.PendingChanges
 
                 // Let's see if committing with depth infinity would go wrong
                 bool hasOther = false;
-                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
+                using (GitClient cl = GetService<IGitClientPool>().GetNoUIClient())
                 {
                     bool cancel = false;
-                    SvnStatusArgs sa = new SvnStatusArgs();
+                    GitStatusArgs sa = new GitStatusArgs();
                     sa.ThrowOnError = false;
                     sa.ThrowOnCancel = false;
                     sa.RetrieveIgnoredEntries = false;
-                    sa.IgnoreExternals = true;
-                    sa.Depth = SvnDepth.Infinity;
-                    sa.Cancel += delegate(object sender, SvnCancelEventArgs ee) { if (cancel) ee.Cancel = true; };
+                    sa.Depth = GitDepth.Infinity;
 
                     foreach (string path in CommitPaths)
                     {
@@ -180,16 +190,15 @@ namespace VisualGit.Services.PendingChanges
                             continue; // Only check not to be deleted directories
 
                         if (!cl.Status(path, sa,
-                            delegate(object sender, SvnStatusEventArgs ee)
+                            delegate(object sender, GitStatusEventArgs ee)
                             {
                                 switch (ee.LocalContentStatus)
                                 {
-                                    case SvnStatus.Zero:
-                                    case SvnStatus.None:
-                                    case SvnStatus.Normal:
-                                    case SvnStatus.Ignored:
-                                    case SvnStatus.NotVersioned:
-                                    case SvnStatus.External:
+                                    case GitStatus.Zero:
+                                    case GitStatus.None:
+                                    case GitStatus.Normal:
+                                    case GitStatus.Ignored:
+                                    case GitStatus.NotVersioned:
                                         return;
                                 }
                                 if (!CommitPaths.Contains(ee.FullPath))
@@ -197,7 +206,8 @@ namespace VisualGit.Services.PendingChanges
                                     nodeNotToCommit = ee.FullPath;
                                     nodeToCommit = path;
                                     hasOther = true;
-                                    cancel = true; // Cancel via the cancel hook
+                                    ee.Cancel = true;
+                                    cancel = true;
                                 }
                             }))
                         {
@@ -215,7 +225,7 @@ namespace VisualGit.Services.PendingChanges
                     // Ok; it is safe to commit with depth infinity; all items that would be committed
                     // with infinity would have been committed anyway
 
-                    depth = SvnDepth.Infinity;
+                    depth = GitDepth.Infinity;
                 }
                 else
                 {
@@ -231,7 +241,7 @@ namespace VisualGit.Services.PendingChanges
                     sb.AppendFormat(PccStrings.ShouldNotCommitX, nodeNotToCommit ?? "<null>");
 
                     MessageBox.Show(sb.ToString(), "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return SvnDepth.Unknown;
+                    return GitDepth.Unknown;
                 }
 
             }
@@ -246,6 +256,12 @@ namespace VisualGit.Services.PendingChanges
         internal void FlushState()
         {
             // This method assumes giving back the SvnClient instance flushes the state to the FileState cache
+            if (_svnClient != null)
+            {
+                IDisposable cl = _svnClient;
+                _svnClient = null;
+                cl.Dispose();
+            }
             if (_client != null)
             {
                 IDisposable cl = _client;

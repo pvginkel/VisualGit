@@ -12,7 +12,7 @@ namespace SharpGit
         //Unchanged,
         //Missing,
         //Obstructed,
-        //Changed,
+        Changed,
         //Merged,
         //Conflicted,
     }

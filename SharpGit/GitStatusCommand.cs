@@ -116,7 +116,12 @@ namespace SharpGit
                     callback(Client, e);
 
                     if (e.Cancel)
+                    {
+                        if (Args.ThrowOnCancel)
+                            throw new GitOperationCancelledException();
+
                         return;
+                    }
                 }
 
                 var seen = new HashSet<string>(FileSystemUtil.StringComparer);
@@ -141,7 +146,12 @@ namespace SharpGit
                     callback(Client, e);
 
                     if (e.Cancel)
+                    {
+                        if (Args.ThrowOnCancel)
+                            throw new GitOperationCancelledException();
+
                         return;
+                    }
 
                     seen.Add(fullPath);
                 }
@@ -169,7 +179,12 @@ namespace SharpGit
                     callback(Client, e);
 
                     if (e.Cancel)
+                    {
+                        if (Args.ThrowOnCancel)
+                            throw new GitOperationCancelledException();
+
                         return;
+                    }
 
                     seen.Add(fullPath);
                 }
@@ -220,7 +235,12 @@ namespace SharpGit
                                 callback(Client, e);
 
                                 if (e.Cancel)
+                                {
+                                    if (Args.ThrowOnCancel)
+                                        throw new GitOperationCancelledException();
+
                                     return;
+                                }
                             }
 
                             seen.Add(fullPath);

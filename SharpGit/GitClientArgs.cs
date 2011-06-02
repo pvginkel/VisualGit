@@ -14,10 +14,12 @@ namespace SharpGit
         internal GitClientArgs(GitCommandType commandType)
         {
             ThrowOnError = true;
+            ThrowOnCancel = true;
             CommandType = commandType;
         }
 
         public bool ThrowOnError { get; set; }
+        public bool ThrowOnCancel { get; set; }
 
         public GitException LastException { get; internal set; }
 

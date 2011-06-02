@@ -26,6 +26,16 @@ namespace SharpGit
             Args.RaiseNotify(e);
             Client.OnNotify(e);
         }
+
+        public void RaiseCommitting(GitCommittingEventArgs e)
+        {
+            var withCommitArgs = Args as GitClientArgsWithCommit;
+
+            if (withCommitArgs != null)
+                withCommitArgs.OnCommitting(e);
+
+            Client.OnCommitting(e);
+        }
     }
 
     internal abstract class GitCommand<T> : GitCommand

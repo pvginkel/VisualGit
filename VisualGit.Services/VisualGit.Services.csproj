@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IGitClientPool.cs" />
+    <Compile Include="IssueTracker\IIssueTrackerSettings.cs" />
+    <Compile Include="IssueTracker\IVisualGitIssueService.cs" />
+    <Compile Include="Scc\UI\ILastChangeInfo.cs" />
     <Compile Include="VisualGitModule.cs" />
     <Compile Include="VisualGitRuntime.cs" />
     <Compile Include="VisualGitService.cs" />
@@ -85,8 +88,6 @@
     </Compile>
     <Compile Include="VS\IVisualGitMigrationService.cs" />
     <Compile Include="IVisualGitServiceImplementation.cs" />
-    <Compile Include="IssueTracker\IVisualGitIssueService.cs" />
-    <Compile Include="IssueTracker\IIssueTrackerSettings.cs" />
     <Compile Include="Scc\IVisualGitProjectLayoutService.cs" />
     <Compile Include="Scc\IVisualGitTextEditingTracker.cs" />
     <Compile Include="Scc\ISccSettingsStore.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Scc\EnlistmentState.cs" />
     <Compile Include="Scc\UI\IVisualGitToolWindowControl.cs" />
     <Compile Include="Scc\UI\IConflictHandler.cs" />
-    <Compile Include="Scc\UI\ILastChangeInfo.cs" />
     <Compile Include="Scc\IGitLogChangedPathItem.cs" />
     <Compile Include="Scc\IGitLogItem.cs" />
     <Compile Include="Scc\IGitRepositoryItem.cs" />

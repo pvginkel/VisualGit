@@ -406,14 +406,14 @@ namespace VisualGit.Services.PendingChanges
                     if (item.IsVersioned)
                         continue; // No need to add
 
-                    SvnAddArgs a = new SvnAddArgs();
+                    GitAddArgs a = new GitAddArgs();
                     a.AddParents = true;
-                    a.Depth = SvnDepth.Empty;
+                    a.Depth = GitDepth.Empty;
                     a.ThrowOnError = false;
 
                     if (!state.Client.Add(pc.FullPath, a))
                     {
-                        if (a.LastException != null && a.LastException.SvnErrorCode == SvnErrorCode.SVN_ERR_WC_UNSUPPORTED_FORMAT)
+                        if (a.LastException != null && a.LastException.ErrorCode == GitErrorCode.PathNoRepository)
                         {
                             state.MessageBox.Show(a.LastException.Message + Environment.NewLine + Environment.NewLine
                                 + PccStrings.YouCanDownloadVisualGit, "", MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
@@ -516,7 +516,7 @@ namespace VisualGit.Services.PendingChanges
                 }
                 else if (!item.Exists)
                 {
-                    SvnDeleteArgs da = new SvnDeleteArgs();
+                    GitDeleteArgs da = new GitDeleteArgs();
                     da.KeepLocal = true;
                     da.ThrowOnError = false;
 
@@ -562,47 +562,40 @@ namespace VisualGit.Services.PendingChanges
         private bool Commit_CommitToRepository(PendingCommitState state)
         {
             bool ok = false;
-            SvnCommitResult rslt = null;
+            GitCommitResult rslt = null;
 
-            SvnDepth depth = state.CalculateCommitDepth();
+            GitDepth depth = state.CalculateCommitDepth();
 
-            if (depth == SvnDepth.Unknown)
+            if (depth == GitDepth.Unknown)
                 return false;
 
             StringBuilder outOfDateMessage = null;
             ProgressRunnerResult r = state.GetService<IProgressRunner>().RunModal(PccStrings.CommitTitle,
                 delegate(object sender, ProgressWorkerArgs e)
                 {
-                    SvnCommitArgs ca = new SvnCommitArgs();
+                    GitCommitArgs ca = new GitCommitArgs();
                     ca.Depth = depth;
                     ca.KeepLocks = state.KeepLocks;
                     ca.KeepChangeLists = state.KeepChangeLists;
                     ca.LogMessage = state.LogMessage;
-                    ca.AddExpectedError(SvnErrorCode.SVN_ERR_RA_OUT_OF_DATE);
-                    ca.AddExpectedError(SvnErrorCode.SVN_ERR_WC_NOT_UP_TO_DATE);
-                    ca.AddExpectedError(SvnErrorCode.SVN_ERR_FS_TXN_OUT_OF_DATE);
+                    ca.AddExpectedError(GitErrorCode.OutOfDate);
 
-                    ok = e.SvnClient.Commit(
+                    ok = e.Client.Commit(
                         state.CommitPaths,
                         ca, out rslt);
 
                     if(!ok && ca.LastException != null)
                     {
-                        switch (ca.LastException.SvnErrorCode)
+                        if (ca.LastException.ErrorCode == GitErrorCode.OutOfDate)
                         {
-                            case SvnErrorCode.SVN_ERR_WC_NOT_UP_TO_DATE:
-                            case SvnErrorCode.SVN_ERR_RA_OUT_OF_DATE:
-                            case SvnErrorCode.SVN_ERR_FS_TXN_OUT_OF_DATE:
-                                outOfDateMessage = new StringBuilder();
-                                Exception ex = ca.LastException;
+                            outOfDateMessage = new StringBuilder();
+                            Exception ex = ca.LastException;
 
-                                while(ex != null)
-                                {
-                                    outOfDateMessage.AppendLine(ex.Message);
-                                    ex = ex.InnerException;
-                                }
-
-                                break;
+                            while(ex != null)
+                            {
+                                outOfDateMessage.AppendLine(ex.Message);
+                                ex = ex.InnerException;
+                            }
                         }
                     }
                 });
@@ -631,7 +624,7 @@ namespace VisualGit.Services.PendingChanges
             return ok;
         }
 
-        private void PostCommit_IssueTracker(PendingCommitState state, SvnCommitResult result)
+        private void PostCommit_IssueTracker(PendingCommitState state, GitCommitResult result)
         {
             IVisualGitIssueService iService = GetService<IVisualGitIssueService>();
             if (iService != null)

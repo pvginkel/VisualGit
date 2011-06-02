@@ -7,6 +7,7 @@ namespace SharpGit
 {
     public enum GitNotifyAction
     {
+        Unknown,
         Add,
         Copy,
         Delete,

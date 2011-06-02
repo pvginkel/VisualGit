@@ -15,5 +15,17 @@ namespace SharpGit
         public GitNotifyAction Action { get; internal set; }
         public GitCommandType CommandType { get; internal set; }
         public GitException Error { get; internal set; }
+        public long Revision { get; internal set; }
+
+        public Uri Uri
+        {
+            get
+            {
+                if (FullPath != null)
+                    return new Uri("file:///" + FullPath);
+                else
+                    return null;
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.VS;
 using System.IO;
+using SharpGit;
 
 namespace VisualGit.UI
 {
@@ -77,7 +78,7 @@ namespace VisualGit.UI
 
         readonly SortedList<long, ProgressState> _progressCalc = new SortedList<long, ProgressState>();
 
-        public void OnClientProcessing(object sender, SvnProcessingEventArgs e)
+        public void OnSvnClientProcessing(object sender, SvnProcessingEventArgs e)
         {
             SvnCommandType type = e.CommandType;
 
@@ -133,6 +134,37 @@ namespace VisualGit.UI
             return actionText;
         }
 
+        string GetActionText(GitNotifyAction action)
+        {
+            string actionText = action.ToString();
+
+            switch (action)
+            {
+                case GitNotifyAction.UpdateAdd:
+                case GitNotifyAction.UpdateDelete:
+                case GitNotifyAction.UpdateReplace:
+                case GitNotifyAction.UpdateUpdate:
+                case GitNotifyAction.UpdateCompleted:
+                case GitNotifyAction.UpdateExternal:
+                    actionText = actionText.Substring(6);
+                    break;
+                case GitNotifyAction.CommitAdded:
+                case GitNotifyAction.CommitDeleted:
+                case GitNotifyAction.CommitModified:
+                case GitNotifyAction.CommitReplaced:
+                    actionText = actionText.Substring(6);
+                    break;
+                case GitNotifyAction.CommitSendData:
+                    actionText = "Sending";
+                    break;
+                case GitNotifyAction.BlameRevision:
+                    actionText = "Annotating";
+                    break;
+            }
+
+            return actionText;
+        }
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -179,7 +211,7 @@ namespace VisualGit.UI
             }
         }
 
-        public void OnClientNotify(object sender, SvnNotifyEventArgs e)
+        public void OnSvnClientNotify(object sender, SvnNotifyEventArgs e)
         {
             //e.Detach();
 
@@ -228,7 +260,56 @@ namespace VisualGit.UI
             });
         }
 
-        public void OnClientProgress(object sender, SvnProgressEventArgs e)
+        public void OnClientNotify(object sender, GitNotifyEventArgs e)
+        {
+            //e.Detach();
+
+            string path = e.FullPath;
+            Uri uri = e.Uri;
+            GitNotifyAction action = e.Action;
+            long rev = e.Revision;
+
+            Enqueue(delegate()
+            {
+                ListViewItem item = null;
+                item = new ListViewItem(GetActionText(action));
+
+                switch (action)
+                {
+                    case GitNotifyAction.BlameRevision:
+                        {
+                            string file;
+                            if (uri != null)
+                                file = SvnTools.GetFileName(uri);
+                            else
+                                file = Path.GetFileName(path);
+
+                            item.SubItems.Add(string.Format("{0} - r{1}", file, rev));
+                            break;
+                        }
+                    default:
+                        if (uri != null)
+                            item.SubItems.Add(uri.ToString());
+                        else if (!string.IsNullOrEmpty(path))
+                        {
+                            string sr = SplitRoot;
+                            if (!string.IsNullOrEmpty(sr))
+                            {
+                                if (path.StartsWith(sr, StringComparison.OrdinalIgnoreCase))
+                                    path = path.Substring(sr.Length).Replace(Path.DirectorySeparatorChar, '/');
+                            }
+
+                            item.SubItems.Add(path);
+                        }
+                        break;
+                }
+
+                if (item != null)
+                    _toAdd.Add(item);
+            });
+        }
+
+        public void OnSvnClientProgress(object sender, SvnProgressEventArgs e)
         {
             ProgressState state;
 
@@ -332,7 +413,7 @@ namespace VisualGit.UI
         }
 
         volatile bool _canceling; // Updated from UI thread, read from command thread
-        void OnClientCancel(object sender, SvnCancelEventArgs e)
+        void OnSvnClientCancel(object sender, SvnCancelEventArgs e)
         {
             if (_canceling)
                 e.Cancel = true;
@@ -403,19 +484,43 @@ namespace VisualGit.UI
         {
             if (client == null)
                 throw new ArgumentNullException("client");
-            client.Processing += new EventHandler<SvnProcessingEventArgs>(OnClientProcessing);
-            client.Notify += new EventHandler<SvnNotifyEventArgs>(OnClientNotify);
-            client.Progress += new EventHandler<SvnProgressEventArgs>(OnClientProgress);
-            client.Cancel += new EventHandler<SvnCancelEventArgs>(OnClientCancel);
+            client.Processing += new EventHandler<SvnProcessingEventArgs>(OnSvnClientProcessing);
+            client.Notify += new EventHandler<SvnNotifyEventArgs>(OnSvnClientNotify);
+            client.Progress += new EventHandler<SvnProgressEventArgs>(OnSvnClientProgress);
+            client.Cancel += new EventHandler<SvnCancelEventArgs>(OnSvnClientCancel);
+
+            return new UnbindDisposer(client, this);
+        }
+
+        public IDisposable Bind(GitClient client)
+        {
+            if (client == null)
+                throw new ArgumentNullException("client");
+            //client.Processing += new EventHandler<SvnProcessingEventArgs>(OnClientProcessing);
+            client.Notify += new EventHandler<GitNotifyEventArgs>(OnClientNotify);
+            //client.Progress += new EventHandler<SvnProgressEventArgs>(OnClientProgress);
+            //client.Cancel += new EventHandler<SvnCancelEventArgs>(OnClientCancel);
 
             return new UnbindDisposer(client, this);
         }
 
         class UnbindDisposer : IDisposable
         {
-            SvnClient _client;
+            SvnClient _svnClient;
+            GitClient _client;
             ProgressDialog _dlg;
-            public UnbindDisposer(SvnClient client, ProgressDialog dlg)
+            public UnbindDisposer(SvnClient svnClient, ProgressDialog dlg)
+            {
+                if (svnClient == null)
+                    throw new ArgumentNullException("svnClient");
+                else if (dlg == null)
+                    throw new ArgumentNullException("dlg");
+
+                _svnClient = svnClient;
+                _dlg = dlg;
+            }
+
+            public UnbindDisposer(GitClient client, ProgressDialog dlg)
             {
                 if (client == null)
                     throw new ArgumentNullException("client");
@@ -430,7 +535,10 @@ namespace VisualGit.UI
 
             public void Dispose()
             {
-                _dlg.Unbind(_client);
+                if (_svnClient != null)
+                    _dlg.Unbind(_svnClient);
+                else
+                    _dlg.Unbind(_client);
             }
 
             #endregion
@@ -438,10 +546,18 @@ namespace VisualGit.UI
 
         void Unbind(SvnClient client)
         {
-            client.Notify -= new EventHandler<SvnNotifyEventArgs>(OnClientNotify);
-            client.Processing -= new EventHandler<SvnProcessingEventArgs>(OnClientProcessing);
-            client.Progress -= new EventHandler<SvnProgressEventArgs>(OnClientProgress);
-            client.Cancel -= new EventHandler<SvnCancelEventArgs>(OnClientCancel);
+            client.Notify -= new EventHandler<SvnNotifyEventArgs>(OnSvnClientNotify);
+            client.Processing -= new EventHandler<SvnProcessingEventArgs>(OnSvnClientProcessing);
+            client.Progress -= new EventHandler<SvnProgressEventArgs>(OnSvnClientProgress);
+            client.Cancel -= new EventHandler<SvnCancelEventArgs>(OnSvnClientCancel);
+        }
+
+        void Unbind(GitClient client)
+        {
+            client.Notify -= new EventHandler<GitNotifyEventArgs>(OnClientNotify);
+            //client.Processing -= new EventHandler<GitProcessingEventArgs>(OnClientProcessing);
+            //client.Progress -= new EventHandler<GitProgressEventArgs>(OnClientProgress);
+            //client.Cancel -= new EventHandler<CancelEventArgs>(OnClientCancel);
         }
 
         private void CancelClick(object sender, System.EventArgs e)

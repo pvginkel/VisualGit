@@ -126,6 +126,7 @@ namespace VisualGit
                 using (GitClient client = pool.GetClient())
                 using (CreateUpdateReport ? BindOutputPane(svnClient) : null)
                 using (dialog.Bind(svnClient))
+                using (dialog.Bind(client))
                 {
                     _sync = dialog;
                     dialog.Caption = caption;

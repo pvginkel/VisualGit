@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CommittingUnstagedFile" xml:space="preserve">
+    <value>Attempting to commit an unstaged file</value>
+  </data>
   <data name="CouldNotLock" xml:space="preserve">
     <value>Unable to lock the repository</value>
   </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Running operation was cancelled</value>
+  </data>
+  <data name="OutOfDate" xml:space="preserve">
+    <value>Repository is out of date</value>
+  </data>
   <data name="PathNoRepository" xml:space="preserve">
     <value>Path is not (part of) a Git repository</value>
+  </data>
+  <data name="UnexpectedMultipleRepositories" xml:space="preserve">
+    <value>Provided paths are of different repositories but the called command does not support this</value>
   </data>
   <data name="Unspecified" xml:space="preserve">
     <value>An unspecified exception occured</value>

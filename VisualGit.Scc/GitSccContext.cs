@@ -65,6 +65,7 @@ namespace VisualGit.Scc
             sa.RetrieveAllEntries = false;
             sa.RetrieveIgnoredEntries = false;
             sa.ThrowOnError = false;
+            sa.ThrowOnCancel = false;
 
             GitStatusEventArgs entry = null;
 

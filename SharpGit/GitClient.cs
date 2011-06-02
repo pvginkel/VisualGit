@@ -37,28 +37,7 @@ namespace SharpGit
                 return false;
             }
 #endif
-
-            try
-            {
-                IsCommandRunning = true;
-
-                new GitStatusCommand(this, args).Execute(path, callback);
-
-                return true;
-            }
-            catch (GitException ex)
-            {
-                args.SetError(ex);
-
-                if (args.ShouldThrow(ex.ErrorCode))
-                    throw;
-
-                return false;
-            }
-            finally
-            {
-                IsCommandRunning = false;
-            }
+            return ExecuteCommand<GitStatusCommand>(args, p => p.Execute(path, callback));
         }
 
         public bool Delete(string path, GitDeleteArgs args)
@@ -68,27 +47,7 @@ namespace SharpGit
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            try
-            {
-                IsCommandRunning = true;
-
-                new GitDeleteCommand(this, args).Execute(path);
-
-                return true;
-            }
-            catch (GitException ex)
-            {
-                args.SetError(ex);
-
-                if (args.ShouldThrow(ex.ErrorCode))
-                    throw;
-
-                return false;
-            }
-            finally
-            {
-                IsCommandRunning = false;
-            }
+            return ExecuteCommand<GitDeleteCommand>(args, p => p.Execute(path));
         }
         
         public bool Revert(IEnumerable<string> paths, GitRevertArgs args)
@@ -98,11 +57,39 @@ namespace SharpGit
             if (args == null)
                 throw new ArgumentNullException("args");
 
+            return ExecuteCommand<GitRevertCommand>(args, p => p.Execute(paths));
+        }
+
+        public bool Add(string path, GitAddArgs args)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitAddCommand>(args, p => p.Execute(path));
+        }
+
+        public bool Commit(IEnumerable<string> paths, GitCommitArgs args, out GitCommitResult result)
+        {
+            if (paths == null)
+                throw new ArgumentNullException("paths");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitCommitCommand, GitCommitResult>(args, p => p.Execute(paths), out result);
+        }
+
+        private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
+            where T : GitCommand
+        {
             try
             {
                 IsCommandRunning = true;
 
-                new GitRevertCommand(this, args).Execute(paths);
+                T command = (T)Activator.CreateInstance(typeof(T), new object[] { this, args });
+
+                action(command);
 
                 return true;
             }
@@ -121,18 +108,17 @@ namespace SharpGit
             }
         }
 
-        public bool Add(string path, GitAddArgs args)
+        private bool ExecuteCommand<TCommand, TResult>(GitClientArgs args, Func<TCommand, TResult> action, out TResult result)
+            where TCommand : GitCommand
+            where TResult : GitCommandResult
         {
-            if (path == null)
-                throw new ArgumentNullException("path");
-            if (args == null)
-                throw new ArgumentNullException("args");
-
             try
             {
                 IsCommandRunning = true;
 
-                new GitAddCommand(this, args).Execute(path);
+                TCommand command = (TCommand)Activator.CreateInstance(typeof(TCommand), new object[] { this, args });
+
+                result = action(command);
 
                 return true;
             }
@@ -142,6 +128,8 @@ namespace SharpGit
 
                 if (args.ShouldThrow(ex.ErrorCode))
                     throw;
+
+                result = null;
 
                 return false;
             }

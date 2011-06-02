@@ -61,6 +61,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attempting to commit an unstaged file.
+        /// </summary>
+        internal static string CommittingUnstagedFile {
+            get {
+                return ResourceManager.GetString("CommittingUnstagedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to lock the repository.
         /// </summary>
         internal static string CouldNotLock {
@@ -70,11 +79,38 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Running operation was cancelled.
+        /// </summary>
+        internal static string OperationCancelled {
+            get {
+                return ResourceManager.GetString("OperationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository is out of date.
+        /// </summary>
+        internal static string OutOfDate {
+            get {
+                return ResourceManager.GetString("OutOfDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path is not (part of) a Git repository.
         /// </summary>
         internal static string PathNoRepository {
             get {
                 return ResourceManager.GetString("PathNoRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provided paths are of different repositories but the called command does not support this.
+        /// </summary>
+        internal static string UnexpectedMultipleRepositories {
+            get {
+                return ResourceManager.GetString("UnexpectedMultipleRepositories", resourceCulture);
             }
         }
         

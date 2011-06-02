@@ -5,8 +5,7 @@ using System.Text;
 
 namespace SharpGit
 {
-    public sealed class GitCommitItem
+    public abstract class GitCommandResult
     {
-        public string FullPath { get; internal set; }
     }
 }
