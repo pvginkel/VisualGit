@@ -10,6 +10,7 @@ using SharpSvn;
 using VisualGit.Commands;
 using VisualGit.Scc;
 using VisualGit.UI.RepositoryExplorer;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {
@@ -18,7 +19,7 @@ namespace VisualGit.UI.GitLog
     /// </summary>
     partial class LogRevisionControl : UserControl, ICurrentItemSource<IGitLogItem>
     {
-        readonly Action<SvnLogArgs> _logAction;
+        readonly Action<GitLogArgs> _logAction;
         readonly object _instanceLock = new object();
         readonly Queue<LogRevisionItem> _logItems = new Queue<LogRevisionItem>();
         LogRequest _currentRequest;
@@ -28,7 +29,7 @@ namespace VisualGit.UI.GitLog
         public LogRevisionControl()
         {
             InitializeComponent();
-            _logAction = new Action<SvnLogArgs>(DoFetch);
+            _logAction = new Action<GitLogArgs>(DoFetch);
         }
         public LogRevisionControl(IContainer container)
             : this()
@@ -65,12 +66,12 @@ namespace VisualGit.UI.GitLog
             lock (_instanceLock)
             {
                 _mode = mode;
-                SvnLogArgs args = new SvnLogArgs();
+                GitLogArgs args = new GitLogArgs();
                 args.Start = LogSource.Start;
                 args.End = LogSource.End;
 
                 // If we have EndRevision set, we want all items until End
-                if (args.End == null || args.End.RevisionType == SvnRevisionType.None)
+                if (args.End == null || args.End.RevisionType == GitRevisionType.None)
                     args.Limit = 10;
 
                 args.StrictNodeHistory = LogSource.StrictNodeHistory;
@@ -80,7 +81,7 @@ namespace VisualGit.UI.GitLog
             }
         }
 
-        void StartFetch(SvnLogArgs args)
+        void StartFetch(GitLogArgs args)
         {
             fetchCount += args.Limit;
             _logAction.BeginInvoke(args, null, null);
@@ -101,20 +102,20 @@ namespace VisualGit.UI.GitLog
 
             _logItems.Clear();
             logView.Items.Clear();
-            _lastRevision = -1;
+            _lastRevision = null;
             fetchCount = 0;
 
         }
 
         int fetchCount;
         bool _running;
-        void DoFetch(SvnLogArgs args)
+        void DoFetch(GitLogArgs args)
         {
             LogRequest rq = _currentRequest = null;
             ShowBusyIndicator();
             try
             {
-                using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
+                using (GitClient client = _context.GetService<IGitClientPool>().GetClient())
                 {
                     GitOrigin single = EnumTools.GetSingle(LogSource.Targets);
                     if (single != null)
@@ -130,10 +131,7 @@ namespace VisualGit.UI.GitLog
                     switch (_mode)
                     {
                         case LogMode.Log:
-                            SvnLogArgs la = new SvnLogArgs();
-                            la.AddExpectedError(
-                                SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES, // File not there, prevent exception
-                                SvnErrorCode.SVN_ERR_UNSUPPORTED_FEATURE); // Merge info from 1.4 server
+                            GitLogArgs la = new GitLogArgs();
                             la.Start = args.Start;
                             la.End = args.End;
                             la.Limit = args.Limit;
@@ -141,9 +139,11 @@ namespace VisualGit.UI.GitLog
                             la.RetrieveMergedRevisions = args.RetrieveMergedRevisions;
 
                             _currentRequest = rq = new LogRequest(la, OnReceivedItem);
-                            client.Log(uris, la, null);
+                            client.Log(uris, la);
                             break;
                         case LogMode.MergesEligible:
+                            throw new NotImplementedException();
+#if false
                             SvnMergesEligibleArgs meArgs = new SvnMergesEligibleArgs();
                             meArgs.AddExpectedError(
                                 SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES, // File not there, prevent exception
@@ -153,7 +153,10 @@ namespace VisualGit.UI.GitLog
                             _currentRequest = rq = new LogRequest(meArgs, OnReceivedItem);
                             client.ListMergesEligible(LogSource.MergeTarget.Target, single.Target, meArgs, null);
                             break;
+#endif
                         case LogMode.MergesMerged:
+                            throw new NotImplementedException();
+#if false
                             SvnMergesMergedArgs mmArgs = new SvnMergesMergedArgs();
                             mmArgs.AddExpectedError(
                                 SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES, // File not there, prevent exception
@@ -162,6 +165,7 @@ namespace VisualGit.UI.GitLog
                             _currentRequest = rq = new LogRequest(mmArgs, OnReceivedItem);
                             client.ListMergesMerged(LogSource.MergeTarget.Target, single.Target, mmArgs, null);
                             break;
+#endif
                     }
                 }
             }
@@ -175,14 +179,12 @@ namespace VisualGit.UI.GitLog
                 }
                 HideBusyIndicator();
             }
-        }       
+        }
 
-        void OnReceivedItem(object sender, SvnLoggingEventArgs e)
+        void OnReceivedItem(object sender, GitLoggingEventArgs e)
         {
             if (sender != _currentRequest)
                 return;
-
-            e.Detach();
 
             LogRevisionItem lri = new LogRevisionItem(logView, _context, e);
             bool post;
@@ -201,7 +203,7 @@ namespace VisualGit.UI.GitLog
             }
         }
 
-        long _lastRevision;
+        string _lastRevision;
         void OnShowItems()
         {
             Debug.Assert(!InvokeRequired);
@@ -306,8 +308,8 @@ namespace VisualGit.UI.GitLog
                     {
                         _running = true;
 
-                        SvnLogArgs args = new SvnLogArgs();
-                        args.Start = _lastRevision - 1;
+                        GitLogArgs args = new GitLogArgs();
+                        args.Start = (GitRevision)_lastRevision - 1;
                         args.End = LogSource.End;
                         args.Limit = 20;
                         args.StrictNodeHistory = LogSource.StrictNodeHistory;
@@ -336,11 +338,10 @@ namespace VisualGit.UI.GitLog
                 _fetchAll = false;
 
 
-                SvnLogArgs args = new SvnLogArgs();
-                if (_lastRevision >= 0)
+                GitLogArgs args = new GitLogArgs();
+                if (_lastRevision != null)
                 {
-                    long startRev = _lastRevision - 1;
-                    args.Start = startRev < 0 ? SvnRevision.Zero : startRev;
+                    args.Start = (GitRevision)_lastRevision - 1;
                 }
                 else
                 {
@@ -349,9 +350,9 @@ namespace VisualGit.UI.GitLog
                         if (_logItems.Count > 0)
                         {
                             LogRevisionItem[] items = _logItems.ToArray();
-                            long revision = items[items.Length - 1].Revision - 1;
+                            var revision = (GitRevision)items[items.Length - 1].Revision - 1;
                             // revision should not be < 0
-                            args.Start = revision < 0 ? SvnRevision.Zero : revision;
+                            args.Start = revision == null ? GitRevision.Zero : revision;
                         }
                     }
                 }

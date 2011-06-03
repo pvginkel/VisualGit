@@ -14,6 +14,8 @@ namespace SharpGit
         Previous,
         Base,
         Working,
-        Head
+        Head,
+        Zero,
+        One
     }
 }

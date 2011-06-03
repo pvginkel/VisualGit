@@ -10,6 +10,7 @@ using VisualGit.VS;
 using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.UI.Commands;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -28,7 +29,7 @@ namespace VisualGit.Commands
             {
                 case VisualGitCommand.GitNodeAnnotate:
                     IGitRepositoryItem ri = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
-                    if (ri != null && ri.Origin != null && ri.NodeKind != SvnNodeKind.Directory)
+                    if (ri != null && ri.Origin != null && ri.NodeKind != GitNodeKind.Directory)
                         return;
                     break;
                 case VisualGitCommand.ItemAnnotate:
@@ -60,12 +61,12 @@ namespace VisualGit.Commands
         public override void OnExecute(CommandEventArgs e)
         {
             List<GitOrigin> targets = new List<GitOrigin>();
-            SvnRevision startRev = SvnRevision.Zero;
-            SvnRevision endRev = null;
+            GitRevision startRev = GitRevision.Zero;
+            GitRevision endRev = null;
             switch (e.Command)
             {
                 case VisualGitCommand.ItemAnnotate:
-                    endRev = SvnRevision.Base;
+                    endRev = GitRevision.Base;
                     foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
                     {
                         if (i.IsVersionable)
@@ -76,7 +77,11 @@ namespace VisualGit.Commands
                     foreach (IGitLogChangedPathItem logItem in e.Selection.GetSelection<IGitLogChangedPathItem>())
                     {
                         targets.Add(logItem.Origin);
+
+                        throw new NotImplementedException();
+#if false
                         endRev = logItem.Revision;
+#endif
                     }
                     break;
                 case VisualGitCommand.GitNodeAnnotate:
@@ -88,7 +93,7 @@ namespace VisualGit.Commands
                     break;
                 case VisualGitCommand.DocumentAnnotate:
                     targets.Add(new GitOrigin(e.GetService<IFileStatusCache>()[e.Selection.ActiveDocumentFilename]));
-                    endRev = SvnRevision.Base;
+                    endRev = GitRevision.Base;
                     break;
             }
 
@@ -134,8 +139,10 @@ namespace VisualGit.Commands
             DoBlame(e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo);
         }
 
-        static void DoBlame(CommandEventArgs e, GitOrigin item, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
+        static void DoBlame(CommandEventArgs e, GitOrigin item, GitRevision revisionStart, GitRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
         {
+            throw new NotImplementedException();
+#if false
             SvnWriteArgs wa = new SvnWriteArgs();
             wa.Revision = revisionEnd;
 
@@ -234,6 +241,7 @@ namespace VisualGit.Commands
                     }
                 }
             }
+#endif
         }
     }
 }

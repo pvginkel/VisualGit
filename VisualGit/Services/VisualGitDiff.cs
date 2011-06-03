@@ -234,14 +234,17 @@ namespace VisualGit.Services
             }
         }
 
-        public SvnUriTarget GetCopyOrigin(GitItem item)
+        public GitUriTarget GetCopyOrigin(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
             // TODO: Maybe handle cases where the parent was copied instead of the child?
 
-            SvnUriTarget copiedFrom = null;
+            throw new NotImplementedException();
+#if false
+            GitUriTarget copiedFrom = null;
+
             using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnInfoArgs ia = new SvnInfoArgs();
@@ -258,6 +261,7 @@ namespace VisualGit.Services
                     });
             }
             return copiedFrom;
+#endif
         }
 
         sealed class DiffToolMonitor : VisualGitService, IVsFileChangeEvents
@@ -715,7 +719,7 @@ namespace VisualGit.Services
             return GetTitle(target.Name, revision);
         }
 
-        public string GetTitle(SvnTarget target, SvnRevision revision)
+        public string GetTitle(GitTarget target, GitRevision revision)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -796,31 +800,24 @@ namespace VisualGit.Services
             return file;
         }
 
-        public string GetTempFile(SharpSvn.SvnTarget target, SharpSvn.SvnRevision revision, bool withProgress)
+        public string GetTempFile(GitTarget target, GitRevision revision, bool withProgress)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
             else if (revision == null)
                 throw new ArgumentNullException("revision");
 
-            throw new NotImplementedException();
-#if false
             string file = GetTempPath(target.FileName, revision);
             bool unrelated = false;
 
             ProgressRunnerResult r = GetService<IProgressRunner>().RunModal("Getting file",
                 delegate(object sender, ProgressWorkerArgs aa)
                 {
-                    SvnWriteArgs wa = new SvnWriteArgs();
+                    GitWriteArgs wa = new GitWriteArgs();
                     wa.Revision = revision;
-                    wa.AddExpectedError(SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES);
 
                     using (Stream s = File.Create(file))
-                        if (!aa.SvnClient.Write(target, s, wa))
-                        {
-                            if (wa.LastException.SvnErrorCode == SvnErrorCode.SVN_ERR_CLIENT_UNRELATED_RESOURCES)
-                                unrelated = true;
-                        }
+                        aa.Client.Write(target, s, wa);
                 });
 
             if (!r.Succeeded || unrelated)
@@ -830,10 +827,9 @@ namespace VisualGit.Services
                 File.SetAttributes(file, FileAttributes.ReadOnly); // A readonly file does not allow editting from many diff tools
 
             return file;
-#endif
         }
 
-        public string[] GetTempFiles(SvnTarget target, SvnRevision from, SvnRevision to, bool withProgress)
+        public string[] GetTempFiles(GitTarget target, GitRevision from, GitRevision to, bool withProgress)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -845,9 +841,7 @@ namespace VisualGit.Services
             string f1;
             string f2;
 
-            throw new NotImplementedException();
-#if false
-            if (from.RevisionType == SvnRevisionType.Number && to.RevisionType == SvnRevisionType.Number && from.Revision + 1 == to.Revision)
+            if (from.RevisionType == GitRevisionType.Hash && to.RevisionType == GitRevisionType.Hash && from.Revision + 1 == to.Revision)
             {
                 f1 = GetTempPath(target.FileName, from);
                 f2 = GetTempPath(target.FileName, to);
@@ -857,6 +851,8 @@ namespace VisualGit.Services
                     delegate(object sender, ProgressWorkerArgs e)
                     {
                         SvnFileVersionsArgs ea = new SvnFileVersionsArgs();
+                        throw new NotImplementedException();
+#if false
                         ea.Start = from;
                         ea.End = to;
 
@@ -868,6 +864,7 @@ namespace VisualGit.Services
                                 else
                                     e2.WriteTo(f2);
                             });
+#endif
                     });
 
                 if (!r.Succeeded)
@@ -903,7 +900,6 @@ namespace VisualGit.Services
             }
 
             return files;
-#endif
         }
     }
 }

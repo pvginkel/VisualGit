@@ -168,11 +168,11 @@ namespace VisualGit.UI.PathSelector
                     throw new NotImplementedException();
 #if false
                     _newValue = GitOrigin.Target.Revision;
-#endif
                     if (_newValue == null || _newValue == GitRevision.None)
                         _newValue = (GitOrigin.Target is SvnUriTarget) ? GitRevision.Head : GitRevision.Base;
 
                     rt = RevisionResolver.Resolve(GitOrigin, _newValue);
+#endif
                 }
 
                 SetRevision(rt);

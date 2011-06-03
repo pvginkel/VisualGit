@@ -5,6 +5,7 @@ using VisualGit.Commands;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog.Commands
 {
@@ -24,7 +25,7 @@ namespace VisualGit.UI.GitLog.Commands
 
             GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
-            if (origin == null || !(origin.Target is SvnPathTarget))
+            if (origin == null || !(origin.Target is GitPathTarget))
             {
                 e.Enabled = false;
                 return;
@@ -61,7 +62,7 @@ namespace VisualGit.UI.GitLog.Commands
             if (logWindow == null)
                 return;
 
-            List<SvnRevisionRange> revisions = new List<SvnRevisionRange>();
+            List<GitRevisionRange> revisions = new List<GitRevisionRange>();
 
             if (e.Command == VisualGitCommand.LogRevertTo)
             {
@@ -71,13 +72,13 @@ namespace VisualGit.UI.GitLog.Commands
                     return;
 
                 // Revert to revision, is revert everything after
-                revisions.Add(new SvnRevisionRange(SvnRevision.Working, item.Revision));
+                revisions.Add(new GitRevisionRange(GitRevision.Working, item.Revision));
             }
             else
             {
                 foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
                 {
-                    revisions.Add(new SvnRevisionRange(item.Revision, item.Revision - 1));
+                    revisions.Add(new GitRevisionRange(item.Revision, (GitRevision)item.Revision - 1));
                 }
             }
 
@@ -90,7 +91,7 @@ namespace VisualGit.UI.GitLog.Commands
 
             foreach (GitOrigin o in logWindow.Origins)
             {
-                SvnPathTarget pt = o.Target as SvnPathTarget;
+                GitPathTarget pt = o.Target as GitPathTarget;
                 if (pt == null)
                     continue;
 
@@ -115,12 +116,16 @@ namespace VisualGit.UI.GitLog.Commands
                 {
                     foreach (GitOrigin item in logWindow.Origins)
                     {
-                        SvnPathTarget target = item.Target as SvnPathTarget;
+                        GitPathTarget target = item.Target as GitPathTarget;
 
                         if (target == null)
                             continue;
 
+                        throw new NotImplementedException();
+
+#if false
                         ee.SvnClient.Merge(target.FullPath, target, revisions, ma);
+#endif
                     }
                 });
             }

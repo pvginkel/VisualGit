@@ -383,7 +383,7 @@ namespace VisualGit.Scc.UI
         /// <param name="revision">The revision.</param>
         /// <param name="withProgress">if set to <c>true</c> [with progress].</param>
         /// <returns></returns>
-        string GetTempFile(SvnTarget target, SvnRevision revision, bool withProgress);
+        string GetTempFile(GitTarget target, GitRevision revision, bool withProgress);
         /// <summary>
         /// Gets the temp file.
         /// </summary>
@@ -392,8 +392,8 @@ namespace VisualGit.Scc.UI
         /// <param name="withProgress">if set to <c>true</c> [with progress].</param>
         /// <returns></returns>
         string GetTempFile(GitItem target, GitRevision revision, bool withProgress);
-        string[] GetTempFiles(SvnTarget target, SvnRevision first, SvnRevision last, bool withProgress);
-        string GetTitle(SvnTarget target, SvnRevision revision);
+        string[] GetTempFiles(GitTarget target, GitRevision first, GitRevision last, bool withProgress);
+        string GetTitle(GitTarget target, GitRevision revision);
         string GetTitle(GitItem target, GitRevision revision);
 
         /// <summary>
@@ -423,6 +423,6 @@ namespace VisualGit.Scc.UI
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        SvnUriTarget GetCopyOrigin(GitItem item);
+        GitUriTarget GetCopyOrigin(GitItem item);
     }
 }

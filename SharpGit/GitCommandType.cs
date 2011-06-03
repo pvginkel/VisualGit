@@ -30,7 +30,7 @@ namespace SharpGit
         //List = 20,
         //ListChangeList = 21,
         //Lock = 22,
-        //Log = 23,
+        Log = 23,
         //Merge = 24,
         //MergesEligible = 25,
         //MergesMerged = 26,

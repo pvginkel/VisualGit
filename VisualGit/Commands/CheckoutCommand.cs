@@ -5,6 +5,7 @@ using SharpSvn;
 
 using VisualGit.Scc;
 using VisualGit.UI.Commands;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -18,7 +19,7 @@ namespace VisualGit.Commands
         {
             IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
-            if (single == null || single.NodeKind == SvnNodeKind.File || single.Origin == null)
+            if (single == null || single.NodeKind == GitNodeKind.File || single.Origin == null)
                 e.Enabled = false;
         }
 

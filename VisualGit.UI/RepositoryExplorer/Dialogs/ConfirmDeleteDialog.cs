@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SharpSvn;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.RepositoryExplorer.Dialogs
 {
@@ -39,7 +40,7 @@ namespace VisualGit.UI.RepositoryExplorer.Dialogs
             SortedDictionary<Uri,GitOrigin> d = new SortedDictionary<Uri, GitOrigin>(UriComparer.Default);
             foreach (GitOrigin o in uris)
             {
-                SvnUriTarget ut = o.Target as SvnUriTarget;
+                GitUriTarget ut = o.Target as GitUriTarget;
                 if (ut != null)
                     d[ut.Uri] = o;
                 else

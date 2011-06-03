@@ -272,10 +272,13 @@ namespace VisualGit.UI.MergeWizard
                         {
                             SvnReintegrationMergeArgs args = new SvnReintegrationMergeArgs();
 
+                            throw new NotImplementedException();
+#if false
                             // Set whether or not this is a dry run
                             args.DryRun = PerformDryRun;
 
                             ee.SvnClient.ReintegrationMerge(MergeTarget.FullPath, MergeSource.Target, args);
+#endif
                         }
                         else
                         {
@@ -304,6 +307,8 @@ namespace VisualGit.UI.MergeWizard
                                 throw new Exception(MergeStrings.NoLogItems);
                             }
 
+                            throw new NotImplementedException();
+#if false
                             if (MergeRevisions == null)
                             {
                                 // Merge all eligible
@@ -322,6 +327,7 @@ namespace VisualGit.UI.MergeWizard
                                     new List<SvnRevisionRange>(MergeRevisions),
                                     args);
                             }
+#endif
                         }
                     }
                     finally

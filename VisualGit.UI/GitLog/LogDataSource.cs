@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using VisualGit.Scc;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {
@@ -53,14 +53,14 @@ namespace VisualGit.UI.GitLog
             }
         }
 
-        SvnRevision _start, _end;
-        public SvnRevision Start
+        GitRevision _start, _end;
+        public GitRevision Start
         {
             get { return _start; }
             set { _start = value; }
         }
 
-        public SvnRevision End
+        public GitRevision End
         {
             get { return _end; }
             set { _end = value; }

@@ -35,8 +35,8 @@ namespace VisualGit.UI.GitLog
         void Init()
         {
             _expand = new SmartColumn(this, "\x02D9", "&Expand Merges", 12, HorizontalAlignment.Left);
-            _revisionColumn = new SmartColumn(this, "&Revision", 64, HorizontalAlignment.Right);
-            SmartColumn author = new SmartColumn(this, "&Author", 73);
+            _revisionColumn = new SmartColumn(this, "&Revision", 80, HorizontalAlignment.Left);
+            SmartColumn author = new SmartColumn(this, "&Author", 80);
             SmartColumn date = new SmartColumn(this, "&Date", 118);
             SmartColumn issue = new SmartColumn(this, "&Issue", 60);
             _messageColumn = new SmartColumn(this, "&Message", 300);

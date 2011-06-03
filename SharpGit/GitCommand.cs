@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace SharpGit
 {
@@ -23,7 +24,7 @@ namespace SharpGit
 
         public void RaiseNotify(GitNotifyEventArgs e)
         {
-            Args.RaiseNotify(e);
+            Args.OnNotify(e);
             Client.OnNotify(e);
         }
 
@@ -35,6 +36,26 @@ namespace SharpGit
                 withCommitArgs.OnCommitting(e);
 
             Client.OnCommitting(e);
+        }
+
+        public bool CancelRequested()
+        {
+            return CancelRequested(null);
+        }
+
+        public bool CancelRequested(CancelEventArgs cancelEventArgs)
+        {
+            if (cancelEventArgs == null || !cancelEventArgs.Cancel)
+            {
+                cancelEventArgs = new CancelEventArgs();
+
+                Args.OnCancel(cancelEventArgs);
+            }
+
+            if (cancelEventArgs.Cancel && Args.ThrowOnCancel)
+                throw new GitOperationCancelledException();
+
+            return cancelEventArgs.Cancel;
         }
     }
 

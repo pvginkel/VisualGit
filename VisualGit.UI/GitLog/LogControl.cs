@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using SharpSvn;
 using System.Diagnostics;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {
@@ -65,7 +66,7 @@ namespace VisualGit.UI.GitLog
             set { _mode = value; }
         }
 
-        public void StartLog(ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
+        public void StartLog(ICollection<GitOrigin> targets, GitRevision start, GitRevision end)
         {
             if (targets == null)
                 throw new ArgumentNullException("targets");
@@ -88,7 +89,7 @@ namespace VisualGit.UI.GitLog
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
         /// <param name="source">The source.</param>
-        public void StartMergesEligible(IVisualGitServiceProvider context, GitOrigin target, SvnTarget source)
+        public void StartMergesEligible(IVisualGitServiceProvider context, GitOrigin target, GitTarget source)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -105,7 +106,7 @@ namespace VisualGit.UI.GitLog
             logRevisionControl1.Start(LogMode.MergesEligible);
         }
 
-        public void StartMergesMerged(IVisualGitServiceProvider context, GitOrigin target, SvnTarget source)
+        public void StartMergesMerged(IVisualGitServiceProvider context, GitOrigin target, GitTarget source)
         {
             if (context == null)
                 throw new ArgumentNullException("context");

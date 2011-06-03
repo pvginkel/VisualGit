@@ -109,12 +109,12 @@ namespace VisualGit.UI.Commands
 
                 dlg.ShowFiles = true;
 
-                SvnUriTarget ut = from.Target as SvnUriTarget;
+                GitUriTarget ut = from.Target as GitUriTarget;
                 if (ut != null)
                     dlg.SelectedUri = ut.Uri;
                 else
                 {
-                    GitItem file = GetService<IFileStatusCache>()[((SvnPathTarget)from.Target).FullPath];
+                    GitItem file = GetService<IFileStatusCache>()[((GitPathTarget)from.Target).FullPath];
 
                     if (file.Uri == null)
                         dlg.SelectedUri = from.RepositoryRoot;

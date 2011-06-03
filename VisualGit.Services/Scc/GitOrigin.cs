@@ -4,6 +4,7 @@ using System.Text;
 using SharpSvn;
 using System.Diagnostics;
 using System.Globalization;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -12,7 +13,7 @@ namespace VisualGit.Scc
     /// </summary>
     public class GitOrigin : IEquatable<GitOrigin>, IFormattable
     {
-        readonly SvnTarget _target;
+        readonly GitTarget _target;
         readonly Uri _uri;
         readonly Uri _reposRoot;
 
@@ -29,7 +30,7 @@ namespace VisualGit.Scc
             if (!gitItem.IsVersioned)
                 throw new InvalidOperationException("Can only create a GitOrigin from versioned items");
 
-            _target = new SvnPathTarget(gitItem.FullPath);
+            _target = new GitPathTarget(gitItem.FullPath);
             _uri = gitItem.Status.Uri;
             _reposRoot = gitItem.WorkingCopy.RepositoryRoot;
         }
@@ -40,7 +41,7 @@ namespace VisualGit.Scc
         /// <param name="uri">The URI.</param>
         /// <param name="reposRoot">The repos root.</param>
         public GitOrigin(Uri uri, Uri reposRoot)
-            : this(new SvnUriTarget(uri, SvnRevision.Head), reposRoot)
+            : this(new GitUriTarget(uri, GitRevision.Head), reposRoot)
         {
             _uri = uri; // Keep Uri unnormalized for UI purposes
         }
@@ -57,7 +58,7 @@ namespace VisualGit.Scc
             else if (origin == null)
                 throw new ArgumentNullException("origin");
 
-            SvnUriTarget target = new SvnUriTarget(uri, origin.Target.Revision);
+            GitUriTarget target = new GitUriTarget(uri, origin.Target.Revision);
             _target = target;
             _uri = uri;
             _reposRoot = origin.RepositoryRoot;
@@ -73,7 +74,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="uriTarget">The URI target.</param>
         /// <param name="reposRoot">The repos root.</param>
-        public GitOrigin(SvnUriTarget uriTarget, Uri reposRoot)
+        public GitOrigin(GitUriTarget uriTarget, Uri reposRoot)
         {
             if (uriTarget == null)
                 throw new ArgumentNullException("uriTarget");
@@ -94,14 +95,14 @@ namespace VisualGit.Scc
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
         /// <param name="reposRoot">The repos root or <c>null</c> to retrieve the repository root from target</param>
-        public GitOrigin(IVisualGitServiceProvider context, SvnTarget target, Uri reposRoot)
+        public GitOrigin(IVisualGitServiceProvider context, GitTarget target, Uri reposRoot)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
             else if (target == null)
                 throw new ArgumentNullException("target");
 
-            SvnPathTarget pt = target as SvnPathTarget;
+            GitPathTarget pt = target as GitPathTarget;
 
             if (pt != null)
             {
@@ -116,7 +117,7 @@ namespace VisualGit.Scc
                 return;
             }
 
-            SvnUriTarget ut = target as SvnUriTarget;
+            GitUriTarget ut = target as GitUriTarget;
 
             if (ut != null)
             {
@@ -167,7 +168,7 @@ namespace VisualGit.Scc
         /// Gets the target of the item
         /// </summary>
         /// <value>The target.</value>
-        public SvnTarget Target
+        public GitTarget Target
         {
             get { return _target; }
         }

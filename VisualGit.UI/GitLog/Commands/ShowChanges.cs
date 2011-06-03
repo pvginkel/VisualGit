@@ -42,7 +42,7 @@ namespace VisualGit.UI.GitLog.Commands
                 return;
             }
 
-            SvnPathTarget pt = first.Target as SvnPathTarget;
+            GitPathTarget pt = first.Target as GitPathTarget;
 
             if (pt != null)
             {
@@ -67,17 +67,17 @@ namespace VisualGit.UI.GitLog.Commands
             // Skip all the files we cannot diff
             switch (change.Action)
             {
-                case SvnChangeAction.Add:
-                    if (change.CopyFromRevision >= 0)
-                        break; // We can retrieve this file using CopyFromPath
+                case GitChangeAction.Add:
+                    if (change.OldRevision != null)
+                        break; // We can retrieve this file using OldPath
                     e.Enabled = false;
                     break;
-                case SvnChangeAction.Delete:
+                case GitChangeAction.Delete:
                     e.Enabled = false;
                     break;
             }
 
-            if (change.NodeKind == SvnNodeKind.Directory)
+            if (change.NodeKind == GitNodeKind.Directory)
                 e.Enabled = false;
 
             return true;
@@ -95,22 +95,32 @@ namespace VisualGit.UI.GitLog.Commands
 
         bool PerformRevisionChanges(ILogControl log, CommandEventArgs e)
         {
-            long min = long.MaxValue;
-            long max = long.MinValue;
+            GitRevision startRevision = null;
+            var startRevisionTime = DateTime.MaxValue;
+            GitRevision endRevision = null;
+            var endRevisionTime = DateTime.MinValue;
 
             int n = 0;
 
             HybridCollection<string> changedPaths = new HybridCollection<string>();
             foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
             {
-                min = Math.Min(min, item.Revision);
-                max = Math.Max(max, item.Revision);
+                if (startRevisionTime > item.CommitDate)
+                {
+                    startRevisionTime = item.CommitDate;
+                    startRevision = item.Revision;
+                }
+                if (endRevisionTime < item.CommitDate)
+                {
+                    endRevisionTime = item.CommitDate;
+                    endRevision = item.Revision;
+                }
                 n++;
             }
 
             if (n > 0)
             {
-                ExecuteDiff(e, log.Origins, new SvnRevisionRange(n == 1 ? min - 1 : min, max));
+                ExecuteDiff(e, log.Origins, new GitRevisionRange(n == 1 ? startRevision - 1 : startRevision, endRevision));
                 return true;
             }
 
@@ -125,25 +135,24 @@ namespace VisualGit.UI.GitLog.Commands
             {
                 switch (item.Action)
                 {
-                    case SvnChangeAction.Delete:
+                    case GitChangeAction.Delete:
                         return;
-                    case SvnChangeAction.Add:
-                    case SvnChangeAction.Replace:
-                        if (item.CopyFromRevision < 0)
+                    case GitChangeAction.Add:
+                        if (item.OldRevision == null)
                             return;
                         break;
                 }
 
-                ExecuteDiff(e, new GitOrigin[] { item.Origin }, new SvnRevisionRange(item.Revision - 1, item.Revision));
+                ExecuteDiff(e, new GitOrigin[] { item.Origin }, new GitRevisionRange((GitRevision)item.Revision - 1, item.Revision));
             }
         }
 
-        void ExecuteDiff(CommandEventArgs e, ICollection<GitOrigin> targets, SvnRevisionRange range)
+        void ExecuteDiff(CommandEventArgs e, ICollection<GitOrigin> targets, GitRevisionRange range)
         {
             if (targets.Count != 1)
                 return;
 
-            SvnTarget diffTarget = EnumTools.GetSingle(targets).Target;
+            GitTarget diffTarget = EnumTools.GetSingle(targets).Target;
 
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
             VisualGitDiffArgs da = new VisualGitDiffArgs();

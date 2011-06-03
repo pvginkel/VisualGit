@@ -186,10 +186,17 @@ namespace VisualGit
                     if (_exception == null && awa.Exception != null)
                         _exception = awa.Exception;
 
-                    if (_exception is SvnOperationCanceledException)
+                    if (
+                        _exception is SvnOperationCanceledException ||
+                        _exception is GitOperationCancelledException
+                    )
                         _cancelled = true;
                 }
                 catch (SvnOperationCanceledException)
+                {
+                    _cancelled = true;
+                }
+                catch (GitOperationCancelledException)
                 {
                     _cancelled = true;
                 }

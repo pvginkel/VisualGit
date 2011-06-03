@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
+using SharpGit;
+using System.ComponentModel;
 
 namespace VisualGit.UI.GitLog
 {
@@ -13,7 +15,12 @@ namespace VisualGit.UI.GitLog
             args.Cancel += new EventHandler<SvnCancelEventArgs>(OnLogCancel);
         }
 
-        public LogRequest(SvnLogArgs args, EventHandler<SvnLoggingEventArgs> receivedItem)
+        LogRequest(GitClientArgs args)
+        {
+            args.Cancel += new EventHandler<CancelEventArgs>(OnLogCancel);
+        }
+
+        public LogRequest(GitLogArgs args, EventHandler<GitLoggingEventArgs> receivedItem)
             : this(args)
         {
             args.Log += ReceiveItem;
@@ -24,17 +31,18 @@ namespace VisualGit.UI.GitLog
             : this(args)
         {
             args.MergesMerged += ReceiveItem;
-            ReceivedItem += receivedItem;
+            SvnReceivedItem += receivedItem;
         }
 
         public LogRequest(SvnMergesEligibleArgs args, EventHandler<SvnLoggingEventArgs> receivedItem)
             : this(args)
         {
             args.MergesEligible += ReceiveItem;
-            ReceivedItem += receivedItem;
+            SvnReceivedItem += receivedItem;
         }
 
-        public event EventHandler<SvnLoggingEventArgs> ReceivedItem;
+        public event EventHandler<SvnLoggingEventArgs> SvnReceivedItem;
+        public event EventHandler<GitLoggingEventArgs> ReceivedItem;
 
         public bool Cancel
         {
@@ -48,7 +56,21 @@ namespace VisualGit.UI.GitLog
                 e.Cancel = true;
         }
 
+        void OnLogCancel(object sender, CancelEventArgs e)
+        {
+            if (_cancel)
+                e.Cancel = true;
+        }
+
         void ReceiveItem(object sender, SvnLogEventArgs e)
+        {
+            if (!_cancel)
+                OnReceivedItem(e);
+            else
+                e.Cancel = true;
+        }
+
+        void ReceiveItem(object sender, GitLogEventArgs e)
         {
             if (!_cancel)
                 OnReceivedItem(e);
@@ -73,6 +95,12 @@ namespace VisualGit.UI.GitLog
         }
 
         void OnReceivedItem(SvnLoggingEventArgs e)
+        {
+            if (!_cancel && SvnReceivedItem != null)
+                SvnReceivedItem(this, e);
+        }
+
+        void OnReceivedItem(GitLoggingEventArgs e)
         {
             if (!_cancel && ReceivedItem != null)
                 ReceivedItem(this, e);

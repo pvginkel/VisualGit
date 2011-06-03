@@ -5,6 +5,7 @@ using SharpSvn;
 using VisualGit.Commands;
 using VisualGit.Scc;
 using VisualGit.Scc.UI;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog.Commands
 {
@@ -25,7 +26,7 @@ namespace VisualGit.UI.GitLog.Commands
 
                     if (origin != null)
                     {
-                        SvnPathTarget pt = origin.Target as SvnPathTarget;
+                        GitPathTarget pt = origin.Target as GitPathTarget;
 
                         if (pt != null)
                         {
@@ -56,10 +57,11 @@ namespace VisualGit.UI.GitLog.Commands
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
 
             VisualGitDiffArgs da = new VisualGitDiffArgs();
+
             da.BaseFile = diff.GetTempFile(origin.Target, item.Revision, true);
             if (da.BaseFile == null)
                 return; // User cancel
-            da.MineFile = ((SvnPathTarget)origin.Target).FullPath;
+            da.MineFile = ((GitPathTarget)origin.Target).FullPath;
             da.BaseTitle = string.Format("Base (r{0})", item.Revision);
             da.MineTitle = "Working";
 

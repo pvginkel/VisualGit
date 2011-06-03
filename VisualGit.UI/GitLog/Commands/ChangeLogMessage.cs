@@ -53,9 +53,12 @@ namespace VisualGit.UI.GitLog.Commands
                             config.GetRecentLogMessages().Add(dialog.LogMessage);
                     }
 
+                    throw new NotImplementedException();
+#if false
                     using (SvnClient client = e.GetService<ISvnClientPool>().GetClient())
                     {
                         SvnSetRevisionPropertyArgs sa = new SvnSetRevisionPropertyArgs();
+
                         sa.AddExpectedError(SvnErrorCode.SVN_ERR_REPOS_DISABLED_FEATURE);
                         client.SetRevisionProperty(logItems[0].RepositoryRoot, logItems[0].Revision, SvnPropertyNames.SvnLog, dialog.LogMessage, sa);
 
@@ -77,6 +80,7 @@ namespace VisualGit.UI.GitLog.Commands
                         // TODO: Somehow repair scroll position/number of items loaded
                         logWindow.Restart();
                     }
+#endif
                 }
             }
         }

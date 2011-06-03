@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -156,12 +157,14 @@ namespace VisualGit.Scc
             if (_checkedUri)
                 return null;
 
-
             _checkedUri = true;
-            using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
-            {
-                return _repositoryRoot = client.GetRepositoryRoot(FullPath);
-            }
+
+            string repositoryRoot;
+
+            if (RepositoryUtil.TryGetRepositoryRoot(FullPath, out repositoryRoot))
+                return _repositoryRoot = new Uri("file:///" + repositoryRoot);
+            else
+                return _repositoryRoot = null;
         }
 
         public Guid RepositoryId

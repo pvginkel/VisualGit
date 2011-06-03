@@ -71,11 +71,11 @@ namespace VisualGit.UI.GitLog
     sealed class PathListViewItem : SmartListViewItem
     {
         readonly IGitLogItem _logItem;
-        readonly SvnChangeItem _change;
+        readonly GitChangeItem _change;
         readonly bool _isInSelection;
         readonly GitOrigin _origin;
 
-        public PathListViewItem(LogChangedPathsView view, IGitLogItem logItem, SvnChangeItem change, Uri reposRoot, bool isInSelection)
+        public PathListViewItem(LogChangedPathsView view, IGitLogItem logItem, GitChangeItem change, Uri reposRoot, bool isInSelection)
             : base(view)
         {
             if (logItem == null)
@@ -94,7 +94,7 @@ namespace VisualGit.UI.GitLog
             else
                 uri = SvnTools.AppendPathSuffix(reposRoot, path);
 
-            _origin = new GitOrigin(new SvnUriTarget(uri, logItem.Revision), reposRoot);
+            _origin = new GitOrigin(new GitUriTarget(uri, logItem.Revision), reposRoot);
 
             RefreshText();
             UpdateColors();
@@ -109,9 +109,9 @@ namespace VisualGit.UI.GitLog
         {
             SetValues(
                 _change.Action.ToString(),
-                NodeKind == SvnNodeKind.Directory ? EnsureEndSlash(_change.Path) : _change.Path,
-                _change.CopyFromPath ?? "",
-                _change.CopyFromPath != null ? _change.CopyFromRevision.ToString() : ""
+                NodeKind == GitNodeKind.Directory ? EnsureEndSlash(_change.Path) : _change.Path,
+                _change.OldPath ?? "",
+                _change.OldPath != null ? _change.OldRevision : ""
             );
         }
 
@@ -133,20 +133,20 @@ namespace VisualGit.UI.GitLog
             {
                 switch (_change.Action)
                 {
-                    case SvnChangeAction.Add:
+                    case GitChangeAction.Add:
                         ForeColor = Color.FromArgb(100, 0, 100);
                         break;
-                    case SvnChangeAction.Delete:
+                    case GitChangeAction.Delete:
                         ForeColor = Color.DarkRed;
                         break;
-                    case SvnChangeAction.Modify:
+                    case GitChangeAction.Modify:
                         ForeColor = Color.DarkBlue;
                         break;
                 }
             }
         }
 
-        internal SvnChangeAction Action
+        internal GitChangeAction Action
         {
             get { return _change.Action; }
         }
@@ -156,14 +156,14 @@ namespace VisualGit.UI.GitLog
             get { return _change.Path; }
         }
 
-        internal string CopyFromPath
+        internal string OldPath
         {
-            get { return _change.CopyFromPath; }
+            get { return _change.OldPath; }
         }
 
-        internal long CopyFromRevision
+        internal string OldRevision
         {
-            get { return _change.CopyFromRevision; }
+            get { return _change.OldRevision; }
         }
 
         internal IGitLogItem LogItem
@@ -171,7 +171,7 @@ namespace VisualGit.UI.GitLog
             get { return _logItem; }
         }
 
-        internal SvnNodeKind NodeKind
+        internal GitNodeKind NodeKind
         {
             get { return _change.NodeKind; }
         }
@@ -200,23 +200,23 @@ namespace VisualGit.UI.GitLog
 
         [Category("Git")]
         [DisplayName("Action")]
-        public SvnChangeAction Action
+        public GitChangeAction Action
         {
             get { return _lvi.Action; }
         }
 
         [Category("Origin")]
-        [DisplayName("Copied from path")]
-        public string CopyFromPath
+        [DisplayName("Previous path")]
+        public string OldPath
         {
-            get { return _lvi.CopyFromPath; }
+            get { return _lvi.OldPath; }
         }
 
         [Category("Origin")]
-        [DisplayName("Copied from revision")]
-        public long CopyFromRevision
+        [DisplayName("Parent revision")]
+        public string OldRevision
         {
-            get { return _lvi.CopyFromRevision; }
+            get { return _lvi.OldRevision; }
         }
 
         [DisplayName("Name")]
@@ -241,7 +241,7 @@ namespace VisualGit.UI.GitLog
         [Category("Git")]
         [DisplayName("Last Revision")]
         [Description("Revision number of the Last Commit")]
-        public long Revision
+        public string Revision
         {
             get { return _lvi.LogItem.Revision; }
         }
@@ -280,12 +280,15 @@ namespace VisualGit.UI.GitLog
             get { return Origin.Target.FileName; }
         }
 
-        SvnRevision IGitRepositoryItem.Revision
+        GitRevision IGitRepositoryItem.Revision
         {
-            get { return Revision; }
+            get
+            {
+                return Revision;
+            }
         }
 
-        SvnNodeKind IGitRepositoryItem.NodeKind
+        GitNodeKind IGitRepositoryItem.NodeKind
         {
             get { return _lvi.NodeKind; }
         }
@@ -293,7 +296,7 @@ namespace VisualGit.UI.GitLog
         GitOrigin IGitRepositoryItem.Origin
         {
             // We don't have a repository item when we are deleted!
-            get { return (Action != SvnChangeAction.Delete) ? Origin : null; }
+            get { return (Action != GitChangeAction.Delete) ? Origin : null; }
         }
 
         void IGitRepositoryItem.RefreshItem(bool refreshParent)

@@ -4,6 +4,7 @@ using SharpSvn;
 using VisualGit.Selection;
 using VisualGit.Scc;
 using VisualGit.UI.SccManagement;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -19,8 +20,8 @@ namespace VisualGit.Commands.RepositoryExplorer
 
             if (item == null
                 || item.Origin == null
-                || item.Origin.Target.Revision != SvnRevision.Head
-                || item.NodeKind == SvnNodeKind.File)
+                || item.Origin.Target.Revision != GitRevision.Head
+                || item.NodeKind == GitNodeKind.File)
             {
                 e.Enabled = false;
             }

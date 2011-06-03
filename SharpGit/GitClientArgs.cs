@@ -25,7 +25,7 @@ namespace SharpGit
 
         public GitCommandType CommandType { get; private set; }
 
-        protected virtual void OnNotify(GitNotifyEventArgs e)
+        internal protected virtual void OnNotify(GitNotifyEventArgs e)
         {
             var ev = Notify;
 
@@ -36,6 +36,14 @@ namespace SharpGit
         protected virtual void OnGitError(GitErrorEventArgs e)
         {
             var ev = GitError;
+
+            if (ev != null)
+                ev(this, e);
+        }
+
+        internal protected virtual void OnCancel(CancelEventArgs e)
+        {
+            var ev = Cancel;
 
             if (ev != null)
                 ev(this, e);
@@ -106,6 +114,8 @@ namespace SharpGit
 
         public event EventHandler<GitNotifyEventArgs> Notify;
 
+        public event EventHandler<CancelEventArgs> Cancel;
+
         internal void SetError(GitException exception)
         {
             if (exception == null)
@@ -114,11 +124,6 @@ namespace SharpGit
             LastException = exception;
 
             OnGitError(new GitErrorEventArgs(LastException));
-        }
-
-        internal void RaiseNotify(GitNotifyEventArgs e)
-        {
-            OnNotify(e);
         }
     }
 }

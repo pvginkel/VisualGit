@@ -6,6 +6,7 @@ using System.Diagnostics;
 using VisualGit.Scc.UI;
 using SharpSvn;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {
@@ -73,7 +74,7 @@ namespace VisualGit.UI.GitLog
             Text = sb.ToString();
         }
 
-        public void StartLog(GitOrigin target, SvnRevision start, SvnRevision end)
+        public void StartLog(GitOrigin target, GitRevision start, GitRevision end)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -81,7 +82,7 @@ namespace VisualGit.UI.GitLog
             StartLog(new GitOrigin[] { target }, start, end);
         }
 
-        public void StartLog(ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
+        public void StartLog(ICollection<GitOrigin> targets, GitRevision start, GitRevision end)
         {
             if (targets == null)
                 throw new ArgumentNullException("targets");

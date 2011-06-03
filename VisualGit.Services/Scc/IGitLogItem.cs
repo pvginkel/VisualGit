@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using SharpSvn.Implementation;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -12,9 +13,10 @@ namespace VisualGit.Scc
         string Author { get; }
         string LogMessage { get; }
         IEnumerable<VisualGit.VS.IssueMarker> Issues { get; }
-        long Revision { get; }
+        IList<string> ParentRevisions { get; }
+        string Revision { get; }
         int Index { get; }
-        SvnChangeItemCollection ChangedPaths { get; }
+        GitChangeItemCollection ChangedPaths { get; }
 
         Uri RepositoryRoot { get; }
     }

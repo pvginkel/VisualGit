@@ -3,6 +3,7 @@ using System.Collections;
 using VisualGit.Scc;
 using System.IO;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -15,7 +16,7 @@ namespace VisualGit.Commands
         {
             IGitRepositoryItem single = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
-            if (single == null || single.NodeKind == SvnNodeKind.Directory || single.Origin == null)
+            if (single == null || single.NodeKind == GitNodeKind.Directory || single.Origin == null)
                 e.Enabled = false;            
         }
 
@@ -27,11 +28,11 @@ namespace VisualGit.Commands
                 {
                     using (FileStream fs = File.Create(toFile))
                     {
-                        SvnWriteArgs args = new SvnWriteArgs();
+                        GitWriteArgs args = new GitWriteArgs();
                         if(ri.Revision != null)
                             args.Revision = ri.Revision;
 
-                        ee.SvnClient.Write(ri.Origin.Target, fs, args);
+                        ee.Client.Write(ri.Origin.Target, fs, args);
                     }
                 });
 

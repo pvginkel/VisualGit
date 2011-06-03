@@ -15,6 +15,7 @@ using VisualGit.Scc.UI;
 using VisualGit.UI.PendingChanges;
 using VisualGit.UI.VSSelectionControls;
 using System.Drawing;
+using SharpGit;
 
 namespace VisualGit.UI.Annotate
 {
@@ -133,6 +134,8 @@ namespace VisualGit.UI.Annotate
 
         private void RetrieveLogs(GitOrigin origin, SortedList<long, AnnotateSource> _sources, long min, long max)
         {
+            throw new NotImplementedException();
+#if false
             if (_sources.Count == 0 || min == -1 || max == -1)
                 return;
 
@@ -148,7 +151,7 @@ namespace VisualGit.UI.Annotate
             {
                 using (SvnClient cl = Context.GetService<ISvnClientPool>().GetClient())
                 {
-                    SvnLogArgs la = new SvnLogArgs();
+                    GitLogArgs la = new GitLogArgs();
                     la.OperationalRevision = origin.Target.Revision;
                     la.Start = max;
                     la.End = min;
@@ -159,6 +162,7 @@ namespace VisualGit.UI.Annotate
             };
 
             aa.BeginInvoke(null, null); // Start retrieving logs
+#endif
         }
 
         private void logMessageEditor1_VerticalScroll(object sender, VSTextEditorScrollEventArgs e)

@@ -140,5 +140,14 @@ namespace SharpGit.Properties {
                 return ResourceManager.GetString("Unspecified", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only the file:/// uri scheme is supported.
+        /// </summary>
+        internal static string UnsupportedUriScheme {
+            get {
+                return ResourceManager.GetString("UnsupportedUriScheme", resourceCulture);
+            }
+        }
     }
 }

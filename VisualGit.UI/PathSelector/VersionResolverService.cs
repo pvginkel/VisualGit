@@ -126,7 +126,7 @@ namespace VisualGit.UI.PathSelector
                 if (origin == null)
                     throw new ArgumentNullException("origin");
 
-                SvnPathTarget pt = origin.Target as SvnPathTarget;
+                GitPathTarget pt = origin.Target as GitPathTarget;
                 bool isPath = (pt != null);
 
                 yield return _head;
@@ -238,7 +238,7 @@ namespace VisualGit.UI.PathSelector
                         case GitRevisionType.Committed:
                         case GitRevisionType.Previous:
                         case GitRevisionType.Working:
-                            return origin.Target is SvnPathTarget;
+                            return origin.Target is GitPathTarget;
                         default:
                             return base.IsValidOn(origin);
                     }

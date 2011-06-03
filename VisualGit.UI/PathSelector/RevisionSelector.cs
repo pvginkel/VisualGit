@@ -58,8 +58,6 @@ namespace VisualGit.UI.PathSelector
                 if (li == null)
                     return;
 
-                throw new NotImplementedException("IGitLogItem revisions must become a string");
-
                 Revision = li.Revision.ToString();
             }
         }

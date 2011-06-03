@@ -161,7 +161,7 @@ namespace VisualGit.UI.RepositoryExplorer
             get { return _tn; }
         }
 
-        SvnNodeKind IGitRepositoryItem.NodeKind
+        GitNodeKind IGitRepositoryItem.NodeKind
         {
             get
             {
@@ -170,12 +170,12 @@ namespace VisualGit.UI.RepositoryExplorer
                 if (uri != null)
                 {
                     if (uri.ToString().EndsWith("/"))
-                        return SvnNodeKind.Directory;
+                        return GitNodeKind.Directory;
                     else
-                        return SvnNodeKind.File;
+                        return GitNodeKind.File;
                 }
 
-                return SvnNodeKind.Unknown;
+                return GitNodeKind.Unknown;
             }
         }
 
@@ -185,7 +185,7 @@ namespace VisualGit.UI.RepositoryExplorer
             get { return _origin; }
         }
 
-        SharpSvn.SvnRevision IGitRepositoryItem.Revision
+        GitRevision IGitRepositoryItem.Revision
         {
             get 
             {

@@ -42,15 +42,15 @@ namespace SharpGit
                 else if (Args.Revision == GitRevision.Base)
                     WriteBaseRevision(repository, stream, pathTarget.FullPath);
                 else if (Args.Revision.RevisionType == GitRevisionType.Hash)
-                    WriteSpecificRevision(repository, stream, pathTarget.FullPath, Args.Revision.Revision);
+                    WriteSpecificRevision(repository, stream, pathTarget.FullPath, Args.Revision);
                 else
                     throw new NotImplementedException();
             }
         }
 
-        private void WriteSpecificRevision(Repository repository, Stream stream, string path, string revision)
+        private void WriteSpecificRevision(Repository repository, Stream stream, string path, GitRevision revision)
         {
-            var objectId = repository.Resolve(revision);
+            var objectId = revision.GetObjectId(repository);
 
             if (objectId == null)
                 throw new GitException(GitErrorCode.RevisionNotFound);
@@ -85,7 +85,7 @@ namespace SharpGit
                         }
 
                         if (!found)
-                            throw new GitException(GitErrorCode.CouldNotFindPathInRevision);
+                            throw new GitOperationCancelledException();
                     }
                     finally
                     {

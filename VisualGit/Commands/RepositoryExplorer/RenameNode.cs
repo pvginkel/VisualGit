@@ -5,6 +5,7 @@ using VisualGit.Scc;
 using SharpSvn;
 using VisualGit.UI.RepositoryExplorer.Dialogs;
 using System.Windows.Forms;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -19,7 +20,7 @@ namespace VisualGit.Commands.RepositoryExplorer
 
             if (item != null && item.Origin != null)
             {
-                if (item.Origin.Target.Revision == SvnRevision.Head
+                if (item.Origin.Target.Revision == GitRevision.Head
                     && !item.Origin.IsRepositoryRoot)
                 {
                     return;

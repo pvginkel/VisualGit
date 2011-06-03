@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
 	public interface IGitLogChangedPathItem : IGitRepositoryItem
 	{
-		SvnChangeAction Action { get; }
-		string CopyFromPath { get; }
-		long CopyFromRevision { get; }
+		GitChangeAction Action { get; }
+		string OldPath { get; }
+		string OldRevision { get; }
 		string Path { get; }
-        new long Revision { get; }
+        new string Revision { get; }
 
         new GitOrigin Origin { get; }
 	}

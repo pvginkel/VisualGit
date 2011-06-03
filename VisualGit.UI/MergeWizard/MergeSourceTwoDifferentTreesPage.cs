@@ -171,6 +171,10 @@ namespace VisualGit.UI.MergeWizard
                 if (dialog.ShowDialog(Context) == DialogResult.OK)
                 {
                     IEnumerable<IGitLogItem> selected = dialog.SelectedItems;
+
+                    throw new NotImplementedException();
+
+#if false
                     long low = -1;
                     long high = -1;
 
@@ -195,6 +199,7 @@ namespace VisualGit.UI.MergeWizard
 
                     if (useFromURLCheckBox.Checked && high != -1 && high != low)
                         toRevisionTextBox.Text = high.ToString();
+#endif
                 }
             }
         }

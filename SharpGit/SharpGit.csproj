@@ -69,7 +69,9 @@
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
     <Compile Include="GitChangeItem.cs" />
+    <Compile Include="GitChangeItemCollection.cs" />
     <Compile Include="GitChangeListCollection.cs" />
+    <Compile Include="GitChangeAction.cs" />
     <Compile Include="GitClientArgsWithCommit.cs" />
     <Compile Include="GitCommand.cs" />
     <Compile Include="GitCommandResult.cs" />
@@ -93,6 +95,10 @@
     <Compile Include="GitErrorCategory.cs" />
     <Compile Include="GitErrorEventArgs.cs" />
     <Compile Include="GitException.cs" />
+    <Compile Include="GitLogArgs.cs" />
+    <Compile Include="GitLogCommand.cs" />
+    <Compile Include="GitLogEventArgs.cs" />
+    <Compile Include="GitLoggingEventArgs.cs" />
     <Compile Include="GitNodeKind.cs" />
     <Compile Include="GitNotifyAction.cs" />
     <Compile Include="GitNotifyEventArgs.cs" />
@@ -113,6 +119,7 @@
     <Compile Include="GitWriteArgs.cs" />
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitOrigin.cs" />
+    <Compile Include="NullOutputStream.cs" />
     <Compile Include="PathFilterNotRecurse.cs" />
     <Compile Include="RepositoryUtil.cs" />
     <Compile Include="GitSchedule.cs" />

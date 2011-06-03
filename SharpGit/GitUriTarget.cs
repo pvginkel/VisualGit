@@ -13,7 +13,7 @@ namespace SharpGit
         public GitUriTarget(Uri uri, GitRevision revision)
             : base(revision)
         {
-            if (uri != null)
+            if (uri == null)
                 throw new ArgumentNullException("uri");
             else if (!uri.IsAbsoluteUri)
                 throw new ArgumentException("Uri is not absolute", "uri");
@@ -160,7 +160,7 @@ namespace SharpGit
 
         private Uri CanonicalizeUri(Uri uri)
         {
-            if (uri != null)
+            if (uri == null)
                 throw new ArgumentNullException("uri");
             else if (!uri.IsAbsoluteUri)
                 throw new ArgumentException("Uri is not absolute", "uri");

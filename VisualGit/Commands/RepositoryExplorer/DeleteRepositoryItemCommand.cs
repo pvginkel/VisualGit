@@ -5,6 +5,7 @@ using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.UI;
 using VisualGit.UI.RepositoryExplorer.Dialogs;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -15,7 +16,7 @@ namespace VisualGit.Commands.RepositoryExplorer
         {
             foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
-                if (i.Origin == null || i.Origin.Target.Revision != SvnRevision.Head || i.Origin.IsRepositoryRoot)
+                if (i.Origin == null || i.Origin.Target.Revision != GitRevision.Head || i.Origin.IsRepositoryRoot)
                     break;
 
                 return;
@@ -30,7 +31,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             List<IGitRepositoryItem> refresh = new List<IGitRepositoryItem>();
             foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
             {
-                if (i.Origin == null || i.Origin.Target.Revision != SvnRevision.Head || i.Origin.IsRepositoryRoot)
+                if (i.Origin == null || i.Origin.Target.Revision != GitRevision.Head || i.Origin.IsRepositoryRoot)
                     break;
 
                 items.Add(i.Origin);

@@ -4,6 +4,7 @@ using System.Text;
 using VisualGit.Scc;
 using VisualGit.Scc.UI;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -15,12 +16,12 @@ namespace VisualGit.Commands.RepositoryExplorer
         {
             IGitRepositoryItem reposItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitRepositoryItem>());
 
-            if (reposItem != null && reposItem.Origin != null && reposItem.NodeKind != SharpSvn.SvnNodeKind.Directory
-                && reposItem.Revision.RevisionType == SharpSvn.SvnRevisionType.Number)
+            if (reposItem != null && reposItem.Origin != null && reposItem.NodeKind != GitNodeKind.Directory
+                && reposItem.Revision.RevisionType == GitRevisionType.Hash)
             {
                 if (e.Command == VisualGitCommand.RepositoryCompareWithWc)
                 {
-                    if (!(reposItem.Origin.Target is SvnPathTarget))
+                    if (!(reposItem.Origin.Target is GitPathTarget))
                     {
                         e.Enabled = false;
                         return;
@@ -41,28 +42,28 @@ namespace VisualGit.Commands.RepositoryExplorer
             if (reposItem == null)
                 return;
 
-            SvnRevision from;
-            SvnRevision to;
+            GitRevision from;
+            GitRevision to;
             if (e.Command == VisualGitCommand.RepositoryCompareWithWc)
             {
                 from = reposItem.Revision;
-                to = SvnRevision.Working;
+                to = GitRevision.Working;
             }
             else
             {
-                from = reposItem.Revision.Revision - 1;
+                from = reposItem.Revision - 1;
                 to = reposItem.Revision;
             }
             VisualGitDiffArgs da = new VisualGitDiffArgs();
 
-            if (to == SvnRevision.Working)
+            if (to == GitRevision.Working)
             {
                 da.BaseFile = diff.GetTempFile(reposItem.Origin.Target, from, true);
 
                 if (da.BaseFile == null)
                     return; // User canceled
 
-                da.MineFile = ((SvnPathTarget)reposItem.Origin.Target).FullPath;
+                da.MineFile = ((GitPathTarget)reposItem.Origin.Target).FullPath;
             }
             else
             {

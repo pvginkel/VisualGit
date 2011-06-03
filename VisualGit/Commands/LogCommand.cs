@@ -7,6 +7,8 @@ using VisualGit.Selection;
 using VisualGit.VS;
 using VisualGit.Scc;
 using VisualGit.Scc.UI;
+using SharpGit;
+using System;
 
 namespace VisualGit.Commands
 {
@@ -183,13 +185,15 @@ namespace VisualGit.Commands
                     if (section == null)
                         return;
 
+                    throw new NotImplementedException();
+#if false
                     PerformLog(e.Context, new GitOrigin[] { section.Origin }, section.Revision, null);
-
                     break;
+#endif
             }
         }
 
-        static void PerformLog(IVisualGitServiceProvider context, ICollection<GitOrigin> targets, SvnRevision start, SvnRevision end)
+        static void PerformLog(IVisualGitServiceProvider context, ICollection<GitOrigin> targets, GitRevision start, GitRevision end)
         {
             IVisualGitPackage package = context.GetService<IVisualGitPackage>();
 

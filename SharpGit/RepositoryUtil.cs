@@ -17,6 +17,16 @@ namespace SharpGit
     {
         public static string GetRepositoryRoot(string path)
         {
+            string result;
+
+            if (!TryGetRepositoryRoot(path, out result))
+                throw new GitNoRepositoryException();
+
+            return result;
+        }
+
+        public static bool TryGetRepositoryRoot(string path, out string repositoryRoot)
+        {
             if (path == null)
                 throw new ArgumentNullException("path");
 
@@ -26,13 +36,18 @@ namespace SharpGit
             while (true)
             {
                 if (Directory.Exists(Path.Combine(path, Constants.DOT_GIT)))
-                    return path;
+                {
+                    repositoryRoot = path;
+                    return true;
+                }
 
                 if (
                     String.Empty.Equals(path) ||
                     String.Equals(path, pathRoot, FileSystemUtil.StringComparison)
-                )
-                    return null;
+                ) {
+                    repositoryRoot = null;
+                    return false;
+                }
 
                 path = Path.GetDirectoryName(path);
             }
@@ -40,7 +55,8 @@ namespace SharpGit
 
         public static bool IsBelowManagedPath(string fullPath)
         {
-            return GetRepositoryRoot(fullPath) != null;
+            string repositoryPath;
+            return TryGetRepositoryRoot(fullPath, out repositoryPath);
         }
 
         public static bool PathMatches(string rootPath, string path, bool isSubTree, GitDepth depth)

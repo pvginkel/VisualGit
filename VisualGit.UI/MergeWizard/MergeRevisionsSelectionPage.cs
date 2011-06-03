@@ -37,6 +37,9 @@ namespace VisualGit.UI.MergeWizard
         {
             get
             {
+                throw new NotImplementedException();
+
+#if false
                 IGitLogItem start = null;
                 IGitLogItem end = null;
                 int previousIndex = -1;
@@ -73,6 +76,7 @@ namespace VisualGit.UI.MergeWizard
                 {
                     yield return new SvnRevisionRange(start.Revision - 1, end.Revision);
                 }
+#endif
             }
         }
 

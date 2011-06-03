@@ -15,11 +15,11 @@ namespace VisualGit.Scc
         /// <summary>
         /// Gets the <see cref="GitNodeKind"/> of the item (Optional)
         /// </summary>
-        SvnNodeKind NodeKind { get; }
+        GitNodeKind NodeKind { get; }
         /// <summary>
         /// Gets the <see cref="SvnRevision"/> of the item (Optional)
         /// </summary>
-        SvnRevision Revision { get; }
+        GitRevision Revision { get; }
 
         /// <summary>
         /// Refreshes the item.

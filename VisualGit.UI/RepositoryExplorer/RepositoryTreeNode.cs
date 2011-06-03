@@ -73,7 +73,7 @@ namespace VisualGit.UI.RepositoryExplorer
 
         public Uri NormalizedUri
         {
-            get { return (_origin != null) ? ((SvnUriTarget) _origin.Target).Uri : null; }
+            get { return (_origin != null) ? ((GitUriTarget) _origin.Target).Uri : null; }
         }
 
         public bool IsRepositoryPath

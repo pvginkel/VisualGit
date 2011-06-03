@@ -85,13 +85,8 @@ namespace SharpGit
 
                     RaiseCommitting(e);
 
-                    if (e.Cancel)
-                    {
-                        if (Args.ThrowOnCancel)
-                            throw new GitOperationCancelledException();
-
+                    if (CancelRequested(e))
                         return null;
-                    }
 
                     commitCommand.SetMessage(Args.LogMessage);
 

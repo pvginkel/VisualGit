@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using SharpSvn;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -34,7 +35,7 @@ namespace VisualGit.Commands.RepositoryExplorer
             bool suggestExport = false;
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
 
-            if (item.NodeKind == SharpSvn.SvnNodeKind.Directory)
+            if (item.NodeKind == GitNodeKind.Directory)
             {
                 using (FolderBrowserDialog fd = new FolderBrowserDialog())
                 {
@@ -103,7 +104,10 @@ namespace VisualGit.Commands.RepositoryExplorer
                         if (copyBelow)
                             ca.AlwaysCopyAsChild = true;
 
+                        throw new NotImplementedException();
+#if false
                         a.SvnClient.Copy(item.Origin.Target, copyTo, ca);
+#endif
                     });
             }
             else
@@ -117,9 +121,12 @@ namespace VisualGit.Commands.RepositoryExplorer
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         SvnExportArgs ea = new SvnExportArgs();
+                        throw new NotImplementedException();
+#if false
                         ea.Revision = item.Revision;
 
                         a.SvnClient.Export(item.Origin.Target, copyTo, ea);
+#endif
                     });
                 }
             }

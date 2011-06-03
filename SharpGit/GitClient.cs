@@ -93,6 +93,24 @@ namespace SharpGit
             return ExecuteCommand<GitWriteCommand>(args, p => p.Execute(path, stream));
         }
 
+        public bool Log(string repositoryPath, GitLogArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitLogCommand>(args, p => p.Execute(repositoryPath));
+        }
+
+        public bool Log(IEnumerable<Uri> uris, GitLogArgs args)
+        {
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitLogCommand>(args, p => p.Execute(uris));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {

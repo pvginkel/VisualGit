@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.Commands;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog
 {
@@ -77,26 +78,40 @@ namespace VisualGit.UI.GitLog
 
             IGitLogItem item = e.Source.FocusedItem;
 
-            if (item != null && item.ChangedPaths != null)
+            if (item != null)
             {
-                List<PathListViewItem> paths = new List<PathListViewItem>();
+                GitChangeItemCollection changeItems = null;
+                GitLogArgs la = new GitLogArgs();
 
-                List<string> origins = new List<string>();
-                foreach (GitOrigin o in LogSource.Targets)
+                la.Start = item.Revision;
+                la.End = (GitRevision)item.Revision - 1;
+                la.RetrieveChangedPaths = true;
+                la.Log += delegate(object sender2, GitLogEventArgs e2) { changeItems = e2.ChangedPaths; };
+
+                using (var client = _context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    string origin = SvnTools.UriPartToPath(o.RepositoryRoot.MakeRelativeUri(o.Uri).ToString()).Replace('\\', '/');
-                    if (origin.Length == 0 || origin[0] != '/')
-                        origin = "/" + origin;
-
-                    origins.Add(origin.TrimEnd('/'));
+                    client.Log(e.Source.FocusedItem.RepositoryRoot.AbsolutePath, la);
                 }
 
-                foreach (SvnChangeItem i in item.ChangedPaths)
+                if (changeItems != null)
                 {
-                    paths.Add(new PathListViewItem(changedPaths, item, i, item.RepositoryRoot, HasFocus(origins, i.Path)));
-                }
+                    List<PathListViewItem> paths = new List<PathListViewItem>();
 
-                changedPaths.Items.AddRange(paths.ToArray());
+                    List<string> origins = new List<string>();
+                    foreach (GitOrigin o in LogSource.Targets)
+                    {
+                        string origin = GitTools.GetRepositoryPath(o.Uri);
+
+                        origins.Add(origin.TrimEnd('/'));
+                    }
+
+                    foreach (GitChangeItem i in changeItems)
+                    {
+                        paths.Add(new PathListViewItem(changedPaths, item, i, item.RepositoryRoot, HasFocus(origins, GitTools.GetRepositoryPath(i.Path))));
+                    }
+
+                    changedPaths.Items.AddRange(paths.ToArray());
+                }
             }
         }
 
@@ -114,7 +129,7 @@ namespace VisualGit.UI.GitLog
 
                 if (n > 0)
                 {
-                    if (itemPath[origin.Length] == '/')
+                    if (itemPath[origin.Length] == '/' || origin.Length == 0)
                         return true;
                 }
             }

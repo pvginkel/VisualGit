@@ -16,6 +16,14 @@ namespace SharpGit
     {
         private const int MAX_PATH = 260;
         private static char[] _invalidChars;
+        private static readonly long EPOCH_TICKS;
+
+        static GitTools()
+		{
+			DateTime time = new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+			EPOCH_TICKS = time.Ticks;
+		}
 
         public static string GetNormalizedFullPath(string path)
         {
@@ -287,5 +295,62 @@ namespace SharpGit
 
         [DllImport("kernel32.dll")]
         static extern uint GetFullPathName(string lpFileName, uint nBufferLength, [Out] StringBuilder lpBuffer, [Out] StringBuilder lpFilePart);
+
+        internal static DateTime CreateDate(long milliSecondsSinceEpoch)
+        {
+            long num = EPOCH_TICKS + (milliSecondsSinceEpoch * 10000);
+
+            return new DateTime(num);
+        }
+
+        internal static DateTime CreateDateFromGitTime(long time)
+        {
+            return CreateDate(time * 1000L);
+        }
+
+        public static string GetRepositoryPath(Uri uri)
+        {
+            if (uri == null)
+                throw new ArgumentNullException("uri");
+
+            return GetRepositoryPath(GetAbsolutePath(uri));
+        }
+
+        public static string GetRepositoryPath(string fullPath)
+        {
+            if (fullPath == null)
+                throw new ArgumentNullException("fullPath");
+
+            var repositoryEntry = RepositoryManager.GetRepository(fullPath);
+
+            if (repositoryEntry == null)
+                throw new GitNoRepositoryException();
+
+            // Repository entry is not locked here because no communication
+            // with Git is required to get the repository path.
+
+            return repositoryEntry.Repository.GetRepositoryPath(fullPath);
+        }
+
+        internal static Uri GetUri(string absolutePath)
+        {
+            if (absolutePath == null)
+                throw new ArgumentNullException("absolutePath");
+
+            return new Uri("file:///" + absolutePath);
+        }
+
+        internal static string GetAbsolutePath(Uri uri)
+        {
+            if (uri == null)
+                throw new ArgumentNullException("uri");
+
+            string stringUri = uri.ToString();
+
+            if (!stringUri.StartsWith("file:///", StringComparison.OrdinalIgnoreCase))
+                throw new GitException(GitErrorCode.UnsupportedUriScheme);
+
+            return stringUri.Substring(8).Replace('/', Path.DirectorySeparatorChar);
+        }
     }
 }

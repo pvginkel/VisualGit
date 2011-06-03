@@ -76,9 +76,15 @@ namespace VisualGit.UI.Annotate
         }
 
         [Category("Git")]
-        public long Revision
+        public string Revision
         {
-            get { return _args.Revision; }
+            get
+            {
+                throw new NotImplementedException();
+#if false
+                return _args.Revision;
+#endif
+            }
         }
 
         [Category("Git")]
@@ -131,12 +137,12 @@ namespace VisualGit.UI.Annotate
             get { return Origin.Uri; }
         }
 
-        SvnNodeKind IGitRepositoryItem.NodeKind
+        GitNodeKind IGitRepositoryItem.NodeKind
         {
-            get { return SvnNodeKind.File; }
+            get { return GitNodeKind.File; }
         }
 
-        SvnRevision IGitRepositoryItem.Revision
+        GitRevision IGitRepositoryItem.Revision
         {
             get { return Revision; }
         }

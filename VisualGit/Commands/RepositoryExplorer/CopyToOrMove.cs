@@ -5,6 +5,7 @@ using VisualGit.Scc;
 using SharpSvn;
 using VisualGit.UI.RepositoryExplorer;
 using VisualGit.UI.SccManagement;
+using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer
 {
@@ -25,7 +26,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                     ok = false;
                     break;
                 }
-                else if (e.Command == VisualGitCommand.ReposMoveTo && item.Origin.Target.Revision != SvnRevision.Head)
+                else if (e.Command == VisualGitCommand.ReposMoveTo && item.Origin.Target.Revision != GitRevision.Head)
                 {
                     ok = false;
                     break;
@@ -53,13 +54,13 @@ namespace VisualGit.Commands.RepositoryExplorer
             Uri target = null;
             Uri root = null;
 
-            List<SvnUriTarget> copyFrom = new List<SvnUriTarget>();
+            List<GitUriTarget> copyFrom = new List<GitUriTarget>();
             foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
             {
-                SvnUriTarget utt = item.Origin.Target as SvnUriTarget;
+                GitUriTarget utt = item.Origin.Target as GitUriTarget;
 
                 if(utt == null)
-                    utt = new SvnUriTarget(item.Origin.Uri, item.Origin.Target.Revision);
+                    utt = new GitUriTarget(item.Origin.Uri, item.Origin.Target.Revision);
 
                 copyFrom.Add(utt);
 
@@ -121,7 +122,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                     if (isMove)
                     {
                         List<Uri> uris = new List<Uri>();
-                        foreach (SvnUriTarget ut in copyFrom)
+                        foreach (GitUriTarget ut in copyFrom)
                             uris.Add(ut.Uri);
 
                         SvnMoveArgs ma = new SvnMoveArgs();
@@ -149,6 +150,8 @@ namespace VisualGit.Commands.RepositoryExplorer
                         ca.LogMessage = logMessage;
                         ca.CreateParents = true;
 
+                        throw new NotImplementedException();
+#if false
                         try
                         {
                             // First try with the full new name
@@ -163,6 +166,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                             ca.AlwaysCopyAsChild = true;
                             a.SvnClient.RemoteCopy(copyFrom, toUri, ca);
                         }
+#endif
                     }
                 });
 

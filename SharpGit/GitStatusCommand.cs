@@ -105,7 +105,7 @@ namespace SharpGit
                         FullPath = path,
                         LocalContentStatus = GitStatus.Normal,
                         NodeKind = GitNodeKind.Directory,
-                        Uri = new Uri("file:///" + path),
+                        Uri = GitTools.GetUri(path),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.Directory,
@@ -115,13 +115,8 @@ namespace SharpGit
 
                     callback(Client, e);
 
-                    if (e.Cancel)
-                    {
-                        if (Args.ThrowOnCancel)
-                            throw new GitOperationCancelledException();
-
+                    if (CancelRequested(e))
                         return;
-                    }
                 }
 
                 var seen = new HashSet<string>(FileSystemUtil.StringComparer);
@@ -135,7 +130,7 @@ namespace SharpGit
                         FullPath = fullPath,
                         LocalContentStatus = GetStatus(entry, diff),
                         NodeKind = GitNodeKind.File,
-                        Uri = new Uri("file:///" + fullPath),
+                        Uri = GitTools.GetUri(fullPath),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.File,
@@ -145,13 +140,8 @@ namespace SharpGit
 
                     callback(Client, e);
 
-                    if (e.Cancel)
-                    {
-                        if (Args.ThrowOnCancel)
-                            throw new GitOperationCancelledException();
-
+                    if (CancelRequested(e))
                         return;
-                    }
 
                     seen.Add(fullPath);
                 }
@@ -168,7 +158,7 @@ namespace SharpGit
                         FullPath = fullPath,
                         LocalContentStatus = GitStatus.Deleted,
                         NodeKind = GitNodeKind.File,
-                        Uri = new Uri("file:///" + fullPath),
+                        Uri = GitTools.GetUri(fullPath),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.File,
@@ -178,13 +168,8 @@ namespace SharpGit
 
                     callback(Client, e);
 
-                    if (e.Cancel)
-                    {
-                        if (Args.ThrowOnCancel)
-                            throw new GitOperationCancelledException();
-
+                    if (CancelRequested(e))
                         return;
-                    }
 
                     seen.Add(fullPath);
                 }
@@ -224,7 +209,7 @@ namespace SharpGit
                                     FullPath = fullPath,
                                     LocalContentStatus = state,
                                     NodeKind = GitNodeKind.File,
-                                    Uri = new Uri("file:///" + fullPath),
+                                    Uri = GitTools.GetUri(fullPath),
                                     WorkingCopyInfo = new GitWorkingCopyInfo
                                     {
                                         NodeKind = GitNodeKind.File,
@@ -234,13 +219,8 @@ namespace SharpGit
 
                                 callback(Client, e);
 
-                                if (e.Cancel)
-                                {
-                                    if (Args.ThrowOnCancel)
-                                        throw new GitOperationCancelledException();
-
+                                if (CancelRequested(e))
                                     return;
-                                }
                             }
 
                             seen.Add(fullPath);

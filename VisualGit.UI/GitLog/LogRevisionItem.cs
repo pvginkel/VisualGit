@@ -2,12 +2,11 @@ using System;
 using System.Text;
 using System.ComponentModel;
 using System.Windows.Forms;
-using SharpSvn;
+using SharpGit;
 using VisualGit.UI.VSSelectionControls;
 using System.Globalization;
 using System.Drawing;
 using VisualGit.Scc;
-using SharpSvn.Implementation;
 using System.Collections.ObjectModel;
 using VisualGit.VS;
 using System.Collections.Generic;
@@ -17,8 +16,8 @@ namespace VisualGit.UI.GitLog
     class LogRevisionItem : SmartListViewItem
     {
         readonly IVisualGitServiceProvider _context;
-        readonly SvnLoggingEventArgs _args;
-        public LogRevisionItem(LogRevisionView listView, IVisualGitServiceProvider context, SvnLoggingEventArgs e)
+        readonly GitLoggingEventArgs _args;
+        public LogRevisionItem(LogRevisionView listView, IVisualGitServiceProvider context, GitLoggingEventArgs e)
             : base(listView)
         {
             _args = e;
@@ -69,9 +68,9 @@ namespace VisualGit.UI.GitLog
             if (_args.ChangedPaths == null)
                 return;
 
-            foreach (SvnChangeItem ci in _args.ChangedPaths)
+            foreach (GitChangeItem ci in _args.ChangedPaths)
             {
-                if (ci.CopyFromRevision >= 0)
+                if (ci.OldRevision != null)
                     ForeColor = Color.DarkBlue;
             }
         }
@@ -99,17 +98,17 @@ namespace VisualGit.UI.GitLog
             }
         }
 
-        internal long Revision
+        internal string Revision
         {
             get { return _args.Revision; }
         }
 
-        internal KeyedCollection<string, SvnChangeItem> ChangedPaths
+        internal KeyedCollection<string, GitChangeItem> ChangedPaths
         {
             get { return _args.ChangedPaths; }
         }
 
-        internal SvnLoggingEventArgs RawData
+        internal GitLoggingEventArgs RawData
         {
             get { return _args; }
         }
@@ -212,13 +211,19 @@ namespace VisualGit.UI.GitLog
         }
 
         [Category("Git")]
-        public long Revision
+        public string Revision
         {
             get { return _lvi.Revision; }
         }
 
+        [Category("Git")]
+        public IList<string> ParentRevisions
+        {
+            get { return _lvi.RawData.ParentRevisions; }
+        }
+
         [Browsable(false)]
-        public SvnChangeItemCollection ChangedPaths
+        public GitChangeItemCollection ChangedPaths
         {
             get { return _lvi.RawData.ChangedPaths; }
         }

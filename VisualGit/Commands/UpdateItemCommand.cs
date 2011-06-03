@@ -151,12 +151,12 @@ namespace VisualGit.Commands
             using (DocumentLock lck = tracker.LockDocuments(files, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
+                throw new NotImplementedException();
+#if false
                 SvnUpdateResult ur;
                 ProgressRunnerArgs pa = new ProgressRunnerArgs();
                 pa.CreateLog = true;
 
-                throw new NotImplementedException();
-#if false
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.UpdatingTitle, pa,
                                                          delegate(object sender, ProgressWorkerArgs ee)
                                                          {

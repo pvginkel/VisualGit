@@ -150,8 +150,12 @@ namespace VisualGit.UI.SccManagement
 
                 if (li != null)
                 {
+                    throw new NotImplementedException();
+
+#if false
                     Revision = li.Revision;
                     specificVersionRadio.Checked = true;
+#endif
                 }
             }
         }
