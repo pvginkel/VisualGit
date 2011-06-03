@@ -324,7 +324,7 @@ namespace VisualGit.Services.PendingChanges
                     {
                         uris.Add(pc.Uri);
                     }
-                    PreCommitArgs args = new PreCommitArgs(uris.ToArray(), 1);
+                    PreCommitArgs args = new PreCommitArgs(uris.ToArray(), GitRevision.One);
                     args.CommitMessage = state.LogMessage;
                     iRepo.PreCommit(args);
                     if (args.Cancel) { return false; }

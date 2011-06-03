@@ -70,11 +70,20 @@ namespace VisualGit.UI.Commands {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a valid url (like &apos;http://myserver/svn/repos/path&apos;).
+        ///   Looks up a localized string similar to Repository already is at this branch.
         /// </summary>
-        internal static string EnterValidUrl {
+        internal static string RepositoryAlreadyAtThisBranch {
             get {
-                return ResourceManager.GetString("EnterValidUrl", resourceCulture);
+                return ResourceManager.GetString("RepositoryAlreadyAtThisBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a branch.
+        /// </summary>
+        internal static string SelectABranch {
+            get {
+                return ResourceManager.GetString("SelectABranch", resourceCulture);
             }
         }
         

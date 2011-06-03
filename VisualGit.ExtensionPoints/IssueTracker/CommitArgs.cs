@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SharpGit;
 
 namespace VisualGit.ExtensionPoints.IssueTracker
 {
@@ -9,7 +10,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
     public abstract class CommitArgs
     {
         private readonly ICollection<Uri> _paths;
-        private readonly long _revision;
+        private readonly GitRevision _revision;
         string _commitMessage;
 
         /// <summary>
@@ -18,7 +19,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// <param name="paths">The paths.</param>
         /// <param name="revision">The revision.</param>
         /// <param name="commitMessage">The commit message.</param>
-        protected CommitArgs(ICollection<Uri> paths, long revision, string commitMessage)
+        protected CommitArgs(ICollection<Uri> paths, GitRevision revision, string commitMessage)
         {
             _paths = paths;
             _revision = revision;
@@ -39,7 +40,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// Gets the revision.
         /// </summary>
         /// <value>The revision.</value>
-        public long Revision
+        public GitRevision Revision
         {
             get { return _revision; }
         }
@@ -67,7 +68,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// </summary>
         /// <param name="paths">The paths.</param>
         /// <param name="revision">The revision.</param>
-        public PreCommitArgs(ICollection<Uri> paths, long revision)
+        public PreCommitArgs(ICollection<Uri> paths, GitRevision revision)
             : this(paths, revision, string.Empty)
         {
         }
@@ -78,7 +79,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// <param name="paths">The paths.</param>
         /// <param name="revision">The revision.</param>
         /// <param name="commitMessage">The commit message.</param>
-        public PreCommitArgs(ICollection<Uri> paths, long revision, string commitMessage)
+        public PreCommitArgs(ICollection<Uri> paths, GitRevision revision, string commitMessage)
             : base(paths, revision, commitMessage)
         {
         }
@@ -114,7 +115,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// </summary>
         /// <param name="paths">The paths.</param>
         /// <param name="revision">The revision.</param>
-        public PostCommitArgs(ICollection<Uri> paths, long revision)
+        public PostCommitArgs(ICollection<Uri> paths, GitRevision revision)
             : this(paths, revision, string.Empty)
         {
         }
@@ -125,7 +126,7 @@ namespace VisualGit.ExtensionPoints.IssueTracker
         /// <param name="paths">The paths.</param>
         /// <param name="revision">The revision.</param>
         /// <param name="commitMessage">The commit message.</param>
-        public PostCommitArgs(ICollection<Uri> paths, long revision, string commitMessage)
+        public PostCommitArgs(ICollection<Uri> paths, GitRevision revision, string commitMessage)
             : base(paths, revision, commitMessage)
         {
         }

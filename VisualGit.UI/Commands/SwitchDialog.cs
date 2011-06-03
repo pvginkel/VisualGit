@@ -14,42 +14,17 @@ namespace VisualGit.UI.Commands
 {
     public partial class SwitchDialog : VSDialogForm
     {
+        private GitBranchRef _repositoryBranch;
+
         public SwitchDialog()
         {
             InitializeComponent();
-            versionSelector.Revision = GitRevision.Head;
         }
 
-        private void browseUrl_Click(object sender, EventArgs e)
+        public bool Force
         {
-            using (RepositoryFolderBrowserDialog dlg = new RepositoryFolderBrowserDialog())
-            {
-                dlg.SelectedUri = SwitchToUri;
-                if (dlg.ShowDialog(Context) == DialogResult.OK)
-                {
-                    if (dlg.SelectedUri != null)
-                        SwitchToUri = dlg.SelectedUri;
-                }
-            }
-        }
-
-        public GitRevision Revision
-        {
-            get { return versionSelector.Revision; }
-            set { versionSelector.Revision = value; }
-        }
-
-        public bool AllowUnversionedObstructions
-        {
-            get { return allowObstructions.Checked; }
-            set { allowObstructions.Checked = value; }
-        }
-
-        protected override void OnContextChanged(EventArgs e)
-        {
-            base.OnContextChanged(e);
-            if (Context != null)
-                versionSelector.Context = Context;
+            get { return forceBox.Checked; }
+            set { forceBox.Checked = value; }
         }
 
         /// <summary>
@@ -62,77 +37,61 @@ namespace VisualGit.UI.Commands
             set { pathBox.Text = value; }
         }
 
-        Uri _reposRoot;
-        public Uri RepositoryRoot
-        {
-            get { return _reposRoot; }
-            set
-            {
-                _reposRoot = value;
-                UpdateRoot();
-            }
-        }
-
-        private void UpdateRoot()
-        {
-            versionSelector.Context = Context;
-            if (_reposRoot == null)
-                versionSelector.GitOrigin = null;
-            else
-            {
-                Uri switchUri = SwitchToUri;
-
-                if (switchUri != null)
-                {
-                    if (!switchUri.AbsoluteUri.StartsWith(_reposRoot.AbsoluteUri))
-                        versionSelector.GitOrigin = null;
-                    else
-                        versionSelector.GitOrigin = new GitOrigin(switchUri, _reposRoot);
-                }
-            }
-        }
-
-
         /// <summary>
-        /// Gets or sets the switch to URI.
+        /// Gets or sets the switch to branch.
         /// </summary>
-        /// <value>The switch to URI.</value>
-        public Uri SwitchToUri
+        /// <value>The switch to branch.</value>
+        public GitBranchRef SwitchToBranch
         {
             get
             {
-                Uri uri;
-                if (!string.IsNullOrEmpty(toUrlBox.Text) && Uri.TryCreate(toUrlBox.Text, UriKind.Absolute, out uri))
-                    return uri;
-
-                return null;
+                return toBranchBox.SelectedItem as GitBranchRef;
             }
             set
             {
-                if (value == null)
-                    toUrlBox.Text = "";
-                else
-                {
-                    toUrlBox.Text = value.AbsoluteUri;
-
-                    UpdateRoot();
-                }
+                toBranchBox.SelectedItem = value;
             }
         }
 
         private void toUrlBox_Validating(object sender, CancelEventArgs e)
         {
-            bool invalid = SwitchToUri == null;
-            e.Cancel = invalid;
-            if (invalid)
-                errorProvider.SetError(toUrlBox, CommandStrings.EnterValidUrl);
+            e.Cancel = true;
+            if (SwitchToBranch == null)
+                errorProvider.SetError(toBranchBox, CommandStrings.SelectABranch);
+            else if (SwitchToBranch == _repositoryBranch)
+                errorProvider.SetError(toBranchBox, CommandStrings.RepositoryAlreadyAtThisBranch);
             else
-                errorProvider.SetError(toUrlBox, null);
+            {
+                errorProvider.SetError(toBranchBox, null);
+                e.Cancel = false;
+            }
         }
 
-        private void toUrlBox_TextChanged(object sender, EventArgs e)
+        private void SwitchDialog_Shown(object sender, EventArgs e)
         {
-            UpdateRoot();
+            _repositoryBranch = RepositoryUtil.GetCurrentBranch(LocalPath);
+
+            using (var client = GetService<IGitClientPool>().GetNoUIClient())
+            {
+                var lba = new GitListBranchArgs();
+                GitListBranchResult lbr;
+
+                client.ListBranch(LocalPath, lba, out lbr);
+
+                toBranchBox.BeginUpdate();
+                toBranchBox.Items.Clear();
+
+
+                foreach (var branch in lbr.Branches)
+                {
+                    toBranchBox.Items.Add(branch);
+                }
+
+                toBranchBox.EndUpdate();
+            }
+
+            if (SwitchToBranch == null)
+                SwitchToBranch = _repositoryBranch;
         }
     }
 }

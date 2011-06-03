@@ -14,7 +14,6 @@ namespace VisualGit.Commands
     /// <summary>
     /// Command to switch current item to a different URL.
     /// </summary>
-    [Command(VisualGitCommand.SwitchItem)]
     [Command(VisualGitCommand.SolutionSwitchDialog)]
     [Command(VisualGitCommand.SwitchProject)]
     class SwitchItemCommand : CommandBase
@@ -62,22 +61,6 @@ namespace VisualGit.Commands
                         }
                     }
                     break;
-
-                case VisualGitCommand.SwitchItem:
-                    bool foundOne = false, error = false;
-                    foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
-                    {
-                        if (item.IsVersioned && !foundOne)
-                            foundOne = true;
-                        else
-                        {
-                            error = true;
-                            break;
-                        }
-                    }
-
-                    e.Enabled = foundOne && !error;
-                    break;
             }
         }
 
@@ -85,7 +68,6 @@ namespace VisualGit.Commands
         {
             GitItem theItem = null;
             string path;
-            bool allowObstructions = false;
 
             string projectRoot = e.GetService<IVisualGitSolutionSettings>().ProjectRoot;
 
@@ -127,37 +109,33 @@ namespace VisualGit.Commands
             IFileStatusCache statusCache = e.GetService<IFileStatusCache>();
 
             GitItem pathItem = statusCache[path];
-            Uri uri = pathItem.Uri;
+            GitBranchRef currentBranch = RepositoryUtil.GetCurrentBranch(pathItem.FullPath);
 
-            if (uri == null)
+            if (currentBranch == null)
                 return; // Should never happen on a real workingcopy
 
-            GitUriTarget target;
-            GitRevision revision = GitRevision.None;
+            GitBranchRef target;
+            bool force = false;
 
             if (e.Argument is string)
             {
-                target = GitUriTarget.FromString((string)e.Argument);
-                revision = (target.Revision != GitRevision.None) ? target.Revision : GitRevision.Head;
+                target = new GitBranchRef((string)e.Argument);
             }
             else if (e.Argument is Uri)
-                target = (Uri)e.Argument;
+                throw new NotImplementedException();
             else
                 using (SwitchDialog dlg = new SwitchDialog())
                 {
                     dlg.Context = e.Context;
 
-                    dlg.LocalPath = path;
-                    dlg.RepositoryRoot = e.GetService<IFileStatusCache>()[path].WorkingCopy.RepositoryRoot;
-                    dlg.SwitchToUri = uri;
-                    dlg.Revision = GitRevision.Head;
+                    dlg.LocalPath = RepositoryUtil.GetRepositoryRoot(path);
+                    dlg.SwitchToBranch = currentBranch;
 
                     if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                         return;
 
-                    target = dlg.SwitchToUri;
-                    revision = dlg.Revision;
-                    allowObstructions = dlg.AllowUnversionedObstructions;
+                    target = dlg.SwitchToBranch;
+                    force = dlg.Force;
                 }
 
             // Get a list of all documents below the specified paths that are open in editors inside VS
@@ -175,100 +153,27 @@ namespace VisualGit.Commands
             using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
-                Uri newRepositoryRoot = null;
+                GitSwitchResult result = null;
+                GitSwitchArgs args = new GitSwitchArgs();
+
                 e.GetService<IProgressRunner>().RunModal(
-                    "Switching",
+                    "Changing Current Branch",
                     delegate(object sender, ProgressWorkerArgs a)
                     {
-                        SvnSwitchArgs args = new SvnSwitchArgs();
-
-                        throw new NotImplementedException();
+                        args.Force = force;
+                        args.AddExpectedError(GitErrorCode.CheckoutFailed);
 
 #if false
-                        args.AllowObstructions = allowObstructions;
-                        args.AddExpectedError(SvnErrorCode.SVN_ERR_WC_INVALID_SWITCH);
-
-                        if (revision != GitRevision.None)
-                            args.Revision = revision;
-
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-                        if (!a.SvnClient.Switch(path, target, args))
-                        {
-                            if (args.LastException.SvnErrorCode != SvnErrorCode.SVN_ERR_WC_INVALID_SWITCH)
-                                return;
-
-                            // source/target repository is different, check if we can fix this by relocating
-                            SvnInfoEventArgs iea;
-                            if (a.SvnClient.GetInfo(target, out iea))
-                            {
-                                if (pathItem.WorkingCopy.RepositoryId != iea.RepositoryId)
-                                {
-                                    e.Context.GetService<IVisualGitDialogOwner>()
-                                        .MessageBox.Show("Cannot switch to different repository because the repository UUIDs are different",
-                                        "Cannot switch", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
-                                else if (pathItem.WorkingCopy.RepositoryRoot != iea.RepositoryRoot)
-                                {
-                                    newRepositoryRoot = iea.RepositoryRoot;
-                                }
-                                else if (pathItem.WorkingCopy.RepositoryId == Guid.Empty)
-                                {
-                                    // No UUIDs and RepositoryRoot equal. Throw/show error?
-
-                                    throw args.LastException;
-                                }
-                            }
-                        }
 #endif
+                        a.Client.Switch(path, target, args, out result);
                     });
 
-                if (newRepositoryRoot != null && DialogResult.Yes == e.Context.GetService<IVisualGitDialogOwner>()
-                   .MessageBox.Show(string.Format("The repository root specified is different from the one in your " +
-                   "working copy. Would you like to relocate from '{0}' to '{1}'?",
-                   pathItem.WorkingCopy.RepositoryRoot, newRepositoryRoot),
-                   "Relocate", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                if (args.LastException != null)
                 {
-                    // We can fix this by relocating
-                    try
-                    {
-                        e.GetService<IProgressRunner>().RunModal(
-                            "Relocating",
-                            delegate(object sender, ProgressWorkerArgs a)
-                            {
-                                a.SvnClient.Relocate(path, pathItem.WorkingCopy.RepositoryRoot, newRepositoryRoot);
-                            });
-                    }
-                    finally
-                    {
-                        statusCache.MarkDirtyRecursive(path);
-                        e.GetService<IFileStatusMonitor>().ScheduleGlyphUpdate(GitItem.GetPaths(statusCache.GetCachedBelow(path)));
-                    }
-
-
-                    if (DialogResult.Yes == e.Context.GetService<IVisualGitDialogOwner>()
-                        .MessageBox.Show(string.Format("Would you like to try to switch '{0}' to '{1}' again?",
-                        path, target),
-                        "Switch", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-                    {
-                        // Try to switch again
-                        e.GetService<IProgressRunner>().RunModal(
-                        "Switching",
-                        delegate(object sender, ProgressWorkerArgs a)
-                        {
-                            SvnSwitchArgs args = new SvnSwitchArgs();
-
-                            throw new NotImplementedException();
-#if false
-                            if (revision != GitRevision.None)
-                                args.Revision = revision;
-
-                            args.AllowObstructions = allowObstructions;
-
-                            e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-                            a.SvnClient.Switch(path, target, args);
-#endif
-                        });
-                    }
+                    e.Context.GetService<IVisualGitDialogOwner>()
+                        .MessageBox.Show(result.PostSwitchError,
+                        args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

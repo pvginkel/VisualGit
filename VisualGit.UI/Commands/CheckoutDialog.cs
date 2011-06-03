@@ -163,7 +163,7 @@ namespace VisualGit.UI.Commands
             bool invalid = Uri == null;
             e.Cancel = invalid;
             if (invalid)
-                errorProvider.SetError(urlTextBox, CommandStrings.EnterValidUrl);
+                errorProvider.SetError(urlTextBox, CommandStrings.SelectABranch);
             else
                 errorProvider.SetError(urlTextBox, null);
         }

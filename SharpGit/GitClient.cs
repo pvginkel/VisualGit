@@ -111,6 +111,28 @@ namespace SharpGit
             return ExecuteCommand<GitLogCommand>(args, p => p.Execute(uris));
         }
 
+        public bool ListBranch(string repositoryPath, GitListBranchArgs args, out GitListBranchResult result)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitListBranchCommand, GitListBranchResult>(args, p => p.Execute(repositoryPath), out result);
+        }
+
+        public bool Switch(string repositoryPath, GitBranchRef target, GitSwitchArgs args, out GitSwitchResult result)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (target == null)
+                throw new ArgumentNullException("target");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitSwitchCommand, GitSwitchResult>(args, p => p.Execute(target, repositoryPath), out result);
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {
@@ -122,7 +144,7 @@ namespace SharpGit
 
                 action(command);
 
-                return true;
+                return args.LastException == null;
             }
             catch (GitException ex)
             {
@@ -151,7 +173,7 @@ namespace SharpGit
 
                 result = action(command);
 
-                return true;
+                return args.LastException == null;
             }
             catch (GitException ex)
             {

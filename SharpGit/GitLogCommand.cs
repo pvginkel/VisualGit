@@ -37,7 +37,7 @@ namespace SharpGit
 
             var collectedPathsEntry = collectedPaths.Single();
 
-            lock (collectedPathsEntry.Key.SyncLock)
+            using (collectedPathsEntry.Key.Lock())
             {
                 ExecuteLog(collectedPathsEntry.Key.Repository, collectedPathsEntry.Value);
             }
@@ -53,7 +53,7 @@ namespace SharpGit
             if (repositoryEntry == null)
                 throw new GitNoRepositoryException();
 
-            lock(repositoryEntry.SyncLock)
+            using (repositoryEntry.Lock())
             {
                 ExecuteLog(repositoryEntry.Repository, null);
             }

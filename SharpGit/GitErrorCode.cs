@@ -30,5 +30,7 @@ namespace SharpGit
         public static readonly GitErrorCode RevisionNotFound = new GitErrorCode(GitErrorCategory.None, Properties.Resources.RevisionNotFound);
         public static readonly GitErrorCode CouldNotFindPathInRevision = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CouldNotFindPathInRevision);
         public static readonly GitErrorCode UnsupportedUriScheme = new GitErrorCode(GitErrorCategory.None, Properties.Resources.UnsupportedUriScheme);
+        public static readonly GitErrorCode CheckoutFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CheckoutFailed);
+        public static readonly GitErrorCode RepositoryLocked = new GitErrorCode(GitErrorCategory.None, Properties.Resources.RepositoryLocked);
     }
 }

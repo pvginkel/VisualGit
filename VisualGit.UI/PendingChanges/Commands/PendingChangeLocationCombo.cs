@@ -5,6 +5,7 @@ using VisualGit.Commands;
 using VisualGit.VS;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using SharpGit;
 
 namespace VisualGit.UI.PendingChanges.Commands
 {
@@ -91,7 +92,32 @@ namespace VisualGit.UI.PendingChanges.Commands
         void OnExecuteFill(CommandEventArgs e)
         {
             if (ProjectRootUri != null)
-                e.Result = new string[] { ProjectRootUri.ToString(), "Other..." };
+            {
+                var branches = new List<string>();
+
+                using (var client = e.Context.GetService<IGitClientPool>().GetNoUIClient())
+                {
+                    string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
+
+                    var args = new GitListBranchArgs();
+                    GitListBranchResult result;
+
+                    if (client.ListBranch(repositoryPath, args, out result))
+                    {
+                        var repositoryBranch = RepositoryUtil.GetCurrentBranch(repositoryPath);
+                        
+                        //branches.Add(repositoryBranch.ShortName);
+
+                        foreach (var branch in result.Branches)
+                        {
+                            //if (branch != repositoryBranch)
+                                branches.Add(branch.ShortName);
+                        }
+                    }
+                }
+
+                e.Result = branches.ToArray();
+            }
         }
 
         void OnExecuteSet(CommandEventArgs e)
@@ -100,16 +126,20 @@ namespace VisualGit.UI.PendingChanges.Commands
 
             IVisualGitCommandService cs = e.GetService<IVisualGitCommandService>();
 
-            if (value != null && value == "Other...")
+            if (value == null)
                 cs.PostExecCommand(VisualGitCommand.SolutionSwitchDialog);
             else
-                cs.PostExecCommand(VisualGitCommand.SolutionSwitchDialog, new Uri(value));
+                cs.PostExecCommand(VisualGitCommand.SolutionSwitchDialog, value);
         }
 
         void OnExecuteGet(CommandEventArgs e)
         {
             if (ProjectRootUri != null)
-                e.Result = ProjectRootUri.ToString();
+            {
+                string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
+                var repositoryBranch = RepositoryUtil.GetCurrentBranch(repositoryPath);
+                e.Result = repositoryBranch.ShortName;
+            }
         }
 
         void OnExecuteFilter(CommandEventArgs e)

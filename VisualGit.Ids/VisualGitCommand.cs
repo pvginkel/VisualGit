@@ -97,14 +97,13 @@ namespace VisualGit
         ShowPendingChanges,
         ShowRepositoryExplorer,
         ShowWorkingCopyExplorer,
-        SwitchItem,
         RenameRepositoryItem,
         UpdateItemSpecific,
         UpdateItemLatest,
         ViewInVsNet,
         ViewInWindows,
         SolutionBranch,
-
+        
         ItemSelectInRepositoryExplorer,
         ItemSelectInWorkingCopyExplorer,
         ItemSelectInSolutionExplorer,

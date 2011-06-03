@@ -15,6 +15,14 @@ namespace SharpGit
 {
     public static class RepositoryUtil
     {
+        public static string GetRepositoryRoot(Uri path)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            return GetRepositoryRoot(GitTools.GetAbsolutePath(path));
+        }
+
         public static string GetRepositoryRoot(string path)
         {
             string result;
@@ -23,6 +31,14 @@ namespace SharpGit
                 throw new GitNoRepositoryException();
 
             return result;
+        }
+
+        public static bool TryGetRepositoryRoot(Uri path, out string repositoryRoot)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            return TryGetRepositoryRoot(GitTools.GetAbsolutePath(path), out repositoryRoot);
         }
 
         public static bool TryGetRepositoryRoot(string path, out string repositoryRoot)
@@ -117,6 +133,22 @@ namespace SharpGit
             }
 
             return result;
+        }
+
+        public static GitBranchRef GetCurrentBranch(string repositoryPath)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+
+            var repositoryEntry = RepositoryManager.GetRepository(repositoryPath);
+
+            if (repositoryEntry == null)
+                throw new GitNoRepositoryException();
+
+            using (repositoryEntry.Lock())
+            {
+                return new GitBranchRef(repositoryEntry.Repository.GetFullBranch());
+            }
         }
     }
 }

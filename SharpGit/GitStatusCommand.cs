@@ -32,7 +32,7 @@ namespace SharpGit
             if (Args.Depth != GitDepth.Files)
                 throw new NotImplementedException();
 
-            lock (repositoryEntry.SyncLock)
+            using (repositoryEntry.Lock())
             {
                 var repository = repositoryEntry.Repository;
 

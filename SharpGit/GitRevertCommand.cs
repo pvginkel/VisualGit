@@ -26,7 +26,7 @@ namespace SharpGit
 
             foreach (var item in collectedPaths)
             {
-                lock (item.Key.SyncLock)
+                using (item.Key.Lock())
                 {
                     UnstageAndRestoreFiles(item.Key.Repository, item.Value);
                 }

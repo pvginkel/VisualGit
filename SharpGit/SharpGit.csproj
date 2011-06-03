@@ -68,10 +68,14 @@
     <Compile Include="FileSystemUtil.cs" />
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
+    <Compile Include="GitBranchRef.cs" />
     <Compile Include="GitChangeItem.cs" />
     <Compile Include="GitChangeItemCollection.cs" />
     <Compile Include="GitChangeListCollection.cs" />
     <Compile Include="GitChangeAction.cs" />
+    <Compile Include="GitRepositoryLockedException.cs" />
+    <Compile Include="GitSwitchArgs.cs" />
+    <Compile Include="GitSwitchCommand.cs" />
     <Compile Include="GitClientArgsWithCommit.cs" />
     <Compile Include="GitCommand.cs" />
     <Compile Include="GitCommandResult.cs" />
@@ -95,6 +99,9 @@
     <Compile Include="GitErrorCategory.cs" />
     <Compile Include="GitErrorEventArgs.cs" />
     <Compile Include="GitException.cs" />
+    <Compile Include="GitListBranchArgs.cs" />
+    <Compile Include="GitListBranchCommand.cs" />
+    <Compile Include="GitListBranchResult.cs" />
     <Compile Include="GitLogArgs.cs" />
     <Compile Include="GitLogCommand.cs" />
     <Compile Include="GitLogEventArgs.cs" />
@@ -111,6 +118,7 @@
     <Compile Include="GitRevision.cs" />
     <Compile Include="GitRevisionRange.cs" />
     <Compile Include="GitRevisionType.cs" />
+    <Compile Include="GitSwitchResult.cs" />
     <Compile Include="GitTarget.cs" />
     <Compile Include="GitTools.cs" />
     <Compile Include="GitUI.cs" />

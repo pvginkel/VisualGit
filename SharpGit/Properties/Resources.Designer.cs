@@ -61,6 +61,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Checkout could not be completed successfully.
+        /// </summary>
+        internal static string CheckoutFailed {
+            get {
+                return ResourceManager.GetString("CheckoutFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempting to commit unstaged file &apos;{0}&apos;.
         /// </summary>
         internal static string CommittingUnstagedFileX {
@@ -111,6 +120,15 @@ namespace SharpGit.Properties {
         internal static string PathNoRepository {
             get {
                 return ResourceManager.GetString("PathNoRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository is locked, please retry your last operation.
+        /// </summary>
+        internal static string RepositoryLocked {
+            get {
+                return ResourceManager.GetString("RepositoryLocked", resourceCulture);
             }
         }
         

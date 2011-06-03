@@ -32,7 +32,7 @@ namespace SharpGit
 
             foreach (var item in collectedPaths)
             {
-                lock (item.Key.SyncLock)
+                using (item.Key.Lock())
                 {
                     var repository = item.Key.Repository;
 
@@ -92,7 +92,9 @@ namespace SharpGit
 
                     try
                     {
-                        commitCommand.Call();
+                        var commit = commitCommand.Call();
+
+                        result.Revision = new GitRevision(commit.Id.Name);
 
                         foreach (var commitAction in notifyActions)
                         {

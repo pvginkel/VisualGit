@@ -23,7 +23,7 @@ namespace SharpGit
             if (repositoryEntry == null)
                 throw new GitNoRepositoryException();
 
-            lock (repositoryEntry.SyncLock)
+            using (repositoryEntry.Lock())
             {
                 var addCommand = new Git(repositoryEntry.Repository).Add();
 
