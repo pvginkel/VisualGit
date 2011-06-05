@@ -23,7 +23,7 @@ namespace VisualGit.UI.OptionsPages
         {
             base.OnLoad(e);
 
-            using (RegistryKey rk = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Tigris.org\\Git\\Servers\\Global"))
+            using (RegistryKey rk = Registry.CurrentUser.CreateSubKey("SOFTWARE\\VisualGit\\Git\\Servers\\Global"))
             {
                 string host = rk.GetValue(SvnConfigNames.HttpProxyHost) as string ?? "";
                 string port = rk.GetValue(SvnConfigNames.HttpProxyPort) as string ?? "8080";
@@ -49,7 +49,7 @@ namespace VisualGit.UI.OptionsPages
         {
             if (proxyEnabled.Checked)
             {
-                using (RegistryKey rk = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Tigris.org\\Git\\Servers\\Global"))
+                using (RegistryKey rk = Registry.CurrentUser.CreateSubKey("SOFTWARE\\VisualGit\\Git\\Servers\\Global"))
                 {
                     rk.SetValue(SvnConfigNames.HttpProxyHost, hostBox.Text.Trim());
                     rk.SetValue(SvnConfigNames.HttpProxyPort, portBox.Text.Trim());
@@ -60,7 +60,7 @@ namespace VisualGit.UI.OptionsPages
             }
             else if (_wasEnabled)
             {
-                using (RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Tigris.org\\Git\\Servers\\Global", true))
+                using (RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\VisualGit\\Git\\Servers\\Global", true))
                 {
                     rk.DeleteValue(SvnConfigNames.HttpProxyHost);
                     rk.DeleteValue(SvnConfigNames.HttpProxyPort);

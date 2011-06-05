@@ -70,6 +70,24 @@ namespace VisualGit.UI.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It looks like you are creating a new remote branch. Are you sure you want to continue?.
+        /// </summary>
+        internal static string NewRemoteBranch {
+            get {
+                return ResourceManager.GetString("NewRemoteBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pushing Solution.
+        /// </summary>
+        internal static string PushingSolution {
+            get {
+                return ResourceManager.GetString("PushingSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Repository already is at this branch.
         /// </summary>
         internal static string RepositoryAlreadyAtThisBranch {
@@ -84,6 +102,51 @@ namespace VisualGit.UI.Commands {
         internal static string SelectABranch {
             get {
                 return ResourceManager.GetString("SelectABranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a local branch.
+        /// </summary>
+        internal static string SelectALocalBranch {
+            get {
+                return ResourceManager.GetString("SelectALocalBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select an url.
+        /// </summary>
+        internal static string SelectAnUrl {
+            get {
+                return ResourceManager.GetString("SelectAnUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a remote.
+        /// </summary>
+        internal static string SelectARemote {
+            get {
+                return ResourceManager.GetString("SelectARemote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a remote branch.
+        /// </summary>
+        internal static string SelectARemoteBranch {
+            get {
+                return ResourceManager.GetString("SelectARemoteBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a tag.
+        /// </summary>
+        internal static string SelectATag {
+            get {
+                return ResourceManager.GetString("SelectATag", resourceCulture);
             }
         }
         

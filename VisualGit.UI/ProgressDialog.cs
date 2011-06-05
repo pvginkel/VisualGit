@@ -14,11 +14,8 @@ namespace VisualGit.UI
     /// <summary>
     /// A dialog used for long-running operations.
     /// </summary>
-    public partial class ProgressDialog : VSDialogForm
+    public partial class ProgressDialog : ProgressDialogBase
     {
-        public event EventHandler Cancel;
-        string _title;
-        string _caption;
         readonly object _instanceLock = new object();
         /// <summary>
         /// Loader Form
@@ -31,22 +28,7 @@ namespace VisualGit.UI
             //
             InitializeComponent();
 
-            _title = Text;
         }
-
-        public string Caption
-        {
-            get
-            {
-                return _caption;
-            }
-            set
-            {
-                _caption = value;
-                Text = string.Format(_title, _caption).TrimStart().TrimStart('-', ' ');
-            }
-        }
-
 
         /// <summary>
         /// Clean up any resources being used.
@@ -401,6 +383,7 @@ namespace VisualGit.UI
         {
             _canceling = true;
             base.OnClosing(e);
+            e.Cancel = true;
         }
 
         volatile bool _canceling; // Updated from UI thread, read from command thread
@@ -471,19 +454,7 @@ namespace VisualGit.UI
             }
         }
 
-        public IDisposable Bind(SvnClient client)
-        {
-            if (client == null)
-                throw new ArgumentNullException("client");
-            client.Processing += new EventHandler<SvnProcessingEventArgs>(OnSvnClientProcessing);
-            client.Notify += new EventHandler<SvnNotifyEventArgs>(OnSvnClientNotify);
-            client.Progress += new EventHandler<SvnProgressEventArgs>(OnSvnClientProgress);
-            client.Cancel += new EventHandler<SvnCancelEventArgs>(OnSvnClientCancel);
-
-            return new UnbindDisposer(client, this);
-        }
-
-        public IDisposable Bind(GitClient client)
+        public override IDisposable Bind(GitClient client)
         {
             if (client == null)
                 throw new ArgumentNullException("client");
@@ -497,19 +468,8 @@ namespace VisualGit.UI
 
         class UnbindDisposer : IDisposable
         {
-            SvnClient _svnClient;
             GitClient _client;
             ProgressDialog _dlg;
-            public UnbindDisposer(SvnClient svnClient, ProgressDialog dlg)
-            {
-                if (svnClient == null)
-                    throw new ArgumentNullException("svnClient");
-                else if (dlg == null)
-                    throw new ArgumentNullException("dlg");
-
-                _svnClient = svnClient;
-                _dlg = dlg;
-            }
 
             public UnbindDisposer(GitClient client, ProgressDialog dlg)
             {
@@ -526,21 +486,10 @@ namespace VisualGit.UI
 
             public void Dispose()
             {
-                if (_svnClient != null)
-                    _dlg.Unbind(_svnClient);
-                else
-                    _dlg.Unbind(_client);
+                _dlg.Unbind(_client);
             }
 
             #endregion
-        }
-
-        void Unbind(SvnClient client)
-        {
-            client.Notify -= new EventHandler<SvnNotifyEventArgs>(OnSvnClientNotify);
-            client.Processing -= new EventHandler<SvnProcessingEventArgs>(OnSvnClientProcessing);
-            client.Progress -= new EventHandler<SvnProgressEventArgs>(OnSvnClientProgress);
-            client.Cancel -= new EventHandler<SvnCancelEventArgs>(OnSvnClientCancel);
         }
 
         void Unbind(GitClient client)
@@ -555,8 +504,8 @@ namespace VisualGit.UI
         {
             _canceling = true;
 
-            if (Cancel != null)
-                Cancel(this, EventArgs.Empty);
+            OnCancel(EventArgs.Empty);
+
             this.args.SetCancelled(true);
             this.cancelButton.Text = "Cancelling...";
             this.cancelButton.Enabled = false;

@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SharpGit</RootNamespace>
     <AssemblyName>SharpGit</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,19 +41,24 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Posix">
+    <Reference Include="Mono.Posix, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Mono.Posix.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security">
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="NGit">
+    <Reference Include="NGit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\NGit.dll</HintPath>
     </Reference>
-    <Reference Include="NSch">
+    <Reference Include="NSch, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\NSch.dll</HintPath>
     </Reference>
-    <Reference Include="Sharpen">
+    <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Sharpen.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -68,11 +74,20 @@
     <Compile Include="FileSystemUtil.cs" />
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
-    <Compile Include="GitBranchRef.cs" />
+    <Compile Include="GitConfigWrapper.cs" />
+    <Compile Include="GitRef.cs" />
     <Compile Include="GitChangeItem.cs" />
     <Compile Include="GitChangeItemCollection.cs" />
     <Compile Include="GitChangeListCollection.cs" />
     <Compile Include="GitChangeAction.cs" />
+    <Compile Include="GitCredentialItem.cs" />
+    <Compile Include="GitCredentialsEventArgs.cs" />
+    <Compile Include="GitCredentialsType.cs" />
+    <Compile Include="GitProgressEventArgs.cs" />
+    <Compile Include="GitPushArgs.cs" />
+    <Compile Include="GitPushCommand.cs" />
+    <Compile Include="GitPushResult.cs" />
+    <Compile Include="GitRefType.cs" />
     <Compile Include="GitRepositoryLockedException.cs" />
     <Compile Include="GitSwitchArgs.cs" />
     <Compile Include="GitSwitchCommand.cs" />
@@ -99,9 +114,6 @@
     <Compile Include="GitErrorCategory.cs" />
     <Compile Include="GitErrorEventArgs.cs" />
     <Compile Include="GitException.cs" />
-    <Compile Include="GitListBranchArgs.cs" />
-    <Compile Include="GitListBranchCommand.cs" />
-    <Compile Include="GitListBranchResult.cs" />
     <Compile Include="GitLogArgs.cs" />
     <Compile Include="GitLogCommand.cs" />
     <Compile Include="GitLogEventArgs.cs" />
@@ -121,11 +133,14 @@
     <Compile Include="GitSwitchResult.cs" />
     <Compile Include="GitTarget.cs" />
     <Compile Include="GitTools.cs" />
+    <Compile Include="GitTransportClientArgs.cs" />
+    <Compile Include="GitTransportCommand.cs" />
     <Compile Include="GitUI.cs" />
     <Compile Include="GitUIBindArgs.cs" />
     <Compile Include="GitUriTarget.cs" />
     <Compile Include="GitWriteArgs.cs" />
     <Compile Include="GitWriteCommand.cs" />
+    <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitOrigin.cs" />
     <Compile Include="NullOutputStream.cs" />
     <Compile Include="PathFilterNotRecurse.cs" />

@@ -716,7 +716,7 @@
               <Button id="Cmd_PendingChangesUpdateLatest" name="UpdatePendingChanges" priority="0x100"
                   text="U&amp;pdate to Latest Version"
                   toolTip="Update your solution to the HEAD version"
-                  fixMenuController="true" iconFile="PendingChanges/Update.png" defaultDisabled="true"/>
+                  iconFile="PendingChanges/Update.png" defaultDisabled="true"/>
               <Button id="Cmd_SolutionUpdateSpecific" name="UpdateSpecific" priority="0x200" defaultInvisible="true"
                   text="Update to Specific &amp;Version..."
                   toolTip="Update your solution to a specific version" iconFile="PendingChanges/UpdateSpecific.png"/>
@@ -729,6 +729,31 @@
             <Group id="Grp_PendingChangesUpdate3" priority="0x300">
               <ButtonRef id="Cmd_SolutionSwitchDialog" priority="0x100" />
               <ButtonRef id="Cmd_SolutionMerge" priority="0x200" />
+            </Group>
+          </Menu>
+          <Menu id="Menu_PendingChangesPush" priority="0x300" name="Push" text="&amp;Push" type="MenuController" iconAndText="true">
+            <Group id="Grp_PendingChangesPush1" priority="0x100">
+              <Button id="Cmd_PendingChangesPush" name="PendingChangesPush" priority="0x100"
+                  text="&amp;Push Current Branch" fixMenuController="true"
+                  toolTip="Push the current branch to the remote"
+                  iconFile="PendingChanges/Push.png" defaultDisabled="true" />
+              <Button id="Cmd_PendingChangesPushSpecificBranch" name="PendingChangesPushSpecificBranch" priority="0x200"
+                  text="Push &amp;Branch..." toolTip="Push a specific branch to the remote"
+                  iconFile="PendingChanges/Push.png" defaultDisabled="true" />
+              <Button id="Cmd_PendingChangesPushSpecificTag" name="PendingChangesPushSpecificTag" priority="0x300"
+                  text="Push &amp;Tag..." toolTip="Push a tag to the remote"
+                  iconFile="PendingChanges/Push.png" defaultDisabled="true" />
+            </Group>
+          </Menu>
+          <Menu id="Menu_PendingChangesPull" priority="0x400" name="Pull" text="Pu&amp;ll..." type="MenuController" iconAndText="true">
+            <Group id="Grp_PendingChangesPull1" priority="0x100">
+              <Button id="Cmd_PendingChangesPull" name="PendingChangesPull" priority="0x100"
+                  text="&amp;Pull..." fixMenuController="true"
+                  toolTip="Pull updates from a remote"
+                  iconFile="PendingChanges/Pull.png" defaultDisabled="true" />
+              <Button id="Cmd_PendingChangesFetch" name="PendingChangesFetch" priority="0x200"
+                  text="&amp;Fetch..." toolTip="Fetch updates from a remote"
+                  iconFile="PendingChanges/Pull.png" defaultDisabled="true" />
             </Group>
           </Menu>
         </Group>

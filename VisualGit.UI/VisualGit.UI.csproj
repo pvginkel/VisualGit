@@ -128,6 +128,25 @@
     <Compile Include="Commands\CreateChangeListDialog.Designer.cs">
       <DependentUpon>CreateChangeListDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\IPushControl.cs" />
+    <Compile Include="Commands\PushBranchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commands\PushBranchControl.Designer.cs">
+      <DependentUpon>PushBranchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\PushDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\PushDialog.Designer.cs">
+      <DependentUpon>PushDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\PushTagControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Commands\PushTagControl.Designer.cs">
+      <DependentUpon>PushTagControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\UIEditCommand.cs" />
     <Compile Include="Commands\UpdateDialog.cs">
       <SubType>Form</SubType>
@@ -161,6 +180,13 @@
     <Compile Include="DiffWindow\DiffToolWindowControl.Designer.cs">
       <DependentUpon>DiffToolWindowControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenericCredentialsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenericCredentialsDialog.Designer.cs">
+      <DependentUpon>GenericCredentialsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IHasErrorProvider.cs" />
     <Compile Include="IssueTracker\IssueSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +311,9 @@
     <Compile Include="PendingChanges\Synchronize\SynchronizeListItem.cs" />
     <Compile Include="PendingChanges\Synchronize\SynchronizeListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProgressDialogBase.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="RecentMessageDialog.cs">
       <SubType>Form</SubType>
@@ -561,6 +590,18 @@
     <Compile Include="GitInfoGrid\GitInfoGridControl.Designer.cs">
       <DependentUpon>GitInfoGridControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TransportProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransportProgressDialog.Designer.cs">
+      <DependentUpon>TransportProgressDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsernamePasswordCredentialsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UsernamePasswordCredentialsDialog.Designer.cs">
+      <DependentUpon>UsernamePasswordCredentialsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="VSSelectionControls\Commands\ListViewCommandBase.cs" />
     <Compile Include="VSSelectionControls\Commands\ListViewGroup.cs" />
     <Compile Include="VSSelectionControls\Commands\ListViewShow.cs" />
@@ -764,6 +805,18 @@
     <Compile Include="WorkingCopyExplorer\WorkingCopyExplorerControl.Designer.cs">
       <DependentUpon>WorkingCopyExplorerControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Commands\PushBranchControl.resx">
+      <DependentUpon>PushBranchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\PushDialog.resx">
+      <DependentUpon>PushDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\PushTagControl.resx">
+      <DependentUpon>PushTagControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenericCredentialsDialog.resx">
+      <DependentUpon>GenericCredentialsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RepositoryExplorer\AddRepositoryRootDialog.resx">
       <DependentUpon>AddRepositoryRootDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1022,6 +1075,12 @@
     <EmbeddedResource Include="Commands\SwitchDialog.resx">
       <DependentUpon>SwitchDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransportProgressDialog.resx">
+      <DependentUpon>TransportProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UsernamePasswordCredentialsDialog.resx">
+      <DependentUpon>UsernamePasswordCredentialsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WorkingCopyExplorer\AddWorkingCopyExplorerRootDialog.resx">
       <SubType>Designer</SubType>

@@ -75,7 +75,7 @@ namespace SharpGit
             return TryGetRepositoryRoot(fullPath, out repositoryPath);
         }
 
-        public static bool PathMatches(string rootPath, string path, bool isSubTree, GitDepth depth)
+        internal static bool PathMatches(string rootPath, string path, bool isSubTree, GitDepth depth)
         {
             if (rootPath == null)
                 throw new ArgumentNullException("rootPath");
@@ -133,22 +133,6 @@ namespace SharpGit
             }
 
             return result;
-        }
-
-        public static GitBranchRef GetCurrentBranch(string repositoryPath)
-        {
-            if (repositoryPath == null)
-                throw new ArgumentNullException("repositoryPath");
-
-            var repositoryEntry = RepositoryManager.GetRepository(repositoryPath);
-
-            if (repositoryEntry == null)
-                throw new GitNoRepositoryException();
-
-            using (repositoryEntry.Lock())
-            {
-                return new GitBranchRef(repositoryEntry.Repository.GetFullBranch());
-            }
         }
     }
 }

@@ -51,6 +51,7 @@ namespace SharpGit
         Write = 41,
         //CropWorkingCopy = 42,
         ListBranch = 43,
+        Push = 44,
         //GetWorkingCopyInfo = 4097,
         //GetWorkingCopyVersion = 4098,
         //GetWorkingCopyEntries = 4099,

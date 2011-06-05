@@ -40,6 +40,7 @@ namespace VisualGit
 
             ProgressRunner pr = new ProgressRunner(this, action);
             pr.CreateUpdateReport = args.CreateLog;
+            pr.TransportClientArgs = args.TransportClientArgs;
             pr.Start(caption);
 
             return new ProgressRunnerResult(!pr.Cancelled);
@@ -77,6 +78,7 @@ namespace VisualGit
             bool _closed;
             Exception _exception;
             bool _updateReport;
+            GitTransportClientArgs _transportClientArgs;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="ProgressRunner"/> class.
@@ -100,6 +102,12 @@ namespace VisualGit
                 set { _updateReport = value; }
             }
 
+            public GitTransportClientArgs TransportClientArgs
+            {
+                get { return _transportClientArgs; }
+                set { _transportClientArgs = value; }
+            }
+
             /// <summary>
             /// Whether the operation was cancelled.
             /// </summary>
@@ -117,15 +125,23 @@ namespace VisualGit
             public void Start(string caption)
             {
                 Thread thread = new Thread(new ParameterizedThreadStart(this.Run));
-                ISvnClientPool svnPool = _context.GetService<ISvnClientPool>();
                 IGitClientPool pool = _context.GetService<IGitClientPool>();
                 IVisualGitDialogOwner dialogOwner = _context.GetService<IVisualGitDialogOwner>();
 
-                using (ProgressDialog dialog = new ProgressDialog())
-                using (SvnClient svnClient = svnPool.GetClient())
+                ProgressDialogBase dialog;
+
+                if (TransportClientArgs != null)
+                {
+                    TransportProgressDialog transportDialog = new TransportProgressDialog();
+                    transportDialog.ClientArgs = TransportClientArgs;
+                    dialog = transportDialog;
+                }
+                else
+                    dialog = new ProgressDialog();
+
+                using (dialog)
                 using (GitClient client = pool.GetClient())
-                using (CreateUpdateReport ? BindOutputPane(svnClient) : null)
-                using (dialog.Bind(svnClient))
+                using (CreateUpdateReport ? BindOutputPane(client) : null)
                 using (dialog.Bind(client))
                 {
                     _sync = dialog;
@@ -139,7 +155,7 @@ namespace VisualGit
                         if (!threadStarted)
                         {
                             threadStarted = true;
-                            thread.Start(new ClientPasser(svnClient, client));
+                            thread.Start(client);
                         }
                     };
                     _invoker = dialog;
@@ -170,17 +186,16 @@ namespace VisualGit
                     throw new ProgressRunnerException(this._exception);
             }
 
-            private IDisposable BindOutputPane(SvnClient client)
+            private IDisposable BindOutputPane(GitClient client)
             {
                 return new OutputPaneReporter(_context, client);
             }
 
             private void Run(object arg)
             {
-                ClientPasser clients = (ClientPasser)arg;
                 try
                 {
-                    ProgressWorkerArgs awa = new ProgressWorkerArgs(_context, clients.Client, clients.SvnClient, _sync);
+                    ProgressWorkerArgs awa = new ProgressWorkerArgs(_context, (GitClient)arg, _sync);
                     _action(null, awa);
 
                     if (_exception == null && awa.Exception != null)
@@ -253,7 +268,7 @@ namespace VisualGit
 
                 if (si.Visible)
                 {
-                    si.Close();
+                    si.Dispose();
 
                     if (ConfigService != null && ConfigService.Instance.FlashWindowWhenOperationCompletes)
                     {
@@ -271,27 +286,17 @@ namespace VisualGit
                     }
                 }
             }
-
-            private class ClientPasser
-            {
-                public ClientPasser(SvnClient svnClient, GitClient client)
-                {
-                    SvnClient = svnClient;
-                    Client = client;
-                }
-
-                public SvnClient SvnClient { get; private set; }
-                public GitClient Client { get; private set; }
-            }
         }
         
         sealed class OutputPaneReporter : IDisposable
         {
             readonly IOutputPaneManager _mgr;
+#if false
             readonly SvnClientReporter _reporter;
+#endif
             readonly StringBuilder _sb;
 
-            public OutputPaneReporter(IVisualGitServiceProvider context, SvnClient client)
+            public OutputPaneReporter(IVisualGitServiceProvider context, GitClient client)
             {
                 if (context == null)
                     throw new ArgumentNullException("context");
@@ -300,7 +305,10 @@ namespace VisualGit
 
                 _mgr = context.GetService<IOutputPaneManager>();
                 _sb = new StringBuilder();
+
+#if false
                 _reporter = new SvnClientReporter(client, _sb);
+#endif
             }
 
             public void Dispose()
@@ -312,7 +320,9 @@ namespace VisualGit
                 }
                 finally
                 {
+#if false
                     _reporter.Dispose();
+#endif
                 }
             }
         }

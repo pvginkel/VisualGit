@@ -265,5 +265,11 @@ namespace VisualGit
 
         PendingChangesConfigureRecentChangesPage,
         ShowGitInfo,
+
+        PendingChangesPush,
+        PendingChangesPushSpecificBranch,
+        PendingChangesPushSpecificTag,
+        PendingChangesPull,
+        PendingChangesFetch,
     }
 }

@@ -109,17 +109,22 @@ namespace VisualGit.Commands
             IFileStatusCache statusCache = e.GetService<IFileStatusCache>();
 
             GitItem pathItem = statusCache[path];
-            GitBranchRef currentBranch = RepositoryUtil.GetCurrentBranch(pathItem.FullPath);
+            GitRef currentBranch;
+
+            using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
+            {
+                currentBranch = client.GetCurrentBranch(pathItem.FullPath);
+            }
 
             if (currentBranch == null)
                 return; // Should never happen on a real workingcopy
 
-            GitBranchRef target;
+            GitRef target;
             bool force = false;
 
             if (e.Argument is string)
             {
-                target = new GitBranchRef((string)e.Argument);
+                target = new GitRef((string)e.Argument);
             }
             else if (e.Argument is Uri)
                 throw new NotImplementedException();

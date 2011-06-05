@@ -14,7 +14,7 @@ namespace SharpGit
         {
         }
 
-        internal GitSwitchResult Execute(GitBranchRef target, string repositoryPath)
+        internal GitSwitchResult Execute(GitRef target, string repositoryPath)
         {
             if (target == null)
                 throw new ArgumentNullException("target");

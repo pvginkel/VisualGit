@@ -120,11 +120,32 @@
   <data name="EnterValidPath" xml:space="preserve">
     <value>Enter a valid path (like 'C:\MyWork')</value>
   </data>
+  <data name="NewRemoteBranch" xml:space="preserve">
+    <value>It looks like you are creating a new remote branch. Are you sure you want to continue?</value>
+  </data>
+  <data name="PushingSolution" xml:space="preserve">
+    <value>Pushing Solution</value>
+  </data>
   <data name="RepositoryAlreadyAtThisBranch" xml:space="preserve">
     <value>Repository already is at this branch</value>
   </data>
   <data name="SelectABranch" xml:space="preserve">
     <value>Select a branch</value>
+  </data>
+  <data name="SelectALocalBranch" xml:space="preserve">
+    <value>Select a local branch</value>
+  </data>
+  <data name="SelectAnUrl" xml:space="preserve">
+    <value>Select an url</value>
+  </data>
+  <data name="SelectARemote" xml:space="preserve">
+    <value>Select a remote</value>
+  </data>
+  <data name="SelectARemoteBranch" xml:space="preserve">
+    <value>Select a remote branch</value>
+  </data>
+  <data name="SelectATag" xml:space="preserve">
+    <value>Select a tag</value>
   </data>
   <data name="WhitespaceCompare" xml:space="preserve">
     <value>Compare</value>

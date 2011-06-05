@@ -99,19 +99,13 @@ namespace VisualGit.UI.PendingChanges.Commands
                 {
                     string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
 
-                    var args = new GitListBranchArgs();
-                    GitListBranchResult result;
-
-                    if (client.ListBranch(repositoryPath, args, out result))
+                    foreach (var @ref in client.GetRefs(repositoryPath))
                     {
-                        var repositoryBranch = RepositoryUtil.GetCurrentBranch(repositoryPath);
-                        
-                        //branches.Add(repositoryBranch.ShortName);
-
-                        foreach (var branch in result.Branches)
+                        switch (@ref.Type)
                         {
-                            //if (branch != repositoryBranch)
-                                branches.Add(branch.ShortName);
+                            case GitRefType.Branch:
+                                branches.Add(@ref.ShortName);
+                                break;
                         }
                     }
                 }
@@ -137,8 +131,13 @@ namespace VisualGit.UI.PendingChanges.Commands
             if (ProjectRootUri != null)
             {
                 string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
-                var repositoryBranch = RepositoryUtil.GetCurrentBranch(repositoryPath);
-                e.Result = repositoryBranch.ShortName;
+
+                using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
+                {
+                    var repositoryBranch = client.GetCurrentBranch(repositoryPath);
+
+                    e.Result = repositoryBranch.ShortName;
+                }
             }
         }
 

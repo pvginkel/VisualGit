@@ -103,6 +103,9 @@ namespace VisualGit
         PendingChangesUpdate2,
         PendingChangesUpdate3,
 
+        PendingChangesPush1,
+        PendingChangesPull1,
+
         RepositoryExplorerOpen,
         RepositoryExplorerReview,
         RepositoryExplorerEdit,

@@ -162,7 +162,7 @@ namespace VisualGit.Configuration
                 throw new ArgumentNullException("subKey");
 
             // Opens the specified key or returns null
-            return Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\VisualGit\\Global\\" + subKey, RegistryKeyPermissionCheck.ReadSubTree);
+            return Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\Global\\" + subKey, RegistryKeyPermissionCheck.ReadSubTree);
         }
 
         RegistryKey OpenHKLMKey(string subKey)
@@ -171,7 +171,7 @@ namespace VisualGit.Configuration
                 throw new ArgumentNullException("subKey");
 
             // Opens the specified key or returns null
-            return Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\VisualGit\\" + Settings.RegistryHiveSuffix + "\\" + subKey, RegistryKeyPermissionCheck.ReadSubTree);
+            return Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\" + Settings.RegistryHiveSuffix + "\\" + subKey, RegistryKeyPermissionCheck.ReadSubTree);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace VisualGit.Configuration
                 throw new ArgumentNullException("subKey");
 
             // Opens or creates the specified key
-            return Registry.CurrentUser.CreateSubKey("SOFTWARE\\VisualGit\\VisualGit\\" + Settings.RegistryHiveSuffix + "\\" + subKey);
+            return Registry.CurrentUser.CreateSubKey("SOFTWARE\\VisualGit\\" + Settings.RegistryHiveSuffix + "\\" + subKey);
         }
 
         #region IVisualGitConfigurationService Members

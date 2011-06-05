@@ -7,23 +7,51 @@ using System.Threading;
 
 namespace SharpGit
 {
-    internal sealed class RepositoryEntry
+    internal sealed class RepositoryEntry : IDisposable
     {
+        private bool _disposed;
+        private readonly string _repositoryPath;
         private readonly object _syncLock = new object();
 
-        public RepositoryEntry(Repository repository)
+        public RepositoryEntry(string repositoryPath)
         {
-            if (repository == null)
-                throw new ArgumentNullException("repository");
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
 
-            Repository = repository;
+            _repositoryPath = repositoryPath;
+
+            Repository = CreateNew();
         }
 
         public Repository Repository { get; private set; }
 
+        private Repository CreateNew()
+        {
+            var builder = new RepositoryBuilder();
+
+            builder.ReadEnvironment();
+            builder.FindGitDir(_repositoryPath);
+
+            return builder.Build();
+        }
+
         public IDisposable Lock()
         {
             return new RepositoryLock(this);
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                if (Repository != null)
+                {
+                    Repository.Close();
+                    Repository = null;
+                }
+
+                _disposed = true;
+            }
         }
 
         private class RepositoryLock : IDisposable

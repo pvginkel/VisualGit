@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VisualGit.ExtensionPoints</name>
+    </assembly>
+    <members>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConfigurationPage">
+            <summary>
+            Base class for Issue Repository configuration page
+            </summary>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.IIssueRepositoryConfigurationPageEvents">
+            <summary>
+            This interface exposes the config page events raised by connector configuration logic.
+            </summary>
+        </member>
+        <member name="E:VisualGit.ExtensionPoints.IssueTracker.IIssueRepositoryConfigurationPageEvents.OnPageEvent">
+            <summary>
+            Raised on a config page event
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConfigurationPage.ConfigurationPageChanged(VisualGit.ExtensionPoints.IssueTracker.ConfigPageEventArgs)">
+            <summary>
+            Notifies ragistered OnPageEvent handlers.
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConfigurationPage.Settings">
+            <summary>
+            Gets or sets the current repository settings.
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConfigurationPage.Window">
+            <summary>
+            Gets the IWin32Window instance for issue repository configuration UI.
+            </summary>
+            <remarks>Default implementation returns this as IWin32Window.</remarks>
+        </member>
+        <member name="E:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConfigurationPage.OnPageEvent">
+            <summary>
+            Raised on a configuration page event 
+            </summary>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.ConfigPageEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.ConfigPageEventArgs.IsComplete">
+            <summary>
+            Gets or sets a value indicating whether this instance is complete.
+            </summary>
+            <value>
+                <c>true</c> if this instance is complete; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.ConfigPageEventArgs.Exception">
+            <summary>
+            Gets or sets the exception.
+            </summary>
+            <value>The exception.</value>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.CommitArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.CommitArgs.#ctor(System.Collections.Generic.ICollection{System.Uri},SharpGit.GitRevision,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VisualGit.ExtensionPoints.IssueTracker.CommitArgs"/> class.
+            </summary>
+            <param name="paths">The paths.</param>
+            <param name="revision">The revision.</param>
+            <param name="commitMessage">The commit message.</param>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.CommitArgs.Paths">
+            <summary>
+            Gets the paths.
+            </summary>
+            <value>The paths.</value>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.CommitArgs.Revision">
+            <summary>
+            Gets the revision.
+            </summary>
+            <value>The revision.</value>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.CommitArgs.InternalCommitMessage">
+            <summary>
+            Gets or sets the internal commit message.
+            </summary>
+            <value>The internal commit message.</value>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs.#ctor(System.Collections.Generic.ICollection{System.Uri},SharpGit.GitRevision)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs"/> class.
+            </summary>
+            <param name="paths">The paths.</param>
+            <param name="revision">The revision.</param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs.#ctor(System.Collections.Generic.ICollection{System.Uri},SharpGit.GitRevision,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs"/> class.
+            </summary>
+            <param name="paths">The paths.</param>
+            <param name="revision">The revision.</param>
+            <param name="commitMessage">The commit message.</param>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs.Cancel">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs"/> is cancel.
+            </summary>
+            <value><c>true</c> if cancel; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs.CommitMessage">
+            <summary>
+            Gets or sets the commit message.
+            </summary>
+            <value>The commit message.</value>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs.#ctor(System.Collections.Generic.ICollection{System.Uri},SharpGit.GitRevision)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs"/> class.
+            </summary>
+            <param name="paths">The paths.</param>
+            <param name="revision">The revision.</param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs.#ctor(System.Collections.Generic.ICollection{System.Uri},SharpGit.GitRevision,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs"/> class.
+            </summary>
+            <param name="paths">The paths.</param>
+            <param name="revision">The revision.</param>
+            <param name="commitMessage">The commit message.</param>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs.CommitMessage">
+            <summary>
+            Gets the commit message.
+            </summary>
+            <value>The commit message.</value>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings">
+            <summary>
+            Base class for Issue Repository Settings
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="connectorName">Unique connector name(as registered with the registry)</param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. 
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"/>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. 
+                            </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.
+                            </exception><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.Equals(VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <returns>
+            true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+            </returns>
+            <param name="other">An object to compare with this object.
+                            </param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.ValueEquals(VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings)">
+            <summary>
+            Determines wether the <paramref name="other"/> is equal to this settings
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.ConnectorName">
+            <summary>
+            Gets the issue repository connector's registered name
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.RepositoryUri">
+            <summary>
+            Gets Issue Repository URI
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.RepositoryId">
+            <summary>
+            Gets the unique id of the repository.
+            </summary>
+            <remarks>This value can be used to identify a specific (sub) issue repository on RepositoryUri</remarks>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings.CustomProperties">
+            <summary>
+            Custom properties specific to the connector.
+            </summary>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.IssueRepository">
+            <summary>
+            Base class for IssueRepository implementation
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="connectorName">Unique connector name(as registered with the registry)</param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.NavigateTo(System.String)">
+            <summary>
+            Handles the request to open the issue.
+            </summary>
+            <param name="issueId">Issue identifier</param>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.PreCommit(VisualGit.ExtensionPoints.IssueTracker.PreCommitArgs)">
+            <summary>
+            Called just before the changes are committed.
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.PostCommit(VisualGit.ExtensionPoints.IssueTracker.PostCommitArgs)">
+            <summary>
+            Called just after the changes are committed.
+            </summary>
+            <remarks>Provider is responsible for any post-commit issue related operations</remarks>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.Label">
+            <summary>
+            Label for the issue repository.
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.IssueIdPattern">
+            <summary>
+            Gets the RegEx pattern to recognize issues in a text.
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepository.Window">
+            <summary>
+            Gets the IWin32Window instance for issue presentation
+            </summary>
+            <remarks>Default implementation returns this as IWin32Window.</remarks>
+        </member>
+        <member name="T:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConnector">
+            <summary>
+            Base class for Issue Repository Connector service
+            </summary>
+        </member>
+        <member name="M:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConnector.Create(VisualGit.ExtensionPoints.IssueTracker.IssueRepositorySettings)">
+            <summary>
+            Creates an Issue Repository based on the settings.
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConnector.Name">
+            <summary>
+            Gets the registered connector's unique name 
+            </summary>
+        </member>
+        <member name="P:VisualGit.ExtensionPoints.IssueTracker.IssueRepositoryConnector.ConfigurationPage">
+            <summary>
+            Gets the repository configuration page (to edit/setup an issue repository)
+            </summary>
+        </member>
+    </members>
+</doc>

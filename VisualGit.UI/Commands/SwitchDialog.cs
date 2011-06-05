@@ -14,7 +14,7 @@ namespace VisualGit.UI.Commands
 {
     public partial class SwitchDialog : VSDialogForm
     {
-        private GitBranchRef _repositoryBranch;
+        private GitRef _repositoryBranch;
 
         public SwitchDialog()
         {
@@ -41,11 +41,11 @@ namespace VisualGit.UI.Commands
         /// Gets or sets the switch to branch.
         /// </summary>
         /// <value>The switch to branch.</value>
-        public GitBranchRef SwitchToBranch
+        public GitRef SwitchToBranch
         {
             get
             {
-                return toBranchBox.SelectedItem as GitBranchRef;
+                return toBranchBox.SelectedItem as GitRef;
             }
             set
             {
@@ -69,22 +69,22 @@ namespace VisualGit.UI.Commands
 
         private void SwitchDialog_Shown(object sender, EventArgs e)
         {
-            _repositoryBranch = RepositoryUtil.GetCurrentBranch(LocalPath);
-
             using (var client = GetService<IGitClientPool>().GetNoUIClient())
             {
-                var lba = new GitListBranchArgs();
-                GitListBranchResult lbr;
-
-                client.ListBranch(LocalPath, lba, out lbr);
+                _repositoryBranch = client.GetCurrentBranch(LocalPath);
 
                 toBranchBox.BeginUpdate();
                 toBranchBox.Items.Clear();
 
-
-                foreach (var branch in lbr.Branches)
+                foreach (var @ref in client.GetRefs(LocalPath))
                 {
-                    toBranchBox.Items.Add(branch);
+                    switch (@ref.Type)
+                    {
+                        case GitRefType.Branch:
+                        case GitRefType.RemoteBranch:
+                            toBranchBox.Items.Add(@ref);
+                            break;
+                    }
                 }
 
                 toBranchBox.EndUpdate();

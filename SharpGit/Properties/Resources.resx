@@ -138,6 +138,9 @@
   <data name="PathNoRepository" xml:space="preserve">
     <value>Path is not (part of) a Git repository</value>
   </data>
+  <data name="PushFailed" xml:space="preserve">
+    <value>Push could not be completed successfully</value>
+  </data>
   <data name="RepositoryLocked" xml:space="preserve">
     <value>Repository is locked, please retry your last operation</value>
   </data>

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace SharpGit
 {
-    internal static class FileSystemUtil
+    public static class FileSystemUtil
     {
         static FileSystemUtil()
         {

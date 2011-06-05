@@ -105,6 +105,7 @@
     <Compile Include="Commands\RepositoryExplorer\DeleteRepositoryItemCommand.cs" />
     <Compile Include="Commands\RepositoryExplorer\RenameNode.cs" />
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />
+    <Compile Include="Commands\SolutionPushCommand.cs" />
     <Compile Include="Services\VisualGitClientPool.cs" />
     <Compile Include="Services\VisualGitHelpService.cs" />
     <Compile Include="Services\VisualSvnClientPool.cs" />

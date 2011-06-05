@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using NGit.Api.Errors;
 
 namespace SharpGit
 {
@@ -111,17 +112,7 @@ namespace SharpGit
             return ExecuteCommand<GitLogCommand>(args, p => p.Execute(uris));
         }
 
-        public bool ListBranch(string repositoryPath, GitListBranchArgs args, out GitListBranchResult result)
-        {
-            if (repositoryPath == null)
-                throw new ArgumentNullException("repositoryPath");
-            if (args == null)
-                throw new ArgumentNullException("args");
-
-            return ExecuteCommand<GitListBranchCommand, GitListBranchResult>(args, p => p.Execute(repositoryPath), out result);
-        }
-
-        public bool Switch(string repositoryPath, GitBranchRef target, GitSwitchArgs args, out GitSwitchResult result)
+        public bool Switch(string repositoryPath, GitRef target, GitSwitchArgs args, out GitSwitchResult result)
         {
             if (repositoryPath == null)
                 throw new ArgumentNullException("repositoryPath");
@@ -131,6 +122,16 @@ namespace SharpGit
                 throw new ArgumentNullException("args");
 
             return ExecuteCommand<GitSwitchCommand, GitSwitchResult>(args, p => p.Execute(target, repositoryPath), out result);
+        }
+
+        public bool Push(string repositoryPath, GitPushArgs args, out GitPushResult result)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitPushCommand, GitPushResult>(args, p => p.Execute(repositoryPath), out result);
         }
 
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
@@ -145,6 +146,17 @@ namespace SharpGit
                 action(command);
 
                 return args.LastException == null;
+            }
+            catch (CanceledException)
+            {
+                var exception = new GitOperationCancelledException();
+
+                args.LastException = exception;
+
+                if (args.ThrowOnCancel)
+                    throw exception;
+
+                return false;
             }
             catch (GitException ex)
             {
@@ -174,6 +186,19 @@ namespace SharpGit
                 result = action(command);
 
                 return args.LastException == null;
+            }
+            catch (CanceledException)
+            {
+                var exception = new GitOperationCancelledException();
+
+                args.LastException = exception;
+
+                if (args.ThrowOnCancel)
+                    throw exception;
+
+                result = null;
+
+                return false;
             }
             catch (GitException ex)
             {
@@ -230,6 +255,56 @@ namespace SharpGit
             lock (_clients)
             {
                 _clients.Add(client, version);
+            }
+        }
+
+        public GitRef GetCurrentBranch(string repositoryPath)
+        {
+            var repositoryEntry = GetRepository(repositoryPath);
+
+            using (repositoryEntry.Lock())
+            {
+                return new GitRef(repositoryEntry.Repository.GetFullBranch());
+            }
+        }
+
+        private RepositoryEntry GetRepository(string repositoryPath)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+
+            var repositoryEntry = RepositoryManager.GetRepository(repositoryPath);
+
+            if (repositoryEntry == null)
+                throw new GitNoRepositoryException();
+
+            return repositoryEntry;
+        }
+
+        public ICollection<GitRef> GetRefs(string repositoryPath)
+        {
+            var repositoryEntry = GetRepository(repositoryPath);
+
+            using (repositoryEntry.Lock())
+            {
+                var result = new List<GitRef>();
+
+                foreach (var @ref in repositoryEntry.Repository.GetAllRefs())
+                {
+                    result.Add(new GitRef(@ref.Value.GetName()));
+                }
+
+                return result;
+            }
+        }
+
+        public IGitConfig GetConfig(string repositoryPath)
+        {
+            var repositoryEntry = GetRepository(repositoryPath);
+
+            using (repositoryEntry.Lock())
+            {
+                return new GitConfigWrapper(repositoryEntry.Repository.GetConfig());
             }
         }
     }

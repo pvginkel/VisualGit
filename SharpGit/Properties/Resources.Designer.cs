@@ -124,6 +124,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Push could not be completed successfully.
+        /// </summary>
+        internal static string PushFailed {
+            get {
+                return ResourceManager.GetString("PushFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Repository is locked, please retry your last operation.
         /// </summary>
         internal static string RepositoryLocked {

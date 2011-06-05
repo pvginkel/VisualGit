@@ -39,12 +39,7 @@ namespace SharpGit
 
                 if (!_repositoryCache.TryGetValue(repositoryRoot, out entry))
                 {
-                    var builder = new RepositoryBuilder();
-
-                    builder.ReadEnvironment();
-                    builder.FindGitDir(repositoryRoot);
-
-                    entry = new RepositoryEntry(builder.Build());
+                    entry = new RepositoryEntry(repositoryRoot);
 
                     _repositoryCache.Add(repositoryRoot, entry);
                 }

@@ -42,6 +42,9 @@ namespace VisualGit
         PendingChangesUpdate,
         PendingChangesView,
 
+        PendingChangesPush,
+        PendingChangesPull,
+
         PendingCommitsView,
         PendingCommitsSort,
 

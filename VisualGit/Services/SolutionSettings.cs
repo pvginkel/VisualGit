@@ -738,7 +738,7 @@ namespace VisualGit.Settings
             try
             {
                 using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(
-                     "SOFTWARE\\TortoiseSVN\\History\\repoURLS", RegistryKeyPermissionCheck.ReadSubTree))
+                     "SOFTWARE\\TortoiseGit\\History\\repoURLS", RegistryKeyPermissionCheck.ReadSubTree))
                 {
                     if (rk != null)
                         LoadUris(uris, rk);

@@ -11,18 +11,16 @@ namespace VisualGit
     {
         readonly IVisualGitServiceProvider _context;
         readonly GitClient _client;
-        readonly SvnClient _svnClient;
         readonly ISynchronizeInvoke _sync;
         Exception _exception;
 
-        public ProgressWorkerArgs(IVisualGitServiceProvider context, GitClient client, SvnClient svnClient, ISynchronizeInvoke sync)
+        public ProgressWorkerArgs(IVisualGitServiceProvider context, GitClient client, ISynchronizeInvoke sync)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
 
             _context = context;
             _client = client;
-            _svnClient = svnClient;
             _sync = sync;
         }
 
@@ -33,7 +31,10 @@ namespace VisualGit
 
         public SvnClient SvnClient
         {
-            get { return _svnClient; }
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public IVisualGitServiceProvider Context
@@ -100,11 +101,18 @@ namespace VisualGit
     public class ProgressRunnerArgs
     {
         bool _createLog;
+        GitTransportClientArgs _transportClientArgs;
 
         public bool CreateLog
         {
             get { return _createLog; }
             set { _createLog = value; }
+        }
+
+        public GitTransportClientArgs TransportClientArgs
+        {
+            get { return _transportClientArgs; }
+            set { _transportClientArgs = value; }
         }
     }
 

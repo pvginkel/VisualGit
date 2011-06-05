@@ -451,7 +451,7 @@ namespace VisualGit.Services
 
         private void LoadRegistryTools(DiffToolMode diffToolMode, List<VisualGitDiffTool> tools)
         {
-            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\VisualGit\\CurrentVersion\\Tools\\" + diffToolMode.ToString(), false))
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey("SOFTWARE\\VisualGit\\CurrentVersion\\Tools\\" + diffToolMode.ToString(), false))
             {
                 if (rk == null)
                     return;
