@@ -33,5 +33,6 @@ namespace SharpGit
         public static readonly GitErrorCode CheckoutFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CheckoutFailed);
         public static readonly GitErrorCode RepositoryLocked = new GitErrorCode(GitErrorCategory.None, Properties.Resources.RepositoryLocked);
         public static readonly GitErrorCode PushFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.PushFailed);
+        public static readonly GitErrorCode PullFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.PullFailed);
     }
 }

@@ -10,7 +10,7 @@ using SharpGit;
 
 namespace VisualGit.UI.Commands
 {
-    public partial class PushDialog : VSDialogForm, IHasErrorProvider
+    public partial class PushDialog : PushPullDialog, IHasErrorProvider
     {
         IPushControl _childControl;
 
@@ -24,8 +24,6 @@ namespace VisualGit.UI.Commands
 
         public GitPushArgs Args { get; set; }
 
-        public string RepositoryPath { get; set; }
-
         public enum PushType
         {
             Tag,
@@ -37,20 +35,8 @@ namespace VisualGit.UI.Commands
             using (var client = Context.GetService<IGitClientPool>().GetNoUIClient())
             {
                 LoadChildControl(client);
-                LoadRemotes(client);
-                LoadRemoteUris(client);
-            }
-        }
-
-        private void LoadRemoteUris(GitPoolClient client)
-        {
-            foreach (string value in Config.GetRecentReposUrls())
-            {
-                if (value != null)
-                {
-                    if (!urlBox.Items.Contains(value))
-                        urlBox.Items.Add(value);
-                }
+                LoadRemotes(client, remoteBox);
+                LoadRemoteUris(client, urlBox);
             }
         }
 
@@ -82,28 +68,6 @@ namespace VisualGit.UI.Commands
             containerPanel.Controls.Add((Control)_childControl);
         }
 
-        private void LoadRemotes(GitClient client)
-        {
-            var config = client.GetConfig(RepositoryPath);
-
-            var currentBranch = client.GetCurrentBranch(RepositoryPath);
-
-            string currentBranchRemote = config.GetString("branch", currentBranch.ShortName, "remote");
-
-            remoteBox.BeginUpdate();
-            remoteBox.Items.Clear();
-
-            foreach (string remote in config.GetSubsections("remote"))
-            {
-                remoteBox.Items.Add(remote);
-
-                if (remote == currentBranchRemote)
-                    remoteBox.SelectedIndex = remoteBox.Items.Count - 1;
-            }
-
-            remoteBox.EndUpdate();
-        }
-
         private void remoteRadioBox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateEnabled();
@@ -131,12 +95,6 @@ namespace VisualGit.UI.Commands
         public ErrorProvider ErrorProvider
         {
             get { return errorProvider1; }
-        }
-
-        IVisualGitConfigurationService _config;
-        private IVisualGitConfigurationService Config
-        {
-            get { return _config ?? (_config = GetService<IVisualGitConfigurationService>()); }
         }
 
         private void okButton_Click(object sender, EventArgs e)

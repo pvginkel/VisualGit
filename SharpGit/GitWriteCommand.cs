@@ -28,10 +28,7 @@ namespace SharpGit
             if (pathTarget == null)
                 throw new NotImplementedException();
 
-            var repositoryEntry = RepositoryManager.GetRepository(pathTarget.FullPath);
-
-            if (repositoryEntry == null)
-                throw new GitNoRepositoryException();
+            var repositoryEntry = Client.GetRepository(pathTarget.FullPath);
 
             using (repositoryEntry.Lock())
             {

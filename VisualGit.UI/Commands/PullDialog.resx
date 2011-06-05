@@ -117,46 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckoutFailed" xml:space="preserve">
-    <value>Checkout could not be completed successfully</value>
-  </data>
-  <data name="CommittingUnstagedFileX" xml:space="preserve">
-    <value>Attempting to commit unstaged file '{0}'</value>
-  </data>
-  <data name="CouldNotFindPathInRevision" xml:space="preserve">
-    <value>Requested path could not be found in provided revision</value>
-  </data>
-  <data name="CouldNotLock" xml:space="preserve">
-    <value>Unable to lock the repository</value>
-  </data>
-  <data name="OperationCancelled" xml:space="preserve">
-    <value>Running operation was cancelled</value>
-  </data>
-  <data name="OutOfDate" xml:space="preserve">
-    <value>Repository is out of date</value>
-  </data>
-  <data name="PathNoRepository" xml:space="preserve">
-    <value>Path is not (part of) a Git repository</value>
-  </data>
-  <data name="PullFailed" xml:space="preserve">
-    <value>Pull cound not be completed successfully</value>
-  </data>
-  <data name="PushFailed" xml:space="preserve">
-    <value>Push could not be completed successfully</value>
-  </data>
-  <data name="RepositoryLocked" xml:space="preserve">
-    <value>Repository is locked, please retry your last operation</value>
-  </data>
-  <data name="RevisionNotFound" xml:space="preserve">
-    <value>Could not find specified revision</value>
-  </data>
-  <data name="UnexpectedMultipleRepositories" xml:space="preserve">
-    <value>Provided paths are of different repositories but the called command does not support this</value>
-  </data>
-  <data name="Unspecified" xml:space="preserve">
-    <value>An unspecified exception occured</value>
-  </data>
-  <data name="UnsupportedUriScheme" xml:space="preserve">
-    <value>Only the file:/// uri scheme is supported</value>
-  </data>
+  <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

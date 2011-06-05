@@ -745,14 +745,14 @@
                   iconFile="PendingChanges/Push.png" defaultDisabled="true" />
             </Group>
           </Menu>
-          <Menu id="Menu_PendingChangesPull" priority="0x400" name="Pull" text="Pu&amp;ll..." type="MenuController" iconAndText="true">
+          <Menu id="Menu_PendingChangesPull" priority="0x400" name="Pull" text="Pu&amp;ll" type="MenuController" iconAndText="true">
             <Group id="Grp_PendingChangesPull1" priority="0x100">
               <Button id="Cmd_PendingChangesPull" name="PendingChangesPull" priority="0x100"
-                  text="&amp;Pull..." fixMenuController="true"
-                  toolTip="Pull updates from a remote"
+                  text="&amp;Pull Current Branch" fixMenuController="true"
+                  toolTip="Pull in updates of the current branch"
                   iconFile="PendingChanges/Pull.png" defaultDisabled="true" />
-              <Button id="Cmd_PendingChangesFetch" name="PendingChangesFetch" priority="0x200"
-                  text="&amp;Fetch..." toolTip="Fetch updates from a remote"
+              <Button id="Cmd_PendingChangesPullEx" name="PendingChangesPullEx" priority="0x200"
+                  text="&amp;Pu&amp;ll..." toolTip="Pull in updates from a remote"
                   iconFile="PendingChanges/Pull.png" defaultDisabled="true" />
             </Group>
           </Menu>

@@ -19,15 +19,10 @@ namespace SharpGit
 
         public void Execute(string path, EventHandler<GitStatusEventArgs> callback)
         {
-            if (path == null)
-                throw new ArgumentNullException("path");
             if (callback == null)
                 throw new ArgumentNullException("callback");
 
-            var repositoryEntry = RepositoryManager.GetRepository(path);
-
-            if (repositoryEntry == null)
-                throw new GitNoRepositoryException();
+            var repositoryEntry = Client.GetRepository(path);
 
             if (Args.Depth != GitDepth.Files)
                 throw new NotImplementedException();

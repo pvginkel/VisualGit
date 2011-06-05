@@ -17,13 +17,7 @@ namespace SharpGit
 
         internal GitPushResult Execute(string repositoryPath)
         {
-            if (repositoryPath == null)
-                throw new ArgumentNullException("repositoryPath");
-
-            var repositoryEntry = RepositoryManager.GetRepository(repositoryPath);
-
-            if (repositoryEntry == null)
-                throw new GitNoRepositoryException();
+            var repositoryEntry = Client.GetRepository(repositoryPath);
 
             using (repositoryEntry.Lock())
             {
@@ -61,7 +55,7 @@ namespace SharpGit
                     else if (Args.RemoteUri != null)
                         pushCommand.SetRemote(Args.RemoteUri);
 
-                    pushCommand.SetProgressMonitor(new ProgressMonitory(this));
+                    pushCommand.SetProgressMonitor(new ProgressMonitor(this));
                     pushCommand.SetCredentialsProvider(new CredentialsProvider(this));
 
                     var result = new GitPushResult();

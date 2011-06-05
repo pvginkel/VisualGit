@@ -18,13 +18,8 @@ namespace SharpGit
         {
             if (target == null)
                 throw new ArgumentNullException("target");
-            if (repositoryPath == null)
-                throw new ArgumentNullException("repositoryPath");
 
-            var repositoryEntry = RepositoryManager.GetRepository(repositoryPath);
-
-            if (repositoryEntry == null)
-                throw new GitNoRepositoryException();
+            var repositoryEntry = Client.GetRepository(repositoryPath);
 
             using (repositoryEntry.Lock())
             {

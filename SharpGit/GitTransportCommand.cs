@@ -47,7 +47,7 @@ namespace SharpGit
             }
         }
 
-        protected class ProgressMonitory : NGit.ProgressMonitor
+        protected class ProgressMonitor : NGit.ProgressMonitor
         {
             private readonly GitTransportCommand<T> _command;
             private string _currentTask;
@@ -56,7 +56,7 @@ namespace SharpGit
             private int _currentTaskProgress;
             private bool _cancelled;
 
-            public ProgressMonitory(GitTransportCommand<T> command)
+            public ProgressMonitor(GitTransportCommand<T> command)
             {
                 _command = command;
                 _totalTasks = -1;

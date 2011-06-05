@@ -216,4 +216,7 @@
   <data name="PushingSolution" xml:space="preserve">
     <value>Pushing Solution</value>
   </data>
+  <data name="PullingSolution" xml:space="preserve">
+    <value>Pulling Solution</value>
+  </data>
 </root>

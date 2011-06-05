@@ -66,5 +66,26 @@ namespace VisualGit.UI.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        internal static System.Drawing.Bitmap FetchGraph {
+            get {
+                object obj = ResourceManager.GetObject("FetchGraph", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap MergeGraph {
+            get {
+                object obj = ResourceManager.GetObject("MergeGraph", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap RebaseGraph {
+            get {
+                object obj = ResourceManager.GetObject("RebaseGraph", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

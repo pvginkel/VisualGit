@@ -134,6 +134,16 @@ namespace SharpGit
             return ExecuteCommand<GitPushCommand, GitPushResult>(args, p => p.Execute(repositoryPath), out result);
         }
 
+        public bool Pull(string repositoryPath, GitPullArgs args, out GitPullResult result)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitPullCommand, GitPullResult>(args, p => p.Execute(repositoryPath), out result);
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {
@@ -268,7 +278,7 @@ namespace SharpGit
             }
         }
 
-        private RepositoryEntry GetRepository(string repositoryPath)
+        internal RepositoryEntry GetRepository(string repositoryPath)
         {
             if (repositoryPath == null)
                 throw new ArgumentNullException("repositoryPath");

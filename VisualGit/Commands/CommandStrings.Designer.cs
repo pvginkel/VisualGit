@@ -223,6 +223,15 @@ namespace VisualGit.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pulling Solution.
+        /// </summary>
+        internal static string PullingSolution {
+            get {
+                return ResourceManager.GetString("PullingSolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pushing Solution.
         /// </summary>
         internal static string PushingSolution {

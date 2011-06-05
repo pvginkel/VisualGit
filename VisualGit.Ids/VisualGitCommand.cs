@@ -270,6 +270,6 @@ namespace VisualGit
         PendingChangesPushSpecificBranch,
         PendingChangesPushSpecificTag,
         PendingChangesPull,
-        PendingChangesFetch,
+        PendingChangesPullEx,
     }
 }

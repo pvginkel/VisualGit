@@ -129,6 +129,12 @@
       <DependentUpon>CreateChangeListDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\IPushControl.cs" />
+    <Compile Include="Commands\PullDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\PullDialog.Designer.cs">
+      <DependentUpon>PullDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\PushBranchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -140,6 +146,9 @@
     </Compile>
     <Compile Include="Commands\PushDialog.Designer.cs">
       <DependentUpon>PushDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\PushPullDialog.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Commands\PushTagControl.cs">
       <SubType>UserControl</SubType>
@@ -805,6 +814,9 @@
     <Compile Include="WorkingCopyExplorer\WorkingCopyExplorerControl.Designer.cs">
       <DependentUpon>WorkingCopyExplorerControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Commands\PullDialog.resx">
+      <DependentUpon>PullDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commands\PushBranchControl.resx">
       <DependentUpon>PushBranchControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -1230,6 +1242,9 @@
     <Content Include="MergeWizard\WizardFramework\images\message_info.gif" />
     <Content Include="MergeWizard\WizardFramework\images\message_warning.gif" />
     <Content Include="MergeWizard\WizardFramework\README.txt" />
+    <Content Include="Resources\FetchGraph.png" />
+    <Content Include="Resources\MergeGraph.png" />
+    <Content Include="Resources\RebaseGraph.png" />
     <Content Include="Resources\TabConflicts.png" />
     <None Include="GitLog\Plus.png" />
   </ItemGroup>

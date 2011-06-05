@@ -124,6 +124,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pull cound not be completed successfully.
+        /// </summary>
+        internal static string PullFailed {
+            get {
+                return ResourceManager.GetString("PullFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Push could not be completed successfully.
         /// </summary>
         internal static string PushFailed {
