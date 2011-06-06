@@ -187,7 +187,7 @@ namespace SharpGit
                     if (Offset > 0)
                         throw new NotImplementedException();
                     if (Offset < 0)
-                        revision += new String('^', -Offset);
+                        revision += "~" + (-Offset);
 
                     return revision;
 
