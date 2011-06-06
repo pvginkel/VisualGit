@@ -7,10 +7,11 @@ namespace SharpGit
 {
     public enum GitRefType
     {
+        Unknown,
         Branch,
         RemoteBranch,
         Tag,
         Head,
-        Unknown
+        RefSpec
     }
 }

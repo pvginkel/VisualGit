@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NGit.Transport;
 
 namespace SharpGit
 {
@@ -31,9 +32,9 @@ namespace SharpGit
 
             ShortName = name;
 
-            if (ShortName.Contains(':'))
+            if (Name.Contains(':'))
             {
-                Type = GitRefType.Unknown;
+                Type = GitRefType.RefSpec;
             }
             else
             {
@@ -53,10 +54,8 @@ namespace SharpGit
                     ShortName = ShortName.Substring(longestMatch.Value.Length);
                     Type = longestMatch.Key;
                 }
-                else if (String.Equals(Name, "HEAD", StringComparison.OrdinalIgnoreCase))
+                else if (String.Equals(Name, "HEAD", StringComparison.Ordinal))
                 {
-                    Name = "HEAD";
-                    ShortName = "HEAD";
                     Type = GitRefType.Head;
                 }
                 else
