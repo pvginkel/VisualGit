@@ -306,47 +306,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             Add(rev.Revision, rev.ParentRevisions, dataType, rev);
         }
 
-        private bool GetWorkingDirStatus(out bool haveStaged, out bool haveChanged)
-        {
-            var args = new GitStatusArgs
-            {
-                Depth = GitDepth.Infinity,
-                RetrieveIgnoredEntries = false
-            };
-
-            bool haveStagedTmp = false;
-            bool haveChangedTmp = false;
-
-            bool result = Client.Status(RepositoryPath, args, (s, e) =>
-            {
-                if (e.NodeKind == GitNodeKind.File)
-                {
-                    switch (e.InternalContentStatus)
-                    {
-                        case GitInternalStatus.Added:
-                        case GitInternalStatus.Changed:
-                        case GitInternalStatus.Removed:
-                            haveStagedTmp = true;
-                            break;
-
-                        case GitInternalStatus.Missing:
-                        case GitInternalStatus.Modified:
-                        case GitInternalStatus.Untracked:
-                            haveChangedTmp = true;
-                            break;
-                    }
-                }
-
-                if (haveChangedTmp && haveChangedTmp)
-                    e.Cancel = true;
-            });
-
-            haveStaged = haveStagedTmp;
-            haveChanged = haveChangedTmp;
-
-            return result;
-        }
-
         protected override void OnCellPainting(DataGridViewCellPaintingEventArgs e)
         {
             base.OnCellPainting(e);
