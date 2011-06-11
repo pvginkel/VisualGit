@@ -15,5 +15,6 @@ namespace SharpGit
         public bool LocalCopied { get; internal set; }
         public GitWorkingCopyInfo WorkingCopyInfo { get; internal set; }
         public GitConflictData TreeConflict { get; internal set; }
+        public GitInternalStatus InternalContentStatus { get; set; }
     }
 }

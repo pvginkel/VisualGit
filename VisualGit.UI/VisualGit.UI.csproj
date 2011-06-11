@@ -195,6 +195,33 @@
     <Compile Include="GenericCredentialsDialog.Designer.cs">
       <DependentUpon>GenericCredentialsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="GitLog\BatchFinishedEventArgs.cs" />
+    <Compile Include="GitLog\Commands\FetchAll.cs" />
+    <Compile Include="GitLog\LogMode.cs" />
+    <Compile Include="GitLog\RevisionGrid\ControlUtil.cs" />
+    <Compile Include="GitLog\RevisionGrid\DvcsGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\DvcsGrid.Designer.cs">
+      <DependentUpon>DvcsGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\GitCommandHelpers.cs" />
+    <Compile Include="GitLog\RevisionGrid\GitHead.cs" />
+    <Compile Include="GitLog\RevisionGrid\GitRevisionGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\GitRevisions.cs" />
+    <Compile Include="GitLog\RevisionGrid\IGitItem.cs" />
+    <Compile Include="GitLog\RevisionGrid\LineRun.cs" />
+    <Compile Include="GitLog\RevisionGrid\LineRunItem.cs" />
+    <Compile Include="GitLog\RevisionGrid\RevisionGridControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\RevisionGridControl.Designer.cs">
+      <DependentUpon>RevisionGridControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\RevisionGridLayout.cs" />
+    <Compile Include="GitLog\RevisionGrid\Settings.cs" />
     <Compile Include="IHasErrorProvider.cs" />
     <Compile Include="IssueTracker\IssueSelector.cs">
       <SubType>Form</SubType>
@@ -417,7 +444,6 @@
     <Compile Include="GitLog\LogIssuesView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GitLog\LogRequest.cs" />
     <Compile Include="GitLog\LogRevisionItem.cs" />
     <Compile Include="GitLog\LogViewerDialog.cs">
       <SubType>Form</SubType>
@@ -556,7 +582,6 @@
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
     </Compile>
     <Compile Include="GitLog\Commands\ChangeLogMessage.cs" />
-    <Compile Include="GitLog\Commands\FetchAll.cs" />
     <Compile Include="GitLog\Commands\IncludeMergedRevisions.cs" />
     <Compile Include="GitLog\Commands\LogStrictNodeHistory.cs" />
     <Compile Include="GitLog\Commands\ShowChangedPaths.cs" />
@@ -584,12 +609,6 @@
       <DependentUpon>SwitchDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="MergeWizard\UIUtils.cs" />
-    <Compile Include="GitLog\LogRevisionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GitLog\LogRevisionControl.Designer.cs">
-      <DependentUpon>LogRevisionControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="GitLog\LogRevisionView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1074,10 +1093,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GitLog\EditLogMessageDialog.resx">
       <DependentUpon>EditLogMessageDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GitLog\LogRevisionControl.resx">
-      <DependentUpon>LogRevisionControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GitLog\LogToolWindowControl.resx">

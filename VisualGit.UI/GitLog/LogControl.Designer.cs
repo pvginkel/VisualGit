@@ -31,7 +31,7 @@ namespace VisualGit.UI.GitLog
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogControl));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.logRevisionControl1 = new VisualGit.UI.GitLog.LogRevisionControl(this.components);
+            this.logRevisionControl1 = new VisualGit.UI.GitLog.RevisionGrid.GitRevisionGrid();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.logChangedPaths1 = new VisualGit.UI.GitLog.LogChangedPaths(this.components);
 			this.logMessageView1 = new VisualGit.UI.GitLog.LogMessageView(this.components);
@@ -59,7 +59,6 @@ namespace VisualGit.UI.GitLog
 			// logRevisionControl1
 			// 
 			resources.ApplyResources(this.logRevisionControl1, "logRevisionControl1");
-			this.logRevisionControl1.LogSource = null;
 			this.logRevisionControl1.Name = "logRevisionControl1";
 			// 
 			// splitContainer2
@@ -106,7 +105,7 @@ namespace VisualGit.UI.GitLog
 
         #endregion
 
-        private LogRevisionControl logRevisionControl1;
+        private VisualGit.UI.GitLog.RevisionGrid.GitRevisionGrid logRevisionControl1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private LogChangedPaths logChangedPaths1;

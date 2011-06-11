@@ -317,5 +317,18 @@ namespace SharpGit
                 return new GitConfigWrapper(repositoryEntry.Repository.GetConfig());
             }
         }
+
+        public string ResolveReference(string repositoryPath, GitRevision revision)
+        {
+            if (revision == null)
+                throw new ArgumentNullException("revision");
+
+            var repositoryEntry = GetRepository(repositoryPath);
+
+            using (repositoryEntry.Lock())
+            {
+                return revision.GetObjectId(repositoryEntry.Repository).Name;
+            }
+        }
     }
 }

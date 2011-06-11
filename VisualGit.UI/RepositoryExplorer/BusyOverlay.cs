@@ -14,6 +14,7 @@ namespace VisualGit.UI.RepositoryExplorer
         Control _parent;
         PictureBox _pb;
         AnchorStyles _anchor;
+        ScrollBars _scrollBarsVisible = ScrollBars.None;
         int _show;
 
         public BusyOverlay()
@@ -33,6 +34,13 @@ namespace VisualGit.UI.RepositoryExplorer
         {
             get { return _anchor; }
             set { _anchor = value; UpdatePosition(); }
+        }
+
+        [DefaultValue(ScrollBars.None)]
+        public ScrollBars ScrollBarsVisible
+        {
+            get { return _scrollBarsVisible; }
+            set { _scrollBarsVisible = value; UpdatePosition(); }
         }
 
         Control _top;
@@ -160,6 +168,9 @@ namespace VisualGit.UI.RepositoryExplorer
                         break;
                     case AnchorStyles.Right:
                         p.X = ps.Width - _pb.Width - 2;
+
+                        if (_scrollBarsVisible.HasFlag(ScrollBars.Vertical))
+                            p.X -= SystemInformation.VerticalScrollBarWidth;
                         break;
                     default:
                         p.X = (ps.Width - _pb.Width) / 2;
@@ -173,6 +184,9 @@ namespace VisualGit.UI.RepositoryExplorer
                         break;
                     case AnchorStyles.Bottom:
                         p.Y = ps.Height - _pb.Height - 2;
+
+                        if (_scrollBarsVisible.HasFlag(ScrollBars.Horizontal))
+                            p.Y -= SystemInformation.HorizontalScrollBarHeight;
                         break;
                     default:
                         p.X = (ps.Height - _pb.Height) / 2;

@@ -332,7 +332,7 @@ namespace SharpGit
             return repositoryEntry.Repository.GetRepositoryPath(fullPath);
         }
 
-        internal static Uri GetUri(string absolutePath)
+        public static Uri GetUri(string absolutePath)
         {
             if (absolutePath == null)
                 throw new ArgumentNullException("absolutePath");
@@ -340,7 +340,7 @@ namespace SharpGit
             return new Uri("file:///" + absolutePath);
         }
 
-        internal static string GetAbsolutePath(Uri uri)
+        public static string GetAbsolutePath(Uri uri)
         {
             if (uri == null)
                 throw new ArgumentNullException("uri");

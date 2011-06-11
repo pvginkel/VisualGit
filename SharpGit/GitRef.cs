@@ -32,7 +32,7 @@ namespace SharpGit
 
             ShortName = name;
 
-            if (Name.Contains(':'))
+            if (Name.IndexOf(':') >= 0)
             {
                 Type = GitRefType.RefSpec;
             }
@@ -74,6 +74,12 @@ namespace SharpGit
             }
         }
 
+        internal GitRef(NGit.Ref @ref)
+            : this(@ref.GetName())
+        {
+            Revision = @ref.GetObjectId().Name;
+        }
+
         public static GitRef Create(string name, GitRefType type)
         {
             if (name == null)
@@ -101,6 +107,7 @@ namespace SharpGit
         public string Name { get; private set; }
         public string ShortName { get; private set; }
         public GitRefType Type { get; private set; }
+        public string Revision { get; private set; }
 
         public override string ToString()
         {

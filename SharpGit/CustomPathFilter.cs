@@ -7,12 +7,12 @@ using NGit.Treewalk;
 
 namespace SharpGit
 {
-    internal class PathFilterNotRecurse : TreeFilter
+    internal class CustomPathFilter : TreeFilter
     {
         private readonly string _path;
         private readonly GitDepth _depth;
 
-        public PathFilterNotRecurse(string path, GitDepth depth)
+        public CustomPathFilter(string path, GitDepth depth)
         {
             if (path == null)
                 throw new ArgumentNullException("path");

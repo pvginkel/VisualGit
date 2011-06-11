@@ -37,6 +37,10 @@ namespace VisualGit.UI.GitLog
                 BatchFinished(sender, e);
         }
 
+        public void FetchAll()
+        {
+            logRevisionControl1.FetchAll();
+        }
 
         public LogControl(IContainer container)
             : this()
@@ -121,11 +125,6 @@ namespace VisualGit.UI.GitLog
             logChangedPaths1.Reset();
             logMessageView1.Reset();
             logRevisionControl1.Start(LogMode.MergesMerged);
-        }
-
-        internal void FetchAll()
-        {
-            logRevisionControl1.FetchAll();
         }
 
         public void Restart()

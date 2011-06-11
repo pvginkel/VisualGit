@@ -47,7 +47,11 @@ namespace SharpGit
         {
             var repositoryEntry = Client.GetRepository(repositoryPath);
 
-            using (repositoryEntry.Lock())
+            // We do not lock the repository for log. Git itself also doesn't
+            // log it, and because we do logs in the background, this gives major
+            // problems on large logs.
+
+            // using (repositoryEntry.Lock())
             {
                 ExecuteLog(repositoryEntry.Repository, null);
             }
@@ -71,7 +75,12 @@ namespace SharpGit
                     revWalk.MarkStart(revWalk.LookupCommit(Args.Start.GetObjectId(repository)));
 
                     if (Args.End != null)
-                        revWalk.MarkUninteresting(revWalk.LookupCommit(Args.End.GetObjectId(repository)));
+                    {
+                        var end = Args.End.GetObjectId(repository);
+
+                        if (end != null)
+                            revWalk.MarkUninteresting(revWalk.LookupCommit(end));
+                    }
                 }
 
                 if (paths != null && paths.Count > 0)
@@ -90,6 +99,8 @@ namespace SharpGit
 
                 int count = Args.Limit;
 
+                var refs = repository.GetAllRefs().Select(p => new GitRef(p.Value));
+
                 foreach (var commit in revWalk)
                 {
                     var authorIdent = commit.GetAuthorIdent();
@@ -101,13 +112,19 @@ namespace SharpGit
                         parents[i] = commit.Parents[i].Id.Name;
                     }
 
+                    string commitId = commit.Id.Name;
+
                     var e = new GitLogEventArgs
                     {
                         Author = authorIdent.GetName() + " <" + authorIdent.GetEmailAddress() + ">",
+                        AuthorTime = authorIdent.GetWhen(),
+                        AuthorName = authorIdent.GetName(),
+                        AuthorEmail = authorIdent.GetEmailAddress(),
                         LogMessage = commit.GetFullMessage(),
-                        Revision = commit.Id.Name,
+                        Revision = commitId,
                         Time = GitTools.CreateDateFromGitTime(commit.CommitTime),
-                        ParentRevisions = parents
+                        ParentRevisions = parents,
+                        Refs = refs.Where(p => p.Revision == commitId).ToArray()
                     };
 
                     if (Args.RetrieveChangedPaths)

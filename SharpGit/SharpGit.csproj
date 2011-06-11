@@ -75,6 +75,7 @@
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
     <Compile Include="GitConfigWrapper.cs" />
+    <Compile Include="GitInternalStatus.cs" />
     <Compile Include="GitMergeFailureReason.cs" />
     <Compile Include="GitMergeResult.cs" />
     <Compile Include="GitPullArgs.cs" />
@@ -150,7 +151,7 @@
     <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitOrigin.cs" />
     <Compile Include="NullOutputStream.cs" />
-    <Compile Include="PathFilterNotRecurse.cs" />
+    <Compile Include="CustomPathFilter.cs" />
     <Compile Include="RepositoryUtil.cs" />
     <Compile Include="GitSchedule.cs" />
     <Compile Include="GitStatus.cs" />

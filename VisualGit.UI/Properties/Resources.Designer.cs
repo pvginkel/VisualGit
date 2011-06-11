@@ -60,10 +60,55 @@ namespace VisualGit.UI.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        internal static string AuthorCaption {
+            get {
+                return ResourceManager.GetString("AuthorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author date.
+        /// </summary>
+        internal static string AuthorDateCaption {
+            get {
+                return ResourceManager.GetString("AuthorDateCaption", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Busy {
             get {
                 object obj = ResourceManager.GetObject("Busy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit date.
+        /// </summary>
+        internal static string CommitDateCaption {
+            get {
+                return ResourceManager.GetString("CommitDateCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commit index.
+        /// </summary>
+        internal static string CurrentIndex {
+            get {
+                return ResourceManager.GetString("CurrentIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current uncommitted changes.
+        /// </summary>
+        internal static string CurrentWorkingDirChanges {
+            get {
+                return ResourceManager.GetString("CurrentWorkingDirChanges", resourceCulture);
             }
         }
         
@@ -81,10 +126,100 @@ namespace VisualGit.UI.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        internal static string MessageCaption {
+            get {
+                return ResourceManager.GetString("MessageCaption", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap RebaseGraph {
             get {
                 object obj = ResourceManager.GetObject("RebaseGraph", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} day ago.
+        /// </summary>
+        internal static string XDayAgo {
+            get {
+                return ResourceManager.GetString("XDayAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} days ago.
+        /// </summary>
+        internal static string XDaysAgo {
+            get {
+                return ResourceManager.GetString("XDaysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hour ago.
+        /// </summary>
+        internal static string XHourAgo {
+            get {
+                return ResourceManager.GetString("XHourAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours ago.
+        /// </summary>
+        internal static string XHoursAgo {
+            get {
+                return ResourceManager.GetString("XHoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes ago.
+        /// </summary>
+        internal static string XMinutesAgo {
+            get {
+                return ResourceManager.GetString("XMinutesAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} month ago.
+        /// </summary>
+        internal static string XMonthAgo {
+            get {
+                return ResourceManager.GetString("XMonthAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} months ago.
+        /// </summary>
+        internal static string XMonthsAgo {
+            get {
+                return ResourceManager.GetString("XMonthsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} seconds ago.
+        /// </summary>
+        internal static string XSecondsAgo {
+            get {
+                return ResourceManager.GetString("XSecondsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} years ago.
+        /// </summary>
+        internal static string XYearsAgo {
+            get {
+                return ResourceManager.GetString("XYearsAgo", resourceCulture);
             }
         }
     }
