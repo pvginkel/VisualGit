@@ -199,6 +199,9 @@
     <Compile Include="GitLog\Commands\FetchAll.cs" />
     <Compile Include="GitLog\LogMode.cs" />
     <Compile Include="GitLog\RevisionGrid\ControlUtil.cs" />
+    <Compile Include="GitLog\RevisionGrid\FakeContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GitLog\RevisionGrid\DvcsGrid.cs">
       <SubType>Component</SubType>
     </Compile>

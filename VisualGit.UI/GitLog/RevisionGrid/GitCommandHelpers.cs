@@ -22,7 +22,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         internal static List<IGitItem> GetTree(string Guid)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
