@@ -53,7 +53,9 @@ namespace SharpGit
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return _stream.Read(buffer, offset, count);
+            // ObjectStream returns -1 at the end of the stream. Convert to 0.
+
+            return Math.Max(_stream.Read(buffer, offset, count), 0);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
