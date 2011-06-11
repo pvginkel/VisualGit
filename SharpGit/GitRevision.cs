@@ -82,7 +82,14 @@ namespace SharpGit
                     return repository.Resolve(ToString());
 
                 case GitRevisionType.Head:
+                case GitRevisionType.Base:
+                case GitRevisionType.Committed:
+                    // We currently do not differentiate between HEAD and BASE.
+
                     return repository.Resolve(Constants.HEAD);
+
+                case GitRevisionType.Previous:
+                    return repository.Resolve(Constants.HEAD + "^");
 
                 default:
                     throw new NotSupportedException();

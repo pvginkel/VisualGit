@@ -77,12 +77,12 @@ namespace VisualGit.Services.PendingChanges
             string relativeToPath = args.RelativeToPath;
             string relativeToPathP = relativeToPath.EndsWith("\\") ? relativeToPath : (relativeToPath + "\\");
             string fileName = args.FileName;
-            SvnRevisionRange revRange = new SvnRevisionRange(SvnRevision.Base, SvnRevision.Working);
+            GitRevisionRange revRange = new GitRevisionRange(GitRevision.Base, GitRevision.Working);
 
-            SvnDiffArgs a = new SvnDiffArgs();
+            GitDiffArgs a = new GitDiffArgs();
             a.IgnoreAncestry = true;
             a.NoDeleted = false;
-            a.Depth = SvnDepth.Empty;
+            a.Depth = GitDepth.Empty;
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -101,7 +101,7 @@ namespace VisualGit.Services.PendingChanges
                             else
                                 a.RelativeToPath = null;
 
-                            e.SvnClient.Diff(item.FullPath, revRange, a, stream);
+                            e.Client.Diff(item.FullPath, revRange, a, stream);
                         }
 
                         stream.Flush();

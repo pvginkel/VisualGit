@@ -17,7 +17,7 @@ namespace SharpGit
         //Copy = 7,
         //CreateDirectory = 8,
         Delete = 9,
-        //Diff = 10,
+        Diff = 10,
         //DiffMerge = 11,
         //DiffSummary = 12,
         //Export = 13,

@@ -39,9 +39,7 @@ namespace VisualGit.Commands
             string slndir = ss.ProjectRoot;
             string slndirP = slndir + "\\";
 
-            throw new NotImplementedException();
-#if false
-            SvnDiffArgs args = new SvnDiffArgs();
+            GitDiffArgs args = new GitDiffArgs();
             args.IgnoreAncestry = true;
             args.NoDeleted = false;
             args.Depth = result.Depth;
@@ -62,7 +60,7 @@ namespace VisualGit.Commands
                             else
                                 args.RelativeToPath = null;
 
-                            ee.SvnClient.Diff(item.FullPath, revRange, args, stream);
+                            ee.Client.Diff(item.FullPath, revRange, args, stream);
                         }
 
                         stream.Flush();
@@ -74,7 +72,6 @@ namespace VisualGit.Commands
                     VsShellUtilities.OpenDocument(e.Context, tempFile);
                 }
             }
-#endif
         }
 
         static PathSelectorResult ShowDialog(CommandEventArgs e)

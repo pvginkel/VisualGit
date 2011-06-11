@@ -144,6 +144,20 @@ namespace SharpGit
             return ExecuteCommand<GitPullCommand, GitPullResult>(args, p => p.Execute(repositoryPath), out result);
         }
 
+        public bool Diff(string fullPath, GitRevisionRange revRange, GitDiffArgs args, Stream stream)
+        {
+            if (fullPath == null)
+                throw new ArgumentNullException("fullPath");
+            if (revRange == null)
+                throw new ArgumentNullException("revRange");
+            if (args == null)
+                throw new ArgumentNullException("args");
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+
+            return ExecuteCommand<GitDiffCommand>(args, p => p.Execute(fullPath, revRange, stream));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {
