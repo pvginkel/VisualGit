@@ -107,9 +107,21 @@ namespace SharpGit
 
                     var parser = new CanonicalTreeParser();
 
-                    parser.Reset(GetReader(repository), new RevWalk(repository).ParseTree(objectId).Id);
+                    RevWalk revWalk = null;
 
-                    return parser;
+                    try
+                    {
+                        revWalk = new RevWalk(repository);
+
+                        parser.Reset(GetReader(repository), revWalk.ParseTree(objectId).Id);
+
+                        return parser;
+                    }
+                    finally
+                    {
+                        if (revWalk != null)
+                            revWalk.Release();
+                    }
             }
         }
 
