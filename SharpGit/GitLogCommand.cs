@@ -68,18 +68,21 @@ namespace SharpGit
             {
                 if (Args.Start == null)
                 {
-                    revWalk.MarkStart(revWalk.LookupCommit(repository.Resolve(Constants.HEAD)));
+                    foreach (var @ref in repository.GetAllRefs())
+                    {
+                        revWalk.MarkStart(revWalk.ParseCommit(@ref.Value.GetObjectId()));
+                    }
                 }
                 else
                 {
-                    revWalk.MarkStart(revWalk.LookupCommit(Args.Start.GetObjectId(repository)));
+                    revWalk.MarkStart(revWalk.ParseCommit(Args.Start.GetObjectId(repository)));
 
                     if (Args.End != null)
                     {
                         var end = Args.End.GetObjectId(repository);
 
                         if (end != null)
-                            revWalk.MarkUninteresting(revWalk.LookupCommit(end));
+                            revWalk.MarkUninteresting(revWalk.ParseCommit(end));
                     }
                 }
 
