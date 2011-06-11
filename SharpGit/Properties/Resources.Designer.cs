@@ -97,6 +97,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move could not be completed because file is obscured.
+        /// </summary>
+        internal static string MoveObstructed {
+            get {
+                return ResourceManager.GetString("MoveObstructed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running operation was cancelled.
         /// </summary>
         internal static string OperationCancelled {

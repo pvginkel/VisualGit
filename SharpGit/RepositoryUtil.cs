@@ -69,12 +69,6 @@ namespace SharpGit
             }
         }
 
-        public static bool IsBelowManagedPath(string fullPath)
-        {
-            string repositoryPath;
-            return TryGetRepositoryRoot(fullPath, out repositoryPath);
-        }
-
         internal static bool PathMatches(string rootPath, string path, bool isSubTree, GitDepth depth)
         {
             if (rootPath == null)

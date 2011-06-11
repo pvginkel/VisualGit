@@ -352,5 +352,20 @@ namespace SharpGit
 
             return stringUri.Substring(8).Replace('/', Path.DirectorySeparatorChar);
         }
+
+        public static bool IsBelowManagedPath(string fullPath)
+        {
+            string repositoryPath;
+            return RepositoryUtil.TryGetRepositoryRoot(fullPath, out repositoryPath);
+        }
+
+        public static bool IsManagedPath(string fullPath)
+        {
+            // With Subversion, every path is managed separately. With Git, they
+            // aren't, so we don't make a distinction between IsManagedPath and
+            // IsBelowManagedPath.
+
+            return IsBelowManagedPath(fullPath);
+        }
     }
 }

@@ -348,7 +348,7 @@ namespace VisualGit.Scc.StatusCache
             // Note: There is a lock(_lock) around this in our caller
 
             bool canRead;
-            string adminName = SvnClient.AdministrativeDirectoryName;
+            string adminName = GitConstants.AdministrativeDirectoryName;
             foreach (SccFileSystemNode node in SccFileSystemNode.GetDirectoryNodes(walkPath, out canRead))
             {
                 if (depth < GitDepth.Files)

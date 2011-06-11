@@ -359,29 +359,15 @@ namespace VisualGit.Scc
                 using (TempFile(fromPath, toPath))
                 using (MoveAway(toPath, true))
                 {
-                    string toDir = SvnTools.GetNormalizedDirectoryName(toPath);
+                    string toDir = GitTools.GetNormalizedDirectoryName(toPath);
 
-                    if (!SvnTools.IsManagedPath(toDir))
-                    {
-                        SvnAddArgs aa = new SvnAddArgs();
-                        aa.Depth = SvnDepth.Empty;
-                        aa.AddParents = true;
-                        aa.Force = true;
-                        aa.ThrowOnError = false;
+                    Debug.Assert(GitTools.IsManagedPath(toDir));
 
-                        if (!_svnClient.Add(toDir, aa))
-                            return false;
-                    }
-
-                    Debug.Assert(SvnTools.IsManagedPath(toDir));
-
-                    SvnMoveArgs ma = new SvnMoveArgs();
-                    ma.AlwaysMoveAsChild = false;
-                    ma.CreateParents = false; // We just did that ourselves. Use Svn for this?
-                    ma.Force = true;
+                    GitMoveArgs ma = new GitMoveArgs();
                     ma.ThrowOnError = false;
+                    ma.Force = true;
 
-                    ok = _svnClient.Move(fromPath, toPath, ma);
+                    ok = _client.Move(fromPath, toPath, ma);
 
                     if (ok)
                     {
@@ -508,7 +494,7 @@ namespace VisualGit.Scc
 
             foreach (DirectoryInfo dir in fromDir.GetDirectories())
             {
-                if (!string.Equals(dir.Name, SvnClient.AdministrativeDirectoryName, StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(dir.Name, GitConstants.AdministrativeDirectoryName, StringComparison.OrdinalIgnoreCase))
                     RecursiveCopyNotVersioned(dir.FullName, Path.Combine(to, dir.Name), force);
             }
         }
@@ -839,6 +825,8 @@ namespace VisualGit.Scc
             else if (!File.Exists(contentFrom))
                 throw new InvalidOperationException("Source does not exist");
 
+            IDisposable directory = TempDirectory(Path.GetDirectoryName(path));
+
             File.Copy(contentFrom, path);
 
             return new DelegateRunner(
@@ -852,6 +840,31 @@ namespace VisualGit.Scc
 
                     if (moveAway != null)
                         moveAway.Dispose();
+                    if (directory != null)
+                        directory.Dispose();
+                });
+        }
+
+        public IDisposable TempDirectory(string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            if (Directory.Exists(path))
+                return null;
+
+            IDisposable parentDirectory = TempDirectory(Path.GetDirectoryName(path));
+
+            Directory.CreateDirectory(path);
+
+            return new DelegateRunner(
+                delegate()
+                {
+                    if (Directory.Exists(path))
+                        Directory.Delete(path);
+
+                    if (parentDirectory != null)
+                        parentDirectory.Dispose();
                 });
         }
 
@@ -880,17 +893,18 @@ namespace VisualGit.Scc
                 return true; // Not in a versioned directory -> Fast out
 
             // Item does exist; check casing
-            string parentDir = SvnTools.GetNormalizedDirectoryName(path);
-            SvnWorkingCopyEntriesArgs wa = new SvnWorkingCopyEntriesArgs();
+            string parentDir = GitTools.GetNormalizedDirectoryName(path);
+            GitStatusArgs wa = new GitStatusArgs();
             wa.ThrowOnError = false;
             wa.ThrowOnCancel = false;
+            wa.Depth = GitDepth.Files;
 
             bool ok = true;
 
-            using (SvnWorkingCopyClient wcc = GetService<ISvnClientPool>().GetWcClient())
+            using (GitClient client = GetService<IGitClientPool>().GetNoUIClient())
             {
-                wcc.ListEntries(parentDir, wa,
-                delegate(object sender, SvnWorkingCopyEntryEventArgs e)
+                client.Status(parentDir, wa,
+                delegate(object sender, GitStatusEventArgs e)
                 {
                     if (string.Equals(e.FullPath, path, StringComparison.OrdinalIgnoreCase))
                     {
@@ -914,10 +928,10 @@ namespace VisualGit.Scc
             if (_adminDir == null)
             {
                 // Caching in this instance should be safe
-                _adminDir = '\\' + SvnClient.AdministrativeDirectoryName + '\\';
+                _adminDir = '\\' + GitConstants.AdministrativeDirectoryName + '\\';
             }
 
-            if (string.Equals(item.Name, SvnClient.AdministrativeDirectoryName))
+            if (string.Equals(item.Name, GitConstants.AdministrativeDirectoryName))
                 return true;
 
             return item.FullPath.IndexOf(_adminDir, StringComparison.OrdinalIgnoreCase) >= 0;
@@ -945,7 +959,7 @@ namespace VisualGit.Scc
             if (!dir.Exists)
                 return;
 
-            foreach (DirectoryInfo subDir in dir.GetDirectories(SvnClient.AdministrativeDirectoryName, SearchOption.AllDirectories))
+            foreach (DirectoryInfo subDir in dir.GetDirectories(GitConstants.AdministrativeDirectoryName, SearchOption.AllDirectories))
             {
                 RecursiveDelete(subDir);
             }

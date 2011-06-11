@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using VisualGit.Scc;
 using SharpSvn;
+using SharpGit;
 
 namespace VisualGit
 {
@@ -339,7 +340,7 @@ namespace VisualGit
         const GitItemState MaskIsAdministrativeArea = GitItemState.IsAdministrativeArea;
         void UpdateAdministrativeArea()
         {
-            if(string.Equals(Name, SvnClient.AdministrativeDirectoryName, StringComparison.OrdinalIgnoreCase))
+            if(string.Equals(Name, GitConstants.AdministrativeDirectoryName, StringComparison.OrdinalIgnoreCase))
                 SetState(GitItemState.IsAdministrativeArea, GitItemState.None);
             else
                 SetState(GitItemState.None, GitItemState.IsAdministrativeArea);

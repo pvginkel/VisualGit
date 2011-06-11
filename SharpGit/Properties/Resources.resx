@@ -129,6 +129,9 @@
   <data name="CouldNotLock" xml:space="preserve">
     <value>Unable to lock the repository</value>
   </data>
+  <data name="MoveObstructed" xml:space="preserve">
+    <value>Move could not be completed because file is obscured</value>
+  </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Running operation was cancelled</value>
   </data>

@@ -50,7 +50,7 @@ namespace VisualGit.Scc
                     continue;
 
                 // TODO: Verify the new names do not give invalid Git state (Double casings, etc.)
-                if (track && !GitCanAddPath(SvnTools.GetNormalizedFullPath(rgpszMkDocuments[i]), GitNodeKind.File))
+                if (track && !GitCanAddPath(GitTools.GetNormalizedFullPath(rgpszMkDocuments[i]), GitNodeKind.File))
                     ok = false;
 
                 if (rgResults != null)
@@ -102,7 +102,7 @@ namespace VisualGit.Scc
 
                 // Save the origins of the to be added files as they are not available in the added event
 
-                string newDoc = SvnTools.GetNormalizedFullPath(rgpszNewMkDocuments[i]);
+                string newDoc = GitTools.GetNormalizedFullPath(rgpszNewMkDocuments[i]);
                 string origDoc = rgpszSrcMkDocuments[i];
 
                 if (origDoc != null && SccProvider.IsSafeSccPath(origDoc))
@@ -490,7 +490,7 @@ namespace VisualGit.Scc
                 if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
-                dir = SvnTools.GetNormalizedFullPath(dir);
+                dir = GitTools.GetNormalizedFullPath(dir);
 
                 if (track && !GitCanAddPath(dir, GitNodeKind.Directory))
                     ok = false;

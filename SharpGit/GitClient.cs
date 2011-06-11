@@ -33,7 +33,7 @@ namespace SharpGit
 #if DEBUG
             // We cheat here to aid debugging.
 
-            if (!args.ThrowOnError && !RepositoryUtil.IsBelowManagedPath(path))
+            if (!args.ThrowOnError && !GitTools.IsBelowManagedPath(path))
             {
                 args.SetError(new GitNoRepositoryException());
                 return false;
@@ -156,6 +156,18 @@ namespace SharpGit
                 throw new ArgumentNullException("stream");
 
             return ExecuteCommand<GitDiffCommand>(args, p => p.Execute(fullPath, revRange, stream));
+        }
+
+        public bool Move(string fromPath, string toPath, GitMoveArgs args)
+        {
+            if (fromPath == null)
+                throw new ArgumentNullException("fromPath");
+            if (toPath == null)
+                throw new ArgumentNullException("toPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitMoveCommand>(args, p => p.Execute(fromPath, toPath));
         }
 
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)

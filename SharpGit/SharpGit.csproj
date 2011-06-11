@@ -80,6 +80,8 @@
     <Compile Include="GitInternalStatus.cs" />
     <Compile Include="GitMergeFailureReason.cs" />
     <Compile Include="GitMergeResult.cs" />
+    <Compile Include="GitMoveArgs.cs" />
+    <Compile Include="GitMoveCommand.cs" />
     <Compile Include="GitPullArgs.cs" />
     <Compile Include="GitPullCommand.cs" />
     <Compile Include="GitMergeStrategy.cs" />

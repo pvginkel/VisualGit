@@ -34,7 +34,7 @@ namespace SharpGit
         //Merge = 24,
         //MergesEligible = 25,
         //MergesMerged = 26,
-        //Move = 27,
+        Move = 27,
         //PropertyList = 28,
         //ReintegrationMerge = 29,
         //Relocate = 30,

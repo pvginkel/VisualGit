@@ -9,5 +9,7 @@ namespace SharpGit
     public static class GitConstants
     {
         public static readonly string IgnoreFilename = Constants.DOT_GIT_IGNORE;
+
+        public static readonly string AdministrativeDirectoryName = Constants.DOT_GIT;
     }
 }
