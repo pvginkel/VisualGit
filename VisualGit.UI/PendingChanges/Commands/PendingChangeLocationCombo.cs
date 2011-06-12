@@ -136,7 +136,10 @@ namespace VisualGit.UI.PendingChanges.Commands
                 {
                     var repositoryBranch = client.GetCurrentBranch(repositoryPath);
 
-                    e.Result = repositoryBranch.ShortName;
+                    if (repositoryBranch.Type == GitRefType.Unknown)
+                        e.Result = Properties.Resources.NoBranch;
+                    else
+                        e.Result = repositoryBranch.ShortName;
                 }
             }
         }

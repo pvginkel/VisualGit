@@ -11,5 +11,7 @@ namespace SharpGit
         public static readonly string IgnoreFilename = Constants.DOT_GIT_IGNORE;
 
         public static readonly string AdministrativeDirectoryName = Constants.DOT_GIT;
+
+        public static readonly string Head = Constants.HEAD;
     }
 }

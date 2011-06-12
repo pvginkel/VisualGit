@@ -207,8 +207,6 @@ namespace VisualGit.UI.PathSelector
                 c.Enabled = c.Visible = false;
             }
 
-
-
             if (rev.HasUI)
             {
                 if (rev.CurrentControl == null)

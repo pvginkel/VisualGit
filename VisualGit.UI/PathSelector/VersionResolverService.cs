@@ -138,18 +138,18 @@ namespace VisualGit.UI.PathSelector
                     if (item.IsVersioned)
                     {
                         yield return _working;
-                        yield return _base;
+                        // yield return _base;
                     }
                     if (item.HasCopyableHistory)
                     {
-                        yield return _committed;
-                        yield return _previous;
+                        // yield return _committed;
+                        // yield return _previous;
                     }
                     else
                         yield break;
                 }
 
-                yield return new DateRevisionType(this, origin);
+                // yield return new DateRevisionType(this, origin);
                 yield return new ExplicitRevisionType(this, origin);
             }
 
@@ -371,6 +371,8 @@ namespace VisualGit.UI.PathSelector
                 _sel = new RevisionSelector();
                 _sel.Context = _context;
                 _sel.GitOrigin = _origin;
+                _sel.AutoSize = true;
+                _sel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
                 parentPanel.Controls.Add(_sel);
                 _sel.Dock = System.Windows.Forms.DockStyle.Fill;
                 _sel.Changed += new EventHandler(OnVersionChanged);

@@ -110,14 +110,10 @@ namespace VisualGit
 
         CommitPendingChanges,
 
-        PendingChangesUpdateLatest,
-        SolutionUpdateSpecific,
         SolutionCommit,
         SolutionHistory,
         SolutionMerge,
 
-        ProjectUpdateLatest,
-        ProjectUpdateSpecific,
         ProjectCommit,
         ProjectHistory,
         ProjectMerge,
@@ -191,7 +187,6 @@ namespace VisualGit
         ItemIgnoreFolder,
 
         GitNodeDelete,
-        SolutionUpdateLatest,
 
         PendingChangesApplyWorkingCopy,
         PendingChangesCreatePatch,
@@ -259,8 +254,6 @@ namespace VisualGit
         DocumentAddToPending,
         DocumentRemoveFromPending,
 
-        FolderUpdateSpecific,
-        FolderUpdateLatest,
         MakeNonSccFileWriteable,
 
         PendingChangesConfigureRecentChangesPage,

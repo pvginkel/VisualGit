@@ -106,11 +106,11 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
             _control.Args = new GitLogArgs();
 
-            _control.Args.Start = LogSource.Start;
-            _control.Args.End = LogSource.End;
+            //_control.Args.Start = LogSource.Start;
+            //_control.Args.End = LogSource.End;
 
             // If we have EndRevision set, we want all items until End
-            if (_control.Args.End == null || _control.Args.End.RevisionType == GitRevisionType.None)
+            //if (_control.Args.End == null || _control.Args.End.RevisionType == GitRevisionType.None)
                 _control.Args.Limit = DefaultInitialLimit;
 
             _control.Args.StrictNodeHistory = LogSource.StrictNodeHistory;

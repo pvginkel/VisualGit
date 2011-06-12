@@ -58,7 +58,7 @@ namespace VisualGit.UI.PathSelector
                 if (li == null)
                     return;
 
-                Revision = li.Revision.ToString();
+                Revision = li.Revision;
             }
         }
 

@@ -176,7 +176,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 Revision = e.Revision,
                 LogMessage = e.LogMessage,
                 ParentRevisions = e.ParentRevisions,
-                Heads = e.Refs.Select(p => new GitHead(p.Revision, p.Name)).ToArray(),
+                Heads = e.Refs.Where(p => p.Name != GitConstants.Head).Select(p => new GitHead(p.Revision, p.Name)).ToArray(),
                 Index = _revisionsLoaded++,
                 RepositoryRoot = GitTools.GetUri(RepositoryPath)
             });

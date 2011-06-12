@@ -131,6 +131,7 @@ namespace VisualGit.Commands
             else
                 using (SwitchDialog dlg = new SwitchDialog())
                 {
+                    dlg.GitOrigin = new GitOrigin(pathItem);
                     dlg.Context = e.Context;
 
                     dlg.LocalPath = RepositoryUtil.GetRepositoryRoot(path);

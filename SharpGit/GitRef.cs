@@ -149,5 +149,13 @@ namespace SharpGit
         {
             return !(rev1 == rev2);
         }
+
+        public static implicit operator GitRevision(GitRef @ref)
+        {
+            if (@ref == null)
+                return null;
+            else
+                return new GitRevision(@ref.Name);
+        }
     }
 }

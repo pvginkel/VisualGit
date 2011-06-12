@@ -156,4 +156,7 @@
   <data name="WhitespaceIgnoreChanges" xml:space="preserve">
     <value>Ignore Changes</value>
   </data>
+  <data name="SelectABranchTagOrRevision" xml:space="preserve">
+    <value>Select a branch, tag or revision to switch to</value>
+  </data>
 </root>

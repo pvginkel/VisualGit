@@ -16,6 +16,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             TagColor = Color.DarkBlue;
             BranchColor = Color.DarkRed;
             ShowRemoteBranches = true;
+            RevisionGraphDrawNonRelativesGray = true;
         }
 
         public static bool RevisionGraphDrawNonRelativesGray { get; set; }

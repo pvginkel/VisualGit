@@ -101,7 +101,6 @@ namespace VisualGit
 
         PendingChangesUpdate1,
         PendingChangesUpdate2,
-        PendingChangesUpdate3,
 
         PendingChangesPush1,
         PendingChangesPull1,
@@ -140,7 +139,6 @@ namespace VisualGit
         SccProjectBranch,
         SccProjectPatch,
 
-        SccSlnUpdate,
         SccSlnAction,
         SccSlnChanges,        
         //SccSlnAdvanced,

@@ -135,6 +135,15 @@ namespace VisualGit.UI.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to (no branch).
+        /// </summary>
+        internal static string NoBranch {
+            get {
+                return ResourceManager.GetString("NoBranch", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap RebaseGraph {
             get {
                 object obj = ResourceManager.GetObject("RebaseGraph", resourceCulture);

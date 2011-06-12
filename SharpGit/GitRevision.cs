@@ -181,7 +181,10 @@ namespace SharpGit
 
         public static implicit operator GitRevision(string value)
         {
-            return new GitRevision(value);
+            if (String.IsNullOrEmpty(value))
+                return null;
+            else
+                return new GitRevision(value);
         }
 
         public override sealed string ToString()

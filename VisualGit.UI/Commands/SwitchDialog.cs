@@ -37,6 +37,13 @@ namespace VisualGit.UI.Commands
             set { pathBox.Text = value; }
         }
 
+        GitOrigin _gitOrigin;
+        public GitOrigin GitOrigin
+        {
+            get { return _gitOrigin; }
+            set { _gitOrigin = value; versionBox.GitOrigin = _gitOrigin; }
+        }
+
         /// <summary>
         /// Gets or sets the switch to branch.
         /// </summary>
@@ -45,25 +52,44 @@ namespace VisualGit.UI.Commands
         {
             get
             {
-                return toBranchBox.SelectedItem as GitRef;
+                if (localBranchRadioBox.Checked)
+                    return localBranchBox.SelectedItem as GitRef;
+                else if (trackingBranchRadioBox.Checked)
+                    return trackingBranchBox.SelectedItem as GitRef;
+                else if (tagRadioBox.Checked)
+                    return tagBox.SelectedItem as GitRef;
+                else if (versionBox.Revision != null)
+                    return new GitRef(versionBox.Revision.ToString());
+                else
+                    return null;
             }
             set
             {
-                toBranchBox.SelectedItem = value;
-            }
-        }
+                if (value != null)
+                {
+                    switch (value.Type)
+                    {
+                        case GitRefType.Branch:
+                            localBranchBox.SelectedItem = value;
+                            localBranchRadioBox.Checked = true;
+                            break;
 
-        private void toUrlBox_Validating(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
-            if (SwitchToBranch == null)
-                errorProvider.SetError(toBranchBox, CommandStrings.SelectABranch);
-            else if (SwitchToBranch == _repositoryBranch)
-                errorProvider.SetError(toBranchBox, CommandStrings.RepositoryAlreadyAtThisBranch);
-            else
-            {
-                errorProvider.SetError(toBranchBox, null);
-                e.Cancel = false;
+                        case GitRefType.RemoteBranch:
+                            trackingBranchBox.SelectedItem = value;
+                            trackingBranchRadioBox.Checked = true;
+                            break;
+
+                        case GitRefType.Tag:
+                            tagBox.SelectedItem = value;
+                            tagRadioBox.Checked = true;
+                            break;
+
+                        default:
+                            versionBox.Revision = value;
+                            revisionRadioBox.Checked = true;
+                            break;
+                    }
+                }
             }
         }
 
@@ -73,25 +99,71 @@ namespace VisualGit.UI.Commands
             {
                 _repositoryBranch = client.GetCurrentBranch(LocalPath);
 
-                toBranchBox.BeginUpdate();
-                toBranchBox.Items.Clear();
+                localBranchBox.BeginUpdate();
+                localBranchBox.Items.Clear();
+                trackingBranchBox.BeginUpdate();
+                trackingBranchBox.Items.Clear();
+                tagBox.BeginUpdate();
+                tagBox.Items.Clear();
 
                 foreach (var @ref in client.GetRefs(LocalPath))
                 {
                     switch (@ref.Type)
                     {
                         case GitRefType.Branch:
+                            localBranchBox.Items.Add(@ref);
+                            break;
+
                         case GitRefType.RemoteBranch:
-                            toBranchBox.Items.Add(@ref);
+                            trackingBranchBox.Items.Add(@ref);
+                            break;
+
+                        case GitRefType.Tag:
+                            tagBox.Items.Add(@ref);
                             break;
                     }
                 }
 
-                toBranchBox.EndUpdate();
+                localBranchBox.EndUpdate();
+                trackingBranchBox.EndUpdate();
+                tagBox.EndUpdate();
             }
 
             if (SwitchToBranch == null)
                 SwitchToBranch = _repositoryBranch;
+        }
+
+        private void SwitchDialog_Validating(object sender, CancelEventArgs e)
+        {
+            errorProvider.SetError(localBranchBox, null);
+            errorProvider.SetError(trackingBranchBox, null);
+            errorProvider.SetError(tagBox, null);
+            errorProvider.SetError(versionBox, null);
+
+            if (SwitchToBranch == _repositoryBranch)
+            {
+                Control selectedControl;
+
+                if (localBranchRadioBox.Checked)
+                    selectedControl = localBranchBox;
+                else if (trackingBranchRadioBox.Checked)
+                    selectedControl = trackingBranchBox;
+                else if (tagRadioBox.Checked)
+                    selectedControl = tagBox;
+                else
+                    selectedControl = versionBox;
+
+                errorProvider.SetError(selectedControl, CommandStrings.SelectABranchTagOrRevision);
+
+                e.Cancel = true;
+            }
+        }
+
+        protected override void OnContextChanged(EventArgs e)
+        {
+            base.OnContextChanged(e);
+
+            versionBox.Context = Context;
         }
     }
 }

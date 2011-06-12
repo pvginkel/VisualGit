@@ -75,7 +75,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
-            this.panel1.Size = new System.Drawing.Size(94, 300);
+            this.panel1.Size = new System.Drawing.Size(94, 294);
             this.panel1.TabIndex = 0;
             // 
             // panel2
@@ -87,7 +87,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(8);
-            this.panel2.Size = new System.Drawing.Size(93, 300);
+            this.panel2.Size = new System.Drawing.Size(93, 294);
             this.panel2.TabIndex = 0;
             // 
             // strategyBox
@@ -95,7 +95,7 @@
             this.strategyBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.strategyBox.Location = new System.Drawing.Point(8, 8);
             this.strategyBox.Name = "strategyBox";
-            this.strategyBox.Size = new System.Drawing.Size(77, 284);
+            this.strategyBox.Size = new System.Drawing.Size(77, 278);
             this.strategyBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.strategyBox.TabIndex = 0;
             this.strategyBox.TabStop = false;
@@ -109,7 +109,7 @@
             this.panel3.Location = new System.Drawing.Point(94, 0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(8);
-            this.panel3.Size = new System.Drawing.Size(464, 300);
+            this.panel3.Size = new System.Drawing.Size(464, 294);
             this.panel3.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -135,7 +135,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(448, 284);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(448, 278);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // remoteBox
@@ -341,7 +341,8 @@
             this.flowLayoutPanel1.Controls.Add(this.okButton);
             this.flowLayoutPanel1.Controls.Add(this.cancelButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(283, 252);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(286, 249);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(162, 29);
             this.flowLayoutPanel1.TabIndex = 6;
@@ -377,7 +378,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(558, 300);
+            this.ClientSize = new System.Drawing.Size(558, 294);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

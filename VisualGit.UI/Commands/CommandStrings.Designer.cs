@@ -106,6 +106,15 @@ namespace VisualGit.UI.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a branch, tag or revision to switch to.
+        /// </summary>
+        internal static string SelectABranchTagOrRevision {
+            get {
+                return ResourceManager.GetString("SelectABranchTagOrRevision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a local branch.
         /// </summary>
         internal static string SelectALocalBranch {

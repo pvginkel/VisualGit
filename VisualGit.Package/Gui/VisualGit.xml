@@ -175,10 +175,6 @@
                   text="&amp;Issue Tracker Setup"
                   toolTip="Associate your solution with an Issue Repository"
                   iconFile="menu/IssueRepository.png" defaultInvisible="true"/>
-      <Button id="Cmd_SolutionUpdateLatest" name="UpdateLatest" priority="0x100"
-                  text="U&amp;pdate Solution to Latest Version"
-                  toolTip="Update your solution to the HEAD version"
-                  iconFile="PendingChanges/Update.png" defaultInvisible="true"/>
       <Button id="Cmd_SolutionCommit" priority="0x1500" name="SolutionCommit" defaultInvisible="true"
               text="Comm&amp;it Solution Changes" iconFile="PendingChanges/Commit.png" />
       <ButtonRef id="Cmd_ItemConflictEdit" priority="0x1600" />
@@ -187,9 +183,6 @@
               text="View Solution &amp;History" iconFile="PendingChanges/ViewHistory.png" />
       <ButtonRef id="Cmd_RevertItem" priority="0x1900" />
       <Menu id="Menu_SolutionExplorerSccForSolution" priority="0x1f00" name="Git" text="&amp;Git">
-        <Group id="Grp_SccSlnUpdate" priority="0x1000">
-          <ButtonRef id="Cmd_SolutionUpdateSpecific" priority="0x100" />
-        </Group>
         <Group id="Grp_SccSlnAction" priority="0x3000">
 
         </Group>
@@ -232,8 +225,6 @@
       <!-- VS Predefined group for SCC commands on projects -->
       <ButtonRef id="Cmd_FileSccAddSolutionToGit" priority="0x1200" />
       <ButtonRef id="Cmd_FileSccAddProjectToGit" priority="0x1300" />
-      <Button id="Cmd_ProjectUpdateLatest" priority="0x1400" name="ProjectUpdateLatest" text="U&amp;pdate Project to Latest Version"
-              iconFile="PendingChanges/Update.png" defaultInvisible="true"/>
       <Button id="Cmd_ProjectCommit" priority="0x1500" name="ProjectCommit"
               text="Comm&amp;it Project Changes" iconFile="PendingChanges/Commit.png" defaultInvisible="true"/>
 
@@ -244,13 +235,7 @@
       <MenuRef id="Menu_ItemResolve" priority="0x1900" />
       <ButtonRef id="Cmd_RevertItem" priority="0x1A00" />
       <Menu id="Menu_SolutionExplorerSccForProject" priority="0x1B00" name="Git" text="&amp;Git">
-        <Group id="Grp_SccProjectUpdate" priority="0x1000">
-          <Button id="Cmd_ProjectUpdateSpecific" name="UpdateSpecific" priority="0x1000"
-                  text="Update to Specific &amp;Version..." defaultInvisible="true"
-                  toolTip="Update your project to a specific version" iconFile="PendingChanges/UpdateSpecific.png"/>
-        </Group>
         <Group id="Grp_SccProjectAction" priority="0x3000">
-
         </Group>
         <Group id="Grp_SccProjectChanges" priority="0x4000">
           <ButtonRef id="Cmd_DiffLocalItem" priority="0x100" />
@@ -289,9 +274,6 @@
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_SCC">
       <!-- VS Predefined group for SCC commands on project items -->
-      <Button id="Cmd_FolderUpdateLatest" name="UpdateFolderLatest" priority="0xFF"
-                text="&amp;Update Folder to Latest Version"
-                toolTip="Update all items in the folder with changes from the Git repository."  iconFile="PendingChanges/Update.png" defaultInvisible="true" />
       <Button id="Cmd_UpdateItemLatest" name="UpdateItemLatest" priority="0x100"
                 text="&amp;Update to Latest Version"
                 toolTip="Updates local items with changes from the Git repository." iconFile="PendingChanges/Update.png" defaultInvisible="true"/>
@@ -325,9 +307,6 @@
       <ButtonRef id="Cmd_RevertItem" priority="0x1B00" />
       <Menu id="Menu_SolutionExplorerSccForItem" priority="0x1D00" name="Git" text="&amp;Git">
         <Group id="Grp_SccItemUpdate" priority="0x1000">
-          <Button id="Cmd_FolderUpdateSpecific" name="UpdateFolderSpecific" priority="0xFF"
-                text="&amp;Update Folder to Specific Version..."
-                toolTip="Updates folder with changes from the Git repositor."  iconFile="PendingChanges/UpdateSpecific.png" defaultInvisible="true" />
           <Button id="Cmd_UpdateItemSpecific" name="UpdateItemSpecific" priority="0x100"
                 text="&amp;Update to Specific Version..."
                 toolTip="Updates local items with changes from the Git repository." iconFile="PendingChanges/UpdateSpecific.png" defaultInvisible="true"/>
@@ -697,7 +676,8 @@
             <Group id="Grp_PendingChangesCommit1" priority="0x100">
               <Button id="Cmd_CommitPendingChanges" name="CommitPendingChanges" priority="0x100"
                   text="&amp;Commit Changes"
-                  toolTip="Commit Pending Changes" fixMenuController="true" iconFile="PendingChanges/Commit.png" defaultDisabled="true" />
+                  toolTip="Commit Pending Changes" fixMenuController="true" iconFile="PendingChanges/Commit.png"
+                  defaultDisabled="true" />
             </Group>
             <Group id="Grp_PendingChangesCommit2" priority="0x200">
               <Button id="Cmd_PendingChangesApplyWorkingCopy" name="ApplyWorkingCopy" priority="0x100"
@@ -711,24 +691,15 @@
               <ButtonRef id="Cmd_SolutionBranch" priority="0x100" />
             </Group>
           </Menu>
-          <Menu id="Menu_PendingChangesUpdate" priority="0x200" name="Update" text="&amp;Update" type="MenuController" iconAndText="true">
+          <Menu id="Menu_PendingChangesUpdate" priority="0x200" name="Update" text="&amp;Change Current Branch..." type="MenuController" iconAndText="true">
             <Group id="Grp_PendingChangesUpdate1" priority="0x100">
-              <Button id="Cmd_PendingChangesUpdateLatest" name="UpdatePendingChanges" priority="0x100"
-                  text="U&amp;pdate to Latest Version"
-                  toolTip="Update your solution to the HEAD version"
-                  iconFile="PendingChanges/Update.png" defaultDisabled="true"/>
-              <Button id="Cmd_SolutionUpdateSpecific" name="UpdateSpecific" priority="0x200" defaultInvisible="true"
-                  text="Update to Specific &amp;Version..."
-                  toolTip="Update your solution to a specific version" iconFile="PendingChanges/UpdateSpecific.png"/>
+              <ButtonRef id="Cmd_SolutionSwitchDialog" priority="0x100" />
+              <ButtonRef id="Cmd_SolutionMerge" priority="0x200" />
             </Group>
             <Group id="Grp_PendingChangesUpdate2" priority="0x200">
               <Button id="Cmd_PendingChangesApplyPatch" name="ApplyPatch" priority="0x100"
                       text="Apply &amp;Patch..."
                       toolTip="Apply patch to Solution"  iconFile="PendingChanges/ApplyPatch.png"/>
-            </Group>
-            <Group id="Grp_PendingChangesUpdate3" priority="0x300">
-              <ButtonRef id="Cmd_SolutionSwitchDialog" priority="0x100" />
-              <ButtonRef id="Cmd_SolutionMerge" priority="0x200" />
             </Group>
           </Menu>
           <Menu id="Menu_PendingChangesPush" priority="0x300" name="Push" text="&amp;Push" type="MenuController" iconAndText="true">
