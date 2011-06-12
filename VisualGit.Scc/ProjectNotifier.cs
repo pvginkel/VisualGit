@@ -11,6 +11,7 @@ using SharpSvn;
 using VisualGit.Commands;
 using VisualGit.Selection;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -455,12 +456,12 @@ namespace VisualGit.Scc
                         switch (dr)
                         {
                             case DialogResult.Yes:
-                                using (SvnClient c = Context.GetService<ISvnClientPool>().GetNoUIClient())
+                                using (GitClient c = Context.GetService<IGitClientPool>().GetNoUIClient())
                                 {
-                                    SvnResolveArgs ra = new SvnResolveArgs();
+                                    GitResolveArgs ra = new GitResolveArgs();
                                     ra.ThrowOnError = false;
 
-                                    c.Resolve(file.Key, SvnAccept.Merged, ra);
+                                    c.Resolve(file.Key, GitAccept.Merged, ra);
                                 }
                                 goto case DialogResult.No;
                             case DialogResult.No:

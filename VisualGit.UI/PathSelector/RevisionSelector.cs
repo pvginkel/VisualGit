@@ -91,5 +91,10 @@ namespace VisualGit.UI.PathSelector
             if (Changed != null)
                 Changed(this, e);
         }
+
+        private void revisionBox_SizeChanged(object sender, EventArgs e)
+        {
+            browseButton.Height = revisionBox.Height + revisionBox.Margin.Vertical;
+        }
     }
 }

@@ -10,6 +10,10 @@ namespace SharpGit
         Unset,
         DefaultForBranch,
         Merge,
-        Rebase
+        Rebase,
+        Resolve,
+        Ours,
+        Theirs,
+        SimpleTwoWayInCore
     }
 }

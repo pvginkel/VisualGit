@@ -152,6 +152,51 @@ namespace VisualGit.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string StrategyDefault {
+            get {
+                return ResourceManager.GetString("StrategyDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ours.
+        /// </summary>
+        internal static string StrategyOurs {
+            get {
+                return ResourceManager.GetString("StrategyOurs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolve.
+        /// </summary>
+        internal static string StrategyResolve {
+            get {
+                return ResourceManager.GetString("StrategyResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple two way in core.
+        /// </summary>
+        internal static string StrategySimpleTwoWayInCore {
+            get {
+                return ResourceManager.GetString("StrategySimpleTwoWayInCore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theirs.
+        /// </summary>
+        internal static string StrategyTheirs {
+            get {
+                return ResourceManager.GetString("StrategyTheirs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} day ago.
         /// </summary>
         internal static string XDayAgo {

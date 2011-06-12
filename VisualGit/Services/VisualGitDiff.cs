@@ -126,7 +126,7 @@ namespace VisualGit.Services
 
             if (string.IsNullOrEmpty(diffApp))
             {
-                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools->Options->SourceControl->Git", "VisualGit - No visual merge tool is available");
+                new VisualGitMessageBox(Context).Show("Please specify a merge tool in Tools -> Options -> SourceControl -> Git", "VisualGit - No visual merge tool is available");
 
                 return false;
             }
@@ -147,7 +147,7 @@ namespace VisualGit.Services
             DiffToolMonitor monitor = null;
             if (!string.IsNullOrEmpty(mergedFile))
             {
-                monitor = new DiffToolMonitor(Context, mergedFile, false);
+                monitor = new DiffToolMonitor(Context, mergedFile, false, args);
 
                 p.EnableRaisingEvents = true;
                 monitor.Register(p);
@@ -269,8 +269,14 @@ namespace VisualGit.Services
             uint _cookie;
             readonly string _toMonitor;
             readonly bool _monitorDir;
+            readonly VisualGitMergeArgs _args;
 
             public DiffToolMonitor(IVisualGitServiceProvider context, string monitor, bool monitorDir)
+                : this(context, monitor, monitorDir, null)
+            {
+            }
+
+            public DiffToolMonitor(IVisualGitServiceProvider context, string monitor, bool monitorDir, VisualGitMergeArgs args)
                 : base(context)
             {
                 if (string.IsNullOrEmpty(monitor))
@@ -279,6 +285,7 @@ namespace VisualGit.Services
                     throw new ArgumentOutOfRangeException("monitor");
 
                 _monitorDir = monitorDir;
+                _args = args;
                 _toMonitor = monitor;
 
                 IVsFileChangeEx fx = context.GetService<IVsFileChangeEx>(typeof(SVsFileChangeEx));
@@ -322,6 +329,15 @@ namespace VisualGit.Services
                             fx.UnadviseFileChange(ck);
                         else
                             fx.UnadviseDirChange(ck);
+                    }
+                }
+
+                if (_args != null && _args.CleanupFiles != null)
+                {
+                    foreach (string filename in _args.CleanupFiles)
+                    {
+                        if (filename != null && File.Exists(filename))
+                            File.Delete(filename);
                     }
                 }
             }

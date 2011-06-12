@@ -36,7 +36,7 @@ namespace VisualGit.UI.PathSelector
             // 
             // browseButton
             // 
-            this.browseButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.browseButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.browseButton.Enabled = false;
             this.browseButton.Location = new System.Drawing.Point(78, 0);
             this.browseButton.Margin = new System.Windows.Forms.Padding(0);
@@ -55,6 +55,7 @@ namespace VisualGit.UI.PathSelector
             this.revisionBox.Name = "revisionBox";
             this.revisionBox.Size = new System.Drawing.Size(72, 20);
             this.revisionBox.TabIndex = 1;
+            this.revisionBox.SizeChanged += new System.EventHandler(this.revisionBox_SizeChanged);
             this.revisionBox.TextChanged += new System.EventHandler(this.revisionBox_TextChanged);
             // 
             // tableLayoutPanel1

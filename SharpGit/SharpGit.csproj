@@ -72,12 +72,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystemUtil.cs" />
+    <Compile Include="GitAccept.cs" />
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
     <Compile Include="GitConfigWrapper.cs" />
     <Compile Include="GitDiffArgs.cs" />
     <Compile Include="GitDiffCommand.cs" />
+    <Compile Include="GitInfoArgs.cs" />
+    <Compile Include="GitInfoCommand.cs" />
+    <Compile Include="GitInfoEventArgs.cs" />
     <Compile Include="GitInternalStatus.cs" />
+    <Compile Include="GitMergeArgs.cs" />
+    <Compile Include="GitMergeCommand.cs" />
     <Compile Include="GitMergeFailureReason.cs" />
     <Compile Include="GitMergeResult.cs" />
     <Compile Include="GitMoveArgs.cs" />
@@ -101,6 +107,8 @@
     <Compile Include="GitPushResult.cs" />
     <Compile Include="GitRefType.cs" />
     <Compile Include="GitRepositoryLockedException.cs" />
+    <Compile Include="GitResolveArgs.cs" />
+    <Compile Include="GitResolveCommand.cs" />
     <Compile Include="GitSwitchArgs.cs" />
     <Compile Include="GitSwitchCommand.cs" />
     <Compile Include="GitClientArgsWithCommit.cs" />

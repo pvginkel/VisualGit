@@ -114,6 +114,7 @@ namespace VisualGit.Scc.UI
         string _theirsTitle;
         string _mergedFile;
         string _mergedTitle;
+        ICollection<string> _cleanupFiles;
 
         /// <summary>
         /// Gets or sets the theirs file.
@@ -145,6 +146,12 @@ namespace VisualGit.Scc.UI
         {
             get { return _mergedTitle; }
             set { _mergedTitle = value; }
+        }
+
+        public ICollection<string> CleanupFiles
+        {
+            get { return _cleanupFiles; }
+            set { _cleanupFiles = value; }
         }
 
         public override bool Validate()

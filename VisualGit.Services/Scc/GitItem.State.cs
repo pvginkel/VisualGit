@@ -271,21 +271,7 @@ namespace VisualGit
             else if (GetState(value) != value)
                 isTextFile = false;
             else
-            {
-                using (SvnWorkingCopyClient client = _context.GetService<ISvnClientPool>().GetWcClient())
-                {
-                    SvnWorkingCopyStateArgs a = new SvnWorkingCopyStateArgs();
-                    a.ThrowOnError = false;
-                    a.RetrieveFileData = true;
-                    SvnWorkingCopyState state;
-                    if (client.GetState(FullPath, out state))
-                    {
-                        isTextFile = state.IsTextFile;
-                    }
-                    else
-                        isTextFile = false;
-                }
-            }
+                isTextFile = true;
 
             if (isTextFile)
                 SetState(GitItemState.IsTextFile, GitItemState.None);

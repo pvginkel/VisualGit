@@ -22,6 +22,7 @@ namespace SharpGit
                 var addCommand = new Git(repositoryEntry.Repository).Add();
 
                 addCommand.AddFilepattern(repositoryEntry.Repository.GetRepositoryPath(path));
+                addCommand.SetUpdate(Args.Update);
 
                 addCommand.Call();
 

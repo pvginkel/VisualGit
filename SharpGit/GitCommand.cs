@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using NGit;
+using NGit.Treewalk;
 
 namespace SharpGit
 {
@@ -56,6 +58,40 @@ namespace SharpGit
                 throw new GitOperationCancelledException();
 
             return cancelEventArgs.Cancel;
+        }
+
+        protected void RaiseNotifyFromDiff(Repository repository)
+        {
+            if (repository == null)
+                throw new ArgumentNullException("repository");
+            var workingTreeIt = new FileTreeIterator(repository);
+            var diff = new IndexDiff(repository, Constants.HEAD, workingTreeIt);
+
+            diff.Diff();
+
+            RaiseNotifyFromDiff(repository, diff.GetAdded(), GitNotifyAction.UpdateAdd);
+            RaiseNotifyFromDiff(repository, diff.GetAssumeUnchanged(), GitNotifyAction.UpdateUpdate);
+            RaiseNotifyFromDiff(repository, diff.GetChanged(), GitNotifyAction.UpdateUpdate);
+            RaiseNotifyFromDiff(repository, diff.GetConflicting(), GitNotifyAction.UpdateUpdate);
+            RaiseNotifyFromDiff(repository, diff.GetMissing(), GitNotifyAction.UpdateDeleted);
+            RaiseNotifyFromDiff(repository, diff.GetModified(), GitNotifyAction.UpdateUpdate);
+            RaiseNotifyFromDiff(repository, diff.GetRemoved(), GitNotifyAction.UpdateDeleted);
+            RaiseNotifyFromDiff(repository, diff.GetUntracked(), GitNotifyAction.UpdateUpdate);
+        }
+
+        private void RaiseNotifyFromDiff(Repository repository, ICollection<string> paths, GitNotifyAction action)
+        {
+            foreach (string path in paths)
+            {
+                RaiseNotify(new GitNotifyEventArgs
+                {
+                    Action = action,
+                    CommandType = Args.CommandType,
+                    ContentState = GitNotifyState.Unknown,
+                    FullPath = repository.GetAbsoluteRepositoryPath(path),
+                    NodeKind = GitNodeKind.Unknown
+                });
+            }
         }
     }
 

@@ -19,9 +19,6 @@ namespace VisualGit.UI.MergeWizard
         public enum BestPractices
         {
             NO_LOCAL_MODIFICATIONS,
-            NO_MIXED_REVISIONS,
-            NO_SWITCHED_CHILDREN,
-            COMPLETE_WORKING_COPY,
             VALID_REVISION
         }
 
@@ -61,21 +58,13 @@ namespace VisualGit.UI.MergeWizard
                     client.GetVersion(mergeTarget.FullPath, out wcRevision);
 
                     bool hasLocalModifications = wcRevision.Modified;
-                    bool hasMixedRevisions = (wcRevision.Start != wcRevision.End);
-                    bool hasSwitchedChildren = wcRevision.Switched;
-                    bool isIncomplete = wcRevision.IncompleteWorkingCopy;
 
-                    bool statusNotOk = hasLocalModifications || hasMixedRevisions || hasSwitchedChildren || isIncomplete;
-
-                    Message = statusNotOk ? NOT_READY_FOR_MERGE : READY_FOR_MERGE;
+                    Message = hasLocalModifications ? NOT_READY_FOR_MERGE : READY_FOR_MERGE;
 
                     // Update the images based on the return of the best practices checks
                     UpdateBestPracticeStatus(BestPractices.NO_LOCAL_MODIFICATIONS, !hasLocalModifications);
-                    UpdateBestPracticeStatus(BestPractices.NO_MIXED_REVISIONS, !hasMixedRevisions);
-                    UpdateBestPracticeStatus(BestPractices.NO_SWITCHED_CHILDREN, !hasSwitchedChildren);
-                    UpdateBestPracticeStatus(BestPractices.COMPLETE_WORKING_COPY, !isIncomplete);
 
-                    return statusNotOk;
+                    return hasLocalModifications;
                 }
             }
         }
@@ -89,15 +78,6 @@ namespace VisualGit.UI.MergeWizard
             {
                 case MergeBestPracticesPage.BestPractices.NO_LOCAL_MODIFICATIONS:
                     pBox = noUncommitedModificationsPictureBox;
-                    break;
-                case MergeBestPracticesPage.BestPractices.NO_MIXED_REVISIONS:
-                    pBox = singleRevisionPictureBox;
-                    break;
-                case MergeBestPracticesPage.BestPractices.NO_SWITCHED_CHILDREN:
-                    pBox = noSwitchedChildrenPictureBox;
-                    break;
-                case MergeBestPracticesPage.BestPractices.COMPLETE_WORKING_COPY:
-                    pBox = completeWorkingCopyPictureBox;
                     break;
                 default:
                     pBox = null;
@@ -119,10 +99,6 @@ namespace VisualGit.UI.MergeWizard
 
             Font boldFont = new Font(Font, FontStyle.Bold);
             noUncommitedModificationsLabel.Font = boldFont;
-            singleRevisionLabel.Font = boldFont;
-            noSwitchedChildrenLabel.Font = boldFont;
-            completeWorkingCopyLabel.Font = boldFont;
-            validRevisionLabel.Font = boldFont;
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using VisualGit.Scc;
 using VisualGit.VS;
 using VisualGit.Selection;
+using VisualGit.UI.Commands;
+using SharpGit;
 
 namespace VisualGit.UI.MergeWizard.Commands
 {
@@ -84,7 +86,7 @@ namespace VisualGit.UI.MergeWizard.Commands
         /// <see cref="VisualGit.Commands.ICommandHandler.OnExecute" />
         public void OnExecute(CommandEventArgs e)
         {
-            List<GitItem> svnItems = new List<GitItem>();
+            List<GitItem> gitItems = new List<GitItem>();
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
 
             switch (e.Command)
@@ -93,7 +95,7 @@ namespace VisualGit.UI.MergeWizard.Commands
                     // TODO: Check for solution and/or project selection to use the folder instead of the file
                     foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
-                        svnItems.Add(item);
+                        gitItems.Add(item);
                     }
                     break;
                 case VisualGitCommand.ProjectMerge:
@@ -104,15 +106,32 @@ namespace VisualGit.UI.MergeWizard.Commands
                         IGitProjectInfo info = pfm.GetProjectInfo(p);
                         if (info != null && info.ProjectDirectory != null)
                         {
-                            svnItems.Add(cache[info.ProjectDirectory]);
+                            gitItems.Add(cache[info.ProjectDirectory]);
                         }
                     }
                     break;
                 case VisualGitCommand.SolutionMerge:
-                    svnItems.Add(cache[e.GetService<IVisualGitSolutionSettings>().ProjectRoot]);
+                    gitItems.Add(cache[e.GetService<IVisualGitSolutionSettings>().ProjectRoot]);
                     break;
                 default:
                     throw new InvalidOperationException();
+            }
+
+            string repositoryPath = RepositoryUtil.GetRepositoryRoot(gitItems[0].FullPath);
+            GitRef mergeBranch;
+            var args = new GitMergeArgs();
+
+            using (var dialog = new MergeDialog())
+            {
+                dialog.Context = e.Context;
+                dialog.RepositoryPath = repositoryPath;
+                dialog.GitItem = gitItems[0];
+                dialog.Args = args;
+
+                if (dialog.ShowDialog(e.Context) != DialogResult.OK)
+                    return;
+
+                mergeBranch = dialog.MergeBranch;
             }
 
             IEnumerable<string> selectedFiles = e.Selection.GetSelectedFiles(true);
@@ -120,22 +139,24 @@ namespace VisualGit.UI.MergeWizard.Commands
 
             using (DocumentLock lck = tracker.LockDocuments(selectedFiles, DocumentLockType.ReadOnly))
             using (lck.MonitorChangesForReload())
-            using (MergeWizard dialog = new MergeWizard(e.Context, svnItems[0]))
             {
-                DialogResult result = dialog.ShowDialog(e.Context);
-                //result = uiService.ShowDialog(dialog);
-
-                if (result == DialogResult.OK)
-                {
-                    using (MergeResultsDialog mrd = new MergeResultsDialog())
+                e.GetService<IProgressRunner>().RunModal(
+                    "Changing Current Branch",
+                    delegate(object sender, ProgressWorkerArgs a)
                     {
-                        mrd.MergeActions = dialog.MergeActions;
-                        mrd.ResolvedMergeConflicts = dialog.ResolvedMergeConflicts;
 
-                        mrd.ShowDialog(e.Context);
-                    }
+#if false
+                        e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
+#endif
+                        a.Client.Merge(repositoryPath, mergeBranch, args);
+                    });
+
+                if (args.LastException != null)
+                {
+                    e.Context.GetService<IVisualGitDialogOwner>()
+                        .MessageBox.Show(args.LastException.Message,
+                        args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
             }
         }
     }

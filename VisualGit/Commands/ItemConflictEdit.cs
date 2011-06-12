@@ -63,15 +63,19 @@ namespace VisualGit.Commands
                 mb.Show(string.Format(CommandStrings.TheConflictInXIsAlreadyResolved, conflict.FullPath), CommandStrings.EditConflictTitle, 
                     System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
                 return;
-            }            
+            }
 
-            SvnInfoEventArgs conflictInfo = null;
+            GitInfoArgs args = new GitInfoArgs();
+
+            args.PrepareMerge = true;
+
+            GitInfoEventArgs conflictInfo = null;
 
             bool ok = false;
             ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal("Retrieving Conflict Information",
                 delegate(object sender, ProgressWorkerArgs a)
                 {
-                    ok = a.SvnClient.GetInfo(conflict.FullPath, out conflictInfo);
+                    ok = a.Client.GetInfo(conflict.FullPath, args, out conflictInfo);
                 });
 
             if (!ok || !r.Succeeded || conflictInfo == null)
@@ -94,7 +98,7 @@ namespace VisualGit.Commands
             da.TheirsTitle = "Theirs";
             da.MineTitle = "Mine";
             da.MergedTitle = conflict.Name;
-            
+            da.CleanupFiles = new string[] { conflictInfo.ConflictNew, conflictInfo.ConflictOld, conflictInfo.ConflictWork };
 
             e.GetService<IVisualGitDiffHandler>().RunMerge(da);
         }

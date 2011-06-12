@@ -16,5 +16,6 @@ namespace SharpGit
         public bool Force { get; set; }
         public bool NoIgnore { get; set; }
         public GitDepth Depth { get; set; }
+        internal bool Update { get; set; }
     }
 }

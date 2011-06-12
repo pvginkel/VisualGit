@@ -254,18 +254,26 @@ namespace SharpGit
 
         private GitStatus GetStatus(GitInternalStatus state)
         {
-            switch (state)
-            {
-                case GitInternalStatus.Added: return GitStatus.Added;
-                case GitInternalStatus.AssumeUnchanged: return GitStatus.Normal;
-                case GitInternalStatus.Changed: return GitStatus.Modified;
-                case GitInternalStatus.Ignored: return GitStatus.Ignored;
-                case GitInternalStatus.Missing: return GitStatus.Missing;
-                case GitInternalStatus.Modified: return GitStatus.Modified;
-                case GitInternalStatus.Removed: return GitStatus.Deleted;
-                case GitInternalStatus.Untracked: return GitStatus.NotVersioned;
-                default: return GitStatus.Normal;
-            }
+            if (state.HasFlag(GitInternalStatus.Conflicted))
+                return GitStatus.Conflicted;
+            if (state.HasFlag(GitInternalStatus.Added))
+                return GitStatus.Added;
+            if (state.HasFlag(GitInternalStatus.AssumeUnchanged))
+                return GitStatus.Normal;
+            if (state.HasFlag(GitInternalStatus.Changed))
+                return GitStatus.Modified;
+            if (state.HasFlag(GitInternalStatus.Ignored))
+                return GitStatus.Ignored;
+            if (state.HasFlag(GitInternalStatus.Missing))
+                return GitStatus.Missing;
+            if (state.HasFlag(GitInternalStatus.Modified))
+                return GitStatus.Modified;
+            if (state.HasFlag(GitInternalStatus.Removed))
+                return GitStatus.Deleted;
+            if (state.HasFlag(GitInternalStatus.Untracked))
+                return GitStatus.NotVersioned;
+
+            return GitStatus.Normal;
         }
 
         private GitSchedule GetScheduleState(GitInternalStatus state)
@@ -283,6 +291,8 @@ namespace SharpGit
             string itemName = item.PathString;
             GitInternalStatus result = GitInternalStatus.Unset;
 
+            if (diff.GetConflicting().Contains(itemName))
+                result |= GitInternalStatus.Conflicted;
             if (diff.GetAdded().Contains(itemName))
                 result |= GitInternalStatus.Added;
             if (diff.GetAssumeUnchanged().Contains(itemName))

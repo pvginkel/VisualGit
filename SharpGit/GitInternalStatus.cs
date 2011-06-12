@@ -40,6 +40,10 @@ namespace SharpGit
         /// <summary>
         /// Ignored file.
         /// </summary>
-        Ignored = 128
+        Ignored = 128,
+        /// <summary>
+        /// Conflicted.
+        /// </summary>
+        Conflicted = 256
     }
 }

@@ -170,6 +170,38 @@ namespace SharpGit
             return ExecuteCommand<GitMoveCommand>(args, p => p.Execute(fromPath, toPath));
         }
 
+        public bool Merge(string repositoryPath, GitRef branch, GitMergeArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (branch == null)
+                throw new ArgumentNullException("branch");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitMergeCommand>(args, p => p.Execute(repositoryPath, branch));
+        }
+
+        public bool GetInfo(string fullPath, GitInfoArgs args, out GitInfoEventArgs info)
+        {
+            if (fullPath == null)
+                throw new ArgumentNullException("fullPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitInfoCommand, GitInfoEventArgs>(args, p => p.Execute(fullPath), out info);
+        }
+
+        public bool Resolve(string fullPath, GitAccept accept, GitResolveArgs args)
+        {
+            if (fullPath == null)
+                throw new ArgumentNullException("fullPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitResolveCommand>(args, p => p.Execute(fullPath, accept));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {

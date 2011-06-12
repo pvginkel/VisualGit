@@ -276,8 +276,11 @@
   <data name="tagBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 57</value>
   </data>
+  <data name="tagBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 26, 3</value>
+  </data>
   <data name="tagBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 21</value>
+    <value>355, 21</value>
   </data>
   <data name="tagBox.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -300,8 +303,11 @@
   <data name="trackingBranchBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 30</value>
   </data>
+  <data name="trackingBranchBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 26, 3</value>
+  </data>
   <data name="trackingBranchBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 21</value>
+    <value>355, 21</value>
   </data>
   <data name="trackingBranchBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -324,8 +330,11 @@
   <data name="localBranchBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 3</value>
   </data>
+  <data name="localBranchBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 26, 3</value>
+  </data>
   <data name="localBranchBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 21</value>
+    <value>355, 21</value>
   </data>
   <data name="localBranchBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -474,9 +483,6 @@
   <data name="&gt;&gt;revisionRadioBox.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="versionBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="versionBox.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -486,8 +492,11 @@
   <data name="versionBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 84</value>
   </data>
+  <data name="versionBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 26, 3</value>
+  </data>
   <data name="versionBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 27</value>
+    <value>355, 27</value>
   </data>
   <data name="versionBox.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -496,7 +505,7 @@
     <value>versionBox</value>
   </data>
   <data name="&gt;&gt;versionBox.Type" xml:space="preserve">
-    <value>VisualGit.UI.PathSelector.VersionSelector, VisualGit.UI, Version=2.2.4180.9725, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PathSelector.VersionSelector, VisualGit.UI, Version=2.2.4180.11707, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;versionBox.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>
@@ -532,7 +541,7 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tagBox" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="trackingBranchBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="localBranchBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="localBranchRadioBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="trackingBranchRadioBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tagRadioBox" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="revisionRadioBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="versionSelector" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tagBox" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="trackingBranchBox" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="localBranchBox" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="localBranchRadioBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="trackingBranchRadioBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tagRadioBox" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="revisionRadioBox" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="versionBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="toBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -744,6 +753,9 @@
   <data name="tableLayoutPanel3.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="switchBox" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="forceBox" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="toBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="flowLayoutPanel1" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 8, 8, 8</value>
   </data>
@@ -763,6 +775,6 @@
     <value>SwitchDialog</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.VSDialogForm, VisualGit.Services, Version=2.2.4180.9705, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.VSDialogForm, VisualGit.Services, Version=2.2.4180.11704, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>
