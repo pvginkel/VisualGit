@@ -46,6 +46,8 @@ namespace SharpGit
                         throw exception;
                 }
 
+                RaiseNotifyFromDiff(repositoryEntry.Repository);
+
                 return result;
             }
         }
