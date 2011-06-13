@@ -156,9 +156,6 @@
     <Compile Include="Commands\CheckoutCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\CleanupCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ItemCommitCommand.cs">
       <SubType>Code</SubType>

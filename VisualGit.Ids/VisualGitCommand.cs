@@ -72,7 +72,6 @@ namespace VisualGit
         Checkout,
         CopyToWorkingCopy,
         ItemResolveCasing,
-        Cleanup,
         CommitItem,
         CopyReposExplorerUrl,
         CreatePatch,

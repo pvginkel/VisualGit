@@ -363,9 +363,6 @@
           </Menu>
         </Group>
         <Group id="Grp_SccCleanupRefresh" priority="0xE000">
-          <Button id="Cmd_Cleanup" name="Cleanup" priority="0x100" defaultInvisible="true"
-              text="Cl&amp;eanup"
-              toolTip="Cleanup the working copy." iconFile="PendingChanges/Cleanup.png"/>
           <Button id="Cmd_Refresh" name="GitRefreshStatus" priority="0x120" defaultInvisible="true"
                 text="Refres&amp;h Status"
                 toolTip="Refresh this view." iconFile="PendingChanges/Refresh.png"/>
