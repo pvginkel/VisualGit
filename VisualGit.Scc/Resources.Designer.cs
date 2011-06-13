@@ -61,7 +61,7 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add to Sub&amp;version.
+        ///   Looks up a localized string similar to Add to &amp;Git.
         /// </summary>
         internal static string AddToGitCommandName {
             get {

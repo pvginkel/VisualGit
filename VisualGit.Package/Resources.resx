@@ -112,15 +112,15 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutDetails" xml:space="preserve">
     <value>VisualGit - Git Support for Visual Studio {0} 
  * VisualGit.Package {1}
- * Git {2} via SharpSvn {3}</value>
+ * Git {2} via NGit {3}</value>
   </data>
   <data name="AboutDynamicallyLinkedTo" xml:space="preserve">
     <value>SharpSvn is dynamically linked to: </value>
@@ -141,7 +141,7 @@
     <value>VisualGit - Git Support</value>
   </data>
   <data name="AddToGitCommandName" xml:space="preserve">
-    <value>Add to Sub&amp;version</value>
+    <value>Add to &amp;Git</value>
   </data>
   <data name="DiffToolWindowTitle" xml:space="preserve">
     <value>Diff</value>

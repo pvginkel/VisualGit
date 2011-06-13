@@ -75,7 +75,7 @@
       <!-- Context menu of all common editors -->
       <Group id="Grp_CodeEditorScc" priority="0xFEFF">
         <!-- Just before the other SCC menu of VSS -->
-        <Menu id="Menu_EditorScc" priority="0x1000" name="GitMenu" text="Sub&amp;version">
+        <Menu id="Menu_EditorScc" priority="0x1000" name="GitMenu" text="&amp;Git">
           <Group id="Menu_EditorScc" priority="0x1000">
             <Button id="Cmd_DocumentHistory" priority="0x1000"
                   name="DocumentHistory" defaultInvisible="true"
@@ -104,7 +104,7 @@
         <ButtonRef id="Cmd_DocumentShowChanges" priority="0x2100" />
         <ButtonRef id="Cmd_DocumentAnnotate" priority="0x3000" />
         <ButtonRef id="Cmd_DocumentConflictEdit" priority="0x4000" />
-        <Menu id="Menu_MdiSccMenu" name="GitMenu" text="Sub&amp;version" priority="0xFF00">
+        <Menu id="Menu_MdiSccMenu" name="GitMenu" text="&amp;Git" priority="0xFF00">
           <GroupRef id="Grp_DocumentPending" priority="0xE111" />
         </Menu>
       </Group>
@@ -131,7 +131,7 @@
     <GroupRef id="guidSHLMainMenu:IDG_VS_WNDO_OTRWNDWS1">
       <ButtonRef id="Cmd_ShowPendingChanges" priority="0x800" />
       <Button id="Cmd_ShowGitInfo" name="ShowGitInfo" priority="0x801"
-                text="Sub&amp;version Info"
+                text="&amp;Git Info"
                 toolTip="Show the Git Info Window." defaultInvisible="true">
       </Button>
     </GroupRef>

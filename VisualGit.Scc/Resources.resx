@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddToGitCommandName" xml:space="preserve">
-    <value>Add to Sub&amp;version</value>
+    <value>Add to &amp;Git</value>
   </data>
   <data name="GitPathXBlocked" xml:space="preserve">
     <value>The path '{0}' is in a Git administrative area. This file shouldn't be added to Git.</value>

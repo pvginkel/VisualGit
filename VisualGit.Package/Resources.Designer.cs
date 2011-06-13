@@ -63,7 +63,7 @@ namespace VisualGit.VSPackage {
         /// <summary>
         ///   Looks up a localized string similar to VisualGit - Git Support for Visual Studio {0} 
         /// * VisualGit.Package {1}
-        /// * Git {2} via SharpSvn {3}.
+        /// * Git {2} via NGit {3}.
         /// </summary>
         internal static string AboutDetails {
             get {
@@ -126,7 +126,7 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add to Sub&amp;version.
+        ///   Looks up a localized string similar to Add to &amp;Git.
         /// </summary>
         internal static string AddToGitCommandName {
             get {
@@ -149,6 +149,15 @@ namespace VisualGit.VSPackage {
         internal static string DotNetTracingFails {
             get {
                 return ResourceManager.GetString("DotNetTracingFails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Git Info.
+        /// </summary>
+        internal static string GitInfoToolWindowTitle {
+            get {
+                return ResourceManager.GetString("GitInfoToolWindowTitle", resourceCulture);
             }
         }
         
@@ -176,15 +185,6 @@ namespace VisualGit.VSPackage {
         internal static string RepositoryExplorerToolWindowTitle {
             get {
                 return ResourceManager.GetString("RepositoryExplorerToolWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Git Info.
-        /// </summary>
-        internal static string GitInfoToolWindowTitle {
-            get {
-                return ResourceManager.GetString("GitInfoToolWindowTitle", resourceCulture);
             }
         }
         
