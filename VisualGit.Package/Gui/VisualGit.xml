@@ -18,14 +18,14 @@
     <MenuRef id="guidSHLMainMenu:IDM_VS_CSCD_OPEN">
       <Group id="Grp_FileFileOpen" priority="0x800">
         <!-- The bottom of the File->Open->* menu-->
-        <Button id="Cmd_FileFileOpenFromGit" text="Subve&amp;rsion Project..." name="OpenFromGit" priority="0x100"
+        <Button id="Cmd_FileFileOpenFromGit" text="&amp;Git Project..." name="OpenFromGit" priority="0x100"
                 toolTip="Open a Project or Solution from Git" iconFile="PendingChanges/PendingChanges.png" allowParams="true"/>
       </Group>
     </MenuRef>
     <MenuRef id="guidSHLMainMenu:IDM_VS_CSCD_ADD">
       <Group id="Grp_FileFileAdd" priority="0x800">
         <!-- The bottom of the File->Add->* menu-->
-        <Button id="Cmd_FileFileAddFromGit" text="Subve&amp;rsion Project..." name="AddFromGit" priority="0x100"
+        <Button id="Cmd_FileFileAddFromGit" text="&amp;Git Project..." name="AddFromGit" priority="0x100"
                 toolTip="Add an existing Project or Solution from Git" iconFile="PendingChanges/PendingChanges.png" allowParams="true"
                 dynamicVisibility="true">
           <!-- Only show Add when not debugging, etc -->
@@ -44,7 +44,7 @@
     <MenuRef id="guidSHLMainMenu:IDM_VS_MENU_FILE">
       <!-- Visual Studio file menu -->
       <Group id="Grp_FileMenuScc" priority="0x0800">
-        <Menu id="Menu_FileScc" priority="0x0100" name="GitMenu" text="Subve&amp;rsion">
+        <Menu id="Menu_FileScc" priority="0x0100" name="GitMenu" text="&amp;Git">
           <Group id="Grp_FileSccMenuTasks" priority="0x0100">
             <Button id="Cmd_MigrateSettings" text="Migrate VisualGit Settings from future versions" name="VisualGit.MigrateSettings" priority="0" commandWellOnly="true" allowParams="true" postExec="true"/>
             <ButtonRef id="Cmd_UpdateItemSpecific" priority="0x100" />
