@@ -130,6 +130,9 @@
   <data name="CommitDateCaption" xml:space="preserve">
     <value>Commit date</value>
   </data>
+  <data name="ConnectToGit" xml:space="preserve">
+    <value>Connect to Git</value>
+  </data>
   <data name="CurrentIndex" xml:space="preserve">
     <value>Commit index</value>
   </data>
@@ -165,6 +168,9 @@
   </data>
   <data name="StrategyTheirs" xml:space="preserve">
     <value>Theirs</value>
+  </data>
+  <data name="TheServerXRequiresAUsernameAndPassword" xml:space="preserve">
+    <value>The server {0} requires a username and password</value>
   </data>
   <data name="XDayAgo" xml:space="preserve">
     <value>{0} day ago</value>

@@ -95,6 +95,15 @@ namespace VisualGit.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect to Git.
+        /// </summary>
+        internal static string ConnectToGit {
+            get {
+                return ResourceManager.GetString("ConnectToGit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commit index.
         /// </summary>
         internal static string CurrentIndex {
@@ -193,6 +202,15 @@ namespace VisualGit.UI.Properties {
         internal static string StrategyTheirs {
             get {
                 return ResourceManager.GetString("StrategyTheirs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server {0} requires a username and password.
+        /// </summary>
+        internal static string TheServerXRequiresAUsernameAndPassword {
+            get {
+                return ResourceManager.GetString("TheServerXRequiresAUsernameAndPassword", resourceCulture);
             }
         }
         

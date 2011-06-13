@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using SharpGit;
 using VisualGit.VS;
+using System.Runtime.InteropServices;
 
 namespace VisualGit.UI
 {
@@ -189,15 +190,28 @@ namespace VisualGit.UI
 
                 if (hadUsernamePassword)
                 {
-                    using (UsernamePasswordCredentialsDialog dialog = new UsernamePasswordCredentialsDialog())
-                    {
-                        dialog.UsernameItem = usernameItem;
-                        dialog.PasswordItem = passwordItem;
+                    string description = String.Format(Properties.Resources.TheServerXRequiresAUsernameAndPassword, e.Uri);
 
-                        if (dialog.ShowDialog(Context, this) != DialogResult.OK)
-                        {
-                            e.Cancel = true;
+                    if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version >= new Version(5, 1))
+                    {
+                        // If Windows XP/Windows 2003 or higher: Use the windows password dialog
+                        GetUserNamePasswordWindows(e, description, usernameItem, passwordItem);
+
+                        if (e.Cancel)
                             return;
+                    }
+                    else
+                    {
+                        using (UsernamePasswordCredentialsDialog dialog = new UsernamePasswordCredentialsDialog())
+                        {
+                            dialog.UsernameItem = usernameItem;
+                            dialog.PasswordItem = passwordItem;
+
+                            if (dialog.ShowDialog(Context, this) != DialogResult.OK)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
                         }
                     }
                 }
@@ -241,6 +255,45 @@ namespace VisualGit.UI
                 {
                     UpdateCache(e.Uri, item);
                 }
+            }
+        }
+
+        private void GetUserNamePasswordWindows(GitCredentialsEventArgs e, string description, GitCredentialItem usernameItem, GitCredentialItem passwordItem)
+        {
+            NativeMethods.CREDUI_INFO info = new NativeMethods.CREDUI_INFO();
+            info.pszCaptionText = Properties.Resources.ConnectToGit;
+            info.pszMessageText = description;
+            info.hwndParent = IntPtr.Zero;
+            info.cbSize = Marshal.SizeOf(typeof(NativeMethods.CREDUI_INFO));
+
+            StringBuilder sbUserName = new StringBuilder("", 1024);
+            StringBuilder sbPassword = new StringBuilder("", 1024);
+
+            bool dlgSave = true;
+
+            var flags =
+                NativeMethods.CREDUI_FLAGS.GENERIC_CREDENTIALS |
+                NativeMethods.CREDUI_FLAGS.ALWAYS_SHOW_UI |
+                NativeMethods.CREDUI_FLAGS.DO_NOT_PERSIST /* |
+                NativeMethods.CREDUI_FLAGS.SHOW_SAVE_CHECK_BOX */;
+
+            var result = NativeMethods.CredUIPromptForCredentials(
+                ref info, e.Uri, IntPtr.Zero, 0, sbUserName, 1024,
+                sbPassword, 1024, ref dlgSave, flags
+            );
+
+            switch (result)
+            {
+                case NativeMethods.CredUIReturnCodes.NO_ERROR:
+                    usernameItem.Value = sbUserName.ToString();
+                    passwordItem.Value = sbPassword.ToString();
+                    break;
+
+                case NativeMethods.CredUIReturnCodes.ERROR_CANCELLED:
+                    usernameItem.Value = null;
+                    passwordItem.Value = null;
+                    e.Cancel = true;
+                    break;
             }
         }
 
@@ -297,9 +350,11 @@ namespace VisualGit.UI
         {
             var result = Context.GetService<IVisualGitDialogOwner>()
                 .MessageBox.Show(item.PromptText,
-                "Credentials", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                "Credentials", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
-            return result == DialogResult.Yes;
+            item.YesNoValue = result == DialogResult.Yes;
+
+            return result != DialogResult.Cancel;
         }
 
         private bool ShowInformation(GitCredentialItem item)
