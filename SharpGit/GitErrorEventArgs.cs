@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace SharpGit
 {
-    public class GitErrorEventArgs : EventArgs
+    public class GitErrorEventArgs : CancelEventArgs
     {
         public GitErrorEventArgs(GitException exception)
         {

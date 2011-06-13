@@ -84,18 +84,20 @@ namespace VisualGit.UI.Annotate
             return PointToClient(p).Y;
         }
 
-        public void AddLines(GitOrigin origin, Collection<SharpSvn.SvnBlameEventArgs> blameResult, Dictionary<long, string> logMessages)
+        public void AddLines(GitOrigin origin, Collection<GitBlameEventArgs> blameResult, Dictionary<string, string> logMessages)
         {
             _origin = origin;
 
-            SortedList<long, AnnotateSource> _sources = new SortedList<long, AnnotateSource>();
+            SortedList<string, AnnotateSource> _sources = new SortedList<string, AnnotateSource>();
 
             AnnotateRegion section = null;
             blameSections.Clear();
 
-            long min = -1;
-            long max = -1;
-            foreach (SvnBlameEventArgs e in blameResult)
+            var minTime = DateTime.MaxValue;
+            var maxTime = DateTime.MinValue;
+            string min = null;
+            string max = null;
+            foreach (GitBlameEventArgs e in blameResult)
             {
                 AnnotateSource src;
                 if (!_sources.TryGetValue(e.Revision, out src))
@@ -107,11 +109,17 @@ namespace VisualGit.UI.Annotate
                         src.LogMessage = msg ?? "";
                     else
                     {
-                        if (min >= 0 && min < e.Revision)
+                        if (e.Time < minTime)
+                        {
                             min = e.Revision;
+                            minTime = e.Time;
+                        }
 
-                        if (e.Revision > max)
+                        if (e.Time > maxTime)
+                        {
                             max = e.Revision;
+                            maxTime = e.Time;
+                        }
                     }
                 }
 
@@ -132,15 +140,13 @@ namespace VisualGit.UI.Annotate
             RetrieveLogs(origin, _sources, min, max);
         }
 
-        private void RetrieveLogs(GitOrigin origin, SortedList<long, AnnotateSource> _sources, long min, long max)
+        private void RetrieveLogs(GitOrigin origin, SortedList<string, AnnotateSource> _sources, string min, string max)
         {
-            throw new NotImplementedException();
-#if false
-            if (_sources.Count == 0 || min == -1 || max == -1)
+            if (_sources.Count == 0 || min == null || max == null)
                 return;
 
-            EventHandler<SvnLogEventArgs> lr =
-                delegate(object sender, SvnLogEventArgs e)
+            EventHandler<GitLogEventArgs> lr =
+                delegate(object sender, GitLogEventArgs e)
                 {
                     AnnotateSource src;
                     if (_sources.TryGetValue(e.Revision, out src))
@@ -149,20 +155,20 @@ namespace VisualGit.UI.Annotate
 
             VisualGitAction aa = delegate()
             {
-                using (SvnClient cl = Context.GetService<ISvnClientPool>().GetClient())
+                using (GitClient cl = Context.GetService<IGitClientPool>().GetClient())
                 {
                     GitLogArgs la = new GitLogArgs();
                     la.OperationalRevision = origin.Target.Revision;
                     la.Start = max;
-                    la.End = min;
+                    la.End = (GitRevision)min - 1;
                     la.ThrowOnError = false;
+                    la.Log += lr;
 
-                    cl.Log(origin.Uri, la, lr);
+                    cl.Log(GitTools.GetAbsolutePath(origin.Uri), la);
                 }
             };
 
             aa.BeginInvoke(null, null); // Start retrieving logs
-#endif
         }
 
         private void logMessageEditor1_VerticalScroll(object sender, VSTextEditorScrollEventArgs e)

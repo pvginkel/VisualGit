@@ -54,8 +54,8 @@ namespace VisualGit.UI.Annotate
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.editor);
-            this.splitContainer1.Size = new System.Drawing.Size(300, 300);
-            this.splitContainer1.SplitterDistance = 115;
+            this.splitContainer1.Size = new System.Drawing.Size(500, 500);
+            this.splitContainer1.SplitterDistance = 335;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 3;
             // 
@@ -64,7 +64,7 @@ namespace VisualGit.UI.Annotate
             this.blameMarginControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.blameMarginControl1.Location = new System.Drawing.Point(0, 0);
             this.blameMarginControl1.Name = "blameMarginControl1";
-            this.blameMarginControl1.Size = new System.Drawing.Size(115, 300);
+            this.blameMarginControl1.Size = new System.Drawing.Size(335, 300);
             this.blameMarginControl1.TabIndex = 1;
             this.blameMarginControl1.Text = "blameMarginControl1";
             this.blameMarginControl1.TipOwner = this;

@@ -67,6 +67,7 @@ namespace SharpGit
                     try
                     {
                         startWalk.AddTree(revWalk.ParseCommit(objectId).Tree);
+                        startWalk.Recursive = true;
 
                         bool found = false;
 

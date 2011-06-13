@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using NGit.Api.Errors;
+using System.Collections.ObjectModel;
 
 namespace SharpGit
 {
@@ -200,6 +201,25 @@ namespace SharpGit
                 throw new ArgumentNullException("args");
 
             return ExecuteCommand<GitResolveCommand>(args, p => p.Execute(fullPath, accept));
+        }
+
+        public bool GetBlame(GitTarget target, GitBlameArgs args, out Collection<GitBlameEventArgs> result)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            GitBlameResult commandResult;
+
+            bool success = ExecuteCommand<GitBlameCommand, GitBlameResult>(args, p => p.Execute(target), out commandResult);
+
+            if (commandResult == null)
+                result = null;
+            else
+                result = commandResult.Items;
+
+            return success;
         }
 
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)

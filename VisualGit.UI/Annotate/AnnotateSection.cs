@@ -65,11 +65,11 @@ namespace VisualGit.UI.Annotate
 
     class AnnotateSource : VisualGitPropertyGridItem, IAnnotateSection, IGitRepositoryItem
     {
-        readonly SvnBlameEventArgs _args;
+        readonly GitBlameEventArgs _args;
         readonly GitOrigin _origin;
         string _logMessage;
 
-        public AnnotateSource(SvnBlameEventArgs blameArgs, GitOrigin origin)
+        public AnnotateSource(GitBlameEventArgs blameArgs, GitOrigin origin)
         {
             _args = blameArgs;
             _origin = origin;
@@ -78,13 +78,7 @@ namespace VisualGit.UI.Annotate
         [Category("Git")]
         public string Revision
         {
-            get
-            {
-                throw new NotImplementedException();
-#if false
-                return _args.Revision;
-#endif
-            }
+            get { return _args.Revision; }
         }
 
         [Category("Git")]

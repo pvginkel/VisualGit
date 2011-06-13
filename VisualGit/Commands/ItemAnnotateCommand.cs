@@ -7,7 +7,6 @@ using VisualGit.Scc.UI;
 using VisualGit.UI;
 using VisualGit.UI.Annotate;
 using VisualGit.VS;
-using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.UI.Commands;
 using SharpGit;
@@ -61,7 +60,6 @@ namespace VisualGit.Commands
         public override void OnExecute(CommandEventArgs e)
         {
             List<GitOrigin> targets = new List<GitOrigin>();
-            GitRevision startRev = GitRevision.Zero;
             GitRevision endRev = null;
             switch (e.Command)
             {
@@ -100,9 +98,7 @@ namespace VisualGit.Commands
             if (targets.Count == 0)
                 return;
 
-            bool ignoreEols = true;
-            SvnIgnoreSpacing ignoreSpacing = SvnIgnoreSpacing.IgnoreSpace;
-            bool retrieveMergeInfo = false;
+            GitIgnoreSpacing ignoreSpacing = GitIgnoreSpacing.IgnoreSpace;
             GitOrigin target;
 
             if ((!e.DontPrompt && !Shift) || e.PromptUser)
@@ -110,21 +106,14 @@ namespace VisualGit.Commands
                 {
                     dlg.SetTargets(targets);
 
-                    throw new NotImplementedException();
-#if false
-                    dlg.StartRevision = startRev;
                     dlg.EndRevision = endRev;
 
                     if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                         return;
 
                     target = dlg.SelectedTarget;
-                    startRev = dlg.StartRevision;
                     endRev = dlg.EndRevision;
-                    ignoreEols = dlg.IgnoreEols;
                     ignoreSpacing = dlg.IgnoreSpacing;
-                    retrieveMergeInfo = dlg.RetrieveMergeInfo;
-#endif
                 }
             else
             {
@@ -136,58 +125,44 @@ namespace VisualGit.Commands
                 target = new GitOrigin(one);
             }
 
-            DoBlame(e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo);
+            DoBlame(e, target, endRev, ignoreSpacing);
         }
 
-        static void DoBlame(CommandEventArgs e, GitOrigin item, GitRevision revisionStart, GitRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
+        static void DoBlame(CommandEventArgs e, GitOrigin item, GitRevision revisionEnd, GitIgnoreSpacing ignoreSpacing)
         {
-            throw new NotImplementedException();
-#if false
-            SvnWriteArgs wa = new SvnWriteArgs();
+            GitWriteArgs wa = new GitWriteArgs();
             wa.Revision = revisionEnd;
 
-            SvnBlameArgs ba = new SvnBlameArgs();
-            ba.Start = revisionStart;
+            GitBlameArgs ba = new GitBlameArgs();
             ba.End = revisionEnd;
-            ba.IgnoreLineEndings = ignoreEols;
             ba.IgnoreSpacing = ignoreSpacing;
-            ba.RetrieveMergedRevisions = retrieveMergeInfo;
 
-            SvnTarget target = item.Target;
+            GitTarget target = item.Target;
 
             IVisualGitTempFileManager tempMgr = e.GetService<IVisualGitTempFileManager>();
             string tempFile = tempMgr.GetTempFileNamed(target.FileName);
 
-            Collection<SvnBlameEventArgs> blameResult = null;
-            Dictionary<long, string> logMessages = new Dictionary<long, string>();
-
-            ba.Notify += delegate(object sender, SvnNotifyEventArgs ee)
-            {
-                if (ee.Action == SvnNotifyAction.BlameRevision && ee.RevisionProperties != null)
-                {
-                    if (ee.RevisionProperties.Contains(SvnPropertyNames.SvnLog))
-                        logMessages[ee.Revision] = ee.RevisionProperties[SvnPropertyNames.SvnLog].StringValue;
-                }
-            };
+            Collection<GitBlameEventArgs> blameResult = null;
+            Dictionary<string, string> logMessages = new Dictionary<string, string>();
 
             bool retry = false;
             ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal(CommandStrings.Annotating, delegate(object sender, ProgressWorkerArgs ee)
             {
                 using (FileStream fs = File.Create(tempFile))
                 {
-                    ee.SvnClient.Write(target, fs, wa);
+                    ee.Client.Write(target, fs, wa);
                 }
 
-                ba.SvnError +=
-                    delegate(object errorSender, SvnErrorEventArgs errorEventArgs)
+                ba.GitError +=
+                    delegate(object errorSender, GitErrorEventArgs errorEventArgs)
                     {
-                        if (errorEventArgs.Exception is SvnClientBinaryFileException)
+                        if (errorEventArgs.Exception is GitClientBinaryFileException)
                         {
                             retry = true;
                             errorEventArgs.Cancel = true;
                         }
                     };
-                ee.SvnClient.GetBlame(target, ba, out blameResult);
+                ee.Client.GetBlame(target, ba, out blameResult);
             });
 
             if (retry)
@@ -203,8 +178,7 @@ namespace VisualGit.Commands
                             .RunModal(CommandStrings.Annotating,
                                       delegate(object sender, ProgressWorkerArgs ee)
                                       {
-                                          ba.IgnoreMimeType = true;
-                                          ee.SvnClient.GetBlame(target, ba, out blameResult);
+                                          ee.Client.GetBlame(target, ba, out blameResult);
                                       });
                     }
                 }
@@ -241,7 +215,6 @@ namespace VisualGit.Commands
                     }
                 }
             }
-#endif
         }
     }
 }

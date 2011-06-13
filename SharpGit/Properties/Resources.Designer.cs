@@ -61,6 +61,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation not supported on binary files.
+        /// </summary>
+        internal static string BinaryFile {
+            get {
+                return ResourceManager.GetString("BinaryFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checkout could not be completed successfully.
         /// </summary>
         internal static string CheckoutFailed {

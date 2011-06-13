@@ -10,7 +10,7 @@ namespace SharpGit
         //Unknown = 0,
         Add = 1,
         //AddToChangeList = 2,
-        //Blame = 3,
+        Blame = 3,
         //CheckOut = 4,
         //CleanUp = 5,
         Commit = 6,
