@@ -159,6 +159,37 @@ namespace SharpGit
                                 });
                             }
                         }
+                        else if (commit.Parents.Length == 0)
+                        {
+                            e.ChangedPaths = new GitChangeItemCollection();
+
+                            var treeWalk = new TreeWalk(repository);
+
+                            try
+                            {
+                                treeWalk.AddTree(commit.Tree);
+                                treeWalk.Recursive = true;
+
+                                while (treeWalk.Next())
+                                {
+                                    if ((treeWalk.GetFileMode(0).GetBits() & NGit.FileMode.TYPE_FILE) == 0)
+                                        continue;
+
+                                    e.ChangedPaths.Add(new GitChangeItem
+                                    {
+                                        Path = treeWalk.PathString,
+                                        OldRevision = null,
+                                        OldPath = null,
+                                        NodeKind = GitNodeKind.File,
+                                        Action = GitChangeAction.Add
+                                    });
+                                }
+                            }
+                            finally
+                            {
+                                treeWalk.Release();
+                            }
+                        }
                     }
 
                     Args.OnLog(e);
