@@ -65,6 +65,10 @@ namespace VisualGit.Commands
                 // but don't hide it on 
                 e.HideOnContextMenu = item.IsIgnored && !e.Selection.IsSolutionSelected;
             }
+            else
+            {
+                e.Visible = e.Enabled = false;
+            }
         }
 
         public override void OnExecute(CommandEventArgs e)

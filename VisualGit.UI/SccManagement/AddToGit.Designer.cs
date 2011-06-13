@@ -103,7 +103,6 @@ namespace VisualGit.UI.SccManagement
             resources.ApplyResources(this, "$this");
             this.CancelButton = this.cancelButton;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddToGit";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

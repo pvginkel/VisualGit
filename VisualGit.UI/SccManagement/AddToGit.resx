@@ -340,6 +340,6 @@
     <value>AddToGit</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.VSContainerForm, VisualGit.Services, Version=2.2.4181.25139, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.VSContainerForm, VisualGit.Services, Version=2.2.4181.27970, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>
