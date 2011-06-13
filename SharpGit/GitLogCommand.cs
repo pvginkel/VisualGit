@@ -70,7 +70,14 @@ namespace SharpGit
                 {
                     foreach (var @ref in repository.GetAllRefs())
                     {
-                        revWalk.MarkStart(revWalk.ParseCommit(@ref.Value.GetObjectId()));
+                        switch (GitRef.TypeOf(@ref.Key))
+                        {
+                            case GitRefType.Branch:
+                            case GitRefType.Head:
+                            case GitRefType.RemoteBranch:
+                                revWalk.MarkStart(revWalk.ParseCommit(@ref.Value.GetObjectId()));
+                                break;
+                        }
                     }
                 }
                 else
