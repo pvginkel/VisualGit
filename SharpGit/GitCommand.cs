@@ -101,7 +101,12 @@ namespace SharpGit
         {
             Debug.Assert(Args is IGitConflictsClientArgs, "Merge results may only be reported on Args that implement IGitConflictsClientArgs");
 
-            foreach (var item in mergeResult.GetConflicts())
+            var conflicts = mergeResult.GetConflicts();
+
+            if (conflicts == null)
+                return;
+
+            foreach (var item in conflicts)
             {
                 string fullPath = repositoryEntry.Repository.GetAbsoluteRepositoryPath(item.Key);
 
