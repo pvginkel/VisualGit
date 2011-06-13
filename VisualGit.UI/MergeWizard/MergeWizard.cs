@@ -349,8 +349,8 @@ namespace VisualGit.UI.MergeWizard
                             throw new NotImplementedException();
 #if false
                             _resolvedMergeConflicts = mergeConflictHandler.ResolvedMergedConflicts;
-#endif
                             mergeConflictHandler = null;
+#endif
                         }
                     }
                 });
