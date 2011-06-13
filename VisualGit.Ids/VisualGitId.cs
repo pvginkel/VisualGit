@@ -96,7 +96,6 @@ namespace VisualGit
         public const string BlameToolWindowId = "843AB0C2-A28C-46E4-B2E5-EF55B570CC1F";
         public const string LogToolWindowId = "D81233FE-925A-4285-9038-2BA21F0B3610";
         public const string DiffToolWindowId = "F1095693-1237-4682-9605-79AF3C41955C";
-        public const string GitInfoToolWindowId = "EC03B4B6-7444-4143-AC47-CC51E98245E2";
 
         public const string PendingChangeViewContext = "CACA63FD-EC08-4032-990B-AE5884C89CA9";
         public const string DiffMergeViewContext = "92734E38-7AD7-4189-A207-7CC6DABD6B80";

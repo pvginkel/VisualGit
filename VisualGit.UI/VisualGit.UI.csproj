@@ -431,9 +431,6 @@
     <Compile Include="SccManagement\UpdateAvailableDialog.Designer.cs">
       <DependentUpon>UpdateAvailableDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitInfoGrid\InfoPropertyGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="GitLog\Commands\CompareWithWorkingCopy.cs" />
     <Compile Include="GitLog\Commands\RevertChanges.cs" />
     <Compile Include="GitLog\LogDataSource.cs">
@@ -524,12 +521,6 @@
     </Compile>
     <Compile Include="GitLog\LogRevisionView.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GitInfoGrid\GitInfoGridControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GitInfoGrid\GitInfoGridControl.Designer.cs">
-      <DependentUpon>GitInfoGridControl.cs</DependentUpon>
     </Compile>
     <Compile Include="TransportProgressDialog.cs">
       <SubType>Form</SubType>
@@ -1052,10 +1043,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SccManagement\ItemCompareDialog.resx">
       <DependentUpon>ItemCompareDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GitInfoGrid\GitInfoGridControl.resx">
-      <DependentUpon>GitInfoGridControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Controls\Status.Suggestion.png" />
     <Content Include="Controls\Status.Exclamation.png" />

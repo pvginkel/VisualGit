@@ -13,7 +13,6 @@ namespace VisualGit
         ToolBarFirst = 0x7FFFFFF,
         PendingChanges,
         SourceControl,
-        LogViewer,
-        GitInfo
+        LogViewer
     }
 }

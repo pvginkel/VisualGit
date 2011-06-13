@@ -49,8 +49,6 @@ namespace VisualGit
 
         FileSccAddSolutionToGit,
 
-        FileSccChangeSourceControl,
-
         FileSccMenuUpdateLatest,
         FileSccMenuUpdateSpecific,
 
@@ -251,8 +249,7 @@ namespace VisualGit
         MakeNonSccFileWriteable,
 
         PendingChangesConfigureRecentChangesPage,
-        ShowGitInfo,
-
+        
         PendingChangesPush,
         PendingChangesPushSpecificBranch,
         PendingChangesPushSpecificTag,

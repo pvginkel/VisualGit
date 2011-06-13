@@ -61,11 +61,6 @@
             </Button>
           </Group>
           <Group id="Grp_FileSccManagement" priority="0x0200">
-            <Button id="Cmd_FileSccChangeSourceControl" name="ChangeSourceControl"  priority="0x100"
-                    text="Change Source C&amp;ontrol..."
-                    toolTip="Change the Source Control bindings of the projects in this solution" iconFile="PendingChanges/ChangeSourceControl.png">
-              <Visibility context="VisualGit_SccProviderGuid"/>
-            </Button>
             <ButtonRef id="Cmd_ShowPendingChanges" priority="0x301" />
           </Group>
         </Menu>
@@ -130,10 +125,6 @@
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_WNDO_OTRWNDWS1">
       <ButtonRef id="Cmd_ShowPendingChanges" priority="0x800" />
-      <Button id="Cmd_ShowGitInfo" name="ShowGitInfo" priority="0x801"
-                text="&amp;Git Info"
-                toolTip="Show the Git Info Window." defaultInvisible="true">
-      </Button>
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_TOOLSB_NEWWINDOWS">
       <!-- Views list in the standard menu bar -->
@@ -563,25 +554,6 @@
         </Group-->
       </Menu>
     </GroupRef>
-    <GroupRef id="ToolBar_GitInfo">
-      <!-- The Git Properties ToolWindow Toolbar -->
-      <Menu id="ToolBar_GitInfo" name="GitInfo" priority="0" type="ToolWindowToolbar">
-        <Group id="Grp_GitInfoTBOperations" priority="0x1000">
-          
-        </Group>
-        <Group id="Grp_GitInfoTBCommands" priority="0x2000">
-          <ButtonRef id="Cmd_DocumentHistory" priority="0x1000" />
-          <ButtonRef id="Cmd_DocumentShowChanges" priority="0x1100" />
-          <ButtonRef id="Cmd_DocumentAnnotate" priority="0x1200" />
-        </Group>
-        <Group id="Grp_GitInfoTB3" priority="0x3000">
-        </Group>
-        <Group id="Grp_GitInfoTB4" priority="0x4000">
-        </Group>
-        <Group id="Grp_GitInfoTB5" priority="0x5000">
-        </Group>
-      </Menu>
-    </GroupRef>
     <GroupRef id="Grp_VisualGitContextMenus">
       <Menu id="Menu_LogViewerContextMenu" name="LogViewContext" text="Log Viewer List" type="Context"
             priority="0" notInTBList="true">
@@ -871,9 +843,6 @@
     </GroupRef>
     <GroupRef id="ToolBar_SourceControl">
       <Menu id="ToolBar_SourceControl" name="SourceControl" text="Source Control - Git" priority="0" type="Toolbar">
-        <Group id="Grp_SccTbManage" priority="0x100">
-          <ButtonRef id="Cmd_FileSccChangeSourceControl" priority="0x100" />
-        </Group>
         <Group id="Grp_SccTbItem" priority="0x200">
           <ButtonRef id="Cmd_CommitItem" priority="0x100" />
           <ButtonRef id="Cmd_UpdateItemLatest" priority="0x200" />
@@ -957,7 +926,6 @@
       <StripIcon id="PendingChanges" iconFile="PendingChanges/PendingChanges.png"/>
       <StripIcon id="Log" iconFile="PendingChanges/ViewHistory.png"/>
       <StripIcon id="Diff" iconFile="PendingChanges/Compare.png"/>
-      <StripIcon id="GitInfo" iconFile="menu/Properties.png"/>
     </Strip>
   </BitmapStrips>
 </VsGui>

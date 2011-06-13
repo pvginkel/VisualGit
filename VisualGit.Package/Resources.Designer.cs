@@ -153,15 +153,6 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Git Info.
-        /// </summary>
-        internal static string GitInfoToolWindowTitle {
-            get {
-                return ResourceManager.GetString("GitInfoToolWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to History Viewer.
         /// </summary>
         internal static string LogToolWindowTitle {

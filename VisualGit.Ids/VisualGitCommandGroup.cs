@@ -68,7 +68,6 @@ namespace VisualGit
         ItemResolveAutoFull,
         ItemResolveAutoConflict,
 
-        SccTbManage,
         SccTbItem,
         SccTbExtra,
 
@@ -165,11 +164,5 @@ namespace VisualGit
         PendingChangesLogEditor3,
         MdiDocumentScc,
         DocumentPending,
-
-        GitInfoTBOperations,
-        GitInfoTBCommands,
-        GitInfoTB3,
-        GitInfoTB4,
-        GitInfoTB5,
     }
 }

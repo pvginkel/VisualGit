@@ -12,7 +12,6 @@ namespace VisualGit
         WorkingCopyExplorer,
         PendingChanges,
         Log,
-        Diff,
-        GitInfo
+        Diff
     }
 }

@@ -158,9 +158,6 @@
   <data name="RepositoryExplorerToolWindowTitle" xml:space="preserve">
     <value>Repository Explorer</value>
   </data>
-  <data name="GitInfoToolWindowTitle" xml:space="preserve">
-    <value>Git Info</value>
-  </data>
   <data name="WorkingCopyExplorerToolWindowTitle" xml:space="preserve">
     <value>Working Copy Explorer</value>
   </data>

@@ -19,7 +19,6 @@ using VisualGit.Scc.UI;
 using VisualGit.UI;
 using VisualGit.UI.DiffWindow;
 using VisualGit.UI.RepositoryExplorer;
-using VisualGit.UI.GitInfoGrid;
 using VisualGit.UI.GitLog;
 using VisualGit.UI.WorkingCopyExplorer;
 
@@ -33,9 +32,7 @@ namespace VisualGit.VSPackage
     [ProvideToolWindow(typeof(PendingChangesToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = false, Window = ToolWindowGuids80.Outputwindow)]
     [ProvideToolWindow(typeof(LogToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = true)]
     [ProvideToolWindow(typeof(DiffToolWindow), Style = VsDockStyle.MDI, Transient = true)]
-    [ProvideToolWindow(typeof(GitInfoToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Right, Transient = false, Window = ToolWindowGuids80.PropertiesWindow)]
     [ProvideToolWindowVisibility(typeof(PendingChangesToolWindow), VisualGitId.SccProviderId)]
-    [ProvideToolWindowVisibility(typeof(GitInfoToolWindow), VisualGitId.SccProviderId)]
     public partial class VisualGitPackage
     {
         public void ShowToolWindow(VisualGitToolWindow window)
@@ -57,8 +54,6 @@ namespace VisualGit.VSPackage
                     return typeof(LogToolWindow);
                 case VisualGitToolWindow.Diff:
                     return typeof(DiffToolWindow);
-                case VisualGitToolWindow.GitInfo:
-                    return typeof(GitInfoToolWindow);
                 default:
                     throw new ArgumentOutOfRangeException("toolWindow");
             }
@@ -590,21 +585,6 @@ namespace VisualGit.VSPackage
             Control = new DiffToolWindowControl();
 
             VisualGitToolWindow = VisualGitToolWindow.Diff;
-        }
-    }
-
-    [Guid(VisualGitId.GitInfoToolWindowId)]
-    class GitInfoToolWindow : VisualGitToolWindowPane
-    {
-        public GitInfoToolWindow()
-        {
-            Caption = Resources.GitInfoToolWindowTitle;
-            Control = new GitInfoGridControl();
-
-            VisualGitToolWindow = VisualGitToolWindow.GitInfo;
-
-            ToolBar = new CommandID(VisualGitId.CommandSetGuid, (int)VisualGitToolBar.GitInfo);
-            ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
         }
     }
 }
