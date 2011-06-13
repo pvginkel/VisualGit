@@ -15,6 +15,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         private static readonly Font NormalFont = SystemFonts.MessageBoxFont;
         private static readonly Font RefsFont = new Font(SystemFonts.MessageBoxFont, FontStyle.Bold);
         private static readonly Font HeadFont = new Font(SystemFonts.MessageBoxFont, FontStyle.Bold);
+        private static readonly GitHead[] EmptyHeads = new GitHead[0];
 
         private int _lastScrollPos;
         private bool _initialLoad;
@@ -161,6 +162,13 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 return;
             }
 
+            GitHead[] heads;
+
+            if (e.Refs == null)
+                heads = EmptyHeads;
+            else
+                heads = e.Refs.Where(p => p.Name != GitConstants.Head).Select(p => new GitHead(p.Revision, p.Name)).ToArray();
+
             UpdateGraph(new GitRevision
             {
                 Author = e.AuthorName,
@@ -170,7 +178,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 Revision = e.Revision,
                 LogMessage = e.LogMessage,
                 ParentRevisions = e.ParentRevisions,
-                Heads = e.Refs.Where(p => p.Name != GitConstants.Head).Select(p => new GitHead(p.Revision, p.Name)).ToArray(),
+                Heads = heads,
                 Index = _revisionsLoaded++,
                 RepositoryRoot = GitTools.GetUri(RepositoryPath)
             });

@@ -12,6 +12,7 @@ namespace SharpGit
         {
         }
 
+        public bool AnnotatedTag { get; set; }
         public string Message { get; set; }
         public GitRevision Revision { get; set; }
         public bool Force { get; set; }

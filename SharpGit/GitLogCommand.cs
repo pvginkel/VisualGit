@@ -109,15 +109,22 @@ namespace SharpGit
 
                 int count = Args.Limit;
 
-                var refs = new List<GitRef>();
+                var refs = new Dictionary<string, List<GitRef>>(StringComparer.Ordinal);
 
                 foreach (var @ref in repository.GetAllRefs())
                 {
-                    var gitRef = new GitRef(@ref.Value);
+                    // Below converts tag objects into commit objects.
 
-                    gitRef.ResolveCommitRevision(revWalk);
+                    var commitId = revWalk.ParseCommit(@ref.Value.GetObjectId()).ToObjectId().Name;
 
-                    refs.Add(gitRef);
+                    List<GitRef> commitRefs;
+                    if (!refs.TryGetValue(commitId, out commitRefs))
+                    {
+                        commitRefs = new List<GitRef>();
+                        refs.Add(commitId, commitRefs);
+                    }
+
+                    commitRefs.Add(new GitRef(@ref.Value));
                 }
 
                 foreach (var commit in revWalk)
@@ -132,6 +139,8 @@ namespace SharpGit
                     }
 
                     string commitId = commit.Id.Name;
+                    List<GitRef> commitRefs;
+                    refs.TryGetValue(commitId, out commitRefs);
 
                     var e = new GitLogEventArgs
                     {
@@ -143,7 +152,7 @@ namespace SharpGit
                         Revision = commitId,
                         Time = GitTools.CreateDateFromGitTime(commit.CommitTime),
                         ParentRevisions = parents,
-                        Refs = refs.Where(p => p.Revision == commitId).ToArray()
+                        Refs = commitRefs
                     };
 
                     if (Args.RetrieveChangedPaths)

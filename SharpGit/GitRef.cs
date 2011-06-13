@@ -113,15 +113,7 @@ namespace SharpGit
         internal GitRef(NGit.Ref @ref)
             : this(@ref.GetName())
         {
-            _revision = @ref.GetObjectId();
-        }
-
-        internal void ResolveCommitRevision(RevWalk revWalk)
-        {
-            // Tags may not have been noted on the commit object id. This way we
-            // resolve the object id to the commit object id.
-
-            _revision = revWalk.ParseCommit(_revision).ToObjectId();
+            Revision = @ref.GetObjectId().Name;
         }
 
         public static GitRef Create(string name, GitRefType type)
@@ -151,19 +143,7 @@ namespace SharpGit
         public string Name { get; private set; }
         public string ShortName { get; private set; }
         public GitRefType Type { get; private set; }
-
-        public string Revision
-        {
-            get
-            {
-                if (_revision != null)
-                    return _revision.Name;
-                else
-                    return null;
-            }
-        }
-
-        private AnyObjectId _revision;
+        public string Revision { get; private set; }
 
         public override string ToString()
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NGit.Api;
 using NGit.Revwalk;
+using NGit;
 
 namespace SharpGit
 {
@@ -25,30 +26,43 @@ namespace SharpGit
             {
                 var repository = repositoryEntry.Repository;
 
-                var command = new Git(repository).Tag();
-
-                if (Args.Message != null)
-                    command.SetMessage(Args.Message);
-
-                command.SetForceUpdate(Args.Force);
-                command.SetName(tagName);
-
-                var revision = Args.Revision ?? GitRevision.Head;
                 var revWalk = new RevWalk(repository);
-
                 try
                 {
-                    // TODO: NGit does not register the tag on the commit id.
-                    // May need to report a bug.
+                    var revision = Args.Revision ?? GitRevision.Head;
+                    var commit = revWalk.ParseCommit(revision.GetObjectId(repository));
 
-                    command.SetObjectId(revWalk.ParseCommit(revision.GetObjectId(repository)));
+
+                    if (Args.AnnotatedTag)
+                    {
+                        var command = new Git(repository).Tag();
+
+                        command.SetMessage(Args.Message);
+                        command.SetForceUpdate(Args.Force);
+                        command.SetName(tagName);
+
+                        command.SetObjectId(commit);
+
+                        command.Call();
+                    }
+                    else
+                    {
+                        // TagCommand is not smart enough to support not annotated
+                        // tags. Create a tag ourself.
+
+                        var tagRef = repository.UpdateRef(Constants.R_TAGS + tagName);
+
+                        tagRef.SetNewObjectId(commit.ToObjectId());
+                        tagRef.SetForceUpdate(Args.Force);
+                        tagRef.SetRefLogMessage("tagged " + tagName, false);
+
+                        tagRef.Update(revWalk);
+                    }
                 }
                 finally
                 {
                     revWalk.Release();
                 }
-
-                command.Call();
             }
         }
     }

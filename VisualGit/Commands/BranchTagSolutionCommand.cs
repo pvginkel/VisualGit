@@ -187,7 +187,10 @@ namespace VisualGit.Commands
                                     GitTagArgs args = new GitTagArgs();
 
                                     if (dlg.AnnotatedTag)
+                                    {
+                                        args.AnnotatedTag = true;
                                         args.Message = dlg.LogMessage;
+                                    }
 
                                     ee.Client.Tag(
                                         RepositoryUtil.GetRepositoryRoot(root.FullPath),
