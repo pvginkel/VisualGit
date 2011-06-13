@@ -6,19 +6,20 @@ using System.Windows.Forms.Design;
 using System.Windows.Forms;
 using VisualGit.Scc.UI;
 using System.IO;
+using SharpGit;
 
 namespace VisualGit.UI.MergeWizard
 {
     public class MergeConflictHandler : VisualGitService
     {  
         /// Conflict resolution preference for binary files
-        SvnAccept _binaryChoice = SvnAccept.Postpone;
+        GitAccept _binaryChoice = GitAccept.Postpone;
 
         /// Conflict resolution preference for text files
-        SvnAccept _textChoice = SvnAccept.Postpone;
+        GitAccept _textChoice = GitAccept.Postpone;
 
         /// Conflict resolution preference for properties
-        SvnAccept _propertyChoice = SvnAccept.Postpone;
+        GitAccept _propertyChoice = GitAccept.Postpone;
 
         /// flag (not) to show conflict resolution option dialog for text files
         bool _txt_showDialog/* = false*/;
@@ -30,14 +31,14 @@ namespace VisualGit.UI.MergeWizard
         bool _property_showDialog = true; // prompt for properties initially
 
         List<string> currentResolutions = new List<string>();
-        Dictionary<string, List<SvnConflictType>> _resolvedMergeConflicts = new Dictionary<string, List<SvnConflictType>>();
+        HashSet<string> _resolvedMergeConflicts = new HashSet<string>();
 
-        public MergeConflictHandler(IVisualGitServiceProvider context, SvnAccept binaryChoice, SvnAccept textChoice, SvnAccept propChoice)
+        public MergeConflictHandler(IVisualGitServiceProvider context, GitAccept binaryChoice, GitAccept textChoice, GitAccept propChoice)
             : this(context, binaryChoice, textChoice)
         {
         }
         
-        public MergeConflictHandler(IVisualGitServiceProvider context, SvnAccept binaryChoice, SvnAccept textChoice)
+        public MergeConflictHandler(IVisualGitServiceProvider context, GitAccept binaryChoice, GitAccept textChoice)
             : this(context)
         {
             this._binaryChoice = binaryChoice;
@@ -52,7 +53,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Gets/sets the conflict resolution preference for text files
         /// </summary>
-        public SvnAccept TextConflictResolutionChoice
+        public GitAccept TextConflictResolutionChoice
         {
             get
             {
@@ -67,7 +68,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Gets/sets the conflict resolution preference for binary files
         /// </summary>
-        public SvnAccept BinaryConflictResolutionChoice
+        public GitAccept BinaryConflictResolutionChoice
         {
             get
             {
@@ -82,7 +83,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Gets/sets the conflict resolution preference for properties
         /// </summary>
-        public SvnAccept PropertyConflictResolutionChoice
+        public GitAccept PropertyConflictResolutionChoice
         {
             get
             {
@@ -144,7 +145,7 @@ namespace VisualGit.UI.MergeWizard
         /// key: file path
         /// value: list of conflict types
         /// </summary>
-        public Dictionary<string, List<SvnConflictType>> ResolvedMergedConflicts
+        public HashSet<string> ResolvedMergedConflicts
         {
             get
             {
@@ -158,30 +159,18 @@ namespace VisualGit.UI.MergeWizard
         public void Reset()
         {
             // reset current resolutions
-            this._resolvedMergeConflicts = new Dictionary<string, List<SvnConflictType>>();
+            this._resolvedMergeConflicts = new HashSet<string>();
         }
 
         /// <summary>
         /// Handles the conflict based on the preferences.
         /// </summary>
-        public void OnConflict(SvnConflictEventArgs args)
+        public void OnConflict(GitConflictEventArgs args)
         {
-            if (args.ConflictReason == SvnConflictReason.Edited)
+            if (args.ConflictReason == GitConflictReason.Edited)
             {
-                SvnAccept choice = SvnAccept.Postpone;
-                if (args.ConflictType == SvnConflictType.Property)
-                {
-                    if (PromptOnPropertyConflict)
-                    {
-                        HandleConflictWithDialog(args);
-                        return;
-                    }
-                    else
-                    {
-                        choice = PropertyConflictResolutionChoice;
-                    }
-                }
-                else if (args.IsBinary)
+                GitAccept choice = GitAccept.Postpone;
+                if (args.IsBinary)
                 {
                     if (PromptOnBinaryConflict)
                     {
@@ -216,12 +205,12 @@ namespace VisualGit.UI.MergeWizard
             }
             else
             {
-                args.Choice = SvnAccept.Postpone;
+                args.Choice = GitAccept.Postpone;
             }
             AddToCurrentResolutions(args);
         }
 
-        private void HandleConflictWithDialog(SvnConflictEventArgs e)
+        private void HandleConflictWithDialog(GitConflictEventArgs e)
         {
             using (MergeConflictHandlerDialog dlg = new MergeConflictHandlerDialog(e))
             {
@@ -244,12 +233,7 @@ namespace VisualGit.UI.MergeWizard
                         bool applyToType = dlg.ApplyToType;
                         if (applyToType)
                         {
-                            if (e.ConflictType == SvnConflictType.Property)
-                            {
-                                PropertyConflictResolutionChoice = e.Choice;
-                                PromptOnPropertyConflict = false;
-                            }
-                            else if (e.IsBinary)
+                            if (e.IsBinary)
                             {
                                 BinaryConflictResolutionChoice = e.Choice;
                                 PromptOnBinaryConflict = false;
@@ -273,7 +257,7 @@ namespace VisualGit.UI.MergeWizard
             AddToCurrentResolutions(e);
         }
 
-        private void HandleConflictWithExternalMergeTool(SvnConflictEventArgs e)
+        private void HandleConflictWithExternalMergeTool(GitConflictEventArgs e)
         {
             IVisualGitDiffHandler handler = GetService<IVisualGitDiffHandler>();
             if (handler == null)
@@ -285,10 +269,10 @@ namespace VisualGit.UI.MergeWizard
                 VisualGitMergeArgs ama = new VisualGitMergeArgs();
                 // Ensure paths are in valid format or the DiffToolMonitor constructor
                 // throws argument exception validatig the file path to be monitored.
-                ama.BaseFile = SvnTools.GetNormalizedFullPath(e.BaseFile);
-                ama.TheirsFile = SvnTools.GetNormalizedFullPath(e.TheirFile);
-                ama.MineFile = SvnTools.GetNormalizedFullPath(e.MyFile);
-                ama.MergedFile = SvnTools.GetNormalizedFullPath(e.MergedFile);
+                ama.BaseFile = GitTools.GetNormalizedFullPath(e.BaseFile);
+                ama.TheirsFile = GitTools.GetNormalizedFullPath(e.TheirFile);
+                ama.MineFile = GitTools.GetNormalizedFullPath(e.MyFile);
+                ama.MergedFile = GitTools.GetNormalizedFullPath(e.MergedFile);
                 ama.Mode = DiffMode.PreferExternal;
                 ama.BaseTitle = "Base";
                 ama.TheirsTitle = "Theirs";
@@ -313,26 +297,19 @@ namespace VisualGit.UI.MergeWizard
                 }
                 else
                 {
-                    e.Choice = SvnAccept.Merged;
+                    e.Choice = GitAccept.Merged;
                 }
             }
         }
 
-        private void AddToCurrentResolutions(SvnConflictEventArgs args)
+        private void AddToCurrentResolutions(GitConflictEventArgs args)
         {
-            if (args != null && args.Choice != SvnAccept.Postpone)
+            if (args != null && args.Choice != GitAccept.Postpone)
             {
-                List<SvnConflictType> conflictTypes = null;
-                if (_resolvedMergeConflicts.ContainsKey(args.Path))
+                if (!_resolvedMergeConflicts.Contains(args.Path))
                 {
-                    conflictTypes = _resolvedMergeConflicts[args.Path];
+                    _resolvedMergeConflicts.Add(args.Path.Replace('/', '\\'));
                 }
-                else
-                {
-                    conflictTypes = new List<SvnConflictType>();
-                    _resolvedMergeConflicts.Add(args.Path.Replace('/', '\\'), conflictTypes);
-                }
-                conflictTypes.Add(args.ConflictType);
             }
         }
 

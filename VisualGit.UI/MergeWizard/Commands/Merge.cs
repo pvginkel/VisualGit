@@ -144,10 +144,8 @@ namespace VisualGit.UI.MergeWizard.Commands
                     "Changing Current Branch",
                     delegate(object sender, ProgressWorkerArgs a)
                     {
-
-#if false
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-#endif
+
                         a.Client.Merge(repositoryPath, mergeBranch, args);
                     });
 

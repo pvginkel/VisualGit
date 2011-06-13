@@ -19,6 +19,9 @@ namespace SharpGit
 
         public GitPullResult Execute(string repositoryPath)
         {
+            MergeCommandResult mergeResult = null;
+            var result = new GitPullResult();
+
             var monitor = new ProgressMonitor(this);
 
             monitor.BeginTask(JGitText.Get().pullTaskName, 2);
@@ -141,8 +144,6 @@ namespace SharpGit
                 fetchCommand.SetCredentialsProvider(new CredentialsProvider(this));
                 fetchCommand.SetProgressMonitor(monitor);
 
-                var result = new GitPullResult();
-
                 if (monitor.IsCancelled())
                     throw new GitOperationCancelledException();
 
@@ -188,7 +189,7 @@ namespace SharpGit
                         case GitMergeStrategy.Merge:
                             monitor.Update(1);
 
-                            PerformMerge(repository, fetchResult, result, commitId, remoteBranchName, remoteUri, monitor);
+                            mergeResult = PerformMerge(repository, fetchResult, result, commitId, remoteBranchName, remoteUri, monitor);
                             break;
 
                         case GitMergeStrategy.Rebase:
@@ -211,9 +212,15 @@ namespace SharpGit
                     if (Args.ShouldThrow(exception.ErrorCode))
                         throw exception;
                 }
-
-                return result;
             }
+
+            // Conflict resolving is run outside of the repository lock
+            // because it calls back into VS code.
+
+            if (mergeResult != null)
+                RaiseMergeResults(repositoryEntry, mergeResult);
+
+            return result;
         }
 
         private ObjectId GetCommitToMerge(FetchResult fetchResult, string remoteBranchName)
@@ -234,7 +241,7 @@ namespace SharpGit
                 return advertisedRef.GetObjectId();
         }
 
-        private void PerformMerge(Repository repository, FetchResult fetchResult, GitPullResult result, ObjectId commitId, string remoteBranchName, string remoteUri, ProgressMonitor monitor)
+        private MergeCommandResult PerformMerge(Repository repository, FetchResult fetchResult, GitPullResult result, ObjectId commitId, string remoteBranchName, string remoteUri, ProgressMonitor monitor)
         {
             var mergeCommand = new Git(repository).Merge();
 
@@ -256,6 +263,8 @@ namespace SharpGit
             ConvertFailingPaths(result, mergeResult.GetFailingPaths());
 
             result.Conflicts = mergeResult.GetConflicts();
+
+            return mergeResult;
         }
 
         private GitMergeResult PackMergeStatus(MergeStatus value)

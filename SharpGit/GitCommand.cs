@@ -5,6 +5,9 @@ using System.Text;
 using System.ComponentModel;
 using NGit;
 using NGit.Treewalk;
+using NGit.Api;
+using System.Diagnostics;
+using System.IO;
 
 namespace SharpGit
 {
@@ -92,6 +95,73 @@ namespace SharpGit
                     NodeKind = GitNodeKind.Unknown
                 });
             }
+        }
+
+        protected void RaiseMergeResults(RepositoryEntry repositoryEntry, MergeCommandResult mergeResult)
+        {
+            Debug.Assert(Args is IGitConflictsClientArgs, "Merge results may only be reported on Args that implement IGitConflictsClientArgs");
+
+            foreach (var item in mergeResult.GetConflicts())
+            {
+                string fullPath = repositoryEntry.Repository.GetAbsoluteRepositoryPath(item.Key);
+
+                var args = new GitConflictEventArgs
+                {
+                    MergedFile = fullPath,
+                    Path = item.Key,
+                    ConflictReason = GitConflictReason.Edited
+                };
+
+                try
+                {
+                    Args.OnConflict(args);
+
+                    if (args.Cancel)
+                        return;
+                    if (args.Choice == GitAccept.Postpone)
+                        continue;
+
+                    using (repositoryEntry.Lock())
+                    {
+                        var repository = repositoryEntry.Repository;
+
+                        switch (args.Choice)
+                        {
+                            case GitAccept.Merged:
+                                MarkMerged(repository, args);
+                                break;
+
+                            case GitAccept.Base:
+                                SelectAndMarkMerged(repository, args, args.BaseFile);
+                                break;
+
+                            case GitAccept.MineFull:
+                                SelectAndMarkMerged(repository, args, args.MyFile);
+                                break;
+
+                            case GitAccept.TheirsFull:
+                                SelectAndMarkMerged(repository, args, args.TheirFile);
+                                break;
+                        }
+                    }
+                }
+                finally
+                {
+                    args.Cleanup();
+                }
+            }
+        }
+
+        private void MarkMerged(Repository repository, GitConflictEventArgs args)
+        {
+            new GitClient().Resolve(args.MergedFile, GitAccept.Merged, new GitResolveArgs());
+        }
+
+        private void SelectAndMarkMerged(Repository repository, GitConflictEventArgs args, string path)
+        {
+            File.Copy(path, args.MergedFile, true);
+
+            MarkMerged(repository, args);
         }
     }
 

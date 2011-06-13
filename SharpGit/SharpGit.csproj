@@ -76,6 +76,8 @@
     <Compile Include="GitAddArgs.cs" />
     <Compile Include="GitAddCommand.cs" />
     <Compile Include="GitConfigWrapper.cs" />
+    <Compile Include="GitConflictEventArgs.cs" />
+    <Compile Include="GitConflictReason.cs" />
     <Compile Include="GitDiffArgs.cs" />
     <Compile Include="GitDiffCommand.cs" />
     <Compile Include="GitInfoArgs.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="GitWriteArgs.cs" />
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitConfig.cs" />
+    <Compile Include="IGitConflictsClientArgs.cs" />
     <Compile Include="IGitOrigin.cs" />
     <Compile Include="NullOutputStream.cs" />
     <Compile Include="CustomPathFilter.cs" />

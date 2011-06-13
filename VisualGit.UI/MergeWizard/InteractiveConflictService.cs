@@ -5,6 +5,7 @@ using VisualGit.Scc;
 using SharpSvn;
 using System.ComponentModel;
 using VisualGit.Configuration;
+using SharpGit;
 
 namespace VisualGit.UI.MergeWizard
 {
@@ -17,9 +18,9 @@ namespace VisualGit.UI.MergeWizard
         }
         #region IConflictHandler Members
 
-        public void RegisterConflictHandler(SharpSvn.SvnClientArgsWithConflict args, System.ComponentModel.ISynchronizeInvoke synch)
+        public void RegisterConflictHandler(IGitConflictsClientArgs args, System.ComponentModel.ISynchronizeInvoke synch)
         {
-            args.Conflict += new EventHandler<SvnConflictEventArgs>(new Handler(this, synch).OnConflict);
+            args.Conflict += new EventHandler<GitConflictEventArgs>(new Handler(this, synch).OnConflict);
         }
 
         #endregion
@@ -35,15 +36,13 @@ namespace VisualGit.UI.MergeWizard
                 _synchronizer = synchronizer;
             }
 
-            public void OnConflict(object sender, SvnConflictEventArgs e)
+            public void OnConflict(object sender, GitConflictEventArgs e)
             {
                 if (_synchronizer != null && _synchronizer.InvokeRequired)
                 {
                     // If needed marshall the call to the UI thread
 
-                    e.Detach(); // Make this instance thread safe!
-
-                    _synchronizer.Invoke(new EventHandler<SvnConflictEventArgs>(OnConflict), new object[] { sender, e });
+                    _synchronizer.Invoke(new EventHandler<GitConflictEventArgs>(OnConflict), new object[] { sender, e });
                     return;
                 }
 

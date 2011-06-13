@@ -346,7 +346,10 @@ namespace VisualGit.UI.MergeWizard
 
                         if (mergeConflictHandler != null)
                         {
+                            throw new NotImplementedException();
+#if false
                             _resolvedMergeConflicts = mergeConflictHandler.ResolvedMergedConflicts;
+#endif
                             mergeConflictHandler = null;
                         }
                     }
@@ -472,7 +475,10 @@ namespace VisualGit.UI.MergeWizard
                 }
                 else
                 {
+                    throw new NotImplementedException();
+#if false
                     mergeConflictHandler.BinaryConflictResolutionChoice = ToGitAccept(binaryOption);
+#endif
                 }
 
                 MergeOptionsPage.ConflictResolutionOption textOption = mergeOptionsPage.TextConflictResolution;
@@ -482,7 +488,10 @@ namespace VisualGit.UI.MergeWizard
                 }
                 else
                 {
+                    throw new NotImplementedException();
+#if false
                     mergeConflictHandler.TextConflictResolutionChoice = ToGitAccept(textOption);
+#endif
                 }
             }
             return mergeConflictHandler;
@@ -560,7 +569,10 @@ namespace VisualGit.UI.MergeWizard
                 return;
             }
 
+            throw new NotImplementedException();
+#if false
             _currentMergeConflictHandler.OnConflict(e);
+#endif
         }
     }
 }

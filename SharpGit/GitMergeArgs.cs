@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpGit
 {
-    public class GitMergeArgs : GitClientArgs
+    public class GitMergeArgs : GitClientArgs, IGitConflictsClientArgs
     {
         public GitMergeArgs()
             : base(GitCommandType.Merge)
@@ -21,5 +21,15 @@ namespace SharpGit
         public bool SquashCommits { get; set; }
 
         public bool DoNotCommit { get; set; }
+
+        public event EventHandler<GitConflictEventArgs> Conflict;
+
+        protected internal override void OnConflict(GitConflictEventArgs e)
+        {
+            var ev = Conflict;
+
+            if (ev != null)
+                ev(this, e);
+        }
     }
 }

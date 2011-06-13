@@ -6,6 +6,7 @@ using VisualGit.VS;
 using SharpGit;
 using System.Windows.Forms;
 using VisualGit.UI.Commands;
+using VisualGit.Scc;
 
 namespace VisualGit.Commands
 {
@@ -85,10 +86,9 @@ namespace VisualGit.Commands
             e.GetService<IProgressRunner>().RunModal(CommandStrings.PullingSolution, pa,
                 delegate(object sender, ProgressWorkerArgs a)
                 {
-                    using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
-                    {
-                        client.Pull(repositoryRoot, args, out result);
-                    }
+                    e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
+
+                    a.Client.Pull(repositoryRoot, args, out result);
                 });
 
             if (args.LastException != null)

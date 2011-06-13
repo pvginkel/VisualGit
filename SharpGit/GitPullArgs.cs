@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SharpGit
 {
-    public sealed class GitPullArgs : GitTransportClientArgs
+    public sealed class GitPullArgs : GitTransportClientArgs, IGitConflictsClientArgs
     {
         public GitPullArgs()
             : base(GitCommandType.Pull)
@@ -27,5 +27,15 @@ namespace SharpGit
         public GitPullTagOption TagOption { get; set; }
 
         public GitMergeStrategy MergeStrategy { get; set; }
+
+        public event EventHandler<GitConflictEventArgs> Conflict;
+
+        protected internal override void OnConflict(GitConflictEventArgs e)
+        {
+            var ev = Conflict;
+
+            if (ev != null)
+                ev(this, e);
+        }
     }
 }

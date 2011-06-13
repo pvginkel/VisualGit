@@ -5,12 +5,8 @@ using System.Text;
 
 namespace SharpGit
 {
-    public enum GitAccept
+    public enum GitConflictReason
     {
-        Postpone,
-        Merged,
-        MineFull,
-        TheirsFull,
-        Base
+        Edited
     }
 }

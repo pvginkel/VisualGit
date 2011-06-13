@@ -125,5 +125,9 @@ namespace SharpGit
 
             OnGitError(new GitErrorEventArgs(LastException));
         }
+
+        protected internal virtual void OnConflict(GitConflictEventArgs e)
+        {
+        }
     }
 }

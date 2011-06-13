@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SharpSvn;
 using System.ComponentModel;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -13,6 +14,6 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="args">The args object to register on</param>
         /// <param name="synch">The synchronization object to use or null if synchronization to the UI thread is not necessary</param>
-        void RegisterConflictHandler(SvnClientArgsWithConflict args, ISynchronizeInvoke synch);        
+        void RegisterConflictHandler(IGitConflictsClientArgs args, ISynchronizeInvoke synch);        
     }
 }

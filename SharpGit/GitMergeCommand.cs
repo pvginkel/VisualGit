@@ -19,6 +19,8 @@ namespace SharpGit
             if (branch == null)
                 throw new ArgumentNullException("branch");
 
+            MergeCommandResult mergeResult;
+
             var repositoryEntry = Client.GetRepository(repositoryPath);
 
             using (repositoryEntry.Lock())
@@ -48,10 +50,15 @@ namespace SharpGit
 
                 command.Include(repository.Resolve(branch.Name));
 
-                command.Call();
+                mergeResult = command.Call();
 
                 RaiseNotifyFromDiff(repositoryEntry.Repository);
             }
+
+            // Conflict resolving is run outside of the repository lock
+            // because it calls back into VS code.
+
+            RaiseMergeResults(repositoryEntry, mergeResult);
         }
     }
 }

@@ -6,13 +6,14 @@ using VisualGit.Diff.DiffUtils;
 using SharpSvn;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using SharpGit;
 
 namespace VisualGit.UI.MergeWizard
 {
     public partial class MergeConflictHandlerDialog : VSDialogForm
     {
-        SvnConflictEventArgs input;
-        SvnAccept resolution = SvnAccept.Postpone;
+        GitConflictEventArgs input;
+        GitAccept resolution = GitAccept.Postpone;
         bool applyToAll = false;
         bool applyToType = false;
         bool isBinary;
@@ -22,7 +23,7 @@ namespace VisualGit.UI.MergeWizard
             InitializeComponent();
         }
 
-        public MergeConflictHandlerDialog(SvnConflictEventArgs args)
+        public MergeConflictHandlerDialog(GitConflictEventArgs args)
         {
             InitializeComponent();
             this.input = args;
@@ -31,11 +32,7 @@ namespace VisualGit.UI.MergeWizard
             if (this.input != null)
             {
                 isBinary = this.input.IsBinary;
-                if (this.input.ConflictType == SvnConflictType.Property)
-                {
-                    applyToTypedCheckBox.Text = "All &Property conflicts";
-                }
-                else if (isBinary)
+                if (isBinary)
                 {
                     applyToTypedCheckBox.Text = "All &Binary conflicts";
                 }
@@ -50,7 +47,7 @@ namespace VisualGit.UI.MergeWizard
         /// <summary>
         /// Gets the conflict resolution preference
         /// </summary>
-        public SvnAccept ConflictResolution
+        public GitAccept ConflictResolution
         {
             get
             {
@@ -88,22 +85,22 @@ namespace VisualGit.UI.MergeWizard
 
         private void postponeRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.ConflictResolution = SvnAccept.Postpone;
+            this.ConflictResolution = GitAccept.Postpone;
         }
 
         private void mineRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.ConflictResolution = SvnAccept.MineFull;
+            this.ConflictResolution = GitAccept.MineFull;
         }
 
         private void theirsRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.ConflictResolution = SvnAccept.TheirsFull;
+            this.ConflictResolution = GitAccept.TheirsFull;
         }
 
         private void baseRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            this.ConflictResolution = SvnAccept.Base;
+            this.ConflictResolution = GitAccept.Base;
         }
 
         /// Sets the diff data

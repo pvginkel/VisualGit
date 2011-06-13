@@ -5,12 +5,8 @@ using System.Text;
 
 namespace SharpGit
 {
-    public enum GitAccept
+    public interface IGitConflictsClientArgs
     {
-        Postpone,
-        Merged,
-        MineFull,
-        TheirsFull,
-        Base
+        event EventHandler<GitConflictEventArgs> Conflict;
     }
 }
