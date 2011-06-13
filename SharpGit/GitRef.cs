@@ -18,6 +18,40 @@ namespace SharpGit
 
         private static readonly string[] ShortenPostfixes = new string[] { "/HEAD" };
 
+        public static GitRefType TypeOf(string name)
+        {
+            if (name.IndexOf(':') >= 0)
+            {
+                return GitRefType.RefSpec;
+            }
+            else
+            {
+                var longestMatch = new KeyValuePair<GitRefType, string>();
+
+                foreach (var prefix in _shortenPrefixes)
+                {
+                    if (
+                        name.StartsWith(prefix.Value, StringComparison.Ordinal) &&
+                        (longestMatch.Value == null || longestMatch.Value.Length < prefix.Value.Length)
+                    )
+                        longestMatch = prefix;
+                }
+
+                if (longestMatch.Value != null)
+                {
+                    return longestMatch.Key;
+                }
+                else if (String.Equals(name, "HEAD", StringComparison.Ordinal))
+                {
+                    return GitRefType.Head;
+                }
+                else
+                {
+                    return GitRefType.Unknown;
+                }
+            }
+        }
+
         public GitRef(string name)
         {
             if (name == null)
