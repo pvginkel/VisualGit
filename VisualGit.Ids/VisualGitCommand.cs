@@ -48,7 +48,6 @@ namespace VisualGit
         FileSccOpenFromGit,
 
         FileSccAddSolutionToGit,
-        FileSccAddProjectToGit,
 
         FileSccChangeSourceControl,
 

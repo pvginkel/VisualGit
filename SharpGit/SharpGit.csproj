@@ -86,6 +86,8 @@
     <Compile Include="GitConfigWrapper.cs" />
     <Compile Include="GitConflictEventArgs.cs" />
     <Compile Include="GitConflictReason.cs" />
+    <Compile Include="GitCreateRepositoryArgs.cs" />
+    <Compile Include="GitCreateRepositoryCommand.cs" />
     <Compile Include="GitDiffArgs.cs" />
     <Compile Include="GitDiffCommand.cs" />
     <Compile Include="GitIgnoreSpacing.cs" />

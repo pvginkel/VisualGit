@@ -59,11 +59,6 @@
                 toolTip="Add this solution to a Git repository." iconFile="PendingChanges/AddToSourceControl.ico">
               <Visibility context="VisualGit_SccProviderGuid" />
             </Button>
-            <Button id="Cmd_FileSccAddProjectToGit" name="AddProjectToRepository" priority="0x200"
-                text="Add S&amp;elected Projects to Git..."
-                toolTip="Add the selected projects to a Git repository." iconFile="PendingChanges/AddToSourceControl.ico">
-              <Visibility context="VisualGit_SccProviderGuid" />
-            </Button>
           </Group>
           <Group id="Grp_FileSccManagement" priority="0x0200">
             <Button id="Cmd_FileSccChangeSourceControl" name="ChangeSourceControl"  priority="0x100"
@@ -147,7 +142,6 @@
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_SOLUTION_SCC">
       <!-- VS Predefined group for SCC commands on the solution -->
       <ButtonRef id="Cmd_FileSccAddSolutionToGit" priority="0x1200" />
-      <ButtonRef id="Cmd_FileSccAddProjectToGit" priority="0x1300" />
       <Button id="Cmd_SolutionIssueTrackerSetup" name="IssueTrackerSetup" priority="0x1400"
                   text="&amp;Issue Tracker Setup"
                   toolTip="Associate your solution with an Issue Repository"
@@ -201,7 +195,6 @@
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_PROJECT_SCC">
       <!-- VS Predefined group for SCC commands on projects -->
       <ButtonRef id="Cmd_FileSccAddSolutionToGit" priority="0x1200" />
-      <ButtonRef id="Cmd_FileSccAddProjectToGit" priority="0x1300" />
       <Button id="Cmd_ProjectCommit" priority="0x1500" name="ProjectCommit"
               text="Comm&amp;it Project Changes" iconFile="PendingChanges/Commit.png" defaultInvisible="true"/>
 

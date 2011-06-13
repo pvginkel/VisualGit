@@ -21,7 +21,7 @@ namespace SharpGit
         {
             if (remote == null)
                 throw new ArgumentNullException("remote");
-            if (types == null)
+            if (types == 0)
                 throw new ArgumentOutOfRangeException("types", "Select at least one type");
 
             var repository = CreateDummyRepository();

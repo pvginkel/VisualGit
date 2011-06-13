@@ -248,6 +248,16 @@ namespace SharpGit
             return ExecuteCommand<GitCloneCommand, GitCloneResult>(args, p => p.Execute(remote, @ref, destination), out result);
         }
 
+        public bool CreateRepository(string repositoryPath, GitCreateRepositoryArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitCreateRepositoryCommand>(args, p => p.Execute(repositoryPath));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {

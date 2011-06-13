@@ -90,7 +90,7 @@ namespace VisualGit.UI.GitLog
 
                 using (var client = _context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    client.Log(e.Source.FocusedItem.RepositoryRoot.AbsolutePath, la);
+                    client.Log(GitTools.GetAbsolutePath(e.Source.FocusedItem.RepositoryRoot), la);
                 }
 
                 if (changeItems != null)
