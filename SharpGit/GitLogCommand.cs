@@ -109,7 +109,16 @@ namespace SharpGit
 
                 int count = Args.Limit;
 
-                var refs = repository.GetAllRefs().Select(p => new GitRef(p.Value));
+                var refs = new List<GitRef>();
+
+                foreach (var @ref in repository.GetAllRefs())
+                {
+                    var gitRef = new GitRef(@ref.Value);
+
+                    gitRef.ResolveCommitRevision(revWalk);
+
+                    refs.Add(gitRef);
+                }
 
                 foreach (var commit in revWalk)
                 {

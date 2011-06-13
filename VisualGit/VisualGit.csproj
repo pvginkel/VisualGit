@@ -118,7 +118,7 @@
       <DependentUpon>PccStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\SolutionSettings.Commit.cs" />
-    <Compile Include="Commands\BranchSolutionCommand.cs" />
+    <Compile Include="Commands\BranchTagSolutionCommand.cs" />
     <Compile Include="Commands\CheckForUpdates.cs" />
     <Compile Include="Commands\CommandStrings.Designer.cs">
       <AutoGen>True</AutoGen>

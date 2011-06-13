@@ -277,6 +277,15 @@ namespace VisualGit.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tag Project.
+        /// </summary>
+        internal static string TagProject {
+            get {
+                return ResourceManager.GetString("TagProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The conflict in &apos;{0}&apos; is already resolved..
         /// </summary>
         internal static string TheConflictInXIsAlreadyResolved {

@@ -150,6 +150,8 @@
         <Group id="Grp_SccSlnBranch" priority="0x9000">
           <Button id="Cmd_SolutionBranch" priority="0x100" name="BranchSolution"
                   text="&amp;Branch Solution..." iconFile="PendingChanges/Branch.png" defaultInvisible="true" />
+          <Button id="Cmd_SolutionTag" priority="0x100" name="TagSolution"
+                  text="&amp;Tag Solution..." iconFile="PendingChanges/Branch.png" defaultInvisible="true" />
           <ButtonRef id="Cmd_SolutionSwitchDialog" priority="0x300" />
           <Button id="Cmd_SolutionMerge" priority="0x400" name="MergeSolution"
               text="&amp;Merge Solution..." iconFile="menu/Merge.png" defaultInvisible="true"/>
@@ -199,6 +201,8 @@
         <Group id="Grp_SccProjectBranch" priority="0x9000">
           <Button id="Cmd_ProjectBranch" priority="0x100" name="BranchSolution"
                   text="&amp;Branch Project..." iconFile="PendingChanges/Branch.png" defaultInvisible="true" />
+          <Button id="Cmd_ProjectTag" priority="0x100" name="TagSolution"
+                  text="&amp;Tag Project..." iconFile="PendingChanges/Branch.png" defaultInvisible="true" />
           <Button id="Cmd_SwitchProject" name="SwitchProject" priority="0x300" defaultInvisible="true"
                 text="&amp;Change Current Branch..." allowParams="true"
                 toolTip="Change the current branch of this project." iconFile="PendingChanges/Switch.png"/>
@@ -509,6 +513,7 @@
             </Group>
             <Group id="Grp_PendingChangesCommit3" priority="0x300">
               <ButtonRef id="Cmd_SolutionBranch" priority="0x100" />
+              <ButtonRef id="Cmd_SolutionTag" priority="0x100" />
             </Group>
           </Menu>
           <Menu id="Menu_PendingChangesUpdate" priority="0x200" name="Update" type="MenuController" iconAndText="true">

@@ -8,64 +8,36 @@ using System.Windows.Forms;
 using VisualGit.UI.GitLog;
 using SharpSvn;
 using VisualGit.Scc;
+using SharpGit;
 
 namespace VisualGit.UI.SccManagement
 {
-    public partial class CreateBranchDialog : VSContainerForm
+    public partial class CreateBranchDialog : VSDialogForm
     {
         public CreateBranchDialog()
         {
             InitializeComponent();
+
+            versionBox.Revision = GitRevision.Head;
         }
 
-        public string SrcFolder
+        private GitOrigin _gitOrigin;
+        public GitOrigin GitOrigin
         {
-            get { return fromFolderBox.Text; }
-            set { fromFolderBox.Text = value; }
-        }
-
-        public Uri SrcUri
-        {
-            get 
+            get { return _gitOrigin; }
+            set
             {
-                Uri r;
+                _gitOrigin = value;
 
-                if (!string.IsNullOrEmpty(fromUrlBox.Text) &&
-                    Uri.TryCreate(fromUrlBox.Text, UriKind.Absolute, out r))
-                {
-                    return r;
-                }
-
-                return null;
-            }
-            set { fromUrlBox.Text = value.AbsoluteUri; }
-        }
-
-        public bool CopyFromUri
-        {
-            get { return !this.wcVersionRadio.Checked; }
-        }
-
-        public SvnRevision SelectedRevision
-        {
-            get
-            {
-                if (headVersionRadio.Checked)
-                    return SvnRevision.Head;
-                else if (wcVersionRadio.Checked)
-                    return SvnRevision.Working;
-                else
-                    return new SvnRevision(Revision);
+                versionBox.GitOrigin = _gitOrigin;
             }
         }
 
-
-        bool _noTypeChange;
-
-        public long Revision
+        protected override void OnContextChanged(EventArgs e)
         {
-            get { return (long)versionBox.Value; }
-            set { _noTypeChange = true; versionBox.Value = value; _noTypeChange = false; }
+            base.OnContextChanged(e);
+
+            versionBox.Context = Context;
         }
 
         public bool SwitchToBranch
@@ -74,92 +46,32 @@ namespace VisualGit.UI.SccManagement
             set { switchBox.Checked = value; }
         }
 
-        public Uri NewDirectoryName
+        public string BranchName
         {
-            get 
+            get
             {
-                Uri r;
+                string branchName = branchBox.Text.Trim();
 
-                if (!string.IsNullOrEmpty(toUrlBox.Text) && Uri.TryCreate(toUrlBox.Text, UriKind.Absolute, out r))
-                {
-                    return r;
-                }
-                else
+                if (String.Empty.Equals(branchName))
                     return null;
-            }
-            set
-            {
-                if (value == null)
-                    toUrlBox.Text = "";
                 else
-                    toUrlBox.Text = value.AbsoluteUri;
+                    return branchName;
             }
         }
 
-        bool _editSource;
-        public bool EditSource
+        public bool Force
         {
-            get { return _editSource; }
-            set { fromFolderBox.ReadOnly = fromUrlBox.ReadOnly = !(_editSource = value); }
+            get { return forceBox.Checked; }
         }
 
-        public string LogMessage
+        public GitRevision Revision
         {
-            get { return logMessage.Text; }
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            if(!_noTypeChange)
-                specificVersionRadio.Checked = true;
-
-        }
-
-        private void toUrlBrowse_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-#if false
-            using (RepositoryFolderBrowserDialog dlg = new RepositoryFolderBrowserDialog())
-            {
-                dlg.EnableNewFolderButton = true;
-                Uri r;
-
-                if (Uri.TryCreate(toUrlBox.Text, UriKind.Absolute, out r))
-                    dlg.SelectedUri = r;
-
-                if (dlg.ShowDialog(Context) == DialogResult.OK)
-                {
-                    if (dlg.SelectedUri != null)
-                        toUrlBox.Text = dlg.SelectedUri.AbsoluteUri;
-                }
-            }
-#endif
+            get { return versionBox.Revision; }
         }
 
         private void toUrlBox_TextChanged(object sender, EventArgs e)
         {
-            btnOk.Enabled = (NewDirectoryName != null);
-        }
-
-        private void versionBrowse_Click(object sender, EventArgs e)
-        {
-            using (LogViewerDialog lvd = new LogViewerDialog(new GitOrigin(Context, SrcUri, null)))
-            {
-                if (lvd.ShowDialog(Context) != DialogResult.OK)
-                    return;
-
-                IGitLogItem li = EnumTools.GetSingle(lvd.SelectedItems);
-
-                if (li != null)
-                {
-                    throw new NotImplementedException();
-
-#if false
-                    Revision = li.Revision;
-                    specificVersionRadio.Checked = true;
-#endif
-                }
-            }
+            btnOk.Enabled = BranchName != null;
         }
     }
 }

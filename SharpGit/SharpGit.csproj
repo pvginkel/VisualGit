@@ -79,6 +79,8 @@
     <Compile Include="GitBlameCommand.cs" />
     <Compile Include="GitBlameEventArgs.cs" />
     <Compile Include="GitBlameResult.cs" />
+    <Compile Include="GitBranchArgs.cs" />
+    <Compile Include="GitBranchCommand.cs" />
     <Compile Include="GitClientBinaryFileException.cs" />
     <Compile Include="GitCloneArgs.cs" />
     <Compile Include="GitCloneCommand.cs" />
@@ -168,6 +170,8 @@
     <Compile Include="GitRevisionRange.cs" />
     <Compile Include="GitRevisionType.cs" />
     <Compile Include="GitSwitchResult.cs" />
+    <Compile Include="GitTagArgs.cs" />
+    <Compile Include="GitTagCommand.cs" />
     <Compile Include="GitTarget.cs" />
     <Compile Include="GitTools.cs" />
     <Compile Include="GitTransportClientArgs.cs" />

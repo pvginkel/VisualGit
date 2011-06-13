@@ -258,6 +258,30 @@ namespace SharpGit
             return ExecuteCommand<GitCreateRepositoryCommand>(args, p => p.Execute(repositoryPath));
         }
 
+        public bool Branch(string repositoryPath, string branchName, GitBranchArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (branchName == null)
+                throw new ArgumentNullException("branchName");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitBranchCommand>(args, p => p.Execute(repositoryPath, branchName));
+        }
+
+        public bool Tag(string repositoryPath, string tagName, GitTagArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (tagName == null)
+                throw new ArgumentNullException("tagName");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitTagCommand>(args, p => p.Execute(repositoryPath, tagName));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {

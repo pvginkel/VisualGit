@@ -222,4 +222,7 @@
   <data name="CloningRepository" xml:space="preserve">
     <value>Cloning repository</value>
   </data>
+  <data name="TagProject" xml:space="preserve">
+    <value>Tag Project</value>
+  </data>
 </root>

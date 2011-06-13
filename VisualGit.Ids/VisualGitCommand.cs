@@ -83,6 +83,7 @@ namespace VisualGit
         UpdateItemSpecific,
         UpdateItemLatest,
         SolutionBranch,
+        SolutionTag,
         
         ItemSelectInWorkingCopyExplorer,
         ItemSelectInSolutionExplorer,
@@ -202,6 +203,7 @@ namespace VisualGit
 
         SwitchProject,
         ProjectBranch,
+        ProjectTag,
 
         ListViewSortAscending,
         ListViewSortDescending,
