@@ -4,7 +4,6 @@ using System.Text;
 using VisualGit.UI.PendingChanges;
 using VisualGit.UI.Services;
 using VisualGit.Scc;
-using VisualGit.UI.MergeWizard;
 using System.Reflection;
 
 namespace VisualGit.UI

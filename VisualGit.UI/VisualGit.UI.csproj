@@ -243,39 +243,21 @@
       <DependentUpon>IssueTrackerConfigDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="IssueTracker\IssueTrackerSetupCommand.cs" />
-    <Compile Include="MergeWizard\InteractiveConflictService.cs" />
-    <Compile Include="MergeWizard\MergeConflictHandler.cs" />
+    <Compile Include="MergeWizard\Commands\Merge.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MergeWizard\Dialogs\MergeConflictHandlerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MergeWizard\Dialogs\MergeConflictHandlerDialog.Designer.cs">
       <DependentUpon>MergeConflictHandlerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MergeWizard\MergeResultsDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="MergeWizard\InteractiveConflictService.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MergeWizard\MergeResultsDialog.Designer.cs">
-      <DependentUpon>MergeResultsDialog.cs</DependentUpon>
+    <Compile Include="MergeWizard\MergeConflictHandler.cs">
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MergeWizard\MergeWizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeWizard.Designer.cs">
-      <DependentUpon>MergeWizard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\WizardFramework\Properties\Resources.Designer.cs" />
-    <Compile Include="MergeWizard\WizardFramework\WizardPageCollection.cs" />
-    <Compile Include="MergeWizard\WizardFramework\Wizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\WizardFramework\Wizard.Designer.cs">
-      <DependentUpon>Wizard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\WizardFramework\WizardMessage.cs" />
-    <Compile Include="MergeWizard\WizardFramework\WizardPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\WizardFramework\WizardPageChangingEventArgs.cs" />
     <Compile Include="OptionsPages\VisualGitOptionsPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -455,93 +437,6 @@
     <Compile Include="GitLog\LogViewerDialog.Designer.cs">
       <DependentUpon>LogViewerDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MergeWizard\BaseWizardPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\BaseWizardPage.Designer.cs">
-      <DependentUpon>BaseWizardPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\Commands\Merge.cs" />
-    <Compile Include="MergeWizard\MergeBestPracticesPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeBestPracticesPage.Designer.cs">
-      <DependentUpon>MergeBestPracticesPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeOptionsPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeOptionsPage.Designer.cs">
-      <DependentUpon>MergeOptionsPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeRevisionsSelectionPageControl.Wizard.cs">
-      <DependentUpon>MergeRevisionsSelectionPage.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeRevisionsSelectionPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeRevisionsSelectionPage.Designer.cs">
-      <DependentUpon>MergeRevisionsSelectionPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceBasePageControl.Wizard.cs">
-      <DependentUpon>MergeSourceBasePage.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceBasePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceBasePage.Designer.cs">
-      <DependentUpon>MergeSourceBasePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceManuallyRecordPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceManuallyRecordPage.Designer.cs">
-      <DependentUpon>MergeSourceManuallyRecordPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceManuallyRemovePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceManuallyRemovePage.Designer.cs">
-      <DependentUpon>MergeSourceManuallyRemovePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceRangeOfRevisionsPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceRangeOfRevisionsPage.Designer.cs">
-      <DependentUpon>MergeSourceRangeOfRevisionsPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceReintegratePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceReintegratePage.Designer.cs">
-      <DependentUpon>MergeSourceReintegratePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceTwoDifferentTreesPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSourceTwoDifferentTreesPage.Designer.cs">
-      <DependentUpon>MergeSourceTwoDifferentTreesPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSummaryPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeSummaryPage.Designer.cs">
-      <DependentUpon>MergeSummaryPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeTypePage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="MergeWizard\MergeTypePage.Designer.cs">
-      <DependentUpon>MergeTypePage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MergeWizard\MergeUtils.cs" />
-    <Compile Include="MergeWizard\MergeStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MergeStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -612,7 +507,6 @@
     <Compile Include="Commands\SwitchDialog.Designer.cs">
       <DependentUpon>SwitchDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MergeWizard\UIUtils.cs" />
     <Compile Include="GitLog\LogRevisionView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -855,6 +749,10 @@
     <EmbeddedResource Include="GenericCredentialsDialog.resx">
       <DependentUpon>GenericCredentialsDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MergeWizard\Dialogs\MergeConflictHandlerDialog.resx">
+      <DependentUpon>MergeConflictHandlerDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="RepositoryExplorer\AddRepositoryRootDialog.resx">
       <DependentUpon>AddRepositoryRootDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -919,21 +817,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DiffWindow\DiffToolWindowControl.resx">
       <DependentUpon>DiffToolWindowControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\Dialogs\MergeConflictHandlerDialog.resx">
-      <DependentUpon>MergeConflictHandlerDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeResultsDialog.resx">
-      <DependentUpon>MergeResultsDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\WizardFramework\Properties\Resources.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\WizardFramework\Wizard.resx">
-      <DependentUpon>Wizard.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsPages\EnvironmentSettingsControl.resx">
@@ -1018,55 +901,6 @@
     <EmbeddedResource Include="GitLog\LogViewerDialog.resx">
       <DependentUpon>LogViewerDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeBestPracticesPage.resx">
-      <DependentUpon>MergeBestPracticesPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeOptionsPage.resx">
-      <DependentUpon>MergeOptionsPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeRevisionsSelectionPage.resx">
-      <DependentUpon>MergeRevisionsSelectionPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceBasePage.resx">
-      <DependentUpon>MergeSourceBasePage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceManuallyRecordPage.resx">
-      <DependentUpon>MergeSourceManuallyRecordPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceManuallyRemovePage.resx">
-      <DependentUpon>MergeSourceManuallyRemovePage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceRangeOfRevisionsPage.resx">
-      <DependentUpon>MergeSourceRangeOfRevisionsPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceReintegratePage.resx">
-      <DependentUpon>MergeSourceReintegratePage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSourceTwoDifferentTreesPage.resx">
-      <DependentUpon>MergeSourceTwoDifferentTreesPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeSummaryPage.resx">
-      <DependentUpon>MergeSummaryPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeTypePage.resx">
-      <DependentUpon>MergeTypePage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeStrings.resx">
-      <SubType>Designer</SubType>
-      <LastGenOutput>MergeStrings.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\RecentChangesPage.resx">
       <DependentUpon>RecentChangesPage.cs</DependentUpon>
@@ -1220,13 +1054,6 @@
     <EmbeddedResource Include="IssueTracker\IssueTrackerConfigDialog.resx">
       <DependentUpon>IssueTrackerConfigDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\BaseWizardPage.resx">
-      <DependentUpon>BaseWizardPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MergeWizard\MergeWizard.resx">
-      <DependentUpon>MergeWizard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\ConfigureRecentChangesPageDialog.resx">
       <DependentUpon>ConfigureRecentChangesPageDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -1245,22 +1072,8 @@
     </EmbeddedResource>
     <None Include="Controls\Status.Suggestion.png" />
     <Content Include="Controls\Status.Exclamation.png" />
-    <Content Include="MergeWizard\images\Error.png" />
-    <Content Include="MergeWizard\images\ManuallyRecord.png" />
-    <None Include="MergeWizard\images\MergeWizardHeader.png" />
-    <None Include="MergeWizard\images\MergeWizard.ico" />
-    <Content Include="MergeWizard\images\RangeOfRevisions.png" />
-    <Content Include="MergeWizard\images\ReintegrateABranch.png" />
-    <Content Include="MergeWizard\images\Success.png" />
-    <Content Include="MergeWizard\images\TwoDifferentTrees.png" />
-    <Content Include="MergeWizard\images\ManuallyRemove.png" />
     <None Include="Resources\folderCloseButton.Image.png" />
     <None Include="Resources\Busy.gif" />
-    <Content Include="MergeWizard\WizardFramework\images\help.gif" />
-    <Content Include="MergeWizard\WizardFramework\images\message_error.gif" />
-    <Content Include="MergeWizard\WizardFramework\images\message_info.gif" />
-    <Content Include="MergeWizard\WizardFramework\images\message_warning.gif" />
-    <Content Include="MergeWizard\WizardFramework\README.txt" />
     <Content Include="Resources\FetchGraph.png" />
     <Content Include="Resources\MergeGraph.png" />
     <Content Include="Resources\RebaseGraph.png" />
