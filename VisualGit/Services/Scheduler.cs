@@ -124,7 +124,8 @@ namespace VisualGit.Services
         {
             return delegate
             {
-                Commands.PostExecCommand(command);
+                if (Commands != null)
+                    Commands.PostExecCommand(command);
             };
         }
 

@@ -124,6 +124,15 @@ namespace VisualGit.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cloning repository.
+        /// </summary>
+        internal static string CloningRepository {
+            get {
+                return ResourceManager.GetString("CloningRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Patch.
         /// </summary>
         internal static string CreatePatchTitle {

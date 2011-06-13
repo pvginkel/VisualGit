@@ -219,4 +219,7 @@
   <data name="PullingSolution" xml:space="preserve">
     <value>Pulling Solution</value>
   </data>
+  <data name="CloningRepository" xml:space="preserve">
+    <value>Cloning repository</value>
+  </data>
 </root>

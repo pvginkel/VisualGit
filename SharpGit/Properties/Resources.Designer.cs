@@ -79,6 +79,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clone could not be completed successfully.
+        /// </summary>
+        internal static string CloneFailed {
+            get {
+                return ResourceManager.GetString("CloneFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attempting to commit unstaged file &apos;{0}&apos;.
         /// </summary>
         internal static string CommittingUnstagedFileX {
@@ -102,6 +111,15 @@ namespace SharpGit.Properties {
         internal static string CouldNotLock {
             get {
                 return ResourceManager.GetString("CouldNotLock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not retieve remote refs.
+        /// </summary>
+        internal static string GetRemoteRefsFailed {
+            get {
+                return ResourceManager.GetString("GetRemoteRefsFailed", resourceCulture);
             }
         }
         
@@ -142,7 +160,7 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pull cound not be completed successfully.
+        ///   Looks up a localized string similar to Pull could not be completed successfully.
         /// </summary>
         internal static string PullFailed {
             get {

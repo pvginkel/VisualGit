@@ -36,5 +36,7 @@ namespace SharpGit
         public static readonly GitErrorCode PullFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.PullFailed);
         public static readonly GitErrorCode MoveObstructed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.MoveObstructed);
         public static readonly GitErrorCode BinaryFile = new GitErrorCode(GitErrorCategory.None, Properties.Resources.BinaryFile);
+        public static readonly GitErrorCode CloneFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.CloneFailed);
+        public static readonly GitErrorCode GetRemoteRefsFailed = new GitErrorCode(GitErrorCategory.None, Properties.Resources.GetRemoteRefsFailed);
     }
 }

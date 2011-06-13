@@ -45,11 +45,7 @@ namespace VisualGit
         // Start of public commands; values shouldn't change between versions to
         // allow interop with other packages (like Collabnet Desktop and others)
 
-        FileFileOpenFromGit,
-        FileFileAddFromGit,
-
         FileSccOpenFromGit,
-        FileSccAddFromGit,
 
         FileSccAddSolutionToGit,
         FileSccAddProjectToGit,

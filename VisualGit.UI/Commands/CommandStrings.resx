@@ -159,4 +159,19 @@
   <data name="SelectABranchTagOrRevision" xml:space="preserve">
     <value>Select a branch, tag or revision to switch to</value>
   </data>
+  <data name="Clone" xml:space="preserve">
+    <value>Clone</value>
+  </data>
+  <data name="DestinationDoesNotExist" xml:space="preserve">
+    <value>The destination does not exist</value>
+  </data>
+  <data name="DestinationDoesNotExistCreate" xml:space="preserve">
+    <value>The destination does not yet exist. Create?</value>
+  </data>
+  <data name="SelectADestination" xml:space="preserve">
+    <value>Select a destination</value>
+  </data>
+  <data name="ListingRemoteBranches" xml:space="preserve">
+    <value>Listing remote branches</value>
+  </data>
 </root>

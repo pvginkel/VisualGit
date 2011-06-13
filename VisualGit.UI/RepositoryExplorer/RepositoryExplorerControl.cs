@@ -291,8 +291,11 @@ namespace VisualGit.UI.RepositoryExplorer
                 {
                     // We found a project or solution, use Open from Git to create a checkout
 
+                    throw new NotImplementedException();
+#if false
                     svc.PostExecCommand(VisualGitCommand.FileFileOpenFromGit, origin);
                     return;
+#endif
                 }
             }
 

@@ -63,9 +63,6 @@ namespace VisualGit
 
         LogMessageCommands,
 
-        FileFileOpen, // File->Open->*
-        FileFileAdd, // File->Add->*
-
         ItemResolveCommand,
         ItemResolveFile,
         ItemResolveAutoFull,

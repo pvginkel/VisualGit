@@ -52,6 +52,8 @@ namespace SharpGit
         //CropWorkingCopy = 42,
         Push = 43,
         Pull = 44,
+        RemoteRefs = 45,
+        Clone = 46,
         //GetWorkingCopyInfo = 4097,
         //GetWorkingCopyVersion = 4098,
         //GetWorkingCopyEntries = 4099,

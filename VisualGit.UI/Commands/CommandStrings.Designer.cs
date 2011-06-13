@@ -61,11 +61,47 @@ namespace VisualGit.UI.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clone.
+        /// </summary>
+        internal static string Clone {
+            get {
+                return ResourceManager.GetString("Clone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The destination does not exist.
+        /// </summary>
+        internal static string DestinationDoesNotExist {
+            get {
+                return ResourceManager.GetString("DestinationDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The destination does not yet exist. Create?.
+        /// </summary>
+        internal static string DestinationDoesNotExistCreate {
+            get {
+                return ResourceManager.GetString("DestinationDoesNotExistCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a valid path (like &apos;C:\MyWork&apos;).
         /// </summary>
         internal static string EnterValidPath {
             get {
                 return ResourceManager.GetString("EnterValidPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Listing remote branches.
+        /// </summary>
+        internal static string ListingRemoteBranches {
+            get {
+                return ResourceManager.GetString("ListingRemoteBranches", resourceCulture);
             }
         }
         
@@ -111,6 +147,15 @@ namespace VisualGit.UI.Commands {
         internal static string SelectABranchTagOrRevision {
             get {
                 return ResourceManager.GetString("SelectABranchTagOrRevision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a destination.
+        /// </summary>
+        internal static string SelectADestination {
+            get {
+                return ResourceManager.GetString("SelectADestination", resourceCulture);
             }
         }
         

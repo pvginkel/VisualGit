@@ -168,6 +168,17 @@ namespace SharpGit
 
             MarkMerged(repository, args);
         }
+
+        protected Repository CreateDummyRepository()
+        {
+            var builder = new RepositoryBuilder();
+
+            builder.SetBare();
+            builder.SetWorkTree(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
+            builder.Setup();
+
+            return builder.Build();
+        }
     }
 
     internal abstract class GitCommand<T> : GitCommand

@@ -15,24 +15,6 @@
     <Import type="VisualGit.VisualGitToolBar" from="..\..\VisualGit.Ids\bin\$(Configuration)\VisualGit.Ids.dll" prefix="ToolBar_" />
   </Imports>
   <UI packageId="VisualGit_PackageGuid" autoBmpId="VisualGit_VisualGitCommandBitmap" autoBmpResId="Bmp_VisualGitBmp">
-    <MenuRef id="guidSHLMainMenu:IDM_VS_CSCD_OPEN">
-      <Group id="Grp_FileFileOpen" priority="0x800">
-        <!-- The bottom of the File->Open->* menu-->
-        <Button id="Cmd_FileFileOpenFromGit" text="&amp;Git Project..." name="OpenFromGit" priority="0x100"
-                toolTip="Open a Project or Solution from Git" iconFile="PendingChanges/PendingChanges.png" allowParams="true"/>
-      </Group>
-    </MenuRef>
-    <MenuRef id="guidSHLMainMenu:IDM_VS_CSCD_ADD">
-      <Group id="Grp_FileFileAdd" priority="0x800">
-        <!-- The bottom of the File->Add->* menu-->
-        <Button id="Cmd_FileFileAddFromGit" text="&amp;Git Project..." name="AddFromGit" priority="0x100"
-                toolTip="Add an existing Project or Solution from Git" iconFile="PendingChanges/PendingChanges.png" allowParams="true"
-                dynamicVisibility="true">
-          <!-- Only show Add when not debugging, etc -->
-          <Visibility context="UICONTEXT_SolutionExistsAndNotBuildingAndNotDebugging" />
-        </Button>
-      </Group>
-    </MenuRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_INCLUDEEXCLUDE">
       <!--      <Button id="Cmd_ProjectItemGroup" name="GitGroupItem" priority="0xE000"
               text="&amp;Group Files in Project" defaultInvisible="true"
@@ -66,13 +48,8 @@
             <ButtonRef id="Cmd_AddItem" priority="0x10" />
           </Group>
           <Group id="Grp_FileSccOpen" priority="0x01A0">
-            <Button id="Cmd_FileSccOpenFromGit" text="Open &amp;from Git..." name="OpenFromGit" priority="0x100"
-                    toolTip="Open a Project or Solution from Git" dynamicVisibility="true">
-              <Visibility context="VisualGit_SccProviderGuid" />
-            </Button>
-            <Button id="Cmd_FileSccAddFromGit" text="A&amp;dd Project from Git..." name="AddFromGit" priority="0x200"
-                    toolTip="Add an existing Project or Solution from Git" dynamicVisibility="true">
-              <!-- Only show Add when not debugging, etc -->
+            <Button id="Cmd_FileSccOpenFromGit" text="&amp;Clone a Repository..." name="OpenFromGit" priority="0x100"
+                    toolTip="Clone a remote repository" dynamicVisibility="true">
               <Visibility context="VisualGit_SccProviderGuid" />
             </Button>
           </Group>

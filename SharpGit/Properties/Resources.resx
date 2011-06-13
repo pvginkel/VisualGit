@@ -123,6 +123,9 @@
   <data name="CheckoutFailed" xml:space="preserve">
     <value>Checkout could not be completed successfully</value>
   </data>
+  <data name="CloneFailed" xml:space="preserve">
+    <value>Clone could not be completed successfully</value>
+  </data>
   <data name="CommittingUnstagedFileX" xml:space="preserve">
     <value>Attempting to commit unstaged file '{0}'</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="CouldNotLock" xml:space="preserve">
     <value>Unable to lock the repository</value>
+  </data>
+  <data name="GetRemoteRefsFailed" xml:space="preserve">
+    <value>Could not retieve remote refs</value>
   </data>
   <data name="MoveObstructed" xml:space="preserve">
     <value>Move could not be completed because file is obscured</value>
@@ -145,7 +151,7 @@
     <value>Path is not (part of) a Git repository</value>
   </data>
   <data name="PullFailed" xml:space="preserve">
-    <value>Pull cound not be completed successfully</value>
+    <value>Pull could not be completed successfully</value>
   </data>
   <data name="PushFailed" xml:space="preserve">
     <value>Push could not be completed successfully</value>

@@ -95,6 +95,7 @@
       <Link>Key.snk</Link>
     </None>
     <Compile Include="Commands\ApplyPatch.cs" />
+    <Compile Include="Commands\CloneRepository.cs" />
     <Compile Include="Commands\ItemAddToPending.cs" />
     <Compile Include="Commands\ItemCreatePatch.cs" />
     <Compile Include="Commands\ItemDelete.cs" />
@@ -145,7 +146,6 @@
     </Compile>
     <Compile Include="Commands\AddToSccCommands.cs" />
     <Compile Include="Commands\ItemResolveCommand.cs" />
-    <Compile Include="Commands\OpenFromGit.cs" />
     <Compile Include="Commands\OpenInVisualStudio.cs" />
     <Compile Include="Commands\RepositoryExplorer\RepositoryBrowseCommand.cs" />
     <Compile Include="Commands\RepositoryExplorer\ViewRepositoryFileCommand.cs" />

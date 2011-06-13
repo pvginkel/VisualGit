@@ -222,6 +222,32 @@ namespace SharpGit
             return success;
         }
 
+        public bool GetRemoteRefs(string remote, GitRemoteRefType types, GitRemoteRefsArgs args, out GitRemoteRefsResult result)
+        {
+            if (remote == null)
+                throw new ArgumentNullException("remote");
+            if (types == 0)
+                throw new ArgumentOutOfRangeException("types", "Select at least one type");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitRemoteRefsCommand, GitRemoteRefsResult>(args, p => p.Execute(remote, types), out result);
+        }
+
+        public bool Clone(string remote, GitRef @ref, string destination, GitCloneArgs args, out GitCloneResult result)
+        {
+            if (remote == null)
+                throw new ArgumentNullException("remote");
+            if (@ref == null)
+                throw new ArgumentNullException("ref");
+            if (destination == null)
+                throw new ArgumentNullException("destination");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitCloneCommand, GitCloneResult>(args, p => p.Execute(remote, @ref, destination), out result);
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {
