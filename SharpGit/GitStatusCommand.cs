@@ -175,6 +175,11 @@ namespace SharpGit
                         // after we've read the entry.Repository, it's either added
                         // or ignored.
 
+                        // Skip over directories.
+
+                        if ((iterator.EntryFileMode.GetBits() & NGit.FileMode.TYPE_TREE) != 0)
+                            continue;
+
                         string fullPath = iterator.GetEntryFile();
 
                         if (!RepositoryUtil.PathMatches(relativePath, repository.GetRepositoryPath(fullPath), false, Args.Depth))
