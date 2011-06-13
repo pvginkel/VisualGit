@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.UI.PendingChanges.Synchronize;
-using VisualGit.UI.RepositoryExplorer;
 using VisualGit.Commands;
 using VisualGit.Configuration;
 using SharpGit;

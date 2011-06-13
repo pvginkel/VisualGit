@@ -90,7 +90,6 @@ namespace VisualGit
         public const string VisualGitOutputPaneId = "1BA9280B-3B7E-41F2-91DC-0EBED18DD619";
 
 
-        public const string RepositoryExplorerToolWindowId = "AFDAA869-4921-4859-8FE3-BCE8868227DA";
         public const string PendingChangesToolWindowId = "7D28E788-89D6-464B-A6A6-FDCB06B7D664";
         public const string WorkingCopyExplorerToolWindowId = "63C4CB4B-2A73-47F3-ADB6-99D52B9C00FD";
         public const string BlameToolWindowId = "843AB0C2-A28C-46E4-B2E5-EF55B570CC1F";

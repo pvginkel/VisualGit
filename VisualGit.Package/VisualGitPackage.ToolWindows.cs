@@ -18,7 +18,6 @@ using VisualGit.Commands;
 using VisualGit.Scc.UI;
 using VisualGit.UI;
 using VisualGit.UI.DiffWindow;
-using VisualGit.UI.RepositoryExplorer;
 using VisualGit.UI.GitLog;
 using VisualGit.UI.WorkingCopyExplorer;
 
@@ -28,7 +27,6 @@ namespace VisualGit.VSPackage
     // .Net control hosted in this container. This container makes sure
     // user settings are persisted, etc.
     [ProvideToolWindow(typeof(WorkingCopyExplorerToolWindow), Style = VsDockStyle.MDI, Transient = true)]
-    [ProvideToolWindow(typeof(RepositoryExplorerToolWindow), Style = VsDockStyle.MDI, Transient = true)]
     [ProvideToolWindow(typeof(PendingChangesToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = false, Window = ToolWindowGuids80.Outputwindow)]
     [ProvideToolWindow(typeof(LogToolWindow), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom, Transient = true)]
     [ProvideToolWindow(typeof(DiffToolWindow), Style = VsDockStyle.MDI, Transient = true)]
@@ -44,8 +42,6 @@ namespace VisualGit.VSPackage
         {
             switch (toolWindow)
             {
-                case VisualGitToolWindow.RepositoryExplorer:
-                    return typeof(RepositoryExplorerToolWindow);
                 case VisualGitToolWindow.WorkingCopyExplorer:
                     return typeof(WorkingCopyExplorerToolWindow);
                 case VisualGitToolWindow.PendingChanges:
@@ -521,24 +517,6 @@ namespace VisualGit.VSPackage
             VisualGitToolWindow = VisualGitToolWindow.WorkingCopyExplorer;
 
             ToolBar = new CommandID(VisualGitId.CommandSetGuid, (int)VisualGitCommandMenu.WorkingCopyExplorerToolBar);
-            ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
-        }
-    }
-
-    /// <summary>
-    /// Wrapper for the RepositoryExplorer in the VisualGit assembly
-    /// </summary>
-    [Guid(VisualGitId.RepositoryExplorerToolWindowId)]
-    class RepositoryExplorerToolWindow : VisualGitToolWindowPane
-    {
-        public RepositoryExplorerToolWindow()
-        {
-            Caption = Resources.RepositoryExplorerToolWindowTitle;
-            Control = new RepositoryExplorerControl();
-
-            VisualGitToolWindow = VisualGitToolWindow.RepositoryExplorer;
-
-            ToolBar = new CommandID(VisualGitId.CommandSetGuid, (int)VisualGitCommandMenu.RepositoryExplorerToolBar);
             ToolBarLocation = (int)VSTWT_LOCATION.VSTWT_TOP;
         }
     }

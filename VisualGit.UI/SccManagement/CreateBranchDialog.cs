@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using VisualGit.UI.RepositoryExplorer;
 using VisualGit.UI.GitLog;
 using SharpSvn;
 using VisualGit.Scc;
@@ -118,6 +117,8 @@ namespace VisualGit.UI.SccManagement
 
         private void toUrlBrowse_Click(object sender, EventArgs e)
         {
+            throw new NotImplementedException();
+#if false
             using (RepositoryFolderBrowserDialog dlg = new RepositoryFolderBrowserDialog())
             {
                 dlg.EnableNewFolderButton = true;
@@ -132,6 +133,7 @@ namespace VisualGit.UI.SccManagement
                         toUrlBox.Text = dlg.SelectedUri.AbsoluteUri;
                 }
             }
+#endif
         }
 
         private void toUrlBox_TextChanged(object sender, EventArgs e)

@@ -8,7 +8,6 @@ namespace VisualGit
     public enum VisualGitToolWindow
     {
         None=0,
-        RepositoryExplorer,
         WorkingCopyExplorer,
         PendingChanges,
         Log,

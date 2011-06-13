@@ -101,10 +101,6 @@
     <Compile Include="Commands\ItemDelete.cs" />
     <Compile Include="Commands\ItemMoveToChangeList.cs" />
     <Compile Include="Commands\ItemResolveCasing.cs" />
-    <Compile Include="Commands\RepositoryExplorer\CopyToOrMove.cs" />
-    <Compile Include="Commands\RepositoryExplorer\CopyToWorkingCopy.cs" />
-    <Compile Include="Commands\RepositoryExplorer\DeleteRepositoryItemCommand.cs" />
-    <Compile Include="Commands\RepositoryExplorer\RenameNode.cs" />
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />
     <Compile Include="Commands\SolutionPullCommand.cs" />
     <Compile Include="Commands\SolutionPushCommand.cs" />
@@ -147,20 +143,12 @@
     <Compile Include="Commands\AddToSccCommands.cs" />
     <Compile Include="Commands\ItemResolveCommand.cs" />
     <Compile Include="Commands\OpenInVisualStudio.cs" />
-    <Compile Include="Commands\RepositoryExplorer\RepositoryBrowseCommand.cs" />
-    <Compile Include="Commands\RepositoryExplorer\ViewRepositoryFileCommand.cs" />
     <Compile Include="Commands\WorkingCopyExplorer\WorkingCopyBrowseCommand.cs" />
     <Compile Include="Commands\ItemAnnotateCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\CheckoutCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ItemCommitCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\RepositoryExplorer\CopyReposExplorerUrl.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\ItemShowChanges.cs">
@@ -175,21 +163,11 @@
     <Compile Include="Commands\LogCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\RepositoryExplorer\CreateDirectoryCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\RefreshCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\RepositoryExplorer\RefreshRepositoryItemCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\RepositoryExplorer\RemoveRepositoryRootCommand.cs" />
     <Compile Include="Commands\WorkingCopyExplorer\RemoveWorkingCopyExplorerRootCommand.cs" />
     <Compile Include="Commands\ItemRevertCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\RepositoryExplorer\SaveToFileCommand.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\ShowToolWindows.cs">
@@ -199,9 +177,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\UpdateItemCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Commands\RepositoryExplorer\ViewInVSNetCommand.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\VisualGitDiff.cs" />

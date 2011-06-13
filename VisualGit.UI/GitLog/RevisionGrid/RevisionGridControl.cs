@@ -7,7 +7,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing;
 using System.Threading;
 using System.Diagnostics;
-using VisualGit.UI.RepositoryExplorer;
 
 namespace VisualGit.UI.GitLog.RevisionGrid
 {

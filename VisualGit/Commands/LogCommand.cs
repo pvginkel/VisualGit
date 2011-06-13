@@ -19,14 +19,11 @@ namespace VisualGit.Commands
     [Command(VisualGitCommand.DocumentHistory)]
     [Command(VisualGitCommand.ProjectHistory)]
     [Command(VisualGitCommand.SolutionHistory)]
-    [Command(VisualGitCommand.ReposExplorerLog, AlwaysAvailable = true)]
     [Command(VisualGitCommand.AnnotateShowLog, AlwaysAvailable = true)]
     sealed class LogCommand : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-            int i;
-
             switch (e.Command)
             {
                 case VisualGitCommand.ProjectHistory:
@@ -96,19 +93,6 @@ namespace VisualGit.Commands
                     
                     // Local log only
                     return;
-                case VisualGitCommand.ReposExplorerLog:
-                    i = 0;
-                    foreach (IGitRepositoryItem item in e.Selection.GetSelection<IGitRepositoryItem>())
-                    {
-                        if (item == null || item.Origin == null)
-                            continue;
-                        i++;
-                        if (i > 1)
-                            break;
-                    }
-                    if (i == 1)
-                        return;
-                    break;
                 case VisualGitCommand.AnnotateShowLog:
                     if (EnumTools.GetSingle(e.Selection.GetSelection<IAnnotateSection>()) != null)
                         return;
@@ -166,18 +150,6 @@ namespace VisualGit.Commands
                     Debug.Assert(docItem != null);
 
                     PerformLog(e.Context, new GitOrigin[] { new GitOrigin(docItem) }, null, null);
-                    break;
-                case VisualGitCommand.ReposExplorerLog:
-                    IGitRepositoryItem item = null;
-                    foreach (IGitRepositoryItem i in e.Selection.GetSelection<IGitRepositoryItem>())
-                    {
-                        if (i != null && i.Uri != null)
-                            item = i;
-                        break;
-                    }
-
-                    if (item != null)
-                        PerformLog(e.Context, new GitOrigin[] { item.Origin }, null, null);
                     break;
                 case VisualGitCommand.AnnotateShowLog:
                     IAnnotateSection section = EnumTools.GetSingle(e.Selection.GetSelection<IAnnotateSection>());

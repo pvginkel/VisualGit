@@ -37,9 +37,6 @@ namespace VisualGit
         SccProjectAdvanced,
         SccItemAdvanced,
 
-        RepositoryExplorerTbBrowse,
-        RepositoryExplorerTbEdit,
-        RepositoryExplorerContext,
         WorkingCopyExplorerToolBar,
         WorkingCopyExplorerContext,
 
@@ -100,17 +97,6 @@ namespace VisualGit
 
         PendingChangesPush1,
         PendingChangesPull1,
-
-        RepositoryExplorerOpen,
-        RepositoryExplorerReview,
-        RepositoryExplorerEdit,
-        RepositoryExplorerRefer,
-
-        RepositoryExplorerTbOpen,
-        RepositoryExplorerTbAction,
-
-        OpenWith,
-        OpenWith2,
 
         /// <summary>
         /// Special parent group for VS Menu Designer support

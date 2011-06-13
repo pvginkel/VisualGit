@@ -25,8 +25,6 @@ namespace VisualGit
 
         FileScc,
 
-        RepositoryExplorerToolBar,
-        RepositoryExplorerContextMenu,
         WorkingCopyExplorerToolBar,
         WorkingCopyExplorerContextMenu,
 
@@ -72,8 +70,6 @@ namespace VisualGit
         AnnotateContextMenu,
 
         EditorScc,
-        RepositoryExplorerOpenWith,
-        RepositoryExplorerTbOpen,
 
         MoveToChangeList,
         MdiSccMenu

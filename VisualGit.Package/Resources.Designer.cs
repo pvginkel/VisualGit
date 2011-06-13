@@ -171,15 +171,6 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Repository Explorer.
-        /// </summary>
-        internal static string RepositoryExplorerToolWindowTitle {
-            get {
-                return ResourceManager.GetString("RepositoryExplorerToolWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Working Copy Explorer.
         /// </summary>
         internal static string WorkingCopyExplorerToolWindowTitle {

@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using SharpSvn;
 using VisualGit.Scc;
 using System.IO;
-using VisualGit.UI.RepositoryExplorer;
 using System.Windows.Forms.Design;
 using SharpGit;
 

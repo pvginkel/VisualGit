@@ -51,7 +51,6 @@ namespace VisualGit.UI.WorkingCopyExplorer
             fileList.Context = Context;
 
             VSCommandHandler.Install(Context, this, VisualGitCommand.ExplorerOpen, OnOpen, OnUpdateOpen);
-            VSCommandHandler.Install(Context, this, VisualGitCommand.ExplorerUp, OnUp, OnUpdateUp);
             VSCommandHandler.Install(Context, this, VisualGitCommand.Refresh, OnRefresh, OnUpdateRefresh);
             VSCommandHandler.Install(Context, this, new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.Delete), OnDelete);
 
@@ -260,23 +259,6 @@ namespace VisualGit.UI.WorkingCopyExplorer
             e.GetService<IVisualGitCommandService>().DirectlyExecCommand(VisualGitCommand.Refresh);
 
             RefreshSelection();
-        }
-
-        void OnUpdateUp(object sender, CommandUpdateEventArgs e)
-        {
-            FileSystemTreeNode tn = folderTree.SelectedNode as FileSystemTreeNode;
-
-            if (tn == null || !(tn.Parent is FileSystemTreeNode))
-                e.Enabled = false;
-        }
-
-        void OnUp(object sender, CommandEventArgs e)
-        {
-            FileSystemTreeNode t = folderTree.SelectedNode as FileSystemTreeNode;
-            if (t != null && t.Parent != null)
-            {
-                folderTree.SelectedNode = t.Parent;
-            }
         }
 
         void OnUpdateOpen(object sender, CommandUpdateEventArgs e)

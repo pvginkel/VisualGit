@@ -111,17 +111,14 @@
     <Compile Include="Annotate\AnnotateEditorControl.Designer.cs">
       <DependentUpon>AnnotateEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="BusyOverlay.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Commands\AnnotateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Commands\AnnotateDialog.Designer.cs">
       <DependentUpon>AnnotateDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Commands\CheckoutDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Commands\CheckoutDialog.Designer.cs">
-      <DependentUpon>CheckoutDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\CloneDialog.cs">
       <SubType>Form</SubType>
@@ -364,24 +361,6 @@
     <Compile Include="RecentMessageDialog.Designer.cs">
       <DependentUpon>RecentMessageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="RepositoryExplorer\Dialogs\ConfirmDeleteDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\Dialogs\ConfirmDeleteDialog.Designer.cs">
-      <DependentUpon>ConfirmDeleteDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RepositoryExplorer\Dialogs\RenameDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\Dialogs\RenameDialog.Designer.cs">
-      <DependentUpon>RenameDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SccManagement\CopyToDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SccManagement\CopyToDialog.Designer.cs">
-      <DependentUpon>CopyToDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="SccManagement\CreateBranchDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -454,32 +433,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RepositoryExplorer\AddRepositoryRootDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\AddRepositoryRootDialog.Designer.cs">
-      <DependentUpon>AddRepositoryRootDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RepositoryExplorer\BusyOverlay.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryExplorerItem.cs" />
-    <Compile Include="RepositoryExplorer\RepositoryFolderBrowserDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryFolderBrowserDialog.Designer.cs">
-      <DependentUpon>RepositoryFolderBrowserDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryListItem.cs" />
-    <Compile Include="RepositoryExplorer\RepositoryListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RepositoryStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryTreeNode.cs" />
     <Compile Include="SccManagement\AddToGit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -644,15 +597,6 @@
       <DependentUpon>ProgressDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryExplorer\RepositoryExplorerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryExplorerControl.Designer.cs">
-      <DependentUpon>RepositoryExplorerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryTreeView.Designer.cs">
-      <DependentUpon>RepositoryTreeView.cs</DependentUpon>
-    </Compile>
     <Compile Include="PathSelector\VersionSelector.Designer.cs">
       <DependentUpon>VersionSelector.cs</DependentUpon>
     </Compile>
@@ -689,9 +633,6 @@
     <Compile Include="ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RepositoryExplorer\RepositoryTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="GitLog\LogStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -719,9 +660,6 @@
     <Compile Include="WorkingCopyExplorer\WorkingCopyExplorerControl.Designer.cs">
       <DependentUpon>WorkingCopyExplorerControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Commands\CheckoutDialog.resx">
-      <DependentUpon>CheckoutDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Commands\CloneDialog.resx">
       <DependentUpon>CloneDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -747,10 +685,6 @@
       <DependentUpon>MergeConflictHandlerDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\AddRepositoryRootDialog.resx">
-      <DependentUpon>AddRepositoryRootDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ErrorDialog.resx">
       <DependentUpon>ErrorDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -773,10 +707,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressDialog.resx">
       <DependentUpon>ProgressDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\RepositoryTreeView.resx">
-      <DependentUpon>RepositoryTreeView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PathSelector\VersionSelector.resx">
@@ -848,18 +778,6 @@
       <DependentUpon>RecentMessageDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\Dialogs\ConfirmDeleteDialog.resx">
-      <DependentUpon>ConfirmDeleteDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\Dialogs\RenameDialog.resx">
-      <DependentUpon>RenameDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SccManagement\CopyToDialog.resx">
-      <DependentUpon>CopyToDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="SccManagement\CreateBranchDialog.resx">
       <DependentUpon>CreateBranchDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -895,15 +813,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\RepositoryFolderBrowserDialog.resx">
-      <DependentUpon>RepositoryFolderBrowserDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\RepositoryStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>RepositoryStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SccManagement\AddToGit.resx">
@@ -970,10 +879,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\PendingIssuesPage.resx">
       <DependentUpon>PendingIssuesPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RepositoryExplorer\RepositoryExplorerControl.resx">
-      <DependentUpon>RepositoryExplorerControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GitLog\LogStrings.resx">

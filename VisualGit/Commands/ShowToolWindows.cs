@@ -1,5 +1,4 @@
 using VisualGit.UI;
-using VisualGit.UI.RepositoryExplorer;
 using VisualGit.VS;
 
 namespace VisualGit.Commands
@@ -9,7 +8,6 @@ namespace VisualGit.Commands
     /// </summary>
     [Command(VisualGitCommand.ShowPendingChanges)]
     [Command(VisualGitCommand.ShowWorkingCopyExplorer)]
-    [Command(VisualGitCommand.ShowRepositoryExplorer, AlwaysAvailable=true)]
     class ShowToolWindows : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
@@ -35,27 +33,11 @@ namespace VisualGit.Commands
                 case VisualGitCommand.ShowWorkingCopyExplorer:
                     toolWindow = VisualGitToolWindow.WorkingCopyExplorer;
                     break;
-                case VisualGitCommand.ShowRepositoryExplorer:
-                    toolWindow = VisualGitToolWindow.RepositoryExplorer;
-                    break;
                 default:
                     return;
             }
 
             package.ShowToolWindow(toolWindow);
-
-            if (e.Command == VisualGitCommand.ShowRepositoryExplorer)
-            {
-                IVisualGitSolutionSettings ss = e.GetService<IVisualGitSolutionSettings>();
-
-                if (ss.ProjectRootUri != null)
-                {
-                    RepositoryExplorerControl ctrl = e.Selection.ActiveDialogOrFrameControl as RepositoryExplorerControl;
-
-                    if (ctrl != null)
-                        ctrl.AddRoot(ss.ProjectRootUri);
-                }
-            }
         }
     }
 }

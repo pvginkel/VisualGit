@@ -6,7 +6,6 @@ using Microsoft.VisualStudio;
 namespace VisualGit.Commands
 {
     [Command(VisualGitCommand.ItemSelectInWorkingCopyExplorer)]
-    [Command(VisualGitCommand.ItemSelectInRepositoryExplorer)]
     [Command(VisualGitCommand.ItemSelectInSolutionExplorer)]
     class OpenInXExplorer : CommandBase
     {
@@ -20,8 +19,6 @@ namespace VisualGit.Commands
             bool enable = true;
             if (node == null)
                 enable = false;
-            else if (e.Command == VisualGitCommand.ItemSelectInRepositoryExplorer)
-                enable = node.Uri != null;
             else if (e.Command == VisualGitCommand.ItemSelectInWorkingCopyExplorer)
                 enable = node.Exists;
             else if (e.Command == VisualGitCommand.ItemSelectInSolutionExplorer)
@@ -43,13 +40,6 @@ namespace VisualGit.Commands
             IVisualGitCommandService cmd = e.GetService<IVisualGitCommandService>();
             switch (e.Command)
             {
-                case VisualGitCommand.ItemSelectInRepositoryExplorer:
-                    if (node == null || node.Uri == null)
-                        return;
-
-                    if (cmd != null)
-                        cmd.DirectlyExecCommand(VisualGitCommand.RepositoryBrowse, node.FullPath);
-                    break;
                 case VisualGitCommand.ItemSelectInWorkingCopyExplorer:
                     if (node == null || !node.Exists)
                         return;

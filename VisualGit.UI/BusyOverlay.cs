@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -7,7 +7,7 @@ using System.Drawing;
 using VisualGit.UI.Properties;
 using VisualGit.Scc.UI;
 
-namespace VisualGit.UI.RepositoryExplorer
+namespace VisualGit.UI
 {
     public class BusyOverlay : Component
     {

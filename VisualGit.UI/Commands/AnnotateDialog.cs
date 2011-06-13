@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using VisualGit.Scc;
 using SharpSvn;
-using VisualGit.UI.RepositoryExplorer;
 using SharpGit;
 using System.Diagnostics;
 

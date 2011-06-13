@@ -112,11 +112,6 @@
                 toolTip="Show the Pending Changes Window." iconFile="PendingChanges/PendingChanges.png" defaultInvisible="true">
         <KeyBinding editor="guidVSStd97" mod1="ctrl" key1="k" key2="c" />
       </Button>
-      <Button id="Cmd_ShowRepositoryExplorer" name="RepositoryExplorer" priority="0x901"
-            text="Repositor&amp;y Explorer"
-            toolTip="Git Repository Explorer" iconFile="PendingChanges/RepositoryExplorer.png">
-        <KeyBinding editor="guidVSStd97" mod1="ctrl" key1="k" key2="r"/>
-      </Button>
       <Button id="Cmd_ShowWorkingCopyExplorer" name="WorkingCopyExplorer" priority="0x902"
           text="&amp;Working Copy Explorer"
           toolTip="Show the Working Copy Explorer window." iconFile="PendingChanges/WCExplorer.png" defaultInvisible="true">
@@ -125,10 +120,6 @@
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_WNDO_OTRWNDWS1">
       <ButtonRef id="Cmd_ShowPendingChanges" priority="0x800" />
-    </GroupRef>
-    <GroupRef id="guidSHLMainMenu:IDG_VS_TOOLSB_NEWWINDOWS">
-      <!-- Views list in the standard menu bar -->
-      <ButtonRef id="Cmd_ShowRepositoryExplorer" priority="0x210" />
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_SOLUTION_SCC">
       <!-- VS Predefined group for SCC commands on the solution -->
@@ -333,10 +324,6 @@
                       text="Select in So&amp;lution Explorer" defaultInvisible="true">
             <Visibility context="VisualGit_SccProviderGuid"/>
           </Button>
-          <Button id="Cmd_ItemSelectInRepositoryExplorer" name="OpenInRepositoryExplorer" priority="0x200"
-                      text="Select in &amp;Repository Explorer" defaultInvisible="true">
-            <Visibility context="VisualGit_SccProviderGuid"/>
-          </Button>
           <Button id="Cmd_ItemSelectInWorkingCopyExplorer" name="OpenInWorkingCopyExplorer" priority="0x300"
                       text="Select in &amp;Working Copy Explorer" defaultInvisible="true">
             <Visibility context="VisualGit_SccProviderGuid"/>
@@ -352,117 +339,12 @@
       <!-- The 'Edit Project' group on unloaded projects -->
       <ButtonRef id="Cmd_ItemConflictEdit" priority="0x8000" />
     </GroupRef>
-    <GroupRef id="Menu_RepositoryExplorerToolBar">
-      <!-- The Repository Explorer Toolbar -->
-      <Menu id="Menu_RepositoryExplorerToolBar" name="RepositoryExplorer" priority="0" type="ToolWindowToolbar">
-
-        <Group id="Grp_RepositoryExplorerTbBrowse" priority="0x100">
-          <Button id="Cmd_RepositoryBrowse" name="GitRepositoryBrowse" priority="0x100"
-                text="A&amp;dd Repository Url"
-                  menuText="Open Url in &amp;Repository Explorer"
-                toolTip="Add a new URL to the Repository Explorer." iconFile="menu/AddUrl.png" allowParams="true"/>
-          <Button id="Cmd_RemoveRepositoryRoot" name="RemoveRepositoryRoot" priority="0x200"
-                text="&amp;Remove Repository URL"
-                toolTip="Remove a URL from the Repository Explorer." iconFile="menu/RemoveUrl.png"/>
-          <Button id="Cmd_ExplorerUp" name="ExplorerUp" priority="0xF000"
-                  text="&amp;Up" toolTip="Up" iconFile="PendingChanges/FolderUp.png">
-            <KeyBinding key1="VK_UP" mod1="alt" editor="VisualGit_SccExplorerContextGuid"/>
-            <KeyBinding key1="VK_BACK" editor="VisualGit_SccExplorerContextGuid"/>
-          </Button>
-        </Group>
-        <Group id="Grp_RepositoryExplorerTbEdit" priority="0x200">
-          <ButtonRef id="guidVSStd97:cmdidCopy" priority="0x100" />
-          <ButtonRef id="guidVSStd97:cmdidPaste" priority="0x200" />
-          <Button id="Cmd_CopyReposExplorerUrl" name="CopyReposExplorerUrl" priority="0x400"
-                text="Copy &amp;Url"
-                toolTip="Copy the Url of this item to the clipboard." iconFile="menu/CopyUrlToClipboard.png" />
-
-          <Button id="Cmd_RefreshRepositoryItem" name="RefreshRepositoryItem" priority="0xF000"
-                text="Refres&amp;h"
-                toolTip="Refresh this item." iconFile="PendingChanges/Refresh.png"/>
-        </Group>
-        <Group id="Grp_RepositoryExplorerTbOpen" priority="0x300">
-          <Menu id="Menu_RepositoryExplorerTbOpen" name="ReposExplorerOpen" text="&amp;Open" priority="0x100"
-                type="MenuController" iconAndText="true">
-            <Group id="Menu_RepositoryExplorerTbOpen" priority="0x100">
-              <ButtonRef id="Cmd_ExplorerOpen" priority="0x680" />
-              <ButtonRef id="Cmd_ViewInVsNet" priority="0x700" />
-              <ButtonRef id="Cmd_ViewInWindows"  priority="0x800" />
-            </Group>
-            <GroupRef id="Grp_OpenWith2" priority="0xF000" />
-          </Menu>
-          <Button id="Cmd_Checkout" name="Checkout" priority="0x300"
-                text="Chec&amp;kout from Git..." iconFile="PendingChanges/Checkout.png" dynamicVisibility="true" />
-        </Group>
-        <Group id="Grp_RepositoryExplorerTbAction" priority="0x800">
-          <Button id="Cmd_ReposCopyTo" priority="0x100"
-                  name="GitCopyTo" text="&amp;Copy To..."
-                  iconFile="PendingChanges/CopyTo.png" defaultInvisible="true" />
-          <Button id="Cmd_ReposMoveTo" priority="0x200"
-                  name="GitCopyTo" text="&amp;Move To..."
-                  iconFile="PendingChanges/MoveTo.png" defaultInvisible="true" />
-          <Button id="Cmd_NewDirectory" name="NewDirectory" priority="0x500"
-                text="Ne&amp;w Directory..."
-                toolTip="Create a new directory here." iconFile="menu/MakeDirectory.png" defaultInvisible="true" />
-          <Button id="Cmd_SaveToFile" name="SaveToFile" priority="0xA00"
-              text="Save to &amp;File"
-              toolTip="Save the file to disk." iconFile="menu/SaveToFile.png" defaultInvisible="true" />
-          <ButtonRef id="Cmd_GitNodeDelete" priority="0xC00" />
-        </Group>
-      </Menu>
-    </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_MENU_CONTEXTMENUS">
       <ButtonRef id="Cmd_ForceUIShow" priority="0x000001" />
       <Menu id="Grp_VisualGitContextMenus" priority="0x0F0" name="VisualGitSVNContextMenus" text="&amp;VisualGit Context Menus" type="Context" noCustomize="true" notInTBList="true">
         <Group id="Grp_VisualGitContextMenus" priority="0x100">
 
         </Group>
-      </Menu>
-    </GroupRef>
-    <GroupRef id="Grp_VisualGitContextMenus">
-      <!-- The Repository Explorer Context Menu -->
-      <Menu id="Menu_RepositoryExplorerContextMenu" name="RepositoryExplorerContext"
-            text="Repository Explorer" priority="0" type="Context" notInTBList="true">
-        <Group id="Grp_RepositoryExplorerOpen" priority="0x100">
-          <!-- Cmd_RepositoryOpen is handled on the control itself and does 'the right thing' -->
-          <Button id="Cmd_ExplorerOpen" name="RepositoryOpen" priority="0x100"
-                  text="&amp;Open" iconFile="PendingChanges/Open.png" dynamicVisibility="true" iconAndText="true" fixMenuController="true"/>
-          <ButtonRef id="Cmd_SaveToFile" priority="0x200" />
-          <Menu id="Menu_RepositoryExplorerOpenWith" priority ="0xF000" name="OpenWith" text="Open Wit&amp;h">
-            <Group id="Grp_OpenWith" priority="0x100">
-              <Button id="Cmd_ViewInVsNet" name="ViewInVsNet" priority="0x100"
-                text="Open In &amp;Visual Studio" menuText="&amp;Visual Studio"
-                toolTip="View this file in Visual Studio." iconFile="menu/ViewInVSNet.png" defaultInvisible="true"/>
-              <Button id="Cmd_ViewInWindows" name="ViewInWindows" priority="0x200"
-                text="In Wi&amp;ndows" menuText="&amp;Standard Application"
-                toolTip="Have Windows launch the associated application." iconFile="menu/ViewInWindows.png" defaultInvisible="true"/>
-              <Button id="Cmd_ViewInVsText" name="ViewAsText" priority="0x300"
-                      text="As &amp;Text" defaultInvisible="true"/>
-            </Group>
-            <Group id="Grp_OpenWith2" priority="0xF000">
-              <Button id="Cmd_ViewInWindowsWith" name="ViewInWindowsWith" priority="0xF000"
-                    text="Choose Program..." defaultInvisible="true" />
-            </Group>
-          </Menu>
-        </Group>
-        <Group id="Grp_RepositoryExplorerReview" priority="0x200">
-          <Button id="Cmd_ReposExplorerLog" name="ReposExplorerLog" priority ="0x100"
-                  text="View &amp;History"
-                  toolTip="View History." iconFile ="PendingChanges/ViewHistory.png" dynamicVisibility="true"/>
-          <ButtonRef id="Cmd_GitNodeAnnotate" priority="0x200" />
-        </Group>
-        <Group id="Grp_RepositoryExplorerEdit" priority="0x300">
-          <ButtonRef id="guidVSStd97:cmdidCopy" priority="0x100" />
-          <ButtonRef id="guidVSStd97:cmdidPaste" priority="0x200" />
-          <Button id="Cmd_CopyToWorkingCopy" name="GitCopyToWorkingCopy" priority="0x700"
-                  text="Copy to &amp;Working Copy..." dynamicVisibility="true" />
-          <Button id="Cmd_GitNodeDelete" name="GitNodeDelete" priority="0x800" text="&amp;Delete..."
-                  iconFile="PendingChanges/Delete.png" dynamicVisibility="true" />
-          <Button id="Cmd_RenameRepositoryItem" name="Rename" priority="0x900"
-                  text="&amp;Rename..." dynamicVisibility="true" allowParams="true" />
-        </Group>
-        <Group id="Grp_RepositoryExplorerRefer" priority="0x400" />
-        <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_PROPERTIES" priority="0xF000" />
       </Menu>
     </GroupRef>
     <GroupRef id="Menu_WorkingCopyExplorerToolBar">
@@ -510,7 +392,8 @@
             priority="0" type="Context" notInTBList="true">
         <Group id="Grp_WorkingCopyExplorerContext" priority="0x100">
           <!--<ButtonRef id="Cmd_Refresh" priority="0x500" />-->
-          <ButtonRef id="Cmd_ExplorerOpen" priority="0x100" />
+          <Button id="Cmd_ExplorerOpen" name="RepositoryOpen" priority="0x100"
+                 text="&amp;Open" iconFile="PendingChanges/Open.png" dynamicVisibility="true" iconAndText="true" fixMenuController="true"/>
           <ButtonRef id="Cmd_Export" priority="0x300" />
         </Group>
         <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_SCC" priority="0x200" />
@@ -581,7 +464,6 @@
           <Button id="Cmd_LogAnnotateRevision" name="LogAnnotateRevision" priority="0x300"
                   text="&amp;Annotate Revision..." iconFile="PendingChanges/Annotate.png" dynamicVisibility="true"/>
           <ButtonRef id="Cmd_LogShowChanges" priority="0x400" />
-          <ButtonRef id="Cmd_CopyToWorkingCopy" priority="0x800" />
         </Group>
         <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_PROPERTIES" priority="0xF000" />
       </Menu>
@@ -600,7 +482,6 @@
                   iconFile="PendingChanges/Compare.png" dynamicVisibility="true" />
           <Button id="Cmd_GitNodeAnnotate" priority="0x400" name="GitNodeAnnotate" text="&amp;Annotate..."
                   iconFile="PendingChanges/Annotate.png" dynamicVisibility="true"/>
-          <ButtonRef id="Cmd_CopyToWorkingCopy" priority="0x800" />
         </Group>
         <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_PROPERTIES" priority="0xF000" />
       </Menu>
@@ -732,7 +613,6 @@
               <Button id="Cmd_ItemOpenSolutionExplorer" name="FindInSolutionExplorer" priority="0x200"
                   text="Select in Solution E&amp;xplorer" iconFile="PendingChanges/SolutionExplorer.png"/>
               <ButtonRef id="Cmd_ItemSelectInWorkingCopyExplorer" priority="0x300" />
-              <ButtonRef id="Cmd_ItemSelectInRepositoryExplorer" priority="0x400" />
             </Group>
           </Menu>
           <Button id="Cmd_ItemRevertBase" name="Revert" priority="0x400" defaultDisabled="true"
@@ -921,7 +801,6 @@
   </UsedCommands>
   <BitmapStrips>
     <Strip name="ToolWindows" bitmap24="..\obj\ToolWindows.bmp" type="VisualGit.VisualGitToolWindow" from="..\..\VisualGit.Ids\bin\$(Configuration)\VisualGit.Ids.dll">
-      <StripIcon id="RepositoryExplorer" iconFile="PendingChanges/RepositoryExplorer.png" />
       <StripIcon id="WorkingCopyExplorer" iconFile="PendingChanges/WCExplorer.png"/>
       <StripIcon id="PendingChanges" iconFile="PendingChanges/PendingChanges.png"/>
       <StripIcon id="Log" iconFile="PendingChanges/ViewHistory.png"/>

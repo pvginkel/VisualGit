@@ -155,9 +155,6 @@
   <data name="PendingChangesToolWindowTitle" xml:space="preserve">
     <value>Pending Changes</value>
   </data>
-  <data name="RepositoryExplorerToolWindowTitle" xml:space="preserve">
-    <value>Repository Explorer</value>
-  </data>
   <data name="WorkingCopyExplorerToolWindowTitle" xml:space="preserve">
     <value>Working Copy Explorer</value>
   </data>

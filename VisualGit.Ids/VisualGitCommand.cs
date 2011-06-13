@@ -54,7 +54,6 @@ namespace VisualGit
 
         // Raw dump of old commands; to be sorted out
         AddItem,
-        RepositoryBrowse,
         CheckForUpdates,
         WorkingCopyBrowse,
         ItemAnnotate,
@@ -62,11 +61,8 @@ namespace VisualGit
         /// Execute blame command from blame window
         /// </summary>
         GitNodeAnnotate,
-        Checkout,
-        CopyToWorkingCopy,
         ItemResolveCasing,
         CommitItem,
-        CopyReposExplorerUrl,
         CreatePatch,
         ItemShowChanges,
         DocumentShowChanges,
@@ -74,29 +70,20 @@ namespace VisualGit
         Export,
         Log,
         LogItem,
-        NewDirectory,
         Refresh,
-        RefreshRepositoryItem,
-        RemoveRepositoryRoot,
         RemoveWorkingCopyExplorerRoot,
         DocumentAnnotate,
         DocumentHistory,
 
         AnnotateShowLog,
         RevertItem,
-        SaveToFile,
         DocumentConflictEdit,
         ShowPendingChanges,
-        ShowRepositoryExplorer,
         ShowWorkingCopyExplorer,
-        RenameRepositoryItem,
         UpdateItemSpecific,
         UpdateItemLatest,
-        ViewInVsNet,
-        ViewInWindows,
         SolutionBranch,
         
-        ItemSelectInRepositoryExplorer,
         ItemSelectInWorkingCopyExplorer,
         ItemSelectInSolutionExplorer,
 
@@ -178,22 +165,14 @@ namespace VisualGit
 
         ItemIgnoreFolder,
 
-        GitNodeDelete,
-
         PendingChangesApplyWorkingCopy,
         PendingChangesCreatePatch,
         PendingChangesApplyPatch,
         SolutionApplyPatch,
 
         ExplorerOpen,
-        ExplorerUp,
         ReposExplorerOpenWith,
         ReposExplorerShowPrevChanges,
-        ViewInVsText,
-        ViewInWindowsWith,
-
-        ReposCopyTo,
-        ReposMoveTo,
 
         RepositoryShowChanges,
         RepositoryCompareWithWc,
@@ -215,7 +194,6 @@ namespace VisualGit
         LogShowChanges,
 
         MigrateSettings,
-        ReposExplorerLog,
         LogAnnotateRevision,
 
 
