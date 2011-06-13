@@ -69,7 +69,7 @@
             this.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Size = new System.Drawing.Size(806, 487);
             this.StandardTab = true;
-            this.Resize += new System.EventHandler(this.dataGrid_Resize);
+            this.Resize += new System.EventHandler(this._dataGrid_Resize);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
 

@@ -200,14 +200,23 @@
     <Compile Include="GitLog\Commands\FetchAll.cs" />
     <Compile Include="GitLog\LogMode.cs" />
     <Compile Include="GitLog\RevisionGrid\ControlUtil.cs" />
+    <Compile Include="GitLog\RevisionGrid\DvcsGraph_Graph.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\DvcsGraph_Lanes.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GitLog\RevisionGrid\DvcsGraph_Node.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GitLog\RevisionGrid\FakeContextMenuStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GitLog\RevisionGrid\DvcsGrid.cs">
+    <Compile Include="GitLog\RevisionGrid\DvcsGraph.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GitLog\RevisionGrid\DvcsGrid.Designer.cs">
-      <DependentUpon>DvcsGrid.cs</DependentUpon>
+    <Compile Include="GitLog\RevisionGrid\DvcsGraph.Designer.cs">
+      <DependentUpon>DvcsGraph.cs</DependentUpon>
     </Compile>
     <Compile Include="GitLog\RevisionGrid\GitCommandHelpers.cs" />
     <Compile Include="GitLog\RevisionGrid\GitHead.cs" />
@@ -218,14 +227,13 @@
     <Compile Include="GitLog\RevisionGrid\IGitItem.cs" />
     <Compile Include="GitLog\RevisionGrid\LineRun.cs" />
     <Compile Include="GitLog\RevisionGrid\LineRunItem.cs" />
+    <Compile Include="GitLog\RevisionGrid\LoadingEventArgs.cs" />
     <Compile Include="GitLog\RevisionGrid\RevisionGridControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GitLog\RevisionGrid\RevisionGridControl.Designer.cs">
       <DependentUpon>RevisionGridControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitLog\RevisionGrid\RevisionGridLayout.cs" />
-    <Compile Include="GitLog\RevisionGrid\Settings.cs" />
     <Compile Include="IHasErrorProvider.cs" />
     <Compile Include="IssueTracker\IssueSelector.cs">
       <SubType>Form</SubType>

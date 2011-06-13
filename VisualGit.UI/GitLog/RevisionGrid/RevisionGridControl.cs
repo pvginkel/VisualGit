@@ -17,11 +17,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         private static readonly Font RefsFont = new Font(SystemFonts.MessageBoxFont, FontStyle.Bold);
         private static readonly Font HeadFont = new Font(SystemFonts.MessageBoxFont, FontStyle.Bold);
 
-        private const int RowHeight = 21;
-        private const int NodeDimensions = 8;
-        private const int LaneWidth = 13;
-        private const int LaneLineWidth = 2;
-
         private int _lastScrollPos;
         private bool _initialLoad;
         private string _initialSelectedRevision;
@@ -214,7 +209,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             Columns[1].HeaderText = Properties.Resources.MessageCaption;
             Columns[2].HeaderText = Properties.Resources.AuthorCaption;
             Columns[3].HeaderText =
-                Settings.ShowAuthorDate
+                ShowAuthorDate
                 ? Properties.Resources.AuthorDateCaption
                 : Properties.Resources.CommitDateCaption;
 
@@ -250,9 +245,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 Color.LightBlue, 90, false
             );
 
-            ShowAuthor(true);
-
-            SetDimensions(NodeDimensions, LaneWidth, LaneLineWidth, RowHeight, _selectedItemBrush);
+            SetDimensions(_selectedItemBrush);
         }
 
         private string GetCurrentCheckout()
@@ -338,8 +331,8 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             Color foreColor;
 
             if (
-                !Settings.RevisionGraphDrawNonRelativesGray ||
-                !Settings.RevisionGraphDrawNonRelativesTextGray ||
+                !RevisionGraphDrawNonRelativesGray ||
+                !RevisionGraphDrawNonRelativesTextGray ||
                 RowIsRelative(e.RowIndex)
             )
                 foreColor = e.CellStyle.ForeColor;
@@ -360,19 +353,19 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                     {
                         foreach (var head in revision.Heads.OrderBy(p => p))
                         {
-                            if (head.IsRemote && !Settings.ShowRemoteBranches)
+                            if (head.IsRemote && !ShowRemoteBranches)
                                 continue;
 
                             var item = new LineRunItem();
 
                             if (head.IsTag)
-                                item.Color = Settings.TagColor;
+                                item.Color = TagColor;
                             else if (head.IsHead)
-                                item.Color = Settings.BranchColor;
+                                item.Color = BranchColor;
                             else if (head.IsRemote)
-                                item.Color = Settings.RemoteBranchColor;
+                                item.Color = RemoteBranchColor;
                             else
-                                item.Color = Settings.OtherTagColor;
+                                item.Color = OtherTagColor;
 
                             item.Text = "[" + head.Name + "]";
                             item.Font = RefsFont;
@@ -401,7 +394,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 case 3:
                     lineRun.Items.Add(new LineRunItem
                     {
-                        Text = TimeToString(Settings.ShowAuthorDate ? revision.AuthorDate : revision.CommitDate),
+                        Text = TimeToString(ShowAuthorDate ? revision.AuthorDate : revision.CommitDate),
                         Font = rowFont,
                         Color = foreColor
                     });
@@ -424,7 +417,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             if (time == DateTime.MinValue || time == DateTime.MaxValue)
                 return "";
 
-            if (!Settings.RelativeDate)
+            if (!RelativeDate)
                 return String.Format("{0} {1}", time.ToShortDateString(), time.ToLongTimeString());
 
             var span = DateTime.Now - time;
