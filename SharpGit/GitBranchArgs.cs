@@ -14,6 +14,5 @@ namespace SharpGit
 
         public bool Force { get; set; }
         public GitRevision Revision { get; set; }
-        public bool SwitchToBranch { get; set; }
     }
 }

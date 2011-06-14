@@ -12,7 +12,7 @@ using SharpGit;
 
 namespace VisualGit.UI.SccManagement
 {
-    public partial class CreateBranchDialog : VSDialogForm
+    public partial class CreateBranchDialog : VSContainerForm
     {
         public CreateBranchDialog()
         {

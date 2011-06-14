@@ -98,12 +98,12 @@ namespace VisualGit.Commands
 
                     bool retry = false;
                     bool ok = false;
+                    string branchName = dlg.BranchName;
+
                     ProgressRunnerResult rr =
                         e.GetService<IProgressRunner>().RunModal("Creating Branch",
                         delegate(object sender, ProgressWorkerArgs ee)
                         {
-                            string branchName = dlg.BranchName;
-
                             if (NameExists(branchName, ee, root))
                             {
                                 DialogResult dr = DialogResult.None;
@@ -128,15 +128,20 @@ namespace VisualGit.Commands
 
                                 args.Force = dlg.Force;
                                 args.Revision = dlg.Revision;
-                                args.SwitchToBranch = dlg.SwitchToBranch;
 
-                                ee.Client.Branch(
+                                ok = ee.Client.Branch(
                                     RepositoryUtil.GetRepositoryRoot(root.FullPath),
                                     branchName,
                                     args
                                 );
                             }
                         });
+
+
+                    if (rr.Succeeded && ok && dlg.SwitchToBranch)
+                    {
+                        e.GetService<IVisualGitCommandService>().PostExecCommand(VisualGitCommand.SolutionSwitchDialog, branchName);
+                    }
 
                     if (!retry)
                         break;
@@ -192,7 +197,7 @@ namespace VisualGit.Commands
                                         args.Message = dlg.LogMessage;
                                     }
 
-                                    ee.Client.Tag(
+                                    ok = ee.Client.Tag(
                                         RepositoryUtil.GetRepositoryRoot(root.FullPath),
                                         tagName,
                                         args

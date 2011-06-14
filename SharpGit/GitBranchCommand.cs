@@ -44,17 +44,7 @@ namespace SharpGit
                     }
                 }
 
-                var branchRef = command.Call();
-
-                if (Args.SwitchToBranch && branchRef != null)
-                {
-                    var checkoutCommand = new Git(repositoryEntry.Repository).Checkout();
-
-                    checkoutCommand.SetName(branchRef.GetName());
-                    checkoutCommand.SetForce(Args.Force);
-
-                    checkoutCommand.Call();
-                }
+                command.Call();
             }
         }
     }

@@ -38,10 +38,12 @@ namespace VisualGit.UI.SccManagement
             this.forceBox = new System.Windows.Forms.CheckBox();
             this.switchBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.versionBox = new VisualGit.UI.PathSelector.VersionSelector();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -84,8 +86,8 @@ namespace VisualGit.UI.SccManagement
             // 
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel1, 2);
-            this.flowLayoutPanel1.Controls.Add(this.btnOk);
             this.flowLayoutPanel1.Controls.Add(this.btnCancel);
+            this.flowLayoutPanel1.Controls.Add(this.btnOk);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
             // forceBox
@@ -108,6 +110,12 @@ namespace VisualGit.UI.SccManagement
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Name = "panel1";
+            // 
             // versionBox
             // 
             resources.ApplyResources(this.versionBox, "versionBox");
@@ -119,7 +127,7 @@ namespace VisualGit.UI.SccManagement
             this.AcceptButton = this.btnOk;
             resources.ApplyResources(this, "$this");
             this.CancelButton = this.btnCancel;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "CreateBranchDialog";
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -127,6 +135,8 @@ namespace VisualGit.UI.SccManagement
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,5 +154,6 @@ namespace VisualGit.UI.SccManagement
         private System.Windows.Forms.CheckBox forceBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private PathSelector.VersionSelector versionBox;
+        private System.Windows.Forms.Panel panel1;
     }
 }
