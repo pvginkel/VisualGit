@@ -12,6 +12,7 @@ namespace SharpGit
         RemoteBranch,
         Tag,
         Head,
-        RefSpec
+        RefSpec,
+        Revision
     }
 }

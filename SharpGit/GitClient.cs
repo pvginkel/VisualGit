@@ -439,7 +439,7 @@ namespace SharpGit
 
                 foreach (var @ref in repositoryEntry.Repository.GetAllRefs())
                 {
-                    result.Add(new GitRef(@ref.Value.GetName()));
+                    result.Add(new GitRef(@ref.Value));
                 }
 
                 return result;

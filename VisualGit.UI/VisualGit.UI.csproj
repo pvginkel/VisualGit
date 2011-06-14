@@ -452,8 +452,6 @@
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
     </Compile>
     <Compile Include="GitLog\Commands\ChangeLogMessage.cs" />
-    <Compile Include="GitLog\Commands\IncludeMergedRevisions.cs" />
-    <Compile Include="GitLog\Commands\LogStrictNodeHistory.cs" />
     <Compile Include="GitLog\Commands\ShowChangedPaths.cs" />
     <Compile Include="GitLog\Commands\ShowChanges.cs" />
     <Compile Include="GitLog\Commands\ShowLogMessage.cs" />

@@ -14,10 +14,12 @@ namespace VisualGit.UI.Commands
     public partial class SwitchDialog : VSDialogForm
     {
         private GitRef _repositoryBranch;
+        private GitRef _providedRef;
 
         public SwitchDialog()
         {
             InitializeComponent();
+            UpdateEnabled();
         }
 
         public bool Force
@@ -64,30 +66,37 @@ namespace VisualGit.UI.Commands
             }
             set
             {
-                if (value != null)
+                _providedRef = value;
+
+                SetFromProvided();
+            }
+        }
+
+        private void SetFromProvided()
+        {
+            if (_providedRef != null)
+            {
+                switch (_providedRef.Type)
                 {
-                    switch (value.Type)
-                    {
-                        case GitRefType.Branch:
-                            localBranchBox.SelectedItem = value;
-                            localBranchRadioBox.Checked = true;
-                            break;
+                    case GitRefType.Branch:
+                        localBranchBox.SelectedItem = _providedRef;
+                        localBranchRadioBox.Checked = true;
+                        break;
 
-                        case GitRefType.RemoteBranch:
-                            trackingBranchBox.SelectedItem = value;
-                            trackingBranchRadioBox.Checked = true;
-                            break;
+                    case GitRefType.RemoteBranch:
+                        trackingBranchBox.SelectedItem = _providedRef;
+                        trackingBranchRadioBox.Checked = true;
+                        break;
 
-                        case GitRefType.Tag:
-                            tagBox.SelectedItem = value;
-                            tagRadioBox.Checked = true;
-                            break;
+                    case GitRefType.Tag:
+                        tagBox.SelectedItem = _providedRef;
+                        tagRadioBox.Checked = true;
+                        break;
 
-                        default:
-                            versionBox.Revision = value;
-                            revisionRadioBox.Checked = true;
-                            break;
-                    }
+                    default:
+                        versionBox.Revision = _providedRef;
+                        revisionRadioBox.Checked = true;
+                        break;
                 }
             }
         }
@@ -105,8 +114,23 @@ namespace VisualGit.UI.Commands
                 tagBox.BeginUpdate();
                 tagBox.Items.Clear();
 
+                // When a revision ref was provided, try to resolve it to a branch,
+                // tag or remote branch.
+
+                bool resolved = !(_providedRef != null && _providedRef.Type == GitRefType.Revision);
+
+                GitRef resolvedRef = null;
+
                 foreach (var @ref in client.GetRefs(LocalPath))
                 {
+                    if (
+                        !resolved &&
+                        String.Equals(_providedRef.Revision, @ref.Revision, StringComparison.OrdinalIgnoreCase)
+                    ) {
+                        resolvedRef = @ref;
+                        resolved = true;
+                    }
+
                     switch (@ref.Type)
                     {
                         case GitRefType.Branch:
@@ -121,6 +145,12 @@ namespace VisualGit.UI.Commands
                             tagBox.Items.Add(@ref);
                             break;
                     }
+                }
+
+                if (resolvedRef != null)
+                {
+                    _providedRef = resolvedRef;
+                    SetFromProvided();
                 }
 
                 localBranchBox.EndUpdate();
@@ -163,6 +193,34 @@ namespace VisualGit.UI.Commands
             base.OnContextChanged(e);
 
             versionBox.Context = Context;
+        }
+
+        private void localBranchRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void trackingBranchRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void tagRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void revisionRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void UpdateEnabled()
+        {
+            localBranchBox.Enabled = localBranchRadioBox.Checked;
+            trackingBranchBox.Enabled = trackingBranchRadioBox.Checked;
+            tagBox.Enabled = tagRadioBox.Checked;
+            versionBox.Enabled = revisionRadioBox.Checked;
         }
     }
 }

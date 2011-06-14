@@ -5,6 +5,7 @@ using System.Text;
 using NGit.Transport;
 using NGit.Revwalk;
 using NGit;
+using System.Text.RegularExpressions;
 
 namespace SharpGit
 {
@@ -93,6 +94,11 @@ namespace SharpGit
                 else if (String.Equals(Name, "HEAD", StringComparison.Ordinal))
                 {
                     Type = GitRefType.Head;
+                }
+                else if (Regex.IsMatch(Name, "^[a-fA-F0-9]{40}$"))
+                {
+                    Type = GitRefType.Revision;
+                    Revision = Name;
                 }
                 else
                 {

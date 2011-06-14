@@ -163,6 +163,8 @@ namespace VisualGit
         LogUpdateTo,
         LogRevertTo,
         LogMergeTo,
+        LogCherryPick,
+        LogSwitchToRevision,
 
         ItemIgnoreFolder,
 
@@ -185,8 +187,6 @@ namespace VisualGit
         ItemAddToPending,
         ItemRemoveFromPending,
 
-        LogStrictNodeHistory,
-        LogIncludeMergedRevisions,
         LogFetchAll,
         LogShowChangedPaths,
         LogShowLogMessage,

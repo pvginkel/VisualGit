@@ -136,24 +136,28 @@ namespace VisualGit.UI.Commands
             this.localBranchRadioBox.Name = "localBranchRadioBox";
             this.localBranchRadioBox.TabStop = true;
             this.localBranchRadioBox.UseVisualStyleBackColor = true;
+            this.localBranchRadioBox.CheckedChanged += new System.EventHandler(this.localBranchRadioBox_CheckedChanged);
             // 
             // trackingBranchRadioBox
             // 
             resources.ApplyResources(this.trackingBranchRadioBox, "trackingBranchRadioBox");
             this.trackingBranchRadioBox.Name = "trackingBranchRadioBox";
             this.trackingBranchRadioBox.UseVisualStyleBackColor = true;
+            this.trackingBranchRadioBox.CheckedChanged += new System.EventHandler(this.trackingBranchRadioBox_CheckedChanged);
             // 
             // tagRadioBox
             // 
             resources.ApplyResources(this.tagRadioBox, "tagRadioBox");
             this.tagRadioBox.Name = "tagRadioBox";
             this.tagRadioBox.UseVisualStyleBackColor = true;
+            this.tagRadioBox.CheckedChanged += new System.EventHandler(this.tagRadioBox_CheckedChanged);
             // 
             // revisionRadioBox
             // 
             resources.ApplyResources(this.revisionRadioBox, "revisionRadioBox");
             this.revisionRadioBox.Name = "revisionRadioBox";
             this.revisionRadioBox.UseVisualStyleBackColor = true;
+            this.revisionRadioBox.CheckedChanged += new System.EventHandler(this.revisionRadioBox_CheckedChanged);
             // 
             // versionBox
             // 

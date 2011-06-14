@@ -8,6 +8,7 @@ using VisualGit.Selection;
 using VisualGit.UI.Commands;
 using VisualGit.VS;
 using SharpGit;
+using VisualGit.Scc.UI;
 
 namespace VisualGit.Commands
 {
@@ -16,11 +17,11 @@ namespace VisualGit.Commands
     /// </summary>
     [Command(VisualGitCommand.SolutionSwitchDialog)]
     [Command(VisualGitCommand.SwitchProject)]
+    [Command(VisualGitCommand.LogSwitchToRevision)]
     class SwitchItemCommand : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
-
             IFileStatusCache statusCache;
             switch (e.Command)
             {
@@ -61,6 +62,36 @@ namespace VisualGit.Commands
                         }
                     }
                     break;
+
+                case VisualGitCommand.LogSwitchToRevision:
+                    ILogControl logWindow = e.Selection.GetActiveControl<ILogControl>();
+
+                    if (logWindow == null)
+                    {
+                        e.Enabled = false;
+                        return;
+                    }
+
+                    GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
+
+                    if (origin == null || !(origin.Target is GitPathTarget))
+                    {
+                        e.Enabled = false;
+                        return;
+                    }
+
+                    int count = 0;
+                    foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
+                    {
+                        count++;
+
+                        if (count > 1)
+                            break;
+                    }
+
+                    if (count != 1)
+                        e.Enabled = false;
+                    break;
             }
         }
 
@@ -68,6 +99,7 @@ namespace VisualGit.Commands
         {
             GitItem theItem = null;
             string path;
+            GitRef currentBranch = null;
 
             string projectRoot = e.GetService<IVisualGitSolutionSettings>().ProjectRoot;
 
@@ -92,6 +124,16 @@ namespace VisualGit.Commands
                 if (string.IsNullOrEmpty(path))
                     return;
             }
+            else if (e.Command == VisualGitCommand.LogSwitchToRevision)
+            {
+                IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
+
+                if (item == null)
+                    return;
+
+                path = GitTools.GetAbsolutePath(item.RepositoryRoot);
+                currentBranch = new GitRef(item.Revision);
+            }
             else
             {
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
@@ -109,15 +151,17 @@ namespace VisualGit.Commands
             IFileStatusCache statusCache = e.GetService<IFileStatusCache>();
 
             GitItem pathItem = statusCache[path];
-            GitRef currentBranch;
-
-            using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
-            {
-                currentBranch = client.GetCurrentBranch(pathItem.FullPath);
-            }
 
             if (currentBranch == null)
-                return; // Should never happen on a real workingcopy
+            {
+                using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
+                {
+                    currentBranch = client.GetCurrentBranch(pathItem.FullPath);
+                }
+
+                if (currentBranch == null)
+                    return; // Should never happen on a real workingcopy
+            }
 
             GitRef target;
             bool force = false;

@@ -414,12 +414,7 @@
     </GroupRef>
     <GroupRef id="ToolBar_LogViewer">
       <Menu id="ToolBar_LogViewer" name="LogViewer" priority="0" type="ToolWindowToolbar">
-
         <Group id="Grp_LogViewerToolbar" priority="0x10">
-          <Button id="Cmd_LogStrictNodeHistory" name="StrictNodeHistory" text="Strict node history" textOnly="true" priority="0x100"
-                  toolTip="Stop on copy." />
-          <Button id="Cmd_LogIncludeMergedRevisions" name="IncludeMergedRevisions" text="Include merged revisions" textOnly="true" priority="0x200"
-                  toolTip="Include merged revisions." />
           <Button id="Cmd_LogShowLogMessage" name="LogShowLogMessage" priority="0x300"
                   text="Show log message"
                   toolTip="Show log message." iconFile="PendingChanges/ShowComment.png"/>
@@ -430,15 +425,6 @@
                   text="Fetch all" iconAndText="true"
                   toolTip="Retrieve all revisions." iconFile="PendingChanges/FetchAll.png"/>
         </Group>
-        <!--Group id="Grp_LogViewerSearch" priority="0xFFF0">
-          <ComboBox id="Cmd_LogViewerSearchCombo" type="DropDownCombo" width="100" priority="0x100"
-                fillCommand="Cmd_LogViewerSearchComboFill" 
-                caseSensitive="true"
-                toolTip="Search"
-                text="Search:"
-                iconAndText="true"
-                />
-        </Group-->
       </Menu>
     </GroupRef>
     <GroupRef id="Grp_VisualGitContextMenus">
@@ -452,10 +438,14 @@
           <Button id="Cmd_LogShowChanges" name="LogShowChanges" priority="0xB100"
                   text="Show &amp;Changes" iconFile="PendingChanges/Compare.png" dynamicVisibility="true"/>
           <Button id="Cmd_LogRevertTo" name="LogRevertTo" priority="0xB200"
-                  text="&amp;Revert to this Revision" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
+                  text="Revert Current &amp;Branch to Here" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
           <Button id="Cmd_LogRevertThisRevisions" name="LogRevertChangesFrom" priority="0xB300"
-                  text="Revert &amp;Changes from this revision" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
-          <Button id="Cmd_LogOpenIssue" name="LogOpenIssue" priority="0xB500"
+                  text="Revert Changes From &amp;This Revision" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
+          <Button id="Cmd_LogSwitchToRevision" name="LogRevertChangesFrom" priority="0xB300"
+                  text="Checkout &amp;Revision" dynamicVisibility="true" iconFile="PendingChanges/Switch.png"/>
+          <Button id="Cmd_LogRevertThisRevisions" name="LogRevertChangesFrom" priority="0xB300"
+                  text="Cherry &amp;Pick Commit" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
+          <Button id="Cmd_LogCherryPick" name="LogOpenIssue" priority="0xB500"
                   text="Open &amp;Issue" dynamicVisibility="true"/>
         </Group>
         <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_PROPERTIES" priority="0xF000" />
