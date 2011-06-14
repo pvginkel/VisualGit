@@ -57,6 +57,8 @@ namespace SharpGit
         CreateRepository = 47,
         Branch = 48,
         Tag = 49,
+        RevertItem = 50,
+        Reset = 51,
         //GetWorkingCopyInfo = 4097,
         //GetWorkingCopyVersion = 4098,
         //GetWorkingCopyEntries = 4099,

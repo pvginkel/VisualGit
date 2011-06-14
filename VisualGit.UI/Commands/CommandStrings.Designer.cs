@@ -133,6 +133,15 @@ namespace VisualGit.UI.Commands {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Current Branch.
+        /// </summary>
+        internal static string ResetCurrentBranch {
+            get {
+                return ResourceManager.GetString("ResetCurrentBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select a branch.
         /// </summary>
         internal static string SelectABranch {
@@ -228,6 +237,15 @@ namespace VisualGit.UI.Commands {
         internal static string WhitespaceIgnoreChanges {
             get {
                 return ResourceManager.GetString("WhitespaceIgnoreChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are about to discard ALL changes. Are you sure you want to continue?.
+        /// </summary>
+        internal static string YouAreAboutToDiscardAllChanges {
+            get {
+                return ResourceManager.GetString("YouAreAboutToDiscardAllChanges", resourceCulture);
             }
         }
     }

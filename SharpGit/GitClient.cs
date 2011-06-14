@@ -53,14 +53,14 @@ namespace SharpGit
             return ExecuteCommand<GitDeleteCommand>(args, p => p.Execute(path));
         }
         
-        public bool Revert(IEnumerable<string> paths, GitRevertArgs args)
+        public bool RevertItem(IEnumerable<string> paths, GitRevertItemArgs args)
         {
             if (paths == null)
                 throw new ArgumentNullException("paths");
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return ExecuteCommand<GitRevertCommand>(args, p => p.Execute(paths));
+            return ExecuteCommand<GitRevertItemCommand>(args, p => p.Execute(paths));
         }
 
         public bool Add(string path, GitAddArgs args)
@@ -280,6 +280,30 @@ namespace SharpGit
                 throw new ArgumentNullException("args");
 
             return ExecuteCommand<GitTagCommand>(args, p => p.Execute(repositoryPath, tagName));
+        }
+
+        public bool Revert(string repositoryPath, GitRevision revision, GitRevertArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (revision == null)
+                throw new ArgumentNullException("revision");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitRevertCommand>(args, p => p.Execute(repositoryPath, revision));
+        }
+
+        public bool Reset(string repositoryPath, GitRevision revision, GitResetType type, GitResetArgs args)
+        {
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (revision == null)
+                throw new ArgumentNullException("revision");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitResetCommand>(args, p => p.Execute(repositoryPath, revision, type));
         }
 
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)

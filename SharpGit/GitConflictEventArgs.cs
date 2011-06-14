@@ -49,7 +49,10 @@ namespace SharpGit
             get
             {
                 EnsureFiles();
-                return _theirFile;
+                // TODO: GitRevertCommand does not produce a third staged entry
+                // (_theirFile). Providing _baseFile does seem to give a logical
+                // result, however this should also produce a 2-way merge.
+                return _theirFile ?? _baseFile;
             }
         }
 

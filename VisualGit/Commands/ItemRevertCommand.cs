@@ -97,7 +97,7 @@ namespace VisualGit.Commands
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.Reverting,
                 delegate(object sender, ProgressWorkerArgs a)
                 {
-                    GitRevertArgs ra = new GitRevertArgs();
+                    GitRevertItemArgs ra = new GitRevertItemArgs();
                     ra.Depth = GitDepth.Empty;
                     ra.AddExpectedError(GitErrorCode.PathNoRepository); // Parent revert invalidated this change
 
@@ -110,7 +110,7 @@ namespace VisualGit.Commands
 
                     foreach (GitItem item in toRevert)
                     {
-                        a.Client.Revert(toRevertPaths, ra);
+                        a.Client.RevertItem(toRevertPaths, ra);
                     }
                 });
             }

@@ -187,6 +187,15 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revert operation could not be completed successfully.
+        /// </summary>
+        internal static string RevertFailed {
+            get {
+                return ResourceManager.GetString("RevertFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find specified revision.
         /// </summary>
         internal static string RevisionNotFound {

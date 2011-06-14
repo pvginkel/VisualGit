@@ -438,12 +438,12 @@
           <Button id="Cmd_LogShowChanges" name="LogShowChanges" priority="0xB100"
                   text="Show &amp;Changes" iconFile="PendingChanges/Compare.png" dynamicVisibility="true"/>
           <Button id="Cmd_LogRevertTo" name="LogRevertTo" priority="0xB200"
-                  text="Revert Current &amp;Branch to Here" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
-          <Button id="Cmd_LogRevertThisRevisions" name="LogRevertChangesFrom" priority="0xB300"
+                  text="Reset Current &amp;Branch to Here" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
+          <Button id="Cmd_LogRevertThisRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Revert Changes From &amp;This Revision" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
           <Button id="Cmd_LogSwitchToRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Checkout &amp;Revision" dynamicVisibility="true" iconFile="PendingChanges/Switch.png"/>
-          <Button id="Cmd_LogRevertThisRevisions" name="LogRevertChangesFrom" priority="0xB300"
+          <Button id="Cmd_LogRevertThisRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Cherry &amp;Pick Commit" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
           <Button id="Cmd_LogCherryPick" name="LogOpenIssue" priority="0xB500"
                   text="Open &amp;Issue" dynamicVisibility="true"/>

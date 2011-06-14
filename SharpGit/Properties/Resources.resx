@@ -159,6 +159,9 @@
   <data name="RepositoryLocked" xml:space="preserve">
     <value>Repository is locked, please retry your last operation</value>
   </data>
+  <data name="RevertFailed" xml:space="preserve">
+    <value>Revert operation could not be completed successfully</value>
+  </data>
   <data name="RevisionNotFound" xml:space="preserve">
     <value>Could not find specified revision</value>
   </data>

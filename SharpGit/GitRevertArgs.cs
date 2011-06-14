@@ -5,15 +5,23 @@ using System.Text;
 
 namespace SharpGit
 {
-    public sealed class GitRevertArgs : GitClientArgs
+    public class GitRevertArgs : GitClientArgs, IGitConflictsClientArgs
     {
         public GitRevertArgs()
             : base(GitCommandType.Revert)
         {
-            ChangeLists = new GitChangeListCollection();
         }
 
-        public GitChangeListCollection ChangeLists { get; private set; }
-        public GitDepth Depth { get; set; }
+        public bool CreateCommit { get; set; }
+
+        public event EventHandler<GitConflictEventArgs> Conflict;
+
+        protected internal override void OnConflict(GitConflictEventArgs e)
+        {
+            var ev = Conflict;
+
+            if (ev != null)
+                ev(this, e);
+        }
     }
 }

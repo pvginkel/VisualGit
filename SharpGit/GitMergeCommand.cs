@@ -55,10 +55,8 @@ namespace SharpGit
                 RaiseNotifyFromDiff(repositoryEntry.Repository);
             }
 
-            // Conflict resolving is run outside of the repository lock
-            // because it calls back into VS code.
-
-            RaiseMergeResults(repositoryEntry, mergeResult);
+            if (mergeResult != null)
+                RaiseMergeResults(repositoryEntry, mergeResult);
         }
     }
 }

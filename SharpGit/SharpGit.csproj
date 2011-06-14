@@ -126,8 +126,13 @@
     <Compile Include="GitRemoteRefsResult.cs" />
     <Compile Include="GitRemoteRefType.cs" />
     <Compile Include="GitRepositoryLockedException.cs" />
+    <Compile Include="GitResetArgs.cs" />
+    <Compile Include="GitResetCommand.cs" />
+    <Compile Include="GitResetType.cs" />
     <Compile Include="GitResolveArgs.cs" />
     <Compile Include="GitResolveCommand.cs" />
+    <Compile Include="GitRevertArgs.cs" />
+    <Compile Include="GitRevertCommand.cs" />
     <Compile Include="GitSwitchArgs.cs" />
     <Compile Include="GitSwitchCommand.cs" />
     <Compile Include="GitClientArgsWithCommit.cs" />
@@ -164,8 +169,8 @@
     <Compile Include="GitNoRepositoryException.cs" />
     <Compile Include="GitOperationCancelledException.cs" />
     <Compile Include="GitPathTarget.cs" />
-    <Compile Include="GitRevertArgs.cs" />
-    <Compile Include="GitRevertCommand.cs" />
+    <Compile Include="GitRevertItemArgs.cs" />
+    <Compile Include="GitRevertItemCommand.cs" />
     <Compile Include="GitRevision.cs" />
     <Compile Include="GitRevisionRange.cs" />
     <Compile Include="GitRevisionType.cs" />

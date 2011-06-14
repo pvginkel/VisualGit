@@ -1,17 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VisualGit.Commands;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
-using SharpSvn;
 using SharpGit;
+using SharpSvn;
+using VisualGit.UI.Commands;
+using System.Windows.Forms;
 
 namespace VisualGit.UI.GitLog.Commands
 {
-    [Command(VisualGitCommand.LogRevertThisRevisions, AlwaysAvailable = true)]
-    [Command(VisualGitCommand.LogRevertTo, AlwaysAvailable = true)]
-    class RevertChanges : ICommandHandler
+    [Command(VisualGitCommand.LogRevertThisRevision, AlwaysAvailable = true)]
+    class RevertRevision : ICommandHandler
     {
         public void OnUpdate(CommandUpdateEventArgs e)
         {
@@ -40,18 +42,7 @@ namespace VisualGit.UI.GitLog.Commands
                     break;
             }
 
-            switch (e.Command)
-            {
-                case VisualGitCommand.LogRevertTo:
-                    if (count == 1)
-                        return;
-                    break;
-                case VisualGitCommand.LogRevertThisRevisions:
-                    if (count > 0)
-                        return;
-                    break;
-            }
-            e.Enabled = false;
+            e.Enabled = count == 1;
         }
 
         public void OnExecute(CommandEventArgs e)
@@ -62,28 +53,23 @@ namespace VisualGit.UI.GitLog.Commands
             if (logWindow == null)
                 return;
 
-            List<GitRevisionRange> revisions = new List<GitRevisionRange>();
+            IGitLogItem logItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
-            if (e.Command == VisualGitCommand.LogRevertTo)
+            if (logItem == null)
+                return;
+
+            bool createCommit;
+
+            using (var dialog = new RevertDialog())
             {
-                IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
+                dialog.Revision = logItem.Revision;
+                dialog.RepositoryPath = GitTools.GetAbsolutePath(logItem.RepositoryRoot);
 
-                if (item == null)
+                if (dialog.ShowDialog(e.Context) != DialogResult.OK)
                     return;
 
-                // Revert to revision, is revert everything after
-                revisions.Add(new GitRevisionRange(GitRevision.Working, item.Revision));
+                createCommit = dialog.CreateCommit;
             }
-            else
-            {
-                foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
-                {
-                    revisions.Add(new GitRevisionRange(item.Revision, (GitRevision)item.Revision - 1));
-                }
-            }
-
-            if (revisions.Count == 0)
-                return;
 
             IVisualGitOpenDocumentTracker tracker = e.GetService<IVisualGitOpenDocumentTracker>();
 
@@ -105,13 +91,12 @@ namespace VisualGit.UI.GitLog.Commands
             if (nodes.Count > 0)
                 tracker.SaveDocuments(nodes); // Saves all open documents below all specified origins
 
-
             using (DocumentLock dl = tracker.LockDocuments(nodes, DocumentLockType.NoReload))
             using (dl.MonitorChangesForReload())
             {
                 SvnMergeArgs ma = new SvnMergeArgs();
 
-                progressRunner.RunModal("Reverting",
+                progressRunner.RunModal("Reverting Revisions",
                 delegate(object sender, ProgressWorkerArgs ee)
                 {
                     foreach (GitOrigin item in logWindow.Origins)
@@ -121,11 +106,17 @@ namespace VisualGit.UI.GitLog.Commands
                         if (target == null)
                             continue;
 
-                        throw new NotImplementedException();
+                        GitRevertArgs args = new GitRevertArgs();
 
-#if false
-                        ee.SvnClient.Merge(target.FullPath, target, revisions, ma);
-#endif
+                        args.CreateCommit = createCommit;
+
+                        e.GetService<IConflictHandler>().RegisterConflictHandler(args, ee.Synchronizer);
+
+                        ee.Client.Revert(
+                            GitTools.GetAbsolutePath(logItem.RepositoryRoot),
+                            logItem.Revision,
+                            args
+                        );
                     }
                 });
             }

@@ -131,6 +131,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommandStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Commands\ResetBranchDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\ResetBranchDialog.Designer.cs">
+      <DependentUpon>ResetBranchDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\CreateChangeListDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +178,12 @@
     <Compile Include="Commands\PushTagControl.Designer.cs">
       <DependentUpon>PushTagControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Commands\RevertDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Commands\RevertDialog.Designer.cs">
+      <DependentUpon>RevertDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commands\UIEditCommand.cs" />
     <Compile Include="Controls\StatusPanelTestForm.cs">
       <SubType>Form</SubType>
@@ -207,6 +219,7 @@
     </Compile>
     <Compile Include="GitLog\BatchFinishedEventArgs.cs" />
     <Compile Include="GitLog\Commands\FetchAll.cs" />
+    <Compile Include="GitLog\Commands\RevertRevision.cs" />
     <Compile Include="GitLog\LogMode.cs" />
     <Compile Include="GitLog\RevisionGrid\ControlUtil.cs" />
     <Compile Include="GitLog\RevisionGrid\DvcsGraph_Graph.cs">
@@ -417,7 +430,7 @@
       <DependentUpon>UpdateAvailableDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="GitLog\Commands\CompareWithWorkingCopy.cs" />
-    <Compile Include="GitLog\Commands\RevertChanges.cs" />
+    <Compile Include="GitLog\Commands\RevertBranchToRevision.cs" />
     <Compile Include="GitLog\LogDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -667,6 +680,10 @@
     <EmbeddedResource Include="Commands\CloneDialog.resx">
       <DependentUpon>CloneDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Commands\ResetBranchDialog.resx">
+      <DependentUpon>ResetBranchDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Commands\MergeDialog.resx">
       <DependentUpon>MergeDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -681,6 +698,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Commands\PushTagControl.resx">
       <DependentUpon>PushTagControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Commands\RevertDialog.resx">
+      <DependentUpon>RevertDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenericCredentialsDialog.resx">
       <DependentUpon>GenericCredentialsDialog.cs</DependentUpon>

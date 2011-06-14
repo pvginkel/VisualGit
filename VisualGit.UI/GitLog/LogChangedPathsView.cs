@@ -92,7 +92,7 @@ namespace VisualGit.UI.GitLog
             if (string.IsNullOrEmpty(path))
                 uri = reposRoot;
             else
-                uri = SvnTools.AppendPathSuffix(reposRoot, path);
+                uri = GitTools.GetUri(path);
 
             _origin = new GitOrigin(new GitUriTarget(uri, logItem.Revision), reposRoot);
 

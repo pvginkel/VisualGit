@@ -2,219 +2,141 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NGit;
+using NGit.Api;
+using System.Diagnostics;
 using NGit.Revwalk;
-using NGit.Dircache;
+using NGit;
+using NGit.Api.Errors;
+using NGit.Merge;
 using NGit.Treewalk;
+using NGit.Dircache;
 using System.IO;
 
 namespace SharpGit
 {
-    internal sealed class GitRevertCommand : GitCommand<GitRevertArgs>
+    internal class GitRevertCommand : GitCommand<GitRevertArgs>
     {
         public GitRevertCommand(GitClient client, GitClientArgs args)
             : base(client, args)
         {
         }
 
-        public void Execute(IEnumerable<string> paths)
+        public void Execute(string repositoryPath, GitRevision revision)
         {
-            if (paths == null)
-                throw new ArgumentNullException("paths");
+            if (repositoryPath == null)
+                throw new ArgumentNullException("repositoryPath");
+            if (revision == null)
+                throw new ArgumentNullException("revision");
 
-            var collectedPaths = RepositoryUtil.CollectPaths(paths);
+            Debug.Assert(Args.CreateCommit, "RevertCommand currently always create a commit");
 
-            foreach (var item in collectedPaths)
+            var repositoryEntry = Client.GetRepository(repositoryPath);
+
+            MergeCommandResult mergeResults = null;
+
+            using (repositoryEntry.Lock())
             {
-                using (item.Key.Lock())
-                {
-                    UnstageAndRestoreFiles(item.Key.Repository, item.Value);
-                }
-            }
+                var repository = repositoryEntry.Repository;
 
-            foreach (string path in paths)
-            {
-                RaiseNotify(new GitNotifyEventArgs
-                {
-                    Action = GitNotifyAction.Revert,
-                    CommandType = Args.CommandType,
-                    FullPath = path,
-                    NodeKind = GitNodeKind.File,
-                    ContentState = GitNotifyState.Unknown
-                });
-            }
-        }
-
-        private void UnstageAndRestoreFiles(Repository repository, IEnumerable<string> files)
-        {
-            // Make sure all files are unstaged.
-
-            UnstageFiles(repository, files);
-
-            // Take an appropriate action per file.
-
-            var dirCache = repository.ReadDirCache();
-            var objectReader = repository.NewObjectReader();
-
-            try
-            {
-                foreach (var path in files)
-                {
-                    // When the entry is not in the disk cache, it's a new
-                    // entry so it can just be deleted.
-
-                    string fullPath = repository.GetAbsoluteRepositoryPath(path);
-
-                    var entryIndex = dirCache.FindEntry(path);
-
-                    if (entryIndex >= 0)
-                    {
-                        // When it is in the disk cache, we need to overwrite
-                        // the current contents with that of the disk cache.
-
-                        var entry = dirCache.GetEntry(entryIndex);
-
-                        var loader = objectReader.Open(entry.GetObjectId());
-                        using (var inStream = new ObjectStreamWrapper(loader.OpenStream()))
-                        using (var outStream = File.Create(fullPath))
-                        {
-                            inStream.CopyTo(outStream);
-                        }
-                    }
-                }
-            }
-            finally
-            {
-                objectReader.Release();
-            }
-        }
-
-        private void UnstageFiles(Repository repository, IEnumerable<string> files)
-        {
-            try
-            {
-                RepositoryState state = repository.GetRepositoryState();
-
-                // resolve the ref to a commit
-                ObjectId commitId;
-
-                commitId = repository.Resolve(Constants.HEAD);
-
-                RevCommit commit;
-                RevWalk rw = new RevWalk(repository);
                 try
                 {
-                    commit = rw.ParseCommit(commitId);
+                    mergeResults = PerformRevert(revision, repository);
                 }
-                finally
+                catch (JGitInternalException ex)
                 {
-                    rw.Release();
+                    var exception = new GitException(GitErrorCode.RevertFailed, ex);
+
+                    Args.SetError(exception);
+
+                    if (Args.ShouldThrow(exception.ErrorCode))
+                        throw exception;
                 }
 
-                // write the ref
-                RefUpdate ru = repository.UpdateRef(Constants.HEAD);
+                RaiseNotifyFromDiff(repository);
+            }
 
-                ru.SetNewObjectId(commitId);
+            if (mergeResults != null)
+                RaiseMergeResults(repositoryEntry, mergeResults);
+        }
 
-                string refName = Repository.ShortenRefName(Constants.HEAD);
-                string message = refName + ": updating " + Constants.HEAD;
+        private MergeCommandResult PerformRevert(GitRevision revision, Repository repository)
+        {
+            // Below is copied from RevertCommand. There are two changes.
+            // Firstly, the commit is now optional. Secondly, we have access
+            // to the merge results which we use to report conflicts.
 
-                ru.SetRefLogMessage(message, false);
-
-                if (ru.ForceUpdate() == RefUpdate.Result.LOCK_FAILURE)
-                    throw new GitCouldNotLockException();
-
-                var fileSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-                foreach (string file in files)
-                    fileSet.Add(file);
-                var fileMap = new Dictionary<string, DirCacheEntry>();
-
-                DirCache dc = null;
-                try
+            ObjectId srcObjectId = revision.GetObjectId(repository);
+            RevCommit newHead = null;
+            RevWalk revWalk = new RevWalk(repository);
+            try
+            {
+                // get the head commit
+                Ref headRef = repository.GetRef(Constants.HEAD);
+                if (headRef == null)
                 {
-                    var dirCache = repository.ReadDirCache();
-                    dc = repository.LockDirCache();
-                    dc.Clear();
-                    DirCacheBuilder dcb = dc.Builder();
-
-                    var objectReader = repository.NewObjectReader();
-
-                    try
+                    throw new NoHeadException(JGitText.Get().commitOnRepoWithoutHEADCurrentlyNotSupported);
+                }
+                RevCommit headCommit = revWalk.ParseCommit(headRef.GetObjectId());
+                newHead = headCommit;
+                // get the commit to be reverted
+                RevCommit srcCommit = revWalk.ParseCommit(srcObjectId);
+                // get the parent of the commit to revert
+                if (srcCommit.ParentCount != 1)
+                {
+                    throw new MultipleParentsNotAllowedException(JGitText.Get().canOnlyRevertCommitsWithOneParent);
+                }
+                RevCommit srcParent = srcCommit.GetParent(0);
+                revWalk.ParseHeaders(srcParent);
+                ResolveMerger merger = (ResolveMerger)((ThreeWayMerger)MergeStrategy.RESOLVE.NewMerger(repository));
+                merger.SetWorkingTreeIterator(new FileTreeIterator(repository));
+                merger.SetBase(srcCommit.Tree);
+                if (merger.Merge(headCommit, srcParent))
+                {
+                    if (!AnyObjectId.Equals(headCommit.Tree.Id, merger.GetResultTreeId()))
                     {
-                        // Get all dir cache entries from the last commit tree
-                        // to restore them later on.
-
-                        TreeWalk tw = new TreeWalk(objectReader);
-                        
-                        tw.AddTree(new CanonicalTreeParser(new byte[0], objectReader, commit.Tree.ToObjectId()));
-                        tw.Recursive = true;
-
-                        while (tw.Next())
+                        DirCacheCheckout dco = new DirCacheCheckout(repository, headCommit.Tree, repository.LockDirCache
+                            (), merger.GetResultTreeId());
+                        dco.SetFailOnConflict(true);
+                        dco.Checkout();
+                        if (Args.CreateCommit)
                         {
-                            var entry = CreateDirCacheEntry(tw);
-                            if (fileSet.Contains(entry.PathString))
-                                fileMap.Add(entry.PathString, entry);
-                        }
-
-                        // Walk over the current dir cache; remove what doesn't
-                        // exist and put back in what we've lost.
-
-                        for (int i = 0, entryCount = dirCache.GetEntryCount(); i < entryCount; i++)
-                        {
-                            var entry = dirCache.GetEntry(i);
-
-                            if (fileSet.Contains(entry.PathString))
-                            {
-                                // If the entry was in the old dir cache, we can
-                                // just add it again. Otherwise, we leave it out.
-                                DirCacheEntry oldEntry;
-                                if (fileMap.TryGetValue(entry.PathString, out oldEntry))
-                                {
-                                    // The file is in both the old and the new dir cache.
-                                    // Replace the new entry with the old one.
-                                    fileMap.Remove(entry.PathString);
-                                    dcb.Add(oldEntry);
-                                }
-                            }
-                            else
-                                dcb.Add(entry);
-                        }
-
-                        // Last, put in all entries that were in the old dir
-                        // cache but not in the new one.
-
-                        foreach (var entry in fileMap.Values)
-                        {
-                            dcb.Add(entry);
+                            string newMessage = "Revert \"" + srcCommit.GetShortMessage() + "\"" + "\n\n" + "This reverts commit "
+                                + srcCommit.Id.Name + ".\n";
+                            newHead = new Git(repository).Commit().SetMessage(newMessage).Call();
                         }
                     }
-                    finally
-                    {
-                        objectReader.Release();
-                    }
 
-                    dcb.Commit();
+                    return new MergeCommandResult(newHead.Id, null, new ObjectId[] { headCommit.Id, srcCommit
+								.Id }, MergeStatus.MERGED, MergeStrategy.RESOLVE, null, null);
                 }
-                finally
+                else
                 {
-                    if (dc != null)
-                        dc.Unlock();
+                    var lowLevelResults = merger.GetMergeResults();
+                    var failingPaths = merger.GetFailingPaths();
+                    var unmergedPaths = merger.GetUnmergedPaths();
+
+                    if (failingPaths != null)
+                    {
+                        return new MergeCommandResult(null, merger.GetBaseCommit(0, 1), new ObjectId[] { 
+									headCommit.Id, srcCommit.Id }, MergeStatus.FAILED, MergeStrategy.RESOLVE, lowLevelResults
+                            , failingPaths, null);
+                    }
+                    else
+                    {
+                        return new MergeCommandResult(null, merger.GetBaseCommit(0, 1), new ObjectId[] { 
+									headCommit.Id, srcCommit.Id }, MergeStatus.CONFLICTING, MergeStrategy.RESOLVE, lowLevelResults
+                            , null);
+                    }
                 }
             }
             catch (IOException e)
             {
-                throw new GitException(GitErrorCode.Unspecified, e);
+                throw new JGitInternalException(String.Format(JGitText.Get().exceptionCaughtDuringExecutionOfRevertCommand, e), e);
             }
-        }
-
-        private static DirCacheEntry CreateDirCacheEntry(TreeWalk tw)
-        {
-            DirCacheEntry e = new DirCacheEntry(tw.RawPath, 0);
-            AbstractTreeIterator i;
-            i = tw.GetTree<AbstractTreeIterator>(0);
-            e.FileMode = tw.GetFileMode(0);
-            e.SetObjectIdFromRaw(i.IdBuffer, i.IdOffset);
-            return e;
+            finally
+            {
+                revWalk.Release();
+            }
         }
     }
 }

@@ -97,23 +97,23 @@ namespace SharpGit
             }
         }
 
-        protected void RaiseMergeResults(RepositoryEntry repositoryEntry, MergeCommandResult mergeResult)
+        protected void RaiseMergeResults(RepositoryEntry repositoryEntry, MergeCommandResult mergeResults)
         {
             Debug.Assert(Args is IGitConflictsClientArgs, "Merge results may only be reported on Args that implement IGitConflictsClientArgs");
 
-            var conflicts = mergeResult.GetConflicts();
+            var conflicts = mergeResults.GetConflicts();
 
             if (conflicts == null)
                 return;
 
-            foreach (var item in conflicts)
+            foreach (var item in conflicts.Keys)
             {
-                string fullPath = repositoryEntry.Repository.GetAbsoluteRepositoryPath(item.Key);
+                string fullPath = repositoryEntry.Repository.GetAbsoluteRepositoryPath(item);
 
                 var args = new GitConflictEventArgs
                 {
                     MergedFile = fullPath,
-                    Path = item.Key,
+                    Path = item,
                     ConflictReason = GitConflictReason.Edited
                 };
 
