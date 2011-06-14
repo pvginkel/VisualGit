@@ -48,8 +48,8 @@ namespace SharpGit
                 try
                 {
                     result.ConflictOld = StoreMergeFile(reader, fullPath, stages[1], "BASE");
-                    result.ConflictNew = StoreMergeFile(reader, fullPath, stages[2], "LOCAL");
-                    result.ConflictWork = StoreMergeFile(reader, fullPath, stages[3], "REMOTE");
+                    result.ConflictWork = StoreMergeFile(reader, fullPath, stages[2], "LOCAL");
+                    result.ConflictNew = StoreMergeFile(reader, fullPath, stages[3], "REMOTE");
                 }
                 finally
                 {
