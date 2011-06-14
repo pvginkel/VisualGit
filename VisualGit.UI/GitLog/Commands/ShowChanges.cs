@@ -152,7 +152,16 @@ namespace VisualGit.UI.GitLog.Commands
             if (targets.Count != 1)
                 return;
 
-            GitTarget diffTarget = EnumTools.GetSingle(targets).Target;
+            var target = EnumTools.GetSingle(targets);
+            GitTarget diffTarget = target.Target;
+
+            if (diffTarget is GitUriTarget)
+            {
+                diffTarget = new GitPathTarget(
+                    GitTools.GetAbsolutePath(((GitUriTarget)diffTarget).Uri),
+                    diffTarget.Revision
+                );
+            }
 
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
             VisualGitDiffArgs da = new VisualGitDiffArgs();
