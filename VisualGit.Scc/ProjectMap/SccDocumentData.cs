@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 using SharpSvn;
 using VisualGit.Selection;
+using System.IO;
+using SharpGit;
 
 namespace VisualGit.Scc.ProjectMap
 {
@@ -153,7 +155,24 @@ namespace VisualGit.Scc.ProjectMap
                 return;
 
             IFileStatusMonitor statusMonitor = GetService<IFileStatusMonitor>();
-            statusMonitor.ScheduleGitStatus(Name);
+
+            if (Path.GetFileName(Name).Equals(GitConstants.IgnoreFilename, FileSystemUtil.StringComparison))
+            {
+                // Refresh every from the containing directory down.
+
+                ISccProjectWalker walker = GetService<ISccProjectWalker>();
+
+                object parentId;
+                this.Hierarchy.GetProperty(ItemId, (int)__VSHPROPID.VSHPROPID_Parent, out parentId);
+                statusMonitor.ScheduleGitStatus(walker.GetSccFiles(
+                    Hierarchy,
+                    (uint)(int)parentId,
+                    ProjectWalkDepth.AllDescendantsInHierarchy,
+                    null
+                ));
+            }
+            else
+                statusMonitor.ScheduleGitStatus(Name);
         }
 
         internal void OnClosed(bool closedWithoutSaving)
