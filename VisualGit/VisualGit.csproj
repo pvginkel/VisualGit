@@ -176,9 +176,6 @@
     <Compile Include="Commands\SwitchItemCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\UpdateItemCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Services\VisualGitDiff.cs" />
     <Compile Include="Services\VisualGitDiff.Internal.cs" />
     <Compile Include="Services\VisualGitDiff.Tools.cs" />

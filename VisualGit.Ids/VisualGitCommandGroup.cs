@@ -135,7 +135,6 @@ namespace VisualGit
         SccSlnFileAdvanced,
         SccSlnFileBranch,
 
-        WceUpdate,
         WceAction,
         WceChanges,
         WceAdvanced,

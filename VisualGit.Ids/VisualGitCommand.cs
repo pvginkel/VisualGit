@@ -80,8 +80,6 @@ namespace VisualGit
         DocumentConflictEdit,
         ShowPendingChanges,
         ShowWorkingCopyExplorer,
-        UpdateItemSpecific,
-        UpdateItemLatest,
         SolutionBranch,
         SolutionTag,
         
@@ -178,7 +176,6 @@ namespace VisualGit
 
         RepositoryShowChanges,
         RepositoryCompareWithWc,
-        UpdateItemLatestRecursive,
 
         ItemRename,
         ItemDelete,

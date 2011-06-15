@@ -29,7 +29,6 @@
         <Menu id="Menu_FileScc" priority="0x0100" name="GitMenu" text="&amp;Git">
           <Group id="Grp_FileSccMenuTasks" priority="0x0100">
             <Button id="Cmd_MigrateSettings" text="Migrate VisualGit Settings from future versions" name="VisualGit.MigrateSettings" priority="0" commandWellOnly="true" allowParams="true" postExec="true"/>
-            <ButtonRef id="Cmd_UpdateItemSpecific" priority="0x100" />
             <Button id="Cmd_CommitItem" name="CommitItem" priority="0x200"
                 text="&amp;Commit..."
                 toolTip="Commit selected items to the Git repository." iconFile="PendingChanges/Commit.png" defaultInvisible="true"/>
@@ -167,7 +166,6 @@
       </Menu>
       <Menu id="Menu_SolutionFileScc" name="SolutionFile" priority="0x3000" text="So&amp;lution File">
         <Group id="Menu_SolutionFileScc" priority="0x100">
-          <ButtonRef id="Cmd_UpdateItemSpecific" priority="0x100" />
           <ButtonRef id="Cmd_CommitItem" priority="0x200" />
           <ButtonRef id="Cmd_ItemShowChanges" priority="0x300" />
           <ButtonRef id="Cmd_Log" priority="0x400" />
@@ -219,7 +217,6 @@
       </Menu>
       <Menu id="Menu_ProjectFileScc" name="ProjectFile" priority="0x3000" text="Pro&amp;ject File">
         <Group id="Menu_ProjectFileScc" priority="0x100">
-          <ButtonRef id="Cmd_UpdateItemSpecific" priority="0x100" />
           <ButtonRef id="Cmd_CommitItem" priority="0x200" />
           <ButtonRef id="Cmd_ItemShowChanges" priority="0x300" />
           <ButtonRef id="Cmd_Log" priority="0x400" />
@@ -230,9 +227,6 @@
     </GroupRef>
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_SCC">
       <!-- VS Predefined group for SCC commands on project items -->
-      <Button id="Cmd_UpdateItemLatest" name="UpdateItemLatest" priority="0x100"
-                text="&amp;Update to Latest Version"
-                toolTip="Updates local items with changes from the Git repository." iconFile="PendingChanges/Update.png" defaultInvisible="true"/>
       <ButtonRef id="Cmd_CommitItem" priority="0x1600" />
       <ButtonRef id="Cmd_ItemConflictEdit" priority="0x1700" />
       <Button id="Cmd_ItemShowChanges" name="Git.Compare" priority="0x1800"
@@ -263,9 +257,6 @@
       <ButtonRef id="Cmd_RevertItem" priority="0x1B00" />
       <Menu id="Menu_SolutionExplorerSccForItem" priority="0x1D00" name="Git" text="&amp;Git">
         <Group id="Grp_SccItemUpdate" priority="0x1000">
-          <Button id="Cmd_UpdateItemSpecific" name="UpdateItemSpecific" priority="0x100"
-                text="&amp;Update to Specific Version..."
-                toolTip="Updates local items with changes from the Git repository." iconFile="PendingChanges/UpdateSpecific.png" defaultInvisible="true"/>
         </Group>
         <Group id="Grp_SccItemAction" priority="0x3000">
 
@@ -361,11 +352,6 @@
           <Button id="Cmd_RemoveWorkingCopyExplorerRoot" name="RemoveWorkingCopyExplorerRoot" priority="0x200"
               text="&amp;Remove Root"
               toolTip="Remove this root from the Working Copy Explorer." iconFile="menu/RemoveFolder.png"/>
-        </Group>
-        <Group id="Grp_WceUpdate" priority="0x2000">
-          <Button id="Cmd_UpdateItemLatestRecursive" name="UpdateItemLatest" priority="0x100"
-                text="&amp;Update to Latest Version (Recursive)"
-                toolTip="&amp;Update to Latest Version (Recursive)" iconFile="PendingChanges/Update.png" defaultInvisible="true"/>
         </Group>
         <Group id="Grp_WceAction" priority="0x3000">
           <MenuRef id="Menu_ItemRevert" priority="0x100" />
@@ -704,8 +690,6 @@
       <Menu id="ToolBar_SourceControl" name="SourceControl" text="Source Control - Git" priority="0" type="Toolbar">
         <Group id="Grp_SccTbItem" priority="0x200">
           <ButtonRef id="Cmd_CommitItem" priority="0x100" />
-          <ButtonRef id="Cmd_UpdateItemLatest" priority="0x200" />
-          <ButtonRef id="Cmd_UpdateItemSpecific" priority="0x300" />
           <ButtonRef id="Cmd_RevertItem" priority="0x400" />
           <ButtonRef id="Cmd_LogItem" priority="0x500" />
         </Group>
