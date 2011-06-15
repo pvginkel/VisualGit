@@ -170,7 +170,6 @@ namespace VisualGit
 
         PendingChangesApplyWorkingCopy,
         PendingChangesCreatePatch,
-        PendingChangesApplyPatch,
         SolutionApplyPatch,
 
         ExplorerOpen,

@@ -6,7 +6,6 @@ using System.Windows.Forms;
 namespace VisualGit.Commands
 {
     [Command(VisualGitCommand.SolutionApplyPatch)]
-    [Command(VisualGitCommand.PendingChangesApplyPatch, HideWhenDisabled=false)]
     public class ApplyPatch : CommandBase
     {
         public override void OnUpdate(CommandUpdateEventArgs e)

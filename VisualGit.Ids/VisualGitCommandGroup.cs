@@ -90,10 +90,6 @@ namespace VisualGit
 
         PendingChangesCommit1,
         PendingChangesCommit2,
-        PendingChangesCommit3,
-
-        PendingChangesUpdate1,
-        PendingChangesUpdate2,
 
         PendingChangesPush1,
         PendingChangesPull1,

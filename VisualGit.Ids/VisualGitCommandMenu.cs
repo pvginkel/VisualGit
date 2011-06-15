@@ -37,7 +37,6 @@ namespace VisualGit
         LogMessageEditorContextMenu,
 
         PendingChangesCommit,
-        PendingChangesUpdate,
         PendingChangesView,
 
         PendingChangesPush,
