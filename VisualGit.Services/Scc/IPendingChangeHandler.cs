@@ -30,22 +30,6 @@ namespace VisualGit.Scc
             set { _logMessage = value; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [keep locks].
-        /// </summary>
-        /// <value><c>true</c> if [keep locks]; otherwise, <c>false</c>.</value>
-        public bool KeepLocks
-        {
-            get { return _keepLocks; }
-            set { _keepLocks = value; }
-        }
-
-        public bool KeepChangeLists
-        {
-            get { return _keepChangeLists; }
-            set { _keepChangeLists = value; }
-        }
-
         public bool StoreMessageOnError
         {
             get { return _storeMessageOnError; }

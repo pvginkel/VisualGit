@@ -13,9 +13,7 @@ namespace SharpGit
             ChangeLists = new GitChangeListCollection();
         }
 
-        public bool KeepChangeLists { get; set; }
         public GitChangeListCollection ChangeLists { get; private set; }
-        public bool KeepLocks { get; set; }
         public GitDepth Depth { get; set; }
     }
 }

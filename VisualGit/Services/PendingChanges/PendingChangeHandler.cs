@@ -191,8 +191,6 @@ namespace VisualGit.Services.PendingChanges
                 using (state)
                     try
                     {
-                        state.KeepLocks = args.KeepLocks;
-                        state.KeepChangeLists = args.KeepChangeLists;
                         state.LogMessage = args.LogMessage;
                         state.IssueText = args.IssueText;
 
@@ -575,8 +573,6 @@ namespace VisualGit.Services.PendingChanges
                 {
                     GitCommitArgs ca = new GitCommitArgs();
                     ca.Depth = depth;
-                    ca.KeepLocks = state.KeepLocks;
-                    ca.KeepChangeLists = state.KeepChangeLists;
                     ca.LogMessage = state.LogMessage;
                     ca.AddExpectedError(GitErrorCode.OutOfDate);
 

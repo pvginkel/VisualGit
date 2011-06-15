@@ -83,18 +83,6 @@ namespace VisualGit.Services.PendingChanges
             set { _issueText = value; }
         }
 
-        public bool KeepLocks
-        {
-            get { return _keepLocks; }
-            set { _keepLocks = value; }
-        }
-
-        public bool KeepChangeLists
-        {
-            get { return _keepChangeLists; }
-            set { _keepChangeLists = value; }
-        }
-
         [DebuggerStepThrough]
         public new T GetService<T>()
             where T : class
