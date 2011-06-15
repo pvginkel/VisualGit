@@ -189,6 +189,8 @@
     <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitConflictsClientArgs.cs" />
     <Compile Include="IGitOrigin.cs" />
+    <Compile Include="IgnoreFile.cs" />
+    <Compile Include="IgnoreManager.cs" />
     <Compile Include="IgnoreSpaceTextComparator.cs" />
     <Compile Include="NullOutputStream.cs" />
     <Compile Include="CustomPathFilter.cs" />

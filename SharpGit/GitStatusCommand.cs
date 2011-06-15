@@ -90,22 +90,31 @@ namespace SharpGit
                         actualNodeKind = GitNodeKind.File;
                 }
 
+                // Inform the ignore manager we are working of a file or path.
+
+                repositoryEntry.IgnoreManager.RefreshPath(path);
+
                 // Return an entry for the directory.
 
                 GitStatusEventArgs e;
 
                 if (actualNodeKind == GitNodeKind.Directory)
                 {
+                    var state =
+                        repositoryEntry.IgnoreManager.IsIgnored(path, GitNodeKind.Directory)
+                        ? GitInternalStatus.Ignored
+                        : GitInternalStatus.Unset;
+
                     e = new GitStatusEventArgs
                     {
                         FullPath = path,
-                        LocalContentStatus = GitStatus.Normal,
+                        LocalContentStatus = GetStatus(state),
                         NodeKind = GitNodeKind.Directory,
                         Uri = GitTools.GetUri(path),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.Directory,
-                            Schedule = GitSchedule.Normal
+                            Schedule = GetScheduleState(state)
                         }
                     };
 
@@ -163,31 +172,23 @@ namespace SharpGit
                 if (cancelled)
                     return;
 
-                if (Args.RetrieveIgnoredEntries || Args.RetrieveAllEntries)
+                if ((Args.RetrieveIgnoredEntries || Args.RetrieveAllEntries) && actualNodeKind == GitNodeKind.Directory)
                 {
-                    var iterator = new FileTreeIterator(
-                        path, repository.FileSystem, repository.GetConfig().Get(WorkingTreeOptions.KEY)
-                    );
-
-                    for (; !iterator.Eof; iterator.Next(1))
+                    foreach (string fullPath in Directory.GetFiles(path))
                     {
                         // If the item has not yet been seen, or it is unclean
                         // after we've read the entry.Repository, it's either added
                         // or ignored.
-
-                        // Skip over directories.
-
-                        if ((iterator.EntryFileMode.GetBits() & NGit.FileMode.TYPE_TREE) != 0)
-                            continue;
-
-                        string fullPath = iterator.GetEntryFile();
 
                         if (!RepositoryUtil.PathMatches(relativePath, repository.GetRepositoryPath(fullPath), false, Args.Depth))
                             continue;
 
                         if (!seen.Contains(fullPath))
                         {
-                            var state = iterator.IsEntryIgnored() ? GitInternalStatus.Ignored : GitInternalStatus.Untracked;
+                            var state =
+                                repositoryEntry.IgnoreManager.IsIgnored(fullPath, GitNodeKind.File)
+                                ? GitInternalStatus.Ignored
+                                : GitInternalStatus.Untracked;
 
                             if (
                                 (Args.RetrieveAllEntries && (state == GitInternalStatus.Untracked || state == GitInternalStatus.Ignored)) ||

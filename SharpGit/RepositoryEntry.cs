@@ -10,7 +10,6 @@ namespace SharpGit
     internal sealed class RepositoryEntry : IDisposable
     {
         private bool _disposed;
-        private readonly string _repositoryPath;
         private readonly object _syncLock = new object();
 
         public RepositoryEntry(string repositoryPath)
@@ -18,19 +17,21 @@ namespace SharpGit
             if (repositoryPath == null)
                 throw new ArgumentNullException("repositoryPath");
 
-            _repositoryPath = repositoryPath;
+            Path = repositoryPath;
 
             Repository = CreateNew();
+            IgnoreManager = new IgnoreManager(this);
         }
 
         public Repository Repository { get; private set; }
+        public string Path { get; private set; }
 
         private Repository CreateNew()
         {
             var builder = new RepositoryBuilder();
 
             builder.ReadEnvironment();
-            builder.FindGitDir(_repositoryPath);
+            builder.FindGitDir(Path);
 
             return builder.Build();
         }
@@ -39,6 +40,8 @@ namespace SharpGit
         {
             return new RepositoryLock(this);
         }
+
+        public IgnoreManager IgnoreManager { get; private set; }
 
         public void Dispose()
         {
