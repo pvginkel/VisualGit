@@ -16,8 +16,6 @@ namespace VisualGit.Scc
     {
         string _logMessage;
         string _issueText;
-        bool _keepLocks;
-        bool _keepChangeLists;
         bool _storeMessageOnError;
 
         /// <summary>

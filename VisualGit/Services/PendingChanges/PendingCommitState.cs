@@ -17,8 +17,6 @@ namespace VisualGit.Services.PendingChanges
     {
         SvnClient _svnClient;
         GitClient _client;
-        bool _keepLocks;
-        bool _keepChangeLists;
         HybridCollection<PendingChange> _changes = new HybridCollection<PendingChange>();
         HybridCollection<string> _commitPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
         string _logMessage;
