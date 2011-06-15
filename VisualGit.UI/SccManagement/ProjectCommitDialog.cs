@@ -128,9 +128,6 @@ namespace VisualGit.UI.SccManagement
         {
             pca.LogMessage = logMessage.Text;
             pca.IssueText = issueNumberBox.Text;
-
-            pca.KeepLocks = keepLocksBox.Checked;
-            pca.KeepChangeLists = keepChangelistsBox.Checked;
         }
 
         public string LogMessageText

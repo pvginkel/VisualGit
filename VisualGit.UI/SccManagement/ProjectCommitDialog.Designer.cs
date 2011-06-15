@@ -31,18 +31,25 @@ namespace VisualGit.UI.SccManagement
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectCommitDialog));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pendingList = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
-            this.issueNumberBox = new System.Windows.Forms.TextBox();
-            this.issueLabel = new System.Windows.Forms.Label();
-            this.logMessage = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.keepLocksBox = new System.Windows.Forms.CheckBox();
-            this.keepChangelistsBox = new System.Windows.Forms.CheckBox();
+            this.issueLabel = new System.Windows.Forms.Label();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pendingList = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
+            this.logMessage = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
+            this.issueNumberBox = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -56,57 +63,26 @@ namespace VisualGit.UI.SccManagement
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.issueNumberBox);
-            this.splitContainer1.Panel2.Controls.Add(this.issueLabel);
-            this.splitContainer1.Panel2.Controls.Add(this.logMessage);
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
+            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel2);
             // 
-            // pendingList
+            // tableLayoutPanel2
             // 
-            this.pendingList.AllowColumnReorder = true;
-            this.pendingList.CheckBoxes = true;
-            resources.ApplyResources(this.pendingList, "pendingList");
-            this.pendingList.HideSelection = false;
-            this.pendingList.Name = "pendingList";
-            this.pendingList.ShowSelectAllCheckBox = true;
-            this.pendingList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pendingList_ItemChecked);
-            this.pendingList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pendingList_MouseDoubleClick);
-            // 
-            // issueNumberBox
-            // 
-            resources.ApplyResources(this.issueNumberBox, "issueNumberBox");
-            this.issueNumberBox.Name = "issueNumberBox";
-            this.issueNumberBox.TextChanged += new System.EventHandler(this.issueNumberBox_TextChanged);
-            this.issueNumberBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.issueNumberBox_KeyPress);
-            // 
-            // issueLabel
-            // 
-            resources.ApplyResources(this.issueLabel, "issueLabel");
-            this.issueLabel.Name = "issueLabel";
-            // 
-            // logMessage
-            // 
-            resources.ApplyResources(this.logMessage, "logMessage");
-            this.logMessage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.logMessage.Name = "logMessage";
-            this.logMessage.PasteSource = this.pendingList;
+            resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
+            this.tableLayoutPanel2.Controls.Add(this.logMessage, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.issueNumberBox, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.issueLabel, 1, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // keepLocksBox
+            // issueLabel
             // 
-            resources.ApplyResources(this.keepLocksBox, "keepLocksBox");
-            this.keepLocksBox.Name = "keepLocksBox";
-            this.keepLocksBox.UseVisualStyleBackColor = true;
-            // 
-            // keepChangelistsBox
-            // 
-            resources.ApplyResources(this.keepChangelistsBox, "keepChangelistsBox");
-            this.keepChangelistsBox.Name = "keepChangelistsBox";
-            this.keepChangelistsBox.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.issueLabel, "issueLabel");
+            this.issueLabel.Name = "issueLabel";
             // 
             // cancelButton
             // 
@@ -122,23 +98,70 @@ namespace VisualGit.UI.SccManagement
             this.okButton.Name = "okButton";
             this.okButton.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // flowLayoutPanel1
+            // 
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Controls.Add(this.okButton);
+            this.flowLayoutPanel1.Controls.Add(this.cancelButton);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Name = "panel1";
+            // 
+            // pendingList
+            // 
+            this.pendingList.AllowColumnReorder = true;
+            this.pendingList.CheckBoxes = true;
+            resources.ApplyResources(this.pendingList, "pendingList");
+            this.pendingList.HideSelection = false;
+            this.pendingList.Name = "pendingList";
+            this.pendingList.ShowSelectAllCheckBox = true;
+            this.pendingList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pendingList_ItemChecked);
+            this.pendingList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pendingList_MouseDoubleClick);
+            // 
+            // logMessage
+            // 
+            this.logMessage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tableLayoutPanel2.SetColumnSpan(this.logMessage, 3);
+            resources.ApplyResources(this.logMessage, "logMessage");
+            this.logMessage.Name = "logMessage";
+            this.logMessage.PasteSource = this.pendingList;
+            // 
+            // issueNumberBox
+            // 
+            resources.ApplyResources(this.issueNumberBox, "issueNumberBox");
+            this.issueNumberBox.Name = "issueNumberBox";
+            this.issueNumberBox.TextChanged += new System.EventHandler(this.issueNumberBox_TextChanged);
+            this.issueNumberBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.issueNumberBox_KeyPress);
+            // 
             // ProjectCommitDialog
             // 
             this.AcceptButton = this.okButton;
             resources.ApplyResources(this, "$this");
             this.CancelButton = this.cancelButton;
-            this.Controls.Add(this.okButton);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.keepChangelistsBox);
-            this.Controls.Add(this.keepLocksBox);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.panel1);
             this.Name = "ProjectCommitDialog";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -148,11 +171,13 @@ namespace VisualGit.UI.SccManagement
         private VisualGit.UI.PendingChanges.Commits.PendingCommitsView pendingList;
         private VisualGit.UI.PendingChanges.LogMessageEditor logMessage;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox issueNumberBox;
         private System.Windows.Forms.Label issueLabel;
-        private System.Windows.Forms.CheckBox keepLocksBox;
-        private System.Windows.Forms.CheckBox keepChangelistsBox;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox issueNumberBox;
     }
 }
