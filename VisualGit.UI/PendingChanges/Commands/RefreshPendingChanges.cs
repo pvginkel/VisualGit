@@ -30,11 +30,6 @@ namespace VisualGit.UI.PendingChanges.Commands
             if (page != null && page.Visible)
                 return page;
 
-            page = e.Context.GetService<RecentChangesPage>();
-
-            if (page != null && page.Visible)
-                return page;
-
             return null;
         }
 

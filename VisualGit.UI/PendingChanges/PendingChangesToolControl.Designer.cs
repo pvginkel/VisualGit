@@ -32,7 +32,6 @@ namespace VisualGit.UI.PendingChanges
 			this.pendingChangesTabs = new System.Windows.Forms.ToolStrip();
 			this.fileChangesButton = new System.Windows.Forms.ToolStripButton();
 			this.issuesButton = new System.Windows.Forms.ToolStripButton();
-			this.recentChangesButton = new System.Windows.Forms.ToolStripButton();
 			this.conflictsButton = new System.Windows.Forms.ToolStripButton();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.pendingChangesTabs.SuspendLayout();
@@ -47,7 +46,6 @@ namespace VisualGit.UI.PendingChanges
 			this.pendingChangesTabs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileChangesButton,
             this.issuesButton,
-            this.recentChangesButton,
             this.conflictsButton});
 			this.pendingChangesTabs.Name = "pendingChangesTabs";
 			this.pendingChangesTabs.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -66,13 +64,6 @@ namespace VisualGit.UI.PendingChanges
 			resources.ApplyResources(this.issuesButton, "issuesButton");
 			this.issuesButton.Name = "issuesButton";
 			this.issuesButton.Click += new System.EventHandler(this.issuesButton_Click);
-			// 
-			// recentChangesButton
-			// 
-			this.recentChangesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			resources.ApplyResources(this.recentChangesButton, "recentChangesButton");
-			this.recentChangesButton.Name = "recentChangesButton";
-			this.recentChangesButton.Click += new System.EventHandler(this.recentChangesButton_Click);
 			// 
 			// conflictsButton
 			// 
@@ -105,7 +96,6 @@ namespace VisualGit.UI.PendingChanges
         private System.Windows.Forms.ToolStrip pendingChangesTabs;
         private System.Windows.Forms.ToolStripButton fileChangesButton;
         private System.Windows.Forms.ToolStripButton issuesButton;
-        private System.Windows.Forms.ToolStripButton recentChangesButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripButton conflictsButton;
     }

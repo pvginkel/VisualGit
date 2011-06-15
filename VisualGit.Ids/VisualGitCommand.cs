@@ -227,8 +227,6 @@ namespace VisualGit
 
         MakeNonSccFileWriteable,
 
-        PendingChangesConfigureRecentChangesPage,
-        
         PendingChangesPush,
         PendingChangesPushSpecificBranch,
         PendingChangesPushSpecificTag,

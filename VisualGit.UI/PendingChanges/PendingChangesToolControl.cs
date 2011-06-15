@@ -21,7 +21,6 @@ namespace VisualGit.UI.PendingChanges
         readonly PendingActivationPage _activatePage;
         readonly PendingCommitsPage _commitsPage;
         readonly PendingIssuesPage _issuesPage;
-        readonly RecentChangesPage _changesPage;
         readonly PendingConflictsPage _conflictsPage;
         PendingChangesPage _currentPage;
         PendingChangesPage _lastPage;
@@ -33,14 +32,12 @@ namespace VisualGit.UI.PendingChanges
             _activatePage = new PendingActivationPage();
             _commitsPage = new PendingCommitsPage();
             _issuesPage = new PendingIssuesPage();
-            _changesPage = new RecentChangesPage();
             _conflictsPage = new PendingConflictsPage();
 
             _pages = new List<PendingChangesPage>();
             _pages.Add(_activatePage);
             _pages.Add(_commitsPage);
             _pages.Add(_issuesPage);
-            _pages.Add(_changesPage);
             _pages.Add(_conflictsPage);
         }
 
@@ -191,7 +188,6 @@ namespace VisualGit.UI.PendingChanges
 
             fileChangesButton.Checked = (_lastPage == _commitsPage);
             issuesButton.Checked = (_lastPage == _issuesPage);
-            recentChangesButton.Checked = (_lastPage == _changesPage);
             conflictsButton.Checked = (_lastPage == _conflictsPage);
 
             if (select)
@@ -227,11 +223,6 @@ namespace VisualGit.UI.PendingChanges
         private void issuesButton_Click(object sender, EventArgs e)
         {
             ShowPanel(_issuesPage, true);
-        }
-
-        private void recentChangesButton_Click(object sender, EventArgs e)
-        {
-            ShowPanel(_changesPage, true);
         }
 
         private void conflictsButton_Click(object sender, EventArgs e)
