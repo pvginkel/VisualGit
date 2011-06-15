@@ -101,12 +101,35 @@ namespace SharpGit
         {
             Debug.Assert(Args is IGitConflictsClientArgs, "Merge results may only be reported on Args that implement IGitConflictsClientArgs");
 
-            var conflicts = mergeResults.GetConflicts();
+            // We ignore the merge results for getting a list of conflicts.
+            // Instead, we go to the index directly.
 
-            if (conflicts == null)
+            var conflicts = new HashSet<string>(FileSystemUtil.StringComparer);
+
+            using (repositoryEntry.Lock())
+            {
+                var repository = repositoryEntry.Repository;
+
+                var dirCache = repository.ReadDirCache();
+
+                for (int i = 0, count = dirCache.GetEntryCount(); i < count; i++)
+                {
+                    var entry = dirCache.GetEntry(i);
+
+                    if (entry.Stage > 0)
+                    {
+                        string path = entry.PathString;
+
+                        if (!conflicts.Contains(path))
+                            conflicts.Add(path);
+                    }
+                }
+            }
+
+            if (conflicts.Count == 0)
                 return;
 
-            foreach (var item in conflicts.Keys)
+            foreach (var item in conflicts)
             {
                 string fullPath = repositoryEntry.Repository.GetAbsoluteRepositoryPath(item);
 
