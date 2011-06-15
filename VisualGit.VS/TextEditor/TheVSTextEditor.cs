@@ -422,7 +422,7 @@ namespace VisualGit.UI.VS.TextEditor
                                     c = cc;
                                 }
 
-                                if (!found)
+                                if (!found && c != null)
                                 {
                                     ContainerControl cc = c.TopLevelControl as ContainerControl;
 
