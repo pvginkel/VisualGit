@@ -18,9 +18,7 @@ namespace VisualGit.UI.PendingChanges
     public partial class PendingChangesToolControl : VisualGitToolWindowControl, IVisualGitHasVsTextView
     {
         readonly List<PendingChangesPage> _pages;
-        readonly PendingActivationPage _activatePage;
         readonly PendingCommitsPage _commitsPage;
-        readonly PendingIssuesPage _issuesPage;
         PendingChangesPage _currentPage;
         PendingChangesPage _lastPage;
 
@@ -28,14 +26,10 @@ namespace VisualGit.UI.PendingChanges
         {
             InitializeComponent();
 
-            _activatePage = new PendingActivationPage();
             _commitsPage = new PendingCommitsPage();
-            _issuesPage = new PendingIssuesPage();
 
             _pages = new List<PendingChangesPage>();
-            _pages.Add(_activatePage);
             _pages.Add(_commitsPage);
-            _pages.Add(_issuesPage);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -89,8 +83,11 @@ namespace VisualGit.UI.PendingChanges
 
             _lastPage = _commitsPage;
 
-            ShowPanel(shouldActivate ? _lastPage : _activatePage, false);
             pendingChangesTabs.Enabled = shouldActivate;
+
+            // Hide the tab because we just have one button on it.
+
+            pendingChangesTabs.Visible = false;
         }
 
         void OnSccShellActivate(object sender, EventArgs e)
@@ -106,8 +103,6 @@ namespace VisualGit.UI.PendingChanges
 
         void OnSccProviderDeactivated(object sender, EventArgs e)
         {
-            _activatePage.ShowMessage = true;
-            ShowPanel(_activatePage, false);
             pendingChangesTabs.Enabled = false;
         }
 
@@ -180,11 +175,9 @@ namespace VisualGit.UI.PendingChanges
 
             _currentPage = page;
 
-            if (page != _activatePage)
-                _lastPage = page;
+            _lastPage = page;
 
             fileChangesButton.Checked = (_lastPage == _commitsPage);
-            issuesButton.Checked = (_lastPage == _issuesPage);
 
             if (select)
                 page.Select();
@@ -214,11 +207,6 @@ namespace VisualGit.UI.PendingChanges
         private void fileChangesButton_Click(object sender, EventArgs e)
         {
             ShowPanel(_commitsPage, true);
-        }
-
-        private void issuesButton_Click(object sender, EventArgs e)
-        {
-            ShowPanel(_issuesPage, true);
         }
 
         #region IVisualGitHasVsTextView Members

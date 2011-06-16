@@ -13,7 +13,6 @@ namespace VisualGit.UI.PendingChanges.Commands
         public void OnUpdate(CommandUpdateEventArgs e)
         {
             PendingCommitsPage commitPage = e.Context.GetService<PendingCommitsPage>();
-            PendingIssuesPage issuesPage = e.Context.GetService<PendingIssuesPage>();
             if (commitPage == null)
             {
                 e.Enabled = false;
@@ -27,7 +26,6 @@ namespace VisualGit.UI.PendingChanges.Commands
                         // check if commit page or issues page is visible
                         && (false
                              || commitPage.Visible
-                             || (issuesPage != null && issuesPage.Visible)
                              )
                          // make sure commit page can commit
                          && commitPage.CanCommit()

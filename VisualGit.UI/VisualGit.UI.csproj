@@ -349,12 +349,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PCStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="PendingChanges\PendingActivationPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PendingChanges\PendingActivationPage.Designer.cs">
-      <DependentUpon>PendingActivationPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="PendingChanges\Synchronize\SynchronizeItem.cs" />
     <Compile Include="PendingChanges\Synchronize\SynchronizeListItem.cs" />
     <Compile Include="PendingChanges\Synchronize\SynchronizeListView.cs">
@@ -571,12 +565,6 @@
     </Compile>
     <Compile Include="PendingChanges\Commits\PendingCommitsView.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="PendingChanges\PendingIssuesPage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PendingChanges\PendingIssuesPage.Designer.cs">
-      <DependentUpon>PendingIssuesPage.cs</DependentUpon>
     </Compile>
     <Compile Include="PendingChanges\PendingChangesPage.cs">
       <SubType>UserControl</SubType>
@@ -880,10 +868,6 @@
       <DependentUpon>PendingChangesToolControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PendingChanges\PendingIssuesPage.resx">
-      <DependentUpon>PendingIssuesPage.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="GitLog\LogStrings.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -942,9 +926,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\ConfigureRecentChangesPageDialog.resx">
       <DependentUpon>ConfigureRecentChangesPageDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PendingChanges\PendingActivationPage.resx">
-      <DependentUpon>PendingActivationPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SccManagement\ItemUpdateDialog.resx">
       <DependentUpon>ItemUpdateDialog.cs</DependentUpon>
