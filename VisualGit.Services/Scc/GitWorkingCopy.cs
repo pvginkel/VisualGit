@@ -21,8 +21,6 @@ namespace VisualGit.Scc
         IVisualGitServiceProvider _context;
         bool _checkedUri;
         Uri _repositoryRoot;
-        bool _checkedId;
-        Guid? _reposId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitWorkingCopy"/> class.
@@ -164,36 +162,6 @@ namespace VisualGit.Scc
                 return _repositoryRoot = new Uri("file:///" + repositoryRoot);
             else
                 return _repositoryRoot = null;
-        }
-
-        public Guid RepositoryId
-        {
-            get { return _reposId ?? GetReposId(); }
-        }
-
-        private Guid GetReposId()
-        {
-            if (_checkedId)
-                return Guid.Empty;
-
-            _checkedId = true;
-
-            throw new NotImplementedException();
-#if false
-            // Theoretically this can connect the server (if upgraded from a really old workingcopy)
-            using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
-            {
-                Guid value;
-
-                if (client.TryGetRepositoryId(FullPath, out value))
-                {
-                    _reposId = value;
-                    return value;
-                }
-
-                return Guid.Empty;
-            }
-#endif
         }
     }
 }
