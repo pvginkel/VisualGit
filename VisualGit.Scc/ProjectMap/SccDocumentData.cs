@@ -163,16 +163,19 @@ namespace VisualGit.Scc.ProjectMap
                 ISccProjectWalker walker = GetService<ISccProjectWalker>();
 
                 object parentId;
-                this.Hierarchy.GetProperty(ItemId, (int)__VSHPROPID.VSHPROPID_Parent, out parentId);
-                statusMonitor.ScheduleGitStatus(walker.GetSccFiles(
-                    Hierarchy,
-                    (uint)(int)parentId,
-                    ProjectWalkDepth.AllDescendantsInHierarchy,
-                    null
-                ));
+                if (ErrorHandler.Succeeded(this.Hierarchy.GetProperty(ItemId, (int)__VSHPROPID.VSHPROPID_Parent, out parentId)))
+                {
+                    statusMonitor.ScheduleGitStatus(walker.GetSccFiles(
+                        Hierarchy,
+                        (uint)(int)parentId,
+                        ProjectWalkDepth.AllDescendantsInHierarchy,
+                        null
+                    ));
+                    return;
+                }
             }
-            else
-                statusMonitor.ScheduleGitStatus(Name);
+
+            statusMonitor.ScheduleGitStatus(Name);
         }
 
         internal void OnClosed(bool closedWithoutSaving)
