@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using SharpSvn;
 using SharpGit;
 
 namespace VisualGit.Scc
@@ -179,6 +178,8 @@ namespace VisualGit.Scc
 
             _checkedId = true;
 
+            throw new NotImplementedException();
+#if false
             // Theoretically this can connect the server (if upgraded from a really old workingcopy)
             using (SvnClient client = _context.GetService<ISvnClientPool>().GetClient())
             {
@@ -192,6 +193,7 @@ namespace VisualGit.Scc
 
                 return Guid.Empty;
             }
+#endif
         }
     }
 }

@@ -11,12 +11,12 @@ using FileVersionInfo = System.Diagnostics.FileVersionInfo;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SharpSvn;
 
 using VisualGit.Scc;
 using VisualGit.Selection;
 using VisualGit.UI;
 using VisualGit.VS;
+using SharpGit;
 
 namespace VisualGit.Settings
 {
@@ -158,7 +158,6 @@ namespace VisualGit.Settings
             SettingsCache cache = new SettingsCache();
             try
             {
-
                 string solutionFile = SelectionContext.SolutionFilename;
 
                 if (string.IsNullOrEmpty(solutionFile))
@@ -189,8 +188,6 @@ namespace VisualGit.Settings
                     cache.ProjectRootItem = parent;
                 }
 
-                LoadSolutionProperties(cache, item);
-
                 if (cache.ProjectRoot != null)
                 {
                     parent = StatusCache[cache.ProjectRoot];
@@ -200,213 +197,12 @@ namespace VisualGit.Settings
 
                     cache.ProjectRootItem = parent;
                     cache.RootCookie = parent.ChangeCookie;
-
-                    LoadRootProperties(cache, parent);
                 }
             }
             finally
             {
                 _cache = cache;
             }
-        }
-
-        private void LoadSolutionProperties(SettingsCache cache, GitItem item)
-        {
-            // Git -1.5 loads all properties in memory at once; loading them 
-            // all is always faster than loading a few
-            // We must change this algorithm if Gits implementation changes
-            SvnPropertyCollection pc = GetAllProperties(item.FullPath);
-
-            if (pc != null)
-                foreach (SvnPropertyValue pv in pc)
-                {
-                    switch (pv.Key)
-                    {
-                        case VisualGitSccPropertyNames.ProjectRoot:
-                            SetProjectRootViaProperty(cache, pv.StringValue);
-                            break;
-                        default:
-                            LoadPropertyBoth(cache, pv);
-                            break;
-                    }
-                }
-        }
-
-        private void SetProjectRootViaProperty(SettingsCache cache, string value)
-        {
-            string dir = value;
-            string solutionFile = cache.SolutionFilename;
-
-            GitItem directory = StatusCache[solutionFile].Parent;
-            if (directory == null)
-                return;
-
-            GitWorkingCopy wc = directory.WorkingCopy;
-
-            int up = 0;
-
-            while (dir.StartsWith("../"))
-            {
-                up++;
-                dir = dir.Substring(3);
-                if (directory != null)
-                    directory = directory.Parent;
-            }
-
-            if (directory == null)
-                return; // Invalid value
-
-            if (directory.WorkingCopy != wc)
-                return; // Outside workingcopy
-
-            if (dir.Length == 0)
-            {
-                cache.ProjectRoot = directory.FullPath;
-                cache.ProjectRootUri = directory.Uri;
-            }
-        }
-
-        private void LoadRootProperties(SettingsCache cache, GitItem item)
-        {
-            // Git -1.5 loads all properties in memory at once; loading them 
-            // all at once is always faster than loading a few
-            // We must change this algorithm if Gits implementation changes
-            SvnPropertyCollection pc = GetAllProperties(item.FullPath);
-
-            if (pc != null)
-                foreach (SvnPropertyValue pv in pc)
-                {
-                    switch (pv.Key)
-                    {
-                        default:
-                            LoadPropertyBoth(cache, pv);
-                            break;
-                    }
-                }
-        }
-
-        private void LoadPropertyBoth(SettingsCache cache, SvnPropertyValue pv)
-        {
-            bool boolValue;
-            int intValue;
-            switch (pv.Key)
-            {
-                case SvnPropertyNames.BugTrackAppend:
-                    if (!cache.BugTrackAppend.HasValue && TryParseBool(pv, out boolValue))
-                        cache.BugTrackAppend = boolValue;
-                    break;
-                case SvnPropertyNames.BugTrackLabel:
-                    if (cache.BugTrackLabel == null)
-                        cache.BugTrackLabel = pv.StringValue;
-                    break;
-                case SvnPropertyNames.BugTrackLogRegex:
-                    if (cache.BugTrackLogRegexes == null)
-                        cache.BugTrackLogRegexes = pv.StringValue;
-                    break;
-                case SvnPropertyNames.BugTrackMessage:
-                    if (cache.BugTrackMessage == null)
-                        cache.BugTrackMessage = pv.StringValue.Replace("\r", "");
-                    break;
-                case SvnPropertyNames.BugTrackNumber:
-                    if (!cache.BugTrackNumber.HasValue && TryParseBool(pv, out boolValue))
-                        cache.BugTrackNumber = boolValue;
-                    break;
-                case SvnPropertyNames.BugTrackUrl:
-                    if (cache.BugTrackUrl == null)
-                        cache.BugTrackUrl = pv.StringValue;
-                    break;
-                case SvnPropertyNames.BugTrackWarnIfNoIssue:
-                    if (!cache.BugTrackWarnIfNoIssue.HasValue && TryParseBool(pv, out boolValue))
-                        cache.BugTrackWarnIfNoIssue = boolValue;
-                    break;
-                case SvnPropertyNames.TortoiseSvnLogMinSize:
-                    if (!cache.LogMessageMinSize.HasValue && !string.IsNullOrEmpty(pv.StringValue)
-                        && int.TryParse(pv.StringValue, out intValue))
-                    {
-                        cache.LogMessageMinSize = intValue;
-                    }
-                    break;
-                case SvnPropertyNames.TortoiseSvnLockMsgMinSize:
-                    if (!cache.LockMessageMinSize.HasValue && !string.IsNullOrEmpty(pv.StringValue)
-                        && int.TryParse(pv.StringValue, out intValue))
-                    {
-                        cache.LockMessageMinSize = intValue;
-                    }
-                    break;
-                case SvnPropertyNames.TortoiseSvnLogWidthLine:
-                    if (!cache.LogWidth.HasValue && !string.IsNullOrEmpty(pv.StringValue)
-                        && int.TryParse(pv.StringValue, out intValue))
-                    {
-                        cache.LogWidth = intValue;
-                    }
-                    break;
-                case SvnPropertyNames.TortoiseSvnLogSummary:
-                    if (cache.LogSummary == null)
-                        cache.LogSummary = pv.StringValue;
-                    break;
-                case VisualGitSccPropertyNames.IssueRepositoryConnector:
-                    cache.IssueRepositoryConnectorName = pv.StringValue;
-                    break;
-                case VisualGitSccPropertyNames.IssueRepositoryUri:
-                    cache.IssueRepositoryUri = pv.StringValue;
-                    break;
-                case VisualGitSccPropertyNames.IssueRepositoryId:
-                    cache.IssueRepositoryId = pv.StringValue;
-                    break;
-                case VisualGitSccPropertyNames.IssueRepositoryPropertyNames:
-                    cache.IssueRepositoryPropertyNames = pv.StringValue;
-                    break;
-                case VisualGitSccPropertyNames.IssueRepositoryPropertyValues:
-                    cache.IssueRepositoryPropertyValues = pv.StringValue;
-                    break;
-            }
-        }
-
-        private bool TryParseBool(SvnPropertyValue pv, out bool boolValue)
-        {
-            string val = pv.StringValue;
-
-            boolValue = false;
-            if (string.IsNullOrEmpty(val))
-                return false;
-
-            if (string.Equals(val, "true", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(val, "yes", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(val, SvnPropertyNames.SvnBooleanValue, StringComparison.OrdinalIgnoreCase))
-            {
-                boolValue = true;
-                return true;
-            }
-
-            if (string.Equals(val, "false", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(val, "no", StringComparison.OrdinalIgnoreCase))
-            {
-                boolValue = false;
-                return true;
-            }
-
-            return false;
-        }
-
-        SvnPropertyCollection GetAllProperties(string path)
-        {
-            // Git -1.5 loads all properties in memory at once; loading them 
-            // all at once is always faster than loading a few
-            // We must change this algorithm if Gits implementation changes
-            SvnPropertyCollection pc = null;
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
-            {
-                SvnPropertyListArgs pl = new SvnPropertyListArgs();
-                pl.ThrowOnError = false;
-                client.PropertyList(path, pl,
-                    delegate(object sender, SvnPropertyListEventArgs e)
-                    {
-                        e.Detach();
-                        pc = e.Properties;
-                    });
-            }
-
-            return pc;
         }
 
         public string SolutionFilename
@@ -449,8 +245,8 @@ namespace VisualGit.Settings
             if (SolutionFilename == null)
                 return;
 
-            string sd = SvnTools.PathToRelativeUri(SvnTools.GetNormalizedDirectoryName(SolutionFilename).TrimEnd('\\') + '\\').ToString();
-            string v = SvnTools.PathToRelativeUri(SvnTools.GetNormalizedFullPath(value)).ToString();
+            string sd = GitTools.PathToRelativeUri(GitTools.GetNormalizedDirectoryName(SolutionFilename).TrimEnd('\\') + '\\').ToString();
+            string v = GitTools.PathToRelativeUri(GitTools.GetNormalizedFullPath(value)).ToString();
 
             if (!v.EndsWith("/"))
                 v += "/";
@@ -465,6 +261,8 @@ namespace VisualGit.Settings
                 || !Uri.TryCreate("file:///" + v.Replace('\\', '/'), UriKind.Absolute, out resUri))
                 return;
 
+            throw new NotImplementedException();
+#if false
             using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 SvnSetPropertyArgs ps = new SvnSetPropertyArgs();
@@ -477,6 +275,7 @@ namespace VisualGit.Settings
             }
 
             _cache = null;
+#endif
         }
 
         public string ProjectRootWithSeparator
@@ -564,7 +363,7 @@ namespace VisualGit.Settings
                 {
                     object r;
                     if (ErrorHandler.Succeeded(shell.GetProperty((int)__VSSPROPID.VSSPROPID_VisualStudioProjDir, out r)))
-                        return SvnTools.GetNormalizedFullPath((string)r);
+                        return GitTools.GetNormalizedFullPath((string)r);
                 }
 
                 return "C:\\";
@@ -692,10 +491,13 @@ namespace VisualGit.Settings
             if (cache.SolutionFilename == null)
                 return null;
 
+            throw new NotImplementedException();
+#if false
             using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
                 return cache.RepositoryRoot = client.GetRepositoryRoot(cache.SolutionFilename);
             }
+#endif
         }
 
         #endregion

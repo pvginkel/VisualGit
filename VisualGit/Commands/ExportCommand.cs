@@ -1,5 +1,4 @@
 using System.Windows.Forms;
-using SharpSvn;
 
 using VisualGit.UI.Commands;
 using System;
@@ -28,6 +27,9 @@ namespace VisualGit.Commands
                 if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                     return;
 
+                throw new NotImplementedException();
+#if false
+
                 SvnDepth depth = dlg.NonRecursive ? SvnDepth.Empty : SvnDepth.Infinity;
 
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.Exporting,
@@ -35,15 +37,12 @@ namespace VisualGit.Commands
                     {
                         SvnExportArgs args = new SvnExportArgs();
 
-                        throw new NotImplementedException();
-
-#if false
                         args.Depth = depth;
                         args.Revision = dlg.Revision;
 
                         wa.SvnClient.Export(dlg.ExportSource, dlg.LocalPath, args);
-#endif
                     });
+#endif
             }
         }
     }

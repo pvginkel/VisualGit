@@ -4,6 +4,7 @@ using VisualGit.VS;
 using VisualGit.Scc;
 using VisualGit.IssueTracker;
 using System.Collections.Generic;
+using System;
 
 namespace VisualGit.UI.IssueTracker
 {
@@ -63,6 +64,8 @@ namespace VisualGit.UI.IssueTracker
 
         private bool DeleteIssueRepositoryProperties(VisualGitContext context, GitItem item)
         {
+            throw new NotImplementedException();
+#if false
             return context.GetService<IProgressRunner>().RunModal("Removing Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
                 {
@@ -72,10 +75,13 @@ namespace VisualGit.UI.IssueTracker
                     wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyNames);
                     wa.SvnClient.DeleteProperty(item.FullPath, VisualGitSccPropertyNames.IssueRepositoryPropertyValues);
                 }).Succeeded;
+#endif
         }
 
         private bool SetIssueRepositoryProperties(VisualGitContext context, GitItem item, IssueRepositorySettings settings)
         {
+            throw new NotImplementedException();
+#if false
             return context.GetService<IProgressRunner>().RunModal("Applying Issue Repository settings",
                 delegate(object sender, ProgressWorkerArgs wa)
                 {
@@ -120,6 +126,7 @@ namespace VisualGit.UI.IssueTracker
                     }
 
                 }).Succeeded;
+#endif
         }
 
         /// <summary>

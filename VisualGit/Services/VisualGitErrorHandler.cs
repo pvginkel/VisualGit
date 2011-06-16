@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Xml.Serialization;
 
-using SharpSvn;
 
 using VisualGit.UI;
 using VisualGit.VS;
@@ -119,6 +118,7 @@ namespace VisualGit.Services
                 Invoke(ex.InnerException, info);
             }
 
+#if false
             private void DoHandle(SvnRepositoryHookException e, ExceptionInfo info)
             {
                 string message;
@@ -130,7 +130,6 @@ namespace VisualGit.Services
                 MessageBox.Show(Owner, message, "Repository hook failed", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
-
 
             private void DoHandle(SvnWorkingCopyLockException ex, ExceptionInfo info)
             {
@@ -176,6 +175,7 @@ namespace VisualGit.Services
                     "Resource(s) out of date", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
+#endif
 
             private void DoHandle(Exception ex, ExceptionInfo info)
             {
@@ -201,6 +201,8 @@ namespace VisualGit.Services
             if (pkg != null)
                 additionalInfo.Add("VisualGit-Version", pkg.UIVersion.ToString());
 
+            throw new NotImplementedException();
+#if false
             additionalInfo.Add("SharpSvn-Version", SharpSvn.SvnClient.SharpSvnVersion.ToString());
             additionalInfo.Add("Svn-Version", SharpSvn.SvnClient.Version.ToString());
             additionalInfo.Add("OS-Version", Environment.OSVersion.Version.ToString());
@@ -238,15 +240,14 @@ namespace VisualGit.Services
                             subject += " (" + ErrorToString(sx) + "-" + ErrorToString(rc) + ")";
                     }
                     
-                    throw new NotSupportedException("Error e-mails should not be send to ankhsvn.net");
-                    /*
                     VisualGitErrorMessage.SendByMail(_errorReportMailAddress,
                         subject, ex, typeof(VisualGitErrorHandler).Assembly, additionalInfo);
-                    */
                 }
             }
+#endif
         }
 
+#if false
         static string ErrorToString(SvnException ex)
         {
             if (Enum.IsDefined(typeof(SvnErrorCode), ex.SvnErrorCode))
@@ -276,6 +277,7 @@ namespace VisualGit.Services
 
             return ((int)ex.SvnErrorCode).ToString();
         }
+#endif
 
         private static string GetNestedMessages(Exception ex)
         {

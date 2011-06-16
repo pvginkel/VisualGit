@@ -6,7 +6,6 @@ using VisualGit.Commands;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
 using SharpGit;
-using SharpSvn;
 using VisualGit.UI.Commands;
 using System.Windows.Forms;
 
@@ -94,8 +93,6 @@ namespace VisualGit.UI.GitLog.Commands
             using (DocumentLock dl = tracker.LockDocuments(nodes, DocumentLockType.NoReload))
             using (dl.MonitorChangesForReload())
             {
-                SvnMergeArgs ma = new SvnMergeArgs();
-
                 progressRunner.RunModal("Reverting Revisions",
                 delegate(object sender, ProgressWorkerArgs ee)
                 {

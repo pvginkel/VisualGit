@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Forms;
 using VisualGit.UI.VSSelectionControls;
-using SharpSvn;
 using VisualGit.Scc;
 using System.ComponentModel;
 using System.Drawing;

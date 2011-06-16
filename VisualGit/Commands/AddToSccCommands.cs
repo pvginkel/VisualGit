@@ -6,7 +6,6 @@ using VisualGit.Selection;
 using VisualGit.UI;
 using System.Windows.Forms;
 using System.IO;
-using SharpSvn;
 using VisualGit.VS;
 using VisualGit.UI.SccManagement;
 using System.Collections.ObjectModel;
@@ -163,7 +162,7 @@ namespace VisualGit.Commands
                     IProjectFileMapper mapper = e.GetService<IProjectFileMapper>();
                     IFileStatusMonitor monitor = e.GetService<IFileStatusMonitor>();
 
-                    settings.ProjectRoot = SvnTools.GetNormalizedFullPath(dialog.WorkingCopyDir);
+                    settings.ProjectRoot = GitTools.GetNormalizedFullPath(dialog.WorkingCopyDir);
 
                     if (monitor != null && mapper != null)
                     {

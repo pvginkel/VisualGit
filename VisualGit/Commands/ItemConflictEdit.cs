@@ -1,4 +1,3 @@
-using SharpSvn;
 using VisualGit.Scc.UI;
 using System.IO;
 using VisualGit.UI;

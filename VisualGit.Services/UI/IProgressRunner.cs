@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
 using System.ComponentModel;
 using SharpGit;
 
@@ -27,14 +26,6 @@ namespace VisualGit
         public GitClient Client
         {
             get { return _client; }
-        }
-
-        public SvnClient SvnClient
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public IVisualGitServiceProvider Context

@@ -8,11 +8,11 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 
-using SharpSvn;
 
 using VisualGit.Scc.Native;
 using VisualGit.Scc.SettingMap;
 using VisualGit.UI;
+using SharpGit;
 
 
 namespace VisualGit.Scc
@@ -86,7 +86,7 @@ namespace VisualGit.Scc
             if (!GitItem.IsValidPath(path, true))
                 return path; // Not an on-disk path -> Nothing to normalize
 
-            string np = SvnTools.GetTruePath(path, true);
+            string np = GitTools.GetTruePath(path, true);
 
             if (path[path.Length - 1] == '\\' && np[np.Length - 1] != '\\')
                 np += '\\';

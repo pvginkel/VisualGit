@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using VisualGit.Scc;
-using SharpSvn;
 using SharpGit;
 
 namespace VisualGit
@@ -195,7 +194,7 @@ namespace VisualGit
 
             if (TryGetState(GitItemState.Versioned, out state) && state != 0)
                 versionable = true;
-            else if (Exists && SvnTools.IsBelowManagedPath(FullPath)) // Will call GetState again!
+            else if (Exists && GitTools.IsBelowManagedPath(FullPath)) // Will call GetState again!
                 versionable = true;
             else
                 versionable = false;

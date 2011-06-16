@@ -5,9 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using SharpSvn;
 using VisualGit.UI.VSSelectionControls;
-using SharpSvn.Security;
 
 namespace VisualGit.UI.OptionsPages
 {
@@ -17,7 +15,7 @@ namespace VisualGit.UI.OptionsPages
         {
             InitializeComponent();
         }
-
+#if false
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -122,9 +120,12 @@ namespace VisualGit.UI.OptionsPages
                 return sb.ToString();
             }
         }
+#endif
 
         private void credentialList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            throw new NotImplementedException();
+#if false
             foreach (AuthenticationListItem li in credentialList.SelectedItems)
             {
                 if (li != null)
@@ -135,10 +136,13 @@ namespace VisualGit.UI.OptionsPages
             }
 
             removeButton.Enabled = false;
+#endif
         }
 
         private void removeButton_Click(object sender, EventArgs e)
         {
+            throw new NotImplementedException();
+#if false
             VisualGitMessageBox mb = new VisualGitMessageBox(Context);
 
             if (DialogResult.OK != mb.Show(OptionsResources.TheSelectedCredentialsWillBeRemoved, "", MessageBoxButtons.OKCancel))
@@ -168,6 +172,7 @@ namespace VisualGit.UI.OptionsPages
                     Refreshlist();
                 }
             }
+#endif
         }
     }
 }

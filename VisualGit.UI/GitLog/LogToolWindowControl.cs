@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Text;
 using System.Diagnostics;
 using VisualGit.Scc.UI;
-using SharpSvn;
 using VisualGit.Scc;
 using SharpGit;
 

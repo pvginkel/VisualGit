@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SharpSvn;
 
 using VisualGit.Commands;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -155,7 +155,7 @@ namespace VisualGit.Scc
                     if (!SccProvider.IsSafeSccPath(file))
                         continue;
 
-                    string fullFile = SvnTools.GetNormalizedFullPath(file);
+                    string fullFile = GitTools.GetNormalizedFullPath(file);
                     if (!_fileHints.Contains(fullFile))
                         _fileHints.Add(fullFile);
                 }

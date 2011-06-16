@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using VisualGit.Scc;
-using SharpSvn;
 using VisualGit.UI.Commands;
 using System.Windows.Forms;
+using System;
 
 namespace VisualGit.Commands
 {
@@ -145,6 +145,8 @@ namespace VisualGit.Commands
 
             e.Selection.Cache.Remove(typeof(ItemMoveToChangeList)); // Remove cached list of items
 
+            throw new NotImplementedException();
+#if false
             using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
             {
                 if (name == null)
@@ -162,6 +164,7 @@ namespace VisualGit.Commands
 
                 // The svn client broadcasts glyph updates to fix our UI
             }
+#endif
         }
     }
 }

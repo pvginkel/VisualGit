@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using SharpSvn;
 using System.Diagnostics;
 using VisualGit.Scc;
 using SharpGit;

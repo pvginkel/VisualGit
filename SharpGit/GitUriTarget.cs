@@ -113,7 +113,7 @@ namespace SharpGit
             return UriPartToPath(path);
         }
 
-        private string UriPartToPath(string uriPath)
+        public static string UriPartToPath(string uriPath)
         {
             if (uriPath == null)
                 throw new ArgumentNullException("uriPath");
@@ -158,7 +158,7 @@ namespace SharpGit
             // TODO: Throw exception if the current value is not below the repository root
         }
 
-        private Uri CanonicalizeUri(Uri uri)
+        internal static Uri CanonicalizeUri(Uri uri)
         {
             if (uri == null)
                 throw new ArgumentNullException("uri");
@@ -237,7 +237,7 @@ namespace SharpGit
                 return uri;
         }
 
-        private string RemoveDoubleSlashes(string input)
+        private static string RemoveDoubleSlashes(string input)
         {
             int n;
 
@@ -247,7 +247,7 @@ namespace SharpGit
             return input;
         }
 
-        private bool ContainsUpper(string value)
+        private static bool ContainsUpper(string value)
         {
             foreach (char c in value)
             {

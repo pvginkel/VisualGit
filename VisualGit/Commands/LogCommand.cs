@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.UI;
 using VisualGit.UI.GitLog;

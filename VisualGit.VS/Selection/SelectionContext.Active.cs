@@ -6,9 +6,9 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using System.Runtime.InteropServices;
 using VisualGit.Selection;
-using SharpSvn;
 using Microsoft.VisualStudio.TextManager.Interop;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.VS.Selection
 {
@@ -166,7 +166,7 @@ namespace VisualGit.VS.Selection
                         && null != (path = value as string))
                     {
                         if (GitItem.IsValidPath(path))
-                            return _activeDocumentFileName = SvnTools.GetNormalizedFullPath(path);
+                            return _activeDocumentFileName = GitTools.GetNormalizedFullPath(path);
                     }
                 }
                 return null;

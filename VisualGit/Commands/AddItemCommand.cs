@@ -1,5 +1,4 @@
 using VisualGit.UI;
-using SharpSvn;
 using VisualGit.UI.PathSelector;
 using System.Windows.Forms;
 using System.Collections.Generic;

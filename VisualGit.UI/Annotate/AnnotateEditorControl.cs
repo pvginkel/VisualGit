@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 
-using SharpSvn;
 
 using VisualGit.Commands;
 using VisualGit.Scc;

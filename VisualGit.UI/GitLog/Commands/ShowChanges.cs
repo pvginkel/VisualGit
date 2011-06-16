@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VisualGit.Commands;
-using SharpSvn;
 using VisualGit.VS;
 using System.IO;
 using System.CodeDom.Compiler;

@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SharpSvn;
 
 using VisualGit.Commands;
 using VisualGit.Selection;
@@ -248,6 +247,8 @@ namespace VisualGit.Scc
 
             if (maybeAdd != null)
             {
+                throw new NotImplementedException();
+#if false
                 using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
                 {
                     foreach (string file in maybeAdd)
@@ -290,6 +291,7 @@ namespace VisualGit.Scc
                         }
                     }
                 }
+#endif
             }
         }
 

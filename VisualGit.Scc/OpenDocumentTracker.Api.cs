@@ -4,10 +4,10 @@ using System.Text;
 using VisualGit.Scc.ProjectMap;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SharpSvn;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TextManager.Interop;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -179,7 +179,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
 
             List<string> files = new List<string>();
             SccDocumentData dd;
@@ -194,7 +194,7 @@ namespace VisualGit.Scc
             foreach (SccDocumentData d in _docMap.Values)
             {
                 if (d.Name.StartsWith(path, StringComparison.OrdinalIgnoreCase) && d.Name.Length > path.Length)
-                    files.Add(SvnTools.GetNormalizedFullPath(d.Name));
+                    files.Add(GitTools.GetNormalizedFullPath(d.Name));
             }
 
             return files.ToArray();

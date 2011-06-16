@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using VisualGit.Scc.UI;
 using System.Collections;
-using SharpSvn;
 using VisualGit.Scc;
 using SharpGit;
 

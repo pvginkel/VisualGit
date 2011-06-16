@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.IO;
 
-using SharpSvn;
 
 using VisualGit.UI;
 using VisualGit.VS;

@@ -7,7 +7,6 @@ using System.Text;
 using VisualGit.Scc;
 using VisualGit.Selection;
 using VisualGit.VS;
-using SharpSvn;
 using System.IO;
 using SharpGit;
 

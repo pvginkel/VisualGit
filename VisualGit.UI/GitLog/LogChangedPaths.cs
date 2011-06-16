@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.Commands;
 using SharpGit;

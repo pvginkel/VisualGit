@@ -11,7 +11,7 @@ using VisualGit.Scc.ProjectMap;
 using VisualGit.Selection;
 using VisualGit.VS;
 using System.IO;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -189,7 +189,7 @@ namespace VisualGit.Scc
 
                 if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
                 {
-                    if (!SvnTools.IsManagedPath(dir))
+                    if (!GitTools.IsManagedPath(dir))
                         return; // Not for us
 
                     // VisualGit 0.x and 1.x place VisualGit.Load files to trigger loading
@@ -298,12 +298,12 @@ namespace VisualGit.Scc
             else
             {
                 if (GitItem.IsValidPath(dir))
-                    _solutionDirectory = SvnTools.GetTruePath(dir, true) ?? SvnTools.GetNormalizedFullPath(dir);
+                    _solutionDirectory = GitTools.GetTruePath(dir, true) ?? GitTools.GetNormalizedFullPath(dir);
                 else
                     _solutionDirectory = "";
 
                 if (GitItem.IsValidPath(path))
-                    _solutionFile = SvnTools.GetTruePath(path, true) ?? SvnTools.GetNormalizedFullPath(path);
+                    _solutionFile = GitTools.GetTruePath(path, true) ?? GitTools.GetNormalizedFullPath(path);
                 else
                     _solutionFile = "";
             }

@@ -9,10 +9,10 @@ using VisualGit.Selection;
 using VisualGit.Commands;
 using VisualGit.Scc.ProjectMap;
 using System.IO;
-using SharpSvn;
 using System.Diagnostics;
 using VisualGit.Scc.SccUI;
 using System.Windows.Forms;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -273,7 +273,7 @@ namespace VisualGit.Scc
                     if (!IsSafeSccPath(file))
                         continue; // Skip non scc paths (Includes %TEMP%\*)
 
-                    file = SvnTools.GetNormalizedFullPath(file);
+                    file = GitTools.GetNormalizedFullPath(file);
 
                     Monitor.ScheduleDirtyCheck(file);
 
@@ -441,7 +441,7 @@ namespace VisualGit.Scc
                     if (!IsSafeSccPath(file))
                         continue;
 
-                    file = SvnTools.GetNormalizedFullPath(file);
+                    file = GitTools.GetNormalizedFullPath(file);
 
                     GitItem item = StatusCache[file];
                     if (!item.IsReadOnly)
@@ -487,7 +487,7 @@ namespace VisualGit.Scc
                     if (!IsSafeSccPath(file))
                         continue;
 
-                    MarkDirty(SvnTools.GetNormalizedFullPath(file));
+                    MarkDirty(GitTools.GetNormalizedFullPath(file));
                 }
             }
         }

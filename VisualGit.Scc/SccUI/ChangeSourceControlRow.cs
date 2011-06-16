@@ -6,7 +6,7 @@ using VisualGit.Selection;
 using VisualGit.VS;
 using System.IO;
 using Microsoft.VisualStudio.Shell;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc.SccUI
 {
@@ -118,7 +118,7 @@ namespace VisualGit.Scc.SccUI
                     SafeRepositoryRoot(rootItem),
                     SafeRepositoryPath(rootItem),
                     GetStatus(rootItem, null, SolutionSettings.SolutionFilename),
-                    EmptyToDot(PackageUtilities.MakeRelative(rootItem.FullPath, SvnTools.GetNormalizedDirectoryName(SolutionSettings.SolutionFilename))),
+                    EmptyToDot(PackageUtilities.MakeRelative(rootItem.FullPath, GitTools.GetNormalizedDirectoryName(SolutionSettings.SolutionFilename))),
                     rootItem.FullPath
                     );
             }
@@ -195,7 +195,7 @@ namespace VisualGit.Scc.SccUI
 
                     if (!relative.IsAbsoluteUri)
                     {
-                        string v = SvnTools.UriPartToPath(relative.ToString()).Replace(Path.DirectorySeparatorChar, '/');
+                        string v = GitUriTarget.UriPartToPath(relative.ToString()).Replace(Path.DirectorySeparatorChar, '/');
 
                         if (!string.IsNullOrEmpty(v) && !v.StartsWith("/") && !v.StartsWith("../") && v != ".")
                             return "^/" + v;

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using SharpSvn;
 using System.Diagnostics;
 using SharpGit;
 

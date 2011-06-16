@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using VisualGit.Scc;
-using SharpSvn;
 using System.IO;
 using Microsoft.VisualStudio.Shell;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -40,7 +40,7 @@ namespace VisualGit.Commands
                 foreach (GitItem item in toResolve)
                 {
                     string svnPath = GetGitCasing(item);
-                    string actualPath = SvnTools.GetTruePath(item.FullPath);
+                    string actualPath = GitTools.GetTruePath(item.FullPath);
 
                     if (svnPath == null || actualPath == null)
                         continue; // not found
@@ -82,6 +82,8 @@ namespace VisualGit.Commands
 
         static string GetGitCasing(GitItem item)
         {
+            throw new NotImplementedException();
+#if false
             string name = null;
             // Find the correct casing
             using (SvnWorkingCopyClient wcc = new SvnWorkingCopyClient())
@@ -101,6 +103,7 @@ namespace VisualGit.Commands
             }
 
             return name;
+#endif
         }
 
     }

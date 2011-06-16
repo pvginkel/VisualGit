@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VisualGit.UI.VSSelectionControls;
-using SharpSvn;
 using VisualGit.VS;
 using VisualGit.Scc;
 using SharpGit;

@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using SharpSvn;
 using VisualGit.UI;
 using System.IO;
 using VisualGit.VS;

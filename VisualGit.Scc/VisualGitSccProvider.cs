@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SharpSvn;
 
 using VisualGit.Commands;
 using VisualGit.Scc.ProjectMap;

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
 using System.Diagnostics;
 using System.Globalization;
 using SharpGit;
@@ -127,6 +126,8 @@ namespace VisualGit.Scc
                     _reposRoot = reposRoot;
                 else
                 {
+                    throw new NotImplementedException();
+#if false
                     using (SvnClient client = context.GetService<ISvnClientPool>().GetClient())
                     {
                         _reposRoot = client.GetRepositoryRoot(ut.Uri);
@@ -138,6 +139,7 @@ namespace VisualGit.Scc
                         Debug.Assert(!_reposRoot.MakeRelativeUri(_uri).IsAbsoluteUri);
 #endif
                     }
+#endif
                 }
 
                 return;
@@ -254,7 +256,7 @@ namespace VisualGit.Scc
         {
             get
             {
-                return SvnTools.GetNormalizedUri(RepositoryRoot) == SvnTools.GetNormalizedUri(Uri);
+                return GitTools.GetNormalizedUri(RepositoryRoot) == GitTools.GetNormalizedUri(Uri);
             }
         }
 

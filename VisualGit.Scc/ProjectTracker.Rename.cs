@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SharpSvn;
 using System.IO;
 using System.Diagnostics;
 using SharpGit;
@@ -29,8 +28,8 @@ namespace VisualGit.Scc
                     if(!GitItem.IsValidPath(rgszMkOldNames[i]))
                         continue;
 
-                    string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[i]);
-                    string newName = SvnTools.GetNormalizedFullPath(rgszMkNewNames[i]);
+                    string oldName = GitTools.GetNormalizedFullPath(rgszMkOldNames[i]);
+                    string newName = GitTools.GetNormalizedFullPath(rgszMkNewNames[i]);
 
                     if(oldName == newName)
                         continue;
@@ -56,8 +55,8 @@ namespace VisualGit.Scc
                     if (!GitItem.IsValidPath(rgszMkOldNames[i]))
                         continue;
 
-                    string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[i]);
-                    string newName = SvnTools.GetNormalizedFullPath(rgszMkNewNames[i]);
+                    string oldName = GitTools.GetNormalizedFullPath(rgszMkOldNames[i]);
+                    string newName = GitTools.GetNormalizedFullPath(rgszMkNewNames[i]);
 
                     if (oldName == newName)
                         continue;
@@ -126,8 +125,8 @@ namespace VisualGit.Scc
                             if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !GitItem.IsValidPath(rgszMkOldNames[iFile]))
                                 continue;
 
-                            string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
-                            string newName = SvnTools.GetNormalizedFullPath(rgszMkNewNames[iFile]);
+                            string oldName = GitTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
+                            string newName = GitTools.GetNormalizedFullPath(rgszMkNewNames[iFile]);
 
                             if (oldName == newName)
                                 continue;
@@ -144,8 +143,8 @@ namespace VisualGit.Scc
                             if (string.IsNullOrEmpty(rgszMkOldNames[iFile]) || !GitItem.IsValidPath(rgszMkOldNames[iFile]))
                                 continue;
 
-                            string oldName = SvnTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
-                            string newName = SvnTools.GetNormalizedFullPath(rgszMkNewNames[iFile]);
+                            string oldName = GitTools.GetNormalizedFullPath(rgszMkOldNames[iFile]);
+                            string newName = GitTools.GetNormalizedFullPath(rgszMkNewNames[iFile]);
 
                             if (oldName == newName)
                                 continue;
@@ -177,8 +176,8 @@ namespace VisualGit.Scc
                 if (string.IsNullOrEmpty(oldName) || !GitItem.IsValidPath(oldName))
                     continue;
 
-                oldName = SvnTools.GetNormalizedFullPath(oldName);
-                newName = SvnTools.GetNormalizedFullPath(newName);
+                oldName = GitTools.GetNormalizedFullPath(oldName);
+                newName = GitTools.GetNormalizedFullPath(newName);
                 
                 string oldDir;
                 string newDir;
@@ -187,8 +186,8 @@ namespace VisualGit.Scc
                 if (!Directory.Exists(newName))
                 {
                     // Try to fix the parent of the new item
-                     oldDir = SvnTools.GetNormalizedDirectoryName(oldName);
-                     newDir = SvnTools.GetNormalizedDirectoryName(newName);
+                     oldDir = GitTools.GetNormalizedDirectoryName(oldName);
+                     newDir = GitTools.GetNormalizedDirectoryName(newName);
                 }
                 else
                 {
@@ -201,7 +200,7 @@ namespace VisualGit.Scc
                 if (Directory.Exists(oldDir))
                     continue; // Nothing to fix up
 
-                string parent = SvnTools.GetNormalizedDirectoryName(oldDir);
+                string parent = GitTools.GetNormalizedDirectoryName(oldDir);
                 if (!Directory.Exists(parent))
                 {
                     continue; // We can't fix up more than one level at this time
@@ -226,11 +225,11 @@ namespace VisualGit.Scc
                 using (GitSccContext git = new GitSccContext(Context))
                 {
                     GitStatusEventArgs wa = git.SafeGetEntry(newDir);
-                    string newParent = SvnTools.GetNormalizedDirectoryName(newDir);
+                    string newParent = GitTools.GetNormalizedDirectoryName(newDir);
 
                     if (wa != null)
                         continue; // Not an unexpected WC root
-                    else if (!SvnTools.IsManagedPath(newDir))
+                    else if (!GitTools.IsManagedPath(newDir))
                         continue; // Not a wc root at all
 
                     git.SafeWcDirectoryCopyFixUp(oldDir, newDir, safeRename); // Recreate the old WC directory
@@ -270,8 +269,8 @@ namespace VisualGit.Scc
 
                 if (track)
                     SccProvider.OnBeforeProjectDirectoryRename(sccProject,
-                        SvnTools.GetNormalizedFullPath(rgszMkOldNames[i]),
-                        SvnTools.GetNormalizedFullPath(rgszMkNewNames[i]), rgFlags[i], out ok);
+                        GitTools.GetNormalizedFullPath(rgszMkOldNames[i]),
+                        GitTools.GetNormalizedFullPath(rgszMkNewNames[i]), rgFlags[i], out ok);
 
                 if (rgResults != null)
                     rgResults[i] = ok ? VSQUERYRENAMEDIRECTORYRESULTS.VSQUERYRENAMEDIRECTORYRESULTS_RenameOK : VSQUERYRENAMEDIRECTORYRESULTS.VSQUERYRENAMEDIRECTORYRESULTS_RenameNotOK;
@@ -321,8 +320,8 @@ namespace VisualGit.Scc
                         continue; // Not handled by our provider
 
                     SccProvider.OnProjectDirectoryRenamed(sccProject,
-                        SvnTools.GetNormalizedFullPath(rgszMkOldNames[iDirectory]),
-                        SvnTools.GetNormalizedFullPath(rgszMkNewNames[iDirectory]), rgFlags[iDirectory]);
+                        GitTools.GetNormalizedFullPath(rgszMkOldNames[iDirectory]),
+                        GitTools.GetNormalizedFullPath(rgszMkNewNames[iDirectory]), rgFlags[iDirectory]);
                 }
             }
 

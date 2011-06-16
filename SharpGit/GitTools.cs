@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 namespace SharpGit
 {
     /// <summary>
-    /// Rewrite of SvnTools to remove dependency on SharpSvn. See
-    /// http://sharpsvn.open.collab.net/source/browse/sharpsvn/trunk/src/SharpSvn/SvnTools.cpp
+    /// Rewrite of GitTools to remove dependency on SharpSvn. See
+    /// http://sharpsvn.open.collab.net/source/browse/sharpsvn/trunk/src/SharpSvn/GitTools.cpp
     /// for original version.
     /// </summary>
     public static class GitTools
@@ -19,11 +19,11 @@ namespace SharpGit
         private static readonly long EPOCH_TICKS;
 
         static GitTools()
-		{
-			DateTime time = new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        {
+            DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-			EPOCH_TICKS = time.Ticks;
-		}
+            EPOCH_TICKS = time.Ticks;
+        }
 
         public static string GetNormalizedFullPath(string path)
         {
@@ -100,7 +100,7 @@ namespace SharpGit
 
         public static bool IsNormalizedFullPath(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             int c = path.Length;
@@ -222,7 +222,7 @@ namespace SharpGit
 
         public static string LongGetFullPath(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             // Subversion does not have a problem with paths over MAX_PATH, as long as they are absolute
@@ -247,7 +247,7 @@ namespace SharpGit
 
         private static string GetPathRootPart(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             if (path.Length >= 3 && path[1] == ':' && path[2] == '\\')
@@ -276,7 +276,7 @@ namespace SharpGit
 
         public static string GetNormalizedDirectoryName(string path)
         {
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             path = GetNormalizedFullPath(path);
@@ -367,5 +367,153 @@ namespace SharpGit
 
             return IsBelowManagedPath(fullPath);
         }
+
+        public static string GetTruePath(string path)
+        {
+            return GetTruePath(path, false);
+        }
+
+        public static string GetTruePath(string filename, bool bestEffort)
+        {
+            if (filename == null)
+                throw new ArgumentNullException("filename");
+
+            // Strip out any ., .. and \\'s
+
+            filename = Path.GetFullPath(filename);
+
+            if (filename.StartsWith("\\\\"))
+                return GetTrueUncPath(filename, bestEffort);
+            else
+                return GetTrueLocalPath(filename, bestEffort);
+        }
+
+        private static string GetTrueUncPath(string filename, bool bestEffort)
+        {
+            int pos = filename.IndexOf('\\', 2);
+
+            if (pos == -1)
+                return filename;
+
+            pos = filename.IndexOf('\\', pos + 1);
+
+            if (pos == -1 || filename.Length < pos + 1)
+                return filename;
+
+            string root = filename.Substring(0, pos);
+
+            return FindTruePath(root, filename.Substring(pos + 1), bestEffort);
+        }
+
+        private static string GetTrueLocalPath(string filename, bool bestEffort)
+        {
+            if (filename.Length < 2)
+                return null;
+
+            string root = Char.ToUpper(filename[0]) + ":";
+
+            if (filename.Length > 3)
+                return FindTruePath(root, filename.Substring(3), bestEffort);
+            else
+                return root + "\\";
+        }
+
+        private static string FindTruePath(string root, string filename, bool bestEffort)
+        {
+            string[] parts = filename.Split('\\');
+            var result = new StringBuilder(root);
+
+            var dirInfo = new DirectoryInfo(root + "\\");
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                result.Append('\\');
+
+                // When the path does not exist, we loose the dirInfo and just
+                // append the remainder of the path.
+
+                bool resolved = false;
+
+                if (dirInfo != null)
+                {
+                    var partDirInfo = dirInfo.GetDirectories(parts[i]);
+
+                    if (partDirInfo.Length != 0)
+                    {
+                        result.Append(partDirInfo[0].Name);
+                        dirInfo = partDirInfo[0];
+                        resolved = true;
+                    }
+                    else if (i == parts.Length - 1)
+                    {
+                        // Only the last part can be a file.
+
+                        var partFileInfo = dirInfo.GetFiles(parts[i]);
+
+                        if (partFileInfo.Length != 0)
+                        {
+                            result.Append(partFileInfo[0].Name);
+                            break;
+                        }
+                    }
+                }
+
+                if (!resolved)
+                {
+                    if (!bestEffort)
+                        return null;
+
+                    dirInfo = null;
+                    result.Append(parts[i]);
+                }
+            }
+
+            return result.ToString();
+        }
+
+        public static Uri GetNormalizedUri(Uri uri)
+        {
+            if (uri == null)
+                throw new ArgumentNullException("uri");
+            if (!uri.IsAbsoluteUri)
+                throw new ArgumentOutOfRangeException("uri");
+
+            return GitUriTarget.CanonicalizeUri(uri);
+        }
+
+        public static Uri PathToRelativeUri(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            return PathToUri(path);
+        }
+
+        private static Uri PathToUri(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            StringBuilder sb = new StringBuilder();
+            Uri result;
+
+            bool afterFirst = false;
+
+            foreach (string p in path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+            {
+                if (afterFirst)
+                    sb.Append((Char)'/');
+                else
+                    afterFirst = true;
+
+                sb.Append(Uri.EscapeDataString(p));
+            }
+
+            if (Uri.TryCreate(sb.ToString(), UriKind.Relative, out result))
+                return result;
+
+            throw new ArgumentException("Path is not convertible to uri part", "path");
+        }
+
     }
 }

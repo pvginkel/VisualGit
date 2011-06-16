@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VisualGit.VS;
-using SharpSvn;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 

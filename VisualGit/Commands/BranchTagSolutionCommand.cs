@@ -1,7 +1,6 @@
 using System;
 using VisualGit.VS;
 using VisualGit.Scc;
-using SharpSvn;
 using VisualGit.UI.SccManagement;
 using System.Windows.Forms;
 using VisualGit.UI;

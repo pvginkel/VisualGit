@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using VisualGit.Scc;
 using System.ComponentModel;
-using SharpSvn;
 
 namespace VisualGit.UI.PendingChanges.Synchronize
 {
@@ -67,6 +66,8 @@ namespace VisualGit.UI.PendingChanges.Synchronize
                 {
                     if (value != GitItem.Status.ChangeList)
                     {
+                        throw new NotImplementedException();
+#if false
                         using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             if (cl != null)
@@ -82,6 +83,7 @@ namespace VisualGit.UI.PendingChanges.Synchronize
                                 client.RemoveFromChangeList(GitItem.FullPath, ca);
                             }
                         }
+#endif
                     }
                 }
             }

@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using VisualGit.Scc;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
-using SharpSvn;
 using VisualGit.VS;
 using SharpGit;
 
@@ -363,7 +362,7 @@ namespace VisualGit.Services
 
                 if (fsc != null)
                 {
-                    fsc.MarkDirtyRecursive(SvnTools.GetNormalizedFullPath(pszDirectory));
+                    fsc.MarkDirtyRecursive(GitTools.GetNormalizedFullPath(pszDirectory));
                 }
 
                 return VSConstants.S_OK;
@@ -866,9 +865,9 @@ namespace VisualGit.Services
                 ProgressRunnerResult r = Context.GetService<IProgressRunner>().RunModal("Getting revisions",
                     delegate(object sender, ProgressWorkerArgs e)
                     {
-                        SvnFileVersionsArgs ea = new SvnFileVersionsArgs();
                         throw new NotImplementedException();
 #if false
+                        SvnFileVersionsArgs ea = new SvnFileVersionsArgs();
                         ea.Start = from;
                         ea.End = to;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 
-using SharpSvn;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using VisualGit.UI;

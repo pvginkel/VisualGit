@@ -56,10 +56,6 @@
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 2008 SDK\VisualStudioIntegration\Common\Assemblies\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="SharpSvn, Version=1.4999.349.29523, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\autolib\SharpSvn\SharpSvn.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -308,12 +304,6 @@
     </Compile>
     <Compile Include="OptionsPages\GitAuthenticationCacheEditor.Designer.cs">
       <DependentUpon>GitAuthenticationCacheEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OptionsPages\GitProxyEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OptionsPages\GitProxyEditor.Designer.cs">
-      <DependentUpon>GitProxyEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PathSelector\RevisionSelector.cs">
       <SubType>UserControl</SubType>
@@ -745,10 +735,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsPages\GitAuthenticationCacheEditor.resx">
       <DependentUpon>GitAuthenticationCacheEditor.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionsPages\GitProxyEditor.resx">
-      <DependentUpon>GitProxyEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PathSelector\RevisionSelector.resx">

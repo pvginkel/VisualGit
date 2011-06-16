@@ -5,7 +5,6 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using VisualGit.Selection;
 using System.IO;
-using SharpSvn;
 using System.Diagnostics;
 using SharpGit;
 
@@ -106,7 +105,7 @@ namespace VisualGit.Scc
                 string origDoc = rgpszSrcMkDocuments[i];
 
                 if (origDoc != null && SccProvider.IsSafeSccPath(origDoc))
-                    origDoc = SvnTools.GetNormalizedFullPath(origDoc);
+                    origDoc = GitTools.GetNormalizedFullPath(origDoc);
                 else
                     origDoc = null;
 
@@ -198,7 +197,7 @@ namespace VisualGit.Scc
                     if (string.IsNullOrEmpty(newName) || !GitItem.IsValidPath(newName))
                         continue;
 
-                    newName = SvnTools.GetNormalizedFullPath(rgpszMkDocuments[iFile]);
+                    newName = GitTools.GetNormalizedFullPath(rgpszMkDocuments[iFile]);
 
                     if (sccActive && _solutionLoaded)
                     {
@@ -228,7 +227,7 @@ namespace VisualGit.Scc
                     {
                         string toFile = copies.Keys[0];
                         string fromFile = copies.Values[0];
-                        string dir = SvnTools.GetNormalizedDirectoryName(toFile);
+                        string dir = GitTools.GetNormalizedDirectoryName(toFile);
 
                         copies.RemoveAt(0);
                         Guid addGuid;
@@ -255,7 +254,7 @@ namespace VisualGit.Scc
                                 string fl = copies.Keys[i];
                                 string tl = copies.Values[i];
 
-                                if (string.Equals(SvnTools.GetNormalizedDirectoryName(fl), dir, StringComparison.OrdinalIgnoreCase) &&
+                                if (string.Equals(GitTools.GetNormalizedDirectoryName(fl), dir, StringComparison.OrdinalIgnoreCase) &&
                                     string.Equals(Path.GetFileName(fl), Path.GetFileName(tl), StringComparison.OrdinalIgnoreCase))
                                 {
                                     Guid fromGuid;
@@ -353,7 +352,7 @@ namespace VisualGit.Scc
                                 if (FileContentsEquals(orgInfo.FullName, newInfo.FullName))
                                 {
                                     // TODO: Determine if we should verify the contents (BH: We probably should to be 100% sure; but perf impact)
-                                    _fileOrigins[newName] = origin = SvnTools.GetNormalizedFullPath(file);
+                                    _fileOrigins[newName] = origin = GitTools.GetNormalizedFullPath(file);
 
                                     break;
                                 }
@@ -395,7 +394,7 @@ namespace VisualGit.Scc
 
                             if (uri.IsFile)
                             {
-                                string file = SvnTools.GetNormalizedFullPath(uri.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped));
+                                string file = GitTools.GetNormalizedFullPath(uri.GetComponents(UriComponents.Path, UriFormat.SafeUnescaped));
 
                                 if (Path.GetFileName(file) == newInfo.Name && !string.Equals(file, newInfo.FullName, StringComparison.OrdinalIgnoreCase))
                                 {
@@ -408,7 +407,7 @@ namespace VisualGit.Scc
                                         if (FileContentsEquals(orgInfo.FullName, newInfo.FullName))
                                         {
                                             // TODO: Determine if we should verify the contents (BH: We probably should to be 100% sure; but perf impact)
-                                            _fileOrigins[newName] = origin = SvnTools.GetNormalizedFullPath(file);
+                                            _fileOrigins[newName] = origin = GitTools.GetNormalizedFullPath(file);
 
                                             break;
                                         }
@@ -534,13 +533,13 @@ namespace VisualGit.Scc
                 if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
-                dir = SvnTools.GetNormalizedFullPath(dir);
+                dir = GitTools.GetNormalizedFullPath(dir);
 
                 StatusCache.MarkDirty(dir);
 
                 GitItem item = StatusCache[dir];
 
-                if (!item.Exists || !item.IsDirectory || !SvnTools.IsManagedPath(dir))
+                if (!item.Exists || !item.IsDirectory || !GitTools.IsManagedPath(dir))
                     continue;
 
                 if ((DateTime.UtcNow - GetCreated(item)) > new TimeSpan(0, 1, 0))
@@ -557,8 +556,8 @@ namespace VisualGit.Scc
                     // VS Added a versioned dir below our project -> Unversion the directory to allow adding files
 
                     // Don't unversion the directory if the parent is not versioned
-                    string parentDir = SvnTools.GetNormalizedDirectoryName(dir);
-                    if (parentDir == null || !SvnTools.IsManagedPath(parentDir))
+                    string parentDir = GitTools.GetNormalizedDirectoryName(dir);
+                    if (parentDir == null || !GitTools.IsManagedPath(parentDir))
                         continue; 
 
                     git.UnversionRecursive(dir);
@@ -583,7 +582,7 @@ namespace VisualGit.Scc
                     if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                         continue;
 
-                    dir = SvnTools.GetNormalizedFullPath(dir);
+                    dir = GitTools.GetNormalizedFullPath(dir);
 
                     if (sccProject != null)
                         SccProvider.OnProjectDirectoryAdded(sccProject, dir, rgFlags[iDir]);

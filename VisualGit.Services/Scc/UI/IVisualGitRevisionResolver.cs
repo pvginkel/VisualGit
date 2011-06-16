@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
 using System.Windows.Forms;
 using SharpGit;
 

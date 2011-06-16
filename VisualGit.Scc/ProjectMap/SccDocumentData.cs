@@ -7,7 +7,6 @@ using System.Text;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SharpSvn;
 using VisualGit.Selection;
 using System.IO;
 using SharpGit;
@@ -686,7 +685,7 @@ namespace VisualGit.Scc.ProjectMap
                 string[] nFiles = new string[cChanges];
 
                 for (int i = 0; i < cChanges; i++)
-                    nFiles[i] = SvnTools.GetNormalizedFullPath(rgpszFile[i]);
+                    nFiles[i] = GitTools.GetNormalizedFullPath(rgpszFile[i]);
 
                 IFileStatusMonitor monitor = GetService<IFileStatusMonitor>();
 

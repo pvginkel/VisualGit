@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using VisualGit.Scc;
 using VisualGit.Scc.UI;
-using SharpSvn;
 using SharpGit;
 
 namespace VisualGit.Commands.RepositoryExplorer

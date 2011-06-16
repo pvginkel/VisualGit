@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using VisualGit.Commands;
 using VisualGit.Scc;
-using SharpSvn;
 using SharpGit;
 
 namespace VisualGit.Scc.StatusCache
@@ -119,7 +118,7 @@ namespace VisualGit.Scc.StatusCache
                     ScheduleForCleanup(dir);
             }
 
-            string parentDir = SvnTools.GetNormalizedDirectoryName(item.FullPath);
+            string parentDir = GitTools.GetNormalizedDirectoryName(item.FullPath);
 
             if (string.IsNullOrEmpty(parentDir) || parentDir == item.FullPath)
                 return; // Skip root directory
@@ -157,7 +156,7 @@ namespace VisualGit.Scc.StatusCache
             if (!deleted)
                 return;
 
-            string parentDir = SvnTools.GetNormalizedDirectoryName(item.FullPath);
+            string parentDir = GitTools.GetNormalizedDirectoryName(item.FullPath);
 
             if (string.IsNullOrEmpty(parentDir) || parentDir == item.FullPath)
                 return; // Skip root directory
@@ -200,7 +199,7 @@ namespace VisualGit.Scc.StatusCache
                 case GitNodeKind.File:
                     if (depth != GitDepth.Empty)
                     {
-                        walkPath = SvnTools.GetNormalizedDirectoryName(path);
+                        walkPath = GitTools.GetNormalizedDirectoryName(path);
                         walkingDirectory = true;
                     }
                     break;
@@ -286,7 +285,7 @@ namespace VisualGit.Scc.StatusCache
 
                         if (walkItem == null)
                         {
-                            string truepath = SvnTools.GetTruePath(walkPath); // Gets the on-disk casing if it exists
+                            string truepath = GitTools.GetTruePath(walkPath); // Gets the on-disk casing if it exists
 
                             StoreItem(walkItem = CreateItem(truepath ?? walkPath,
                                 (truepath != null) ? NoSccStatus.NotVersioned : NoSccStatus.NotExisting, GitNodeKind.Unknown));
@@ -517,7 +516,7 @@ namespace VisualGit.Scc.StatusCache
             if (path == null)
                 throw new ArgumentNullException("path");
 
-            string normPath = SvnTools.GetNormalizedFullPath(path);
+            string normPath = GitTools.GetNormalizedFullPath(path);
 
             lock (_lock)
             {
@@ -604,7 +603,7 @@ namespace VisualGit.Scc.StatusCache
             {
                 foreach (string path in paths)
                 {
-                    string normPath = SvnTools.GetNormalizedFullPath(path);
+                    string normPath = GitTools.GetNormalizedFullPath(path);
                     GitItem item;
 
                     if (_map.TryGetValue(normPath, out item))
@@ -623,7 +622,7 @@ namespace VisualGit.Scc.StatusCache
                 if (string.IsNullOrEmpty(path))
                     throw new ArgumentNullException("path");
 
-                path = SvnTools.GetNormalizedFullPath(path);
+                path = GitTools.GetNormalizedFullPath(path);
 
                 lock (_lock)
                 {
@@ -631,7 +630,7 @@ namespace VisualGit.Scc.StatusCache
 
                     if (!_map.TryGetValue(path, out item))
                     {
-                        string truePath = SvnTools.GetTruePath(path, true);
+                        string truePath = GitTools.GetTruePath(path, true);
 
                         // Just create an item based on his name. Delay the svn calls as long as we can
                         StoreItem(item = new GitItem(this, truePath ?? path, NoSccStatus.Unknown, GitNodeKind.Unknown));

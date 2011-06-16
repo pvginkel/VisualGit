@@ -4,7 +4,6 @@ using System.Text;
 using System.ComponentModel;
 using VisualGit.Selection;
 using System.Diagnostics;
-using SharpSvn;
 
 namespace VisualGit.Scc
 {
@@ -54,6 +53,8 @@ namespace VisualGit.Scc
                 {
                     if (value != _item.Status.ChangeList)
                     {
+                        throw new NotImplementedException();
+#if false
                         using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             if (cl != null)
@@ -69,6 +70,7 @@ namespace VisualGit.Scc
                                 client.RemoveFromChangeList(_item.FullPath, ca);
                             }
                         }
+#endif
                     }
                 }
             }

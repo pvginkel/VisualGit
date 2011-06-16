@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using VisualGit.Scc;
-using SharpSvn;
 using SharpGit;
 using System.Diagnostics;
 

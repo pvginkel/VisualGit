@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-using SharpSvn;
 using VisualGit.Scc;
 using System.IO;
 using System.Windows.Forms.Design;
@@ -104,7 +103,10 @@ namespace VisualGit.UI.Commands
             base.Dispose(disposing);
         }
         
+#if false
         string _lastOrigin;
+#endif
+
         /// <summary>
         /// Validate the input here.
         /// </summary>
@@ -112,6 +114,8 @@ namespace VisualGit.UI.Commands
         /// <param name="e"></param>
         private void ControlsChanged(object sender, System.EventArgs e)
         {
+            throw new NotImplementedException();
+#if false
             bool enable = false;
             if (Context != null && FileCache != null)
             {
@@ -141,6 +145,7 @@ namespace VisualGit.UI.Commands
             }
             
             this.okButton.Enabled = enable;
+#endif
         }      
 
         /// <summary>
@@ -150,6 +155,8 @@ namespace VisualGit.UI.Commands
         /// <param name="e"></param>
         private void exportFromDirButton_Click(object sender, System.EventArgs e)
         {
+            throw new NotImplementedException();
+#if false
 			using (FolderBrowserDialog browser = new FolderBrowserDialog())
             {
                 SvnPathTarget pt = ExportSource as SvnPathTarget;
@@ -164,6 +171,7 @@ namespace VisualGit.UI.Commands
                 
                 this.originBox.Text = browser.SelectedPath;
             }
+#endif
         }
 
         /// <summary>
@@ -185,6 +193,7 @@ namespace VisualGit.UI.Commands
             }
         }
 
+#if false
         public SvnTarget ExportSource
         {
             get
@@ -206,5 +215,6 @@ namespace VisualGit.UI.Commands
                 return null;
             }
         }
+#endif
     }
 }

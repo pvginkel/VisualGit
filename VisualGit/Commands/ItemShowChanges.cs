@@ -1,6 +1,5 @@
 using VisualGit.UI;
 using System;
-using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;

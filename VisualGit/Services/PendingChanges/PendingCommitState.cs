@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
 using VisualGit.Scc;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -15,7 +14,6 @@ namespace VisualGit.Services.PendingChanges
 {
     class PendingCommitState : VisualGitService, IDisposable
     {
-        SvnClient _svnClient;
         GitClient _client;
         HybridCollection<PendingChange> _changes = new HybridCollection<PendingChange>();
         HybridCollection<string> _commitPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
@@ -45,17 +43,6 @@ namespace VisualGit.Services.PendingChanges
                     _client = GetService<IGitClientPool>().GetNoUIClient();
 
                 return _client;
-            }
-        }
-
-        public SvnClient SvnClient
-        {
-            get
-            {
-                if (_svnClient == null)
-                    _svnClient = GetService<ISvnClientPool>().GetNoUIClient();
-
-                return _svnClient;
             }
         }
 
@@ -241,13 +228,6 @@ namespace VisualGit.Services.PendingChanges
 
         internal void FlushState()
         {
-            // This method assumes giving back the SvnClient instance flushes the state to the FileState cache
-            if (_svnClient != null)
-            {
-                IDisposable cl = _svnClient;
-                _svnClient = null;
-                cl.Dispose();
-            }
             if (_client != null)
             {
                 IDisposable cl = _client;

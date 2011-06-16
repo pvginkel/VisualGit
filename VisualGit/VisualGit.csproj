@@ -51,10 +51,6 @@
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="SharpSvn, Version=1.4999.350.29541, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\autolib\SharpSvn\SharpSvn.dll</HintPath>
-    </Reference>
     <Reference Include="SharpSvn.UI, Version=1.4999.0.861, Culture=neutral, PublicKeyToken=33789aa53ca44aa9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\autolib\SharpSvn\SharpSvn.UI.dll</HintPath>
@@ -101,12 +97,12 @@
     <Compile Include="Commands\ItemDelete.cs" />
     <Compile Include="Commands\ItemMoveToChangeList.cs" />
     <Compile Include="Commands\ItemResolveCasing.cs" />
+    <Compile Include="Commands\ItemResolveCommand.cs" />
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />
     <Compile Include="Commands\SolutionPullCommand.cs" />
     <Compile Include="Commands\SolutionPushCommand.cs" />
     <Compile Include="Services\VisualGitClientPool.cs" />
     <Compile Include="Services\VisualGitHelpService.cs" />
-    <Compile Include="Services\VisualSvnClientPool.cs" />
     <Compile Include="Services\VisualGitErrorMessage.cs" />
     <Compile Include="Services\IssueTracker\VisualGitIssueService.cs" />
     <Compile Include="Services\IssueTracker\IssueRepositoryConnectorProxy.cs" />
@@ -141,7 +137,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\AddToSccCommands.cs" />
-    <Compile Include="Commands\ItemResolveCommand.cs" />
     <Compile Include="Commands\OpenInVisualStudio.cs" />
     <Compile Include="Commands\WorkingCopyExplorer\WorkingCopyBrowseCommand.cs" />
     <Compile Include="Commands\ItemAnnotateCommand.cs">

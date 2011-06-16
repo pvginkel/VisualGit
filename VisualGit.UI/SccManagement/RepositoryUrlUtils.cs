@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.UI.SccManagement
 {
@@ -54,7 +54,7 @@ namespace VisualGit.UI.SccManagement
 
             info = null;
 
-            uri = SvnTools.GetNormalizedUri(uri);
+            uri = GitTools.GetNormalizedUri(uri);
 
             GC.KeepAlive(context); // Allow future external hints
 

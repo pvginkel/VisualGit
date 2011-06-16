@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -36,7 +36,7 @@ namespace VisualGit.Scc
                 string s = rgpszMkDocuments[i];
 
                 if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
-                    StatusCache.MarkDirty(SvnTools.GetNormalizedFullPath(s));
+                    StatusCache.MarkDirty(GitTools.GetNormalizedFullPath(s));
             }
 
             int iFile = 0;
@@ -58,7 +58,7 @@ namespace VisualGit.Scc
                     if (string.IsNullOrEmpty(file) || !GitItem.IsValidPath(file))
                         continue;
 
-                    file = SvnTools.GetNormalizedFullPath(file);
+                    file = GitTools.GetNormalizedFullPath(file);
 
                     SccProvider.OnProjectFileRemoved(sccProject, file, rgFlags[iFile]);
                 }
@@ -84,7 +84,7 @@ namespace VisualGit.Scc
                 if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                     continue;
 
-                dir = SvnTools.GetNormalizedFullPath(dir);
+                dir = GitTools.GetNormalizedFullPath(dir);
 
 
                 if (SccProvider.TrackProjectChanges(sccProject))
@@ -117,7 +117,7 @@ namespace VisualGit.Scc
                 string s = rgpszMkDocuments[i];
 
                 if (!string.IsNullOrEmpty(s) && GitItem.IsValidPath(s))
-                    StatusCache.MarkDirty(SvnTools.GetNormalizedFullPath(s));
+                    StatusCache.MarkDirty(GitTools.GetNormalizedFullPath(s));
             }
 
             for (int iProject = 0; (iProject < cProjects) && (iDirectory < cDirectories); iProject++)
@@ -137,7 +137,7 @@ namespace VisualGit.Scc
                     if (string.IsNullOrEmpty(dir) || !GitItem.IsValidPath(dir))
                         continue;
 
-                    dir = SvnTools.GetNormalizedFullPath(dir);
+                    dir = GitTools.GetNormalizedFullPath(dir);
 
                     SccProvider.OnProjectDirectoryRemoved(sccProject, rgpszMkDocuments[iDirectory], rgFlags[iDirectory]);
                 }

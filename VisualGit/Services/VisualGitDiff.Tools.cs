@@ -4,10 +4,10 @@ using System.Text;
 using VisualGit.Scc.UI;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
-using SharpSvn;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using SharpGit;
 
 namespace VisualGit.Services
 {
@@ -355,7 +355,7 @@ namespace VisualGit.Services
             if (app.Contains("%"))
                 app = Environment.ExpandEnvironmentVariables(app);
 
-            return SvnTools.GetNormalizedFullPath(app);
+            return GitTools.GetNormalizedFullPath(app);
         }
 
         static string RelativePath(string origin, string relativePath)
@@ -365,7 +365,7 @@ namespace VisualGit.Services
             else if (string.IsNullOrEmpty(relativePath))
                 return origin;
 
-            string r = SvnTools.GetNormalizedFullPath(Path.Combine(Path.Combine(origin, ".."), relativePath));
+            string r = GitTools.GetNormalizedFullPath(Path.Combine(Path.Combine(origin, ".."), relativePath));
 
             if (File.Exists(r))
                 return r;
@@ -380,7 +380,7 @@ namespace VisualGit.Services
             else if (string.IsNullOrEmpty(relativePath))
                 return origin;
 
-            string r = SvnTools.GetNormalizedFullPath(Path.Combine(origin, relativePath));
+            string r = GitTools.GetNormalizedFullPath(Path.Combine(origin, relativePath));
 
             if (File.Exists(r))
                 return r;

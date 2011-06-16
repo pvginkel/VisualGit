@@ -4,7 +4,7 @@ using System.Text;
 using VisualGit.VS;
 using System.IO;
 using System.Diagnostics;
-using SharpSvn;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -267,7 +267,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
 
             foreach (PendingChange pc in _pendingChanges)
             {
@@ -283,7 +283,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
 
             return _pendingChanges.Contains(path);
         }

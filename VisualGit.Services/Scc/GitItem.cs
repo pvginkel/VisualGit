@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-using SharpSvn;
 
 using VisualGit.Commands;
 using VisualGit.Scc;
@@ -820,7 +819,7 @@ namespace VisualGit
         /// <value>The directory.</value>
         public string Directory
         {
-            get { return SvnTools.GetNormalizedDirectoryName(FullPath); }
+            get { return GitTools.GetNormalizedDirectoryName(FullPath); }
         }
 
         /// <summary>

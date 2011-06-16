@@ -64,13 +64,6 @@ namespace VisualGit.UI.OptionsPages
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // proxyEdit
-            // 
-            resources.ApplyResources(this.proxyEdit, "proxyEdit");
-            this.proxyEdit.Name = "proxyEdit";
-            this.proxyEdit.UseVisualStyleBackColor = true;
-            this.proxyEdit.Click += new System.EventHandler(this.proxyEdit_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);

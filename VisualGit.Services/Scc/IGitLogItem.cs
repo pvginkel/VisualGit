@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
-using SharpSvn.Implementation;
 using SharpGit;
 
 namespace VisualGit.Scc

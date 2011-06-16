@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
-using SharpSvn;
 using System.Windows.Forms;
 using VisualGit.Scc.ProjectMap;
 using System.Diagnostics;

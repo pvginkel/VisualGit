@@ -6,7 +6,6 @@ using System.Data;
 using System.Windows.Forms;
 
 using System.Text.RegularExpressions;
-using SharpSvn;
 using VisualGit.Scc.UI;
 using VisualGit.Scc;
 using System.Collections.Generic;

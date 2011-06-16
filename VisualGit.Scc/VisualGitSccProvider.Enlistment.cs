@@ -8,13 +8,13 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-using SharpSvn;
 
 using VisualGit.Scc.ProjectMap;
 using VisualGit.Selection;
 using VisualGit.VS;
 using System.Runtime.CompilerServices;
 using System.IO;
+using SharpGit;
 
 namespace VisualGit.Scc
 {
@@ -119,7 +119,7 @@ namespace VisualGit.Scc
             else
                 projectDir = projectDir.TrimEnd('\\') + '\\';
 
-            string normalizedProjectDir = SvnTools.GetNormalizedFullPath(projectDir);
+            string normalizedProjectDir = GitTools.GetNormalizedFullPath(projectDir);
 
             foreach (SccProjectData project in _projectMap.Values)
             {
@@ -152,7 +152,7 @@ namespace VisualGit.Scc
                     }
                 }
 
-                string dir = SvnTools.GetNormalizedFullPath(project.ProjectDirectory);
+                string dir = GitTools.GetNormalizedFullPath(project.ProjectDirectory);
                 string file = project.ProjectFile;
 
                 if (!enlist && dir.StartsWith(projectDir, StringComparison.OrdinalIgnoreCase)
@@ -671,7 +671,7 @@ namespace VisualGit.Scc
             end = '\0';
             if (GitItem.IsValidPath(path))
             {
-                string p = SvnTools.GetNormalizedFullPath(path);
+                string p = GitTools.GetNormalizedFullPath(path);
 
                 if (p.Length == path.Length - 1 && string.Equals(p, path.Substring(0, p.Length), StringComparison.OrdinalIgnoreCase))
                 {
@@ -752,7 +752,7 @@ namespace VisualGit.Scc
             if (GitItem.IsValidPath(lpszProjectPath))
             {
                 path = RemoveEndSlash(lpszProjectPath, out end);
-                path = SvnTools.GetNormalizedFullPath(lpszProjectPath);
+                path = GitTools.GetNormalizedFullPath(lpszProjectPath);
             }
             else
                 path = lpszProjectPath;

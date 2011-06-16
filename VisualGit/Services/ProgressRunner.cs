@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-using SharpSvn;
 
 using VisualGit.UI;
 using VisualGit.VS;
@@ -201,15 +200,8 @@ namespace VisualGit
                     if (_exception == null && awa.Exception != null)
                         _exception = awa.Exception;
 
-                    if (
-                        _exception is SvnOperationCanceledException ||
-                        _exception is GitOperationCancelledException
-                    )
+                    if (_exception is GitOperationCancelledException)
                         _cancelled = true;
-                }
-                catch (SvnOperationCanceledException)
-                {
-                    _cancelled = true;
                 }
                 catch (GitOperationCancelledException)
                 {

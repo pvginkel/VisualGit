@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SharpSvn;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -16,7 +15,6 @@ namespace VisualGit.Scc
     /// </summary>
     sealed class GitSccContext : VisualGitService
     {
-        readonly SvnClient _svnClient;
         readonly GitClient _client;
         readonly IFileStatusCache _statusCache;
         bool _disposed;
@@ -24,7 +22,6 @@ namespace VisualGit.Scc
         public GitSccContext(IVisualGitServiceProvider context)
             : base(context)
         {
-            _svnClient = context.GetService<ISvnClientPool>().GetNoUIClient();
             _client = context.GetService<IGitClientPool>().GetNoUIClient();
             _statusCache = GetService<IFileStatusCache>();
         }
@@ -34,7 +31,6 @@ namespace VisualGit.Scc
             if (!_disposed)
             {
                 _disposed = true;
-                ((IDisposable)_svnClient).Dispose();
                 ((IDisposable)_client).Dispose();
             }
             base.Dispose(disposing);
@@ -58,7 +54,7 @@ namespace VisualGit.Scc
             // We only have to look in the parent.
             // If the path is the working copy root, the name doesn't matter!
 
-            string dir = SvnTools.GetNormalizedDirectoryName(path);
+            string dir = GitTools.GetNormalizedDirectoryName(path);
 
             var sa = new GitStatusArgs();
             sa.Depth = GitDepth.Files;
@@ -92,13 +88,13 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
 
             if (File.Exists(path))
-                path = SvnTools.GetNormalizedDirectoryName(path);
+                path = GitTools.GetNormalizedDirectoryName(path);
 
             if (Directory.Exists(path))
-                path = SvnTools.GetTruePath(path); // Resolve casing issues
+                path = GitTools.GetTruePath(path); // Resolve casing issues
 
             string root = Path.GetPathRoot(path);
             repositoryId = Guid.Empty;
@@ -109,8 +105,10 @@ namespace VisualGit.Scc
             // (See: canonicalization rules)
             while (!string.IsNullOrEmpty(path))
             {
-                if (SvnTools.IsManagedPath(path))
+                if (GitTools.IsManagedPath(path))
                 {
+                    throw new NotImplementedException();
+#if false
                     SvnInfoArgs a = new SvnInfoArgs();
                     a.ThrowOnError = false;
                     a.Depth = SvnDepth.Empty;
@@ -129,9 +127,10 @@ namespace VisualGit.Scc
                     }
                     else
                         return false;
+#endif
                 }
 
-                path = SvnTools.GetNormalizedDirectoryName(path);
+                path = GitTools.GetNormalizedDirectoryName(path);
             }
 
             return false;
@@ -152,6 +151,8 @@ namespace VisualGit.Scc
             if (!item.IsFile || item.Status.State != GitStatus.Replaced)
                 return;
 
+            throw new NotImplementedException();
+#if false
             SvnInfoEventArgs info = null;
             SvnInfoArgs ia = new SvnInfoArgs();
             ia.ThrowOnError = false;
@@ -186,6 +187,7 @@ namespace VisualGit.Scc
             {
                 _svnClient.Revert(path, ra);
             }
+#endif
         }
 
         /// <summary>
@@ -213,6 +215,8 @@ namespace VisualGit.Scc
                     tryMove.Add(f);
             }
 
+            throw new NotImplementedException();
+#if false
             using (MarkIgnoreFiles(files.Keys))
             using (MarkIgnoreFiles(tryMove))
             using (TempRevertForCopy(tryMove))
@@ -271,6 +275,7 @@ namespace VisualGit.Scc
             }
 
             return true;
+#endif
         }
 
         public bool SafeWcCopyFixup(string fromPath, string toPath)
@@ -283,13 +288,15 @@ namespace VisualGit.Scc
             if (!File.Exists(fromPath))
                 throw new InvalidOperationException();
 
+            throw new NotImplementedException();
+#if false
             bool ok;
             bool setReadOnly = false;
             using (MarkIgnoreFile(toPath))
             {
                 using (MoveAway(toPath, true))
                 {
-                    string toDir = SvnTools.GetNormalizedDirectoryName(toPath);
+                    string toDir = GitTools.GetNormalizedDirectoryName(toPath);
 
                     EnsureAdded(toDir);
 
@@ -313,11 +320,14 @@ namespace VisualGit.Scc
             }
 
             return ok;
+#endif
         }
 
         private void EnsureAdded(string toDir)
         {
-            if (!SvnTools.IsManagedPath(toDir))
+            throw new NotImplementedException();
+#if false
+            if (!GitTools.IsManagedPath(toDir))
             {
                 SvnAddArgs aa = new SvnAddArgs();
                 aa.Depth = SvnDepth.Empty;
@@ -329,16 +339,20 @@ namespace VisualGit.Scc
                     throw new InvalidOperationException();
             }
 
-            Debug.Assert(SvnTools.IsManagedPath(toDir));
+            Debug.Assert(GitTools.IsManagedPath(toDir));
+#endif
         }
 
         public bool WcDelete(string path)
         {
+            throw new NotImplementedException();
+#if false
             SvnDeleteArgs da = new SvnDeleteArgs();
             da.ThrowOnError = false;
             da.Force = true;
 
             return _svnClient.Delete(path, da);
+#endif
         }
 
         internal bool SafeWcMoveFixup(string fromPath, string toPath)
@@ -501,6 +515,8 @@ namespace VisualGit.Scc
 
         private void RecursiveCopyWc(string from, string to)
         {
+            throw new NotImplementedException();
+#if false
             // First, copy the way Git likes it
             SvnCopyArgs ca = new SvnCopyArgs();
             ca.AlwaysCopyAsChild = false;
@@ -512,6 +528,7 @@ namespace VisualGit.Scc
             // into the new workingcopy, to be 100% sure VS finds what it expects
 
             RecursiveCopyNotVersioned(from, to, true);
+#endif
         }
 
         public bool SafeDeleteFile(string path)
@@ -650,6 +667,8 @@ namespace VisualGit.Scc
                 throw new ArgumentNullException("paths");
 
             List<string> deletePaths = new List<string>();
+            throw new NotImplementedException();
+#if false
             SvnRevertArgs ra = new SvnRevertArgs();
             ra.ThrowOnError = false;
 
@@ -679,6 +698,7 @@ namespace VisualGit.Scc
             }
             else
                 return null;
+#endif
         }
 
         public IDisposable MoveAway(string path, bool touch)
@@ -686,7 +706,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
             bool isFile = true;
 
             if (!File.Exists(path))

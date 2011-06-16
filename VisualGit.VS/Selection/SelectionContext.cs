@@ -8,11 +8,11 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using ShellConstants = Microsoft.VisualStudio.Shell.Interop.Constants;
-using SharpSvn;
 
 using VisualGit.Scc;
 using VisualGit.Selection;
 using VisualGit.VS.SolutionExplorer;
+using SharpGit;
 
 
 namespace VisualGit.VS.Selection
@@ -208,7 +208,7 @@ namespace VisualGit.VS.Selection
                         {
                             if (!string.IsNullOrEmpty(solutionFile))
                             {
-                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
+                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? GitTools.GetTruePath(solutionFile, true) : solutionFile;
                             }
                             // Assigning  _solutionFilename to "", created a race condition:
                             // SolutionFilename is queried via SolutionSettings#RefreshIfDirty (triggered from VisualGitServiceEvents#SolutionOpened/SolutionClosed events)
@@ -220,7 +220,7 @@ namespace VisualGit.VS.Selection
                             if (string.IsNullOrEmpty(solutionFile))
                                 _solutionFilename = "";
                             else
-                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? SvnTools.GetTruePath(solutionFile, true) : solutionFile;
+                                _solutionFilename = GitItem.IsValidPath(solutionFile) ? GitTools.GetTruePath(solutionFile, true) : solutionFile;
                             */
                         }
                     }
@@ -729,7 +729,7 @@ namespace VisualGit.VS.Selection
 
             foreach (string file in files)
             {
-                yield return SvnTools.GetNormalizedFullPath(file);
+                yield return GitTools.GetNormalizedFullPath(file);
             }
 
             if (depth > ProjectWalkDepth.SpecialFiles)
@@ -744,7 +744,7 @@ namespace VisualGit.VS.Selection
 
                     foreach (string file in files)
                     {
-                        yield return SvnTools.GetNormalizedFullPath(file);
+                        yield return GitTools.GetNormalizedFullPath(file);
                     }
                 }
             }

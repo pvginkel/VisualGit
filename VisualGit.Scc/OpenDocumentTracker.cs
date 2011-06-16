@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using SharpSvn;
 
 using VisualGit.Scc.ProjectMap;
+using SharpGit;
 
 
 namespace VisualGit.Scc
@@ -323,8 +323,8 @@ namespace VisualGit.Scc
             {
                 if (GitItem.IsValidPath(pszMkDocumentNew) && GitItem.IsValidPath(pszMkDocumentOld))
                 {
-                    string oldFile = SvnTools.GetNormalizedFullPath(pszMkDocumentOld);
-                    string newFile = SvnTools.GetNormalizedFullPath(pszMkDocumentNew);
+                    string oldFile = GitTools.GetNormalizedFullPath(pszMkDocumentOld);
+                    string newFile = GitTools.GetNormalizedFullPath(pszMkDocumentNew);
                     ProjectTracker.OnDocumentSaveAs(oldFile, newFile);
                     SccProvider.OnDocumentSaveAs(oldFile, newFile);
                 }

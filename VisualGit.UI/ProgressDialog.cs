@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using SharpSvn;
 using System.Collections.Generic;
 using VisualGit.VS;
 using System.IO;
@@ -45,76 +44,10 @@ namespace VisualGit.UI
             base.Dispose(disposing);
         }
 
-        class ProgressState
-        {
-            public long LastCount;
-        };
-
         readonly List<VisualGitAction> _todo = new List<VisualGitAction>();
         const int _bucketCount = 16;
         readonly long[] _buckets = new long[_bucketCount];
-        int _curBuck;
         bool _queued;
-        DateTime _start;
-        long _bytesReceived;
-
-        readonly SortedList<long, ProgressState> _progressCalc = new SortedList<long, ProgressState>();
-
-        public void OnSvnClientProcessing(object sender, SvnProcessingEventArgs e)
-        {
-            SvnCommandType type = e.CommandType;
-
-            _start = DateTime.UtcNow;
-            _curBuck = 0;
-            for (int i = 0; i < _buckets.Length; i++)
-                _buckets[i] = 0;
-
-            Enqueue(delegate()
-            {
-                lock (_instanceLock)
-                {
-                    _progressCalc.Clear();
-                }
-                ListViewItem item = new ListViewItem("Action");
-                item.SubItems.Add(type.ToString());
-                item.ForeColor = Color.Gray;
-
-                if (actionList.Items.Count == 1 && _toAdd.Count == 0)
-                    actionList.Items.Clear();
-                actionList.Items.Add(item);
-            });
-        }
-
-        string GetActionText(SvnNotifyAction action)
-        {
-            string actionText = action.ToString();
-
-            switch (action)
-            {
-                case SvnNotifyAction.UpdateAdd:
-                case SvnNotifyAction.UpdateDelete:
-                case SvnNotifyAction.UpdateReplace:
-                case SvnNotifyAction.UpdateUpdate:
-                case SvnNotifyAction.UpdateCompleted:
-                case SvnNotifyAction.UpdateExternal:
-                    actionText = actionText.Substring(6);
-                    break;
-                case SvnNotifyAction.CommitAdded:
-                case SvnNotifyAction.CommitDeleted:
-                case SvnNotifyAction.CommitModified:
-                case SvnNotifyAction.CommitReplaced:
-                    actionText = actionText.Substring(6);
-                    break;
-                case SvnNotifyAction.CommitSendData:
-                    actionText = "Sending";
-                    break;
-                case SvnNotifyAction.BlameRevision:
-                    actionText = "Annotating";
-                    break;
-            }
-
-            return actionText;
-        }
 
         string GetActionText(GitNotifyAction action)
         {
@@ -193,55 +126,6 @@ namespace VisualGit.UI
             }
         }
 
-        public void OnSvnClientNotify(object sender, SvnNotifyEventArgs e)
-        {
-            //e.Detach();
-
-            string path = e.FullPath;
-            Uri uri = e.Uri;
-            SvnNotifyAction action = e.Action;
-            long rev = e.Revision;
-
-            Enqueue(delegate()
-            {
-                ListViewItem item = null;
-                item = new ListViewItem(GetActionText(action));
-
-                switch (action)
-                {
-                    case SvnNotifyAction.BlameRevision:
-                        {
-                            string file;
-                            if (uri != null)
-                                file = SvnTools.GetFileName(uri);
-                            else
-                                file = Path.GetFileName(path);
-
-                            item.SubItems.Add(string.Format("{0} - r{1}", file, rev));
-                            break;
-                        }
-                    default:
-                        if (uri != null)
-                            item.SubItems.Add(uri.ToString());
-                        else if (!string.IsNullOrEmpty(path))
-                        {
-                            string sr = SplitRoot;
-                            if (!string.IsNullOrEmpty(sr))
-                            {
-                                if (path.StartsWith(sr, StringComparison.OrdinalIgnoreCase))
-                                    path = path.Substring(sr.Length).Replace(Path.DirectorySeparatorChar, '/');
-                            }
-
-                            item.SubItems.Add(path);
-                        }
-                        break;
-                }
-
-                if (item != null)
-                    _toAdd.Add(item);
-            });
-        }
-
         public void OnClientNotify(object sender, GitNotifyEventArgs e)
         {
             string path = e.FullPath;
@@ -282,87 +166,6 @@ namespace VisualGit.UI
             });
         }
 
-        public void OnSvnClientProgress(object sender, SvnProgressEventArgs e)
-        {
-            ProgressState state;
-
-            long received;
-            lock (_instanceLock)
-            {
-                if (_progressCalc.TryGetValue(e.TotalProgress, out state))
-                {
-                    if (e.Progress < state.LastCount)
-                        state.LastCount = 0;
-
-                    received = e.Progress - state.LastCount;
-                    if (e.TotalProgress == e.Progress)
-                        _progressCalc.Remove(e.TotalProgress);
-                    else
-                        state.LastCount = e.Progress;
-                }
-                else
-                {
-                    state = new ProgressState();
-                    state.LastCount = e.Progress;
-                    _progressCalc.Add(e.TotalProgress, state);
-                    received = e.Progress;
-                }
-            }
-            _bytesReceived += received;
-
-            TimeSpan ts = DateTime.UtcNow - _start;
-
-
-            int totalSeconds = (int)ts.TotalSeconds;
-            if (totalSeconds < 0)
-                return;
-
-            // Clear all buckets of previous seconds where nothing was received
-            while (_curBuck < totalSeconds)
-            {
-                _curBuck++;
-                int n = _curBuck % _bucketCount;
-                _buckets[n] = 0;
-            }
-
-            // Add the amount of this second to the right bucket
-            _buckets[_curBuck % _bucketCount] += received;
-
-            int avg = -1;
-
-            int calcBuckets;
-
-            if (_curBuck < 3)
-                calcBuckets = 0;
-            else
-                calcBuckets = Math.Min(5, _curBuck - 1);
-
-            if (calcBuckets > 0)
-            {
-                long tot = 0;
-                for (int n = _curBuck - 1; n > (_curBuck - calcBuckets - 1); n--)
-                {
-                    tot += _buckets[n % _bucketCount];
-                }
-
-                avg = (int)(tot / (long)calcBuckets);
-            }
-
-            Enqueue(delegate()
-            {
-                string text = string.Format("{0} transferred", SizeStr(_bytesReceived));
-
-                if (avg > 0)
-                    text += string.Format(" at {0}/s.", SizeStr(avg));
-                else if (totalSeconds >= 1)
-                    text += string.Format(" in {0} seconds.", totalSeconds);
-                else
-                    text += ".";
-
-                progressLabel.Text = text;
-            });
-        }
-
         private string SizeStr(long numberOfBytes)
         {
             if (numberOfBytes == 1)
@@ -381,18 +184,9 @@ namespace VisualGit.UI
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _canceling = true;
             base.OnClosing(e);
             e.Cancel = true;
         }
-
-        volatile bool _canceling; // Updated from UI thread, read from command thread
-        void OnSvnClientCancel(object sender, SvnCancelEventArgs e)
-        {
-            if (_canceling)
-                e.Cancel = true;
-        }
-
 
         /// <summary>
         /// Enqueus a task for processing in the UI thread. All tasks will run in the same order as in which they are enqueued
@@ -502,8 +296,6 @@ namespace VisualGit.UI
 
         private void CancelClick(object sender, System.EventArgs e)
         {
-            _canceling = true;
-
             OnCancel(EventArgs.Empty);
 
             this.args.SetCancelled(true);

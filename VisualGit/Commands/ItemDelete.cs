@@ -8,7 +8,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.IO;
-using SharpSvn;
 using VisualGit.Selection;
 using System.Runtime.InteropServices;
 
@@ -64,12 +63,15 @@ namespace VisualGit.Commands
                 {
                     if (item.IsVersioned)
                     {
+                        throw new NotImplementedException();
+#if false
                         using (SvnClient cl = e.GetService<ISvnClientPool>().GetNoUIClient())
                         {
                             SvnDeleteArgs da = new SvnDeleteArgs();
                             da.Force = true;
                             cl.Delete(item.FullPath, da);
                         }
+#endif
                     }
                     else if (item.IsFile)
                         File.Delete(item.FullPath);

@@ -5,7 +5,6 @@ using VisualGit.Scc.UI;
 using VisualGit.Selection;
 using VisualGit.UI;
 using VisualGit.VS;
-using SharpSvn;
 using SharpGit;
 
 namespace VisualGit.Commands
@@ -26,6 +25,7 @@ namespace VisualGit.Commands
             get { return _tempFileCollection; }
         }        
 
+#if false
         protected virtual string GetDiff(IVisualGitServiceProvider context, ISelectionContext selection)
         {
             return GetDiff(
@@ -83,8 +83,6 @@ namespace VisualGit.Commands
             if (foundModified)
                 info.CheckedFilter += delegate(GitItem item) { return item.IsFile && (item.IsModified || item.IsDocumentDirty); };
 
-            throw new NotImplementedException();
-#if false
             info.RevisionStart = revisions == null ? GitRevision.Base : revisions.StartRevision;
             info.RevisionEnd = revisions == null ? GitRevision.Working : revisions.EndRevision;
 
@@ -105,8 +103,8 @@ namespace VisualGit.Commands
             SaveAllDirtyDocuments(selection, context);
 
             return DoExternalDiff(context, result);
-#endif
         }
+#endif
 
         private static string DoExternalDiff(IVisualGitServiceProvider context, PathSelectorResult info)
         {

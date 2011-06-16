@@ -34,13 +34,5 @@ namespace VisualGit.UI.OptionsPages
             flashWindowAfterOperation.Checked = Config.FlashWindowWhenOperationCompletes;
             pcDefaultDoubleClick.SelectedIndex = Config.PCDoubleClickShowsChanges ? 1 : 0;
         }
-
-        private void proxyEdit_Click(object sender, EventArgs e)
-        {
-            using (GitProxyEditor editor = new GitProxyEditor())
-            {
-                editor.ShowDialog(Context);
-            }
-        }
     }
 }

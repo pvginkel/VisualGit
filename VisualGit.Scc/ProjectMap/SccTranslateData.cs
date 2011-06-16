@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using SharpSvn;
 using Microsoft.VisualStudio.Shell;
 using System.IO;
+using SharpGit;
 
 namespace VisualGit.Scc.ProjectMap
 {
@@ -168,7 +168,7 @@ namespace VisualGit.Scc.ProjectMap
 
                 Debug.Assert(!_disposed, "Not disposed");
 
-                string path = SvnTools.GetNormalizedFullPath(value);
+                string path = GitTools.GetNormalizedFullPath(value);
 
                 if (_provider.Translate_SetSccPath(this, path))
                     _sccPath = value;

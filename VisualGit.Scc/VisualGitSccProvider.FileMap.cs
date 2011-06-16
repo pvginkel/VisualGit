@@ -7,7 +7,6 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections;
 using VisualGit.Selection;
-using SharpSvn;
 using VisualGit.VS;
 using SharpGit;
 
@@ -154,7 +153,7 @@ namespace VisualGit.Scc
                 return; // Not managed by us
 
             // Add a directory like a folder but with an ending '\'
-            data.AddPath(SvnTools.GetNormalizedFullPath(directoryname).TrimEnd('\\') + '\\');
+            data.AddPath(GitTools.GetNormalizedFullPath(directoryname).TrimEnd('\\') + '\\');
 
             if (!IsActive)
                 return;
@@ -184,7 +183,7 @@ namespace VisualGit.Scc
                 return; // Not managed by us
 
             // a directory can be added like a folder but with an ending '\'
-            string dir = SvnTools.GetNormalizedFullPath(directoryname);
+            string dir = GitTools.GetNormalizedFullPath(directoryname);
             data.RemovePath(dir);
 
             if (!IsActive)
@@ -420,7 +419,7 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            path = SvnTools.GetNormalizedFullPath(path);
+            path = GitTools.GetNormalizedFullPath(path);
 
             SccProjectFile file;
             if (_fileMap.TryGetValue(path, out file))
@@ -443,7 +442,7 @@ namespace VisualGit.Scc
             Hashtable projects = new Hashtable();
             foreach (string path in paths)
             {
-                string nPath = SvnTools.GetNormalizedFullPath(path);
+                string nPath = GitTools.GetNormalizedFullPath(path);
 
                 SccProjectFile file;
                 if (_fileMap.TryGetValue(nPath, out file))

@@ -1,6 +1,5 @@
 using System;
 
-using SharpSvn;
 
 using VisualGit.Scc;
 using VisualGit.UI;
@@ -63,6 +62,8 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+            throw new NotImplementedException();
+#if false
             switch (e.Command)
             {
                 case VisualGitCommand.ItemResolveMerge:
@@ -91,8 +92,10 @@ namespace VisualGit.Commands
                 default:
                     throw new NotSupportedException();
             }
+#endif
         }
 
+#if false
         static void Resolve(CommandEventArgs e, SvnAccept accept)
         {
             HybridCollection<string> paths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
@@ -137,6 +140,7 @@ namespace VisualGit.Commands
                 }
             }
         }
+#endif
     }
 }
 

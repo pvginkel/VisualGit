@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using SharpSvn;
 using VisualGit.Scc;
 using VisualGit.UI;
 using VisualGit.Services.PendingChanges;
@@ -481,7 +480,7 @@ namespace VisualGit.Services.PendingChanges
                 if (item.IsCasingConflicted)
                 {
                     string correctCasing = GetGitCasing(item);
-                    string actualCasing = SvnTools.GetTruePath(item.FullPath);
+                    string actualCasing = GitTools.GetTruePath(item.FullPath);
 
                     if (correctCasing == null || actualCasing == null || !string.Equals(correctCasing, actualCasing, StringComparison.OrdinalIgnoreCase))
                         continue; // Nothing to fix here :(
@@ -531,6 +530,8 @@ namespace VisualGit.Services.PendingChanges
 
         static string GetGitCasing(GitItem item)
         {
+            throw new NotImplementedException();
+#if false
             string name = null;
             // Find the correct casing
             using (SvnWorkingCopyClient wcc = new SvnWorkingCopyClient())
@@ -550,6 +551,7 @@ namespace VisualGit.Services.PendingChanges
             }
 
             return name;
+#endif
         }
 
         /// <summary>
@@ -607,7 +609,7 @@ namespace VisualGit.Services.PendingChanges
             {
                 ILastChangeInfo ci = GetService<ILastChangeInfo>();
 
-                if (ci != null)
+                if (ci != null && rslt.Revision != null)
                     ci.SetLastChange(PccStrings.CommittedPrefix, rslt.Revision.ToString());
 
                 if (!string.IsNullOrEmpty(rslt.PostCommitError))

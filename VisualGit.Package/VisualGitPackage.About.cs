@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.Reflection;
-using SharpSvn;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
 
@@ -119,6 +118,8 @@ namespace VisualGit.VSPackage
 
         public int ProductDetails(out string pbstrProductDetails)
         {
+            throw new NotImplementedException();
+#if false
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(Resources.AboutDetails,
                 UIVersion.ToString(),
@@ -170,6 +171,7 @@ namespace VisualGit.VSPackage
             pbstrProductDetails = sb.ToString();
 
             return VSConstants.S_OK;
+#endif
         }
 
         public int ProductID(out string pbstrPID)

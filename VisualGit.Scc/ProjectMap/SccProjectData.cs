@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using VisualGit.Selection;
 using System.Diagnostics;
-using SharpSvn;
 using System.IO;
 using VisualGit.VS;
 using VisualGit.Commands;
+using SharpGit;
 
 namespace VisualGit.Scc.ProjectMap
 {
@@ -179,7 +179,7 @@ namespace VisualGit.Scc.ProjectMap
                         string dir = name as string;
 
                         if (!string.IsNullOrEmpty(dir) && GitItem.IsValidPath(dir, true))
-                            dir = SvnTools.GetNormalizedFullPath(dir);
+                            dir = GitTools.GetNormalizedFullPath(dir);
                         else
                         {
                             // Ok, we have users reporting they get here via Analysis services
@@ -189,7 +189,7 @@ namespace VisualGit.Scc.ProjectMap
                             dir = ProjectFile;
 
                             if (dir != null)
-                                dir = SvnTools.GetNormalizedDirectoryName(dir);
+                                dir = GitTools.GetNormalizedDirectoryName(dir);
                             else
                                 dir = ""; // Cache as invalid
                         }
