@@ -195,7 +195,7 @@ namespace SharpGit
 
                                     e.ChangedPaths.Add(new GitChangeItem
                                     {
-                                        Path = treeWalk.PathString,
+                                        Path = repository.GetAbsoluteRepositoryPath(treeWalk.PathString),
                                         OldRevision = null,
                                         OldPath = null,
                                         NodeKind = GitNodeKind.File,
