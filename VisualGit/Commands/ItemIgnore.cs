@@ -90,7 +90,7 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            Dictionary<string, List<string>> add = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, List<string>> add = new Dictionary<string, List<string>>(FileSystemUtil.StringComparer);
             List<string> refresh = new List<string>();
 
             foreach (GitItem i in e.Selection.GetSelectedGitItems(false))
@@ -101,13 +101,13 @@ namespace VisualGit.Commands
                 switch (e.Command)
                 {
                     case VisualGitCommand.ItemIgnoreFile:
-                        AddIgnore(add, i.Parent, i.Name);
+                        AddIgnore(add, i.Parent, "/" + i.Name);
                         break;
                     case VisualGitCommand.ItemIgnoreFileType:
-                        AddIgnore(add, i.Parent, "*" + i.Extension);
+                        AddIgnore(add, i.Parent, "/*" + i.Extension);
                         break;
                     case VisualGitCommand.ItemIgnoreFilesInFolder:
-                        AddIgnore(add, i.Parent, "*");
+                        AddIgnore(add, i.Parent, "/*");
                         break;
                     case VisualGitCommand.ItemIgnoreFolder:
                         GitItem p = i.Parent;
@@ -117,7 +117,7 @@ namespace VisualGit.Commands
                             p = pp;
 
                         if (p != null && pp != null)
-                            AddIgnore(add, pp, p.Name);
+                            AddIgnore(add, pp, "/" + p.Name + "/");
                         break;
                 }
             }
@@ -156,7 +156,7 @@ namespace VisualGit.Commands
                         k.Key), CommandStrings.IgnoreCaption, System.Windows.Forms.MessageBoxButtons.YesNoCancel))
                     {
                         case System.Windows.Forms.DialogResult.Yes:
-                            AddIgnores(e.Context, k.Key, k.Value);
+                            PerformAddIgnores(e, k);
                             break;
                         case System.Windows.Forms.DialogResult.No:
                             continue;
@@ -171,15 +171,24 @@ namespace VisualGit.Commands
             }
         }
 
-        private static void AddIgnores(IVisualGitServiceProvider context, string path, List<string> ignores)
+        private void PerformAddIgnores(CommandEventArgs e, KeyValuePair<string, List<string>> k)
+        {
+            string ignoreFilename = Path.Combine(k.Key, GitConstants.IgnoreFilename);
+
+            using (DocumentLock dl = e.GetService<IVisualGitOpenDocumentTracker>().LockDocuments(new[] { ignoreFilename }, DocumentLockType.NoReload))
+            using (dl.MonitorChangesForReload()) // Monitor files that are changed by keyword expansion
+            {
+                AddIgnores(e.Context, ignoreFilename, k.Key, k.Value);
+            }
+        }
+
+        private static void AddIgnores(IVisualGitServiceProvider context, string ignoreFilename, string path, List<string> ignores)
         {
             try
             {
                 context.GetService<IProgressRunner>().RunModal(CommandStrings.IgnoreCaption,
                     delegate(object sender, ProgressWorkerArgs e)
                     {
-                        string ignoreFilename = Path.Combine(path, GitConstants.IgnoreFilename);
-
                         if (File.Exists(ignoreFilename))
                         {
                             int n = 0;
