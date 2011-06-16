@@ -45,15 +45,17 @@ namespace SharpGit
                 {
                     Rules.Clear();
 
-                    foreach (string line in File.ReadAllLines(_fullPath))
+                    foreach (string line in File.ReadAllText(_fullPath).Split('\n'))
                     {
+                        string trimmedLine = line.TrimEnd('\r');
+                        
                         if (
-                            String.Empty.Equals(line) ||
-                            line.StartsWith("#")
+                            String.Empty.Equals(trimmedLine) ||
+                            trimmedLine.StartsWith("#")
                         )
                             continue;
 
-                        Rules.Add(new IgnoreRule(line));
+                        Rules.Add(new IgnoreRule(trimmedLine));
                     }
                 }
             }
