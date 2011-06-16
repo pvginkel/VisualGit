@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
 using VisualGit.Scc;
-using VisualGit.IssueTracker;
 using System.Diagnostics;
 using VisualGit.UI;
 using VisualGit.VS.LanguageServices.Core;
@@ -17,13 +16,6 @@ namespace VisualGit.VS.LanguageServices.LogMessages
         public LogMessageColorizer(LogMessageLanguage language, IVsTextLines lines)
             : base(language, lines)
         {
-        }
-
-        IVisualGitIssueService _issueService;
-        IVisualGitIssueService IssueService
-        {
-            [DebuggerStepThrough]
-            get { return _issueService ?? (_issueService = GetService<IVisualGitIssueService>()); }
         }
 
         IVisualGitConfigurationService _svc;
@@ -79,18 +71,6 @@ namespace VisualGit.VS.LanguageServices.LogMessages
 
             if (!string.IsNullOrEmpty(line))
                 endState = 0;
-
-            IEnumerable<IssueMarker> markers;
-            if (IssueService != null &&
-                IssueService.TryGetIssues(combined, out markers))
-                foreach (IssueMarker im in markers)
-                {
-                    int from = Math.Max(im.Index, start);
-                    int to = Math.Min(end, im.Index + im.Length);
-
-                    for (int i = from; i < to; i++)
-                        attrs[i-start] = (uint)TokenColor.Keyword | (uint)COLORIZER_ATTRIBUTE.HUMAN_TEXT_ATTR;
-                }
         }
     }
 }

@@ -161,7 +161,6 @@ namespace VisualGit
         LogUpdateTo,
         LogRevertTo,
         LogMergeTo,
-        LogCherryPick,
         LogSwitchToRevision,
 
         ItemIgnoreFolder,
@@ -216,9 +215,6 @@ namespace VisualGit
         MoveToIgnoreChangeList,
         RemoveFromChangeList,
 
-        SolutionIssueTrackerSetup,
-        PcLogEditorOpenIssue,
-        LogOpenIssue,
         DocumentAddToPending,
         DocumentRemoveFromPending,
 

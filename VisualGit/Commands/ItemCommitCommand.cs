@@ -12,7 +12,6 @@ namespace VisualGit.Commands
     class ItemCommitCommand : CommandBase
     {
         string storedLogMessage;
-        string storedIssueNumber;
 
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
@@ -38,7 +37,6 @@ namespace VisualGit.Commands
             {
                 pcd.Context = e.Context;
                 pcd.LogMessageText = storedLogMessage;
-                pcd.IssueNumberText = storedIssueNumber;
 
                 pcd.PreserveWindowPlacement = true;
 
@@ -47,7 +45,6 @@ namespace VisualGit.Commands
                 DialogResult dr = pcd.ShowDialog(e.Context);
 
                 storedLogMessage = pcd.LogMessageText;
-                storedIssueNumber = pcd.IssueNumberText;
 
                 if (dr != DialogResult.OK)
                     return;
@@ -64,7 +61,6 @@ namespace VisualGit.Commands
             // not in the finally, because we want to preserve the message for a 
             // non-successful commit
             storedLogMessage = null;
-            storedIssueNumber = null;
         }
     }
 }

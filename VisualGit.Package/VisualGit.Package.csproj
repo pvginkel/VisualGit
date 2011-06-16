@@ -274,10 +274,6 @@
       <Project>{69301E7D-F47F-42F4-8CB6-4A5CA3101785}</Project>
       <Name>VisualGit.Diff</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
-      <Name>VisualGit.ExtensionPoints</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
       <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>

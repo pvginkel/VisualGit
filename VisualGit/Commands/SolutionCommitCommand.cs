@@ -12,7 +12,6 @@ namespace VisualGit.Commands
     class SolutionCommitCommand : CommandBase
     {
         string logMessage;
-        string issueId;
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
             e.Enabled = !EnumTools.IsEmpty(GetChanges(e));
@@ -27,12 +26,10 @@ namespace VisualGit.Commands
                 dlg.LoadChanges(GetChanges(e));
 
                 dlg.LogMessageText = logMessage ?? "";
-                dlg.IssueNumberText = issueId ?? "";
 
                 DialogResult dr = dlg.ShowDialog(e.Context);
 
                 logMessage = dlg.LogMessageText;
-                issueId = dlg.IssueNumberText;
 
                 if (dr == DialogResult.OK)
                 {
@@ -44,7 +41,7 @@ namespace VisualGit.Commands
 
                     if (e.GetService<IPendingChangeHandler>().Commit(toCommit, pca))
                     {
-                        logMessage = issueId = null;
+                        logMessage = null;
                     }
                 }
             }

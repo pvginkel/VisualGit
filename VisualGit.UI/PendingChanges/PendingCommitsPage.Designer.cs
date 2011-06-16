@@ -33,11 +33,9 @@ namespace VisualGit.UI.PendingChanges
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.topLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.issueLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.logMessageEditor = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
             this.pendingCommits = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
-            this.issueNumberBox = new System.Windows.Forms.TextBox();
             this.lastRevLabel = new System.Windows.Forms.Label();
             this.lastRevBox = new System.Windows.Forms.TextBox();
             this.pathColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -75,18 +73,11 @@ namespace VisualGit.UI.PendingChanges
             // topLayoutPanel
             // 
             resources.ApplyResources(this.topLayoutPanel, "topLayoutPanel");
-            this.topLayoutPanel.Controls.Add(this.issueLabel, 3, 0);
             this.topLayoutPanel.Controls.Add(this.label1, 0, 0);
             this.topLayoutPanel.Controls.Add(this.logMessageEditor, 0, 1);
-            this.topLayoutPanel.Controls.Add(this.issueNumberBox, 4, 0);
             this.topLayoutPanel.Controls.Add(this.lastRevLabel, 1, 0);
             this.topLayoutPanel.Controls.Add(this.lastRevBox, 2, 0);
             this.topLayoutPanel.Name = "topLayoutPanel";
-            // 
-            // issueLabel
-            // 
-            resources.ApplyResources(this.issueLabel, "issueLabel");
-            this.issueLabel.Name = "issueLabel";
             // 
             // label1
             // 
@@ -113,14 +104,6 @@ namespace VisualGit.UI.PendingChanges
             this.pendingCommits.ResolveItem += new System.EventHandler<VisualGit.UI.VSSelectionControls.ListViewWithSelection<VisualGit.UI.PendingChanges.Commits.PendingCommitItem>.ResolveItemEventArgs>(this.pendingCommits_ResolveItem);
             this.pendingCommits.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pendingCommits_KeyUp);
             this.pendingCommits.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pendingCommits_MouseDoubleClick);
-            // 
-            // issueNumberBox
-            // 
-            this.issueNumberBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.issueNumberBox, "issueNumberBox");
-            this.issueNumberBox.Name = "issueNumberBox";
-            this.issueNumberBox.TextChanged += new System.EventHandler(this.issueNumberBox_TextChanged);
-            this.issueNumberBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.issueNumberBox_KeyPress);
             // 
             // lastRevLabel
             // 
@@ -158,9 +141,7 @@ namespace VisualGit.UI.PendingChanges
         private System.Windows.Forms.ColumnHeader changeColumn;
         private System.Windows.Forms.ColumnHeader fullPathColumn;
         private System.Windows.Forms.TableLayoutPanel topLayoutPanel;
-        private System.Windows.Forms.TextBox issueNumberBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label issueLabel;
         private VisualGit.UI.PendingChanges.LogMessageEditor logMessageEditor;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Panel panel1;

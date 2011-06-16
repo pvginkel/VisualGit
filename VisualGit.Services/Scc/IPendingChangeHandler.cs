@@ -15,7 +15,6 @@ namespace VisualGit.Scc
     public class PendingChangeCommitArgs
     {
         string _logMessage;
-        string _issueText;
         bool _storeMessageOnError;
 
         /// <summary>
@@ -32,12 +31,6 @@ namespace VisualGit.Scc
         {
             get { return _storeMessageOnError; }
             set { _storeMessageOnError = value; }
-        }
-
-        public string IssueText
-        {
-            get { return _issueText; }
-            set { _issueText = value; }
         }
     }
 

@@ -10,7 +10,6 @@ namespace VisualGit.Scc
         DateTime CommitDate { get; }
         string Author { get; }
         string LogMessage { get; }
-        IEnumerable<VisualGit.VS.IssueMarker> Issues { get; }
         IList<string> ParentRevisions { get; }
         string Revision { get; }
         int Index { get; }

@@ -123,10 +123,6 @@
     <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_SOLUTION_SCC">
       <!-- VS Predefined group for SCC commands on the solution -->
       <ButtonRef id="Cmd_FileSccAddSolutionToGit" priority="0x1200" />
-      <Button id="Cmd_SolutionIssueTrackerSetup" name="IssueTrackerSetup" priority="0x1400"
-                  text="&amp;Issue Tracker Setup"
-                  toolTip="Associate your solution with an Issue Repository"
-                  iconFile="menu/IssueRepository.png" defaultInvisible="true"/>
       <Button id="Cmd_SolutionCommit" priority="0x1500" name="SolutionCommit" defaultInvisible="true"
               text="Comm&amp;it Solution Changes" iconFile="PendingChanges/Commit.png" />
       <ButtonRef id="Cmd_ItemConflictEdit" priority="0x1600" />
@@ -431,8 +427,6 @@
                   text="Checkout &amp;Revision" dynamicVisibility="true" iconFile="PendingChanges/Switch.png"/>
           <Button id="Cmd_LogRevertThisRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Cherry &amp;Pick Commit" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
-          <Button id="Cmd_LogCherryPick" name="LogOpenIssue" priority="0xB500"
-                  text="Open &amp;Issue" dynamicVisibility="true"/>
         </Group>
         <GroupRef id="guidSHLMainMenu:IDG_VS_CTXT_ITEM_PROPERTIES" priority="0xF000" />
       </Menu>
@@ -677,10 +671,6 @@
         <Group id="Grp_PendingChangesLogEditor2" priority="0x400">
           <ButtonRef id="guidVSStd97:cmdidDelete" priority="0x100"  />
           <ButtonRef id="guidVSStd97:cmdidSelectAll"  priority="0x200" />
-        </Group>
-        <Group id="Grp_PendingChangesLogEditor3" priority="0x500">
-          <Button id="Cmd_PcLogEditorOpenIssue" name="OpenIssue" priority="0x100"
-                  text="Open &amp;Issue" dynamicVisibility="true"/>
         </Group>
       </Menu>
     </GroupRef>

@@ -142,7 +142,6 @@ namespace VisualGit
         WceBranch,
         WceEdit,
 
-        PendingChangesLogEditor3,
         MdiDocumentScc,
         DocumentPending,
     }

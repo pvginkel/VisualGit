@@ -56,17 +56,6 @@ namespace VisualGit.UI.SccManagement
 
             logMessage.Select();
 
-            IProjectCommitSettings pcs = Context.GetService<IProjectCommitSettings>();
-
-            if (pcs.ShowIssueBox)
-            {
-                _issueNummeric = pcs.NummericIssueIds;
-                issueLabel.Text = pcs.IssueLabel;
-
-                issueNumberBox.Enabled = issueNumberBox.Visible =
-                    issueLabel.Enabled = issueLabel.Visible = true;
-            }
-
             pendingList.ColumnWidthChanged += new ColumnWidthChangedEventHandler(pendingList_ColumnWidthChanged);
             IDictionary<string, int> widths = ConfigurationService.GetColumnWidths(GetType());
             pendingList.SetColumnWidths(widths);
@@ -127,19 +116,12 @@ namespace VisualGit.UI.SccManagement
         public void FillArgs(PendingChangeCommitArgs pca)
         {
             pca.LogMessage = logMessage.Text;
-            pca.IssueText = issueNumberBox.Text;
         }
 
         public string LogMessageText
         {
             get { return logMessage.Text; }
             set { logMessage.Text = value ?? ""; }
-        }
-
-        public string IssueNumberText
-        {
-            get { return issueNumberBox.Text; }
-            set { issueNumberBox.Text = value; }
         }
 
         class ItemLister : VisualGitService, IEnumerable<PendingChange>
@@ -210,37 +192,6 @@ namespace VisualGit.UI.SccManagement
         {
             okButton.Enabled = sender is ListView
                 && ((ListView)sender).CheckedItems.Count > 0;
-        }
-
-        bool _issueNummeric;
-        private void issueNumberBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (_issueNummeric)
-            {
-                if (!char.IsNumber(e.KeyChar) && e.KeyChar != ',' && !char.IsControl(e.KeyChar))
-                    e.Handled = true;
-            }
-        }
-
-        private void issueNumberBox_TextChanged(object sender, EventArgs e)
-        {
-            if (_issueNummeric)
-            {
-                bool replace = false;
-                string txt = issueNumberBox.Text;
-
-                for (int i = 0; i < txt.Length; i++)
-                {
-                    if (!char.IsNumber(txt, i) && txt[i] != ',')
-                    {
-                        txt = txt.Remove(i, 1);
-                        replace = true;
-                    }
-                }
-
-                if (replace)
-                    issueNumberBox.Text = txt;
-            }
         }
 
         private void pendingList_MouseDoubleClick(object sender, MouseEventArgs e)

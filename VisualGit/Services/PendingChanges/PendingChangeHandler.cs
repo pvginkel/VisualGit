@@ -8,7 +8,6 @@ using VisualGit.UI;
 using VisualGit.Services.PendingChanges;
 using VisualGit.VS;
 using VisualGit.UI.SccManagement;
-using VisualGit.ExtensionPoints.IssueTracker;
 using SharpGit;
 
 namespace VisualGit.Services.PendingChanges
@@ -191,14 +190,10 @@ namespace VisualGit.Services.PendingChanges
                     try
                     {
                         state.LogMessage = args.LogMessage;
-                        state.IssueText = args.IssueText;
 
                         if (!PreCommit_VerifySingleRoot(state)) // Verify single root 'first'
                             return false;
 
-                        if (!PreCommit_VerifyIssueTracker(state))
-                            return false;
-                        
                         if (!PreCommit_VerifyLogMessage(state))
                             return false;
 
@@ -307,29 +302,6 @@ namespace VisualGit.Services.PendingChanges
             }
             return true;
         }
-
-        private bool PreCommit_VerifyIssueTracker(PendingCommitState state)
-        {
-            IVisualGitIssueService iService = state.GetService<IVisualGitIssueService>();
-            if (iService != null)
-            {
-                IssueRepository iRepo = iService.CurrentIssueRepository;
-                if (iRepo != null)
-                {
-                    List<Uri> uris = new List<Uri>();
-                    foreach (PendingChange pc in state.Changes)
-                    {
-                        uris.Add(pc.Uri);
-                    }
-                    PreCommitArgs args = new PreCommitArgs(uris.ToArray(), GitRevision.One);
-                    args.CommitMessage = state.LogMessage;
-                    iRepo.PreCommit(args);
-                    if (args.Cancel) { return false; }
-                    state.LogMessage = args.CommitMessage;
-                }
-            }
-            return true;
-        }
         /// <summary>
         /// Verifies if the log message is valid for the current policy
         /// </summary>
@@ -351,16 +323,6 @@ namespace VisualGit.Services.PendingChanges
             }
 
             string msg = sb.ToString();
-
-            // Use the project commit settings class to add an issue number (if available)
-            IProjectCommitSettings pcs = state.GetService<IProjectCommitSettings>();
-            if (pcs.WarnIfNoIssue && pcs.ShowIssueBox && string.IsNullOrEmpty(state.IssueText) &&
-                state.MessageBox.Show(PccStrings.NoIssueNumber, "",
-                                      MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
-            {
-                return false;
-            }
-            msg = pcs.BuildLogMessage(msg, state.IssueText);
 
             // And make sure the log message ends with a single newline
             state.LogMessage = msg.TrimEnd() + Environment.NewLine;
@@ -614,36 +576,8 @@ namespace VisualGit.Services.PendingChanges
 
                 if (!string.IsNullOrEmpty(rslt.PostCommitError))
                     state.MessageBox.Show(rslt.PostCommitError, PccStrings.PostCommitError, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                else
-                {
-                    PostCommit_IssueTracker(state, rslt);
-                }
             }
             return ok;
-        }
-
-        private void PostCommit_IssueTracker(PendingCommitState state, GitCommitResult result)
-        {
-            IVisualGitIssueService iService = GetService<IVisualGitIssueService>();
-            if (iService != null)
-            {
-                IssueRepository iRepo = iService.CurrentIssueRepository;
-                if (iRepo != null)
-                {
-                    List<Uri> uris = new List<Uri>();
-                    foreach (PendingChange pc in state.Changes)
-                    {
-                        uris.Add(pc.Uri);
-                    }
-
-                    PostCommitArgs pca = new PostCommitArgs(uris.ToArray(), result.Revision, state.LogMessage);
-                    try
-                    {
-                        iRepo.PostCommit(pca);
-                    }
-                    catch { };
-                }
-            }
         }
     }
 }

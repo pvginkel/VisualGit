@@ -5,8 +5,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 {
     internal class GitRevision : IGitItem, VisualGit.Scc.IGitLogItem
     {
-        private static readonly VS.IssueMarker[] EmptyIssueMarker = new VS.IssueMarker[0];
-
         public static string UncommittedWorkingDirGuid = "0000000000000000000000000000000000000000";
         public static string IndexGuid = "1111111111111111111111111111111111111111";
 
@@ -47,11 +45,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         public int Index { get; set; }
         public Uri RepositoryRoot { get; set; }
-
-        IEnumerable<VS.IssueMarker> VisualGit.Scc.IGitLogItem.Issues
-        {
-            get { return EmptyIssueMarker; }
-        }
 
         SharpGit.GitChangeItemCollection VisualGit.Scc.IGitLogItem.ChangedPaths
         {

@@ -58,8 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IGitClientPool.cs" />
-    <Compile Include="IssueTracker\IIssueTrackerSettings.cs" />
-    <Compile Include="IssueTracker\IVisualGitIssueService.cs" />
     <Compile Include="Scc\UI\ILastChangeInfo.cs" />
     <Compile Include="VisualGitModule.cs" />
     <Compile Include="VisualGitRuntime.cs" />
@@ -179,16 +177,11 @@
     <Compile Include="VS\IVisualGitWebBrowser.cs" />
     <Compile Include="VS\IFileIconMapper.cs" />
     <Compile Include="VS\IOutputPaneManager.cs" />
-    <Compile Include="VS\IProjectCommitSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpGit\SharpGit.csproj">
       <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
       <Name>SharpGit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
-      <Name>VisualGit.ExtensionPoints</Name>
     </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
       <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>

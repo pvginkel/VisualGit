@@ -96,30 +96,6 @@ namespace VisualGit.UI.PendingChanges
 
         void OnSolutionRefresh(object sender, EventArgs e)
         {
-            bool showIssueBox = false;
-
-            if (Context != null)
-            {
-                IProjectCommitSettings pcs = Context.GetService<IProjectCommitSettings>();
-
-                if (pcs != null)
-                {
-                    showIssueBox = pcs.ShowIssueBox;
-
-                    if (showIssueBox)
-                    {
-                        issueLabel.Text = pcs.IssueLabel ?? PCStrings.IssueLabelText;
-                    }
-
-                    _issueNummeric = pcs.NummericIssueIds;
-                }
-            }
-
-            if (showIssueBox != issueNumberBox.Visible)
-            {
-                issueNumberBox.Enabled = issueNumberBox.Visible =
-                    issueLabel.Enabled = issueLabel.Visible = showIssueBox;
-            }
         }
 
         protected IPendingChangesManager Manager
@@ -168,8 +144,6 @@ namespace VisualGit.UI.PendingChanges
 
             // TODO: Maybe add something like
             //pendingCommits.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-
-            OnPendingChangeActivity(sender, e);
         }
 
         HybridCollection<string> _checkedItems;
@@ -256,7 +230,6 @@ namespace VisualGit.UI.PendingChanges
 
                 pci.RefreshText(Context);
             }
-            OnPendingChangeActivity(sender, e);
         }
 
         void OnPendingChangeRemoved(object sender, PendingChangeEventArgs e)
@@ -270,25 +243,6 @@ namespace VisualGit.UI.PendingChanges
                 _listItems.Remove(path);
                 pci.Remove();
                 pendingCommits.RefreshGroupsAvailable();
-            }
-            OnPendingChangeActivity(sender, e);
-        }
-
-        void OnPendingChangeActivity(object sender, PendingChangeEventArgs args)
-        {
-            IVisualGitSolutionSettings settings = null;
-            if (true
-                && args.Change != null
-                && (settings = Context.GetService<IVisualGitSolutionSettings>()) != null
-                && string.Equals(settings.ProjectRoot, args.Change.FullPath)
-                // TODO add filter for property changes
-                )
-            {
-                IVisualGitIssueService iService = Context.GetService<IVisualGitIssueService>();
-                if (iService != null)
-                {
-                    iService.MarkDirty();
-                }
             }
         }
 
@@ -409,13 +363,9 @@ namespace VisualGit.UI.PendingChanges
             PendingChangeCommitArgs a = new PendingChangeCommitArgs();
             a.LogMessage = logMessageEditor.Text;
 
-            if (issueNumberBox.Visible)
-                a.IssueText = issueNumberBox.Text; // The pc handler verifies if it should be used            
-
             if (pch.Commit(changes, a))
             {
                 logMessageEditor.Clear(true);
-                issueNumberBox.Text = "";
             }
         }
 
@@ -514,37 +464,6 @@ namespace VisualGit.UI.PendingChanges
 
             if (Context.GetService<IPendingChangeHandler>().ApplyChanges(changes, args))
             {
-            }
-        }
-
-        bool _issueNummeric;
-        private void issueNumberBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (_issueNummeric)
-            {
-                if (!char.IsNumber(e.KeyChar) && e.KeyChar != ',' && !char.IsControl(e.KeyChar))
-                    e.Handled = true;
-            }
-        }
-
-        private void issueNumberBox_TextChanged(object sender, EventArgs e)
-        {
-            if (_issueNummeric)
-            {
-                bool replace = false;
-                string txt = issueNumberBox.Text;
-
-                for (int i = 0; i < txt.Length; i++)
-                {
-                    if (!char.IsNumber(txt, i) && txt[i] != ',')
-                    {
-                        txt = txt.Remove(i, 1);
-                        replace = true;
-                    }
-                }
-
-                if (replace)
-                    issueNumberBox.Text = txt;
             }
         }
 

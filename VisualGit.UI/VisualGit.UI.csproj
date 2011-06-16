@@ -78,10 +78,6 @@
       <Project>{69301E7D-F47F-42F4-8CB6-4A5CA3101785}</Project>
       <Name>VisualGit.Diff</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
-      <Name>VisualGit.ExtensionPoints</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
       <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>
@@ -253,22 +249,6 @@
       <DependentUpon>RevisionGridControl.cs</DependentUpon>
     </Compile>
     <Compile Include="IHasErrorProvider.cs" />
-    <Compile Include="IssueTracker\IssueSelector.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IssueTracker\IssueSelector.Designer.cs">
-      <DependentUpon>IssueSelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IssueTracker\IssuesView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="IssueTracker\IssueTrackerConfigDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IssueTracker\IssueTrackerConfigDialog.Designer.cs">
-      <DependentUpon>IssueTrackerConfigDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IssueTracker\IssueTrackerSetupCommand.cs" />
     <Compile Include="MergeWizard\Commands\Merge.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -324,7 +304,6 @@
       <DependentUpon>VersionStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="PendingChanges\Commands\CreatePatch.cs" />
-    <Compile Include="PendingChanges\Commands\OpenIssue.cs" />
     <Compile Include="PendingChanges\ConfigureRecentChangesPageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -416,10 +395,6 @@
     <Compile Include="GitLog\LogDataSource.Designer.cs">
       <DependentUpon>LogDataSource.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitLog\LogIssuesView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GitLog\LogRevisionItem.cs" />
     <Compile Include="GitLog\LogViewerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -467,9 +442,6 @@
     </Compile>
     <Compile Include="Commands\SwitchDialog.Designer.cs">
       <DependentUpon>SwitchDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GitLog\LogRevisionView.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="TransportProgressDialog.cs">
       <SubType>Form</SubType>
@@ -903,12 +875,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StatusPanelResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IssueTracker\IssueSelector.resx">
-      <DependentUpon>IssueSelector.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IssueTracker\IssueTrackerConfigDialog.resx">
-      <DependentUpon>IssueTrackerConfigDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PendingChanges\ConfigureRecentChangesPageDialog.resx">
       <DependentUpon>ConfigureRecentChangesPageDialog.cs</DependentUpon>

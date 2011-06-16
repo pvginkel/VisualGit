@@ -73,33 +73,6 @@ namespace VisualGit.Settings
             public int RootCookie;
 
             public Uri RepositoryRoot;
-
-            public bool? BugTrackAppend;
-            public string BugTrackLabel;
-            public string BugTrackLogRegexes;
-            public string BugTrackMessage;
-            public bool? BugTrackNumber;
-            public string BugTrackUrl;
-            public bool? BugTrackWarnIfNoIssue;
-
-            public int? LogMessageMinSize;
-            public int? LockMessageMinSize;
-            public int? LogWidth;
-            public string LogSummary;
-
-            public ReadOnlyCollection<string> LogRegexes;
-            public Regex AllInOneRe;
-            public Regex LogPrepareRe;
-            public Regex LogSplitRe;
-            public Regex LogSummaryRe;
-
-            public bool BrokenRegex;
-
-            public string IssueRepositoryConnectorName;
-            public string IssueRepositoryUri;
-            public string IssueRepositoryId;
-            public string IssueRepositoryPropertyNames;
-            public string IssueRepositoryPropertyValues;
         }
 
         ISelectionContext _selectionContext;

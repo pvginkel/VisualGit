@@ -65,10 +65,6 @@
       <Project>{3483D848-0E50-445A-92B6-BDA2320BEA52}</Project>
       <Name>SharpGit</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj">
-      <Project>{6B372684-DBCB-4C8A-9AB5-A42170071C7F}</Project>
-      <Name>VisualGit.ExtensionPoints</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VisualGit.Ids\VisualGit.Ids.csproj">
       <Project>{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}</Project>
       <Name>VisualGit.Ids</Name>
@@ -104,16 +100,12 @@
     <Compile Include="Services\VisualGitClientPool.cs" />
     <Compile Include="Services\VisualGitHelpService.cs" />
     <Compile Include="Services\VisualGitErrorMessage.cs" />
-    <Compile Include="Services\IssueTracker\VisualGitIssueService.cs" />
-    <Compile Include="Services\IssueTracker\IssueRepositoryConnectorProxy.cs" />
-    <Compile Include="Services\IssueTracker\IssueRepositorySettingsProxy.cs" />
     <Compile Include="Services\MigrationService.cs" />
     <Compile Include="Services\PendingChanges\PccStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PccStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\SolutionSettings.Commit.cs" />
     <Compile Include="Commands\BranchTagSolutionCommand.cs" />
     <Compile Include="Commands\CheckForUpdates.cs" />
     <Compile Include="Commands\CommandStrings.Designer.cs">
@@ -188,7 +180,6 @@
     <Compile Include="Services\ProgressRunner.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Services\SolutionSettings.IssueRepository.cs" />
     <Compile Include="Services\UIShell.cs">
       <SubType>Code</SubType>
     </Compile>

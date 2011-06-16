@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Diff", "VisualGit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.Ids", "VisualGit.Ids\VisualGit.Ids.csproj", "{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.ExtensionPoints", "VisualGit.ExtensionPoints\VisualGit.ExtensionPoints.csproj", "{6B372684-DBCB-4C8A-9AB5-A42170071C7F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit.GenerateVSIXManifest", "tools\VisualGit.GenerateVSIXManifest\VisualGit.GenerateVSIXManifest.csproj", "{28C030E0-0298-44EB-9434-4B5565EB33AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpGit", "SharpGit\SharpGit.csproj", "{3483D848-0E50-445A-92B6-BDA2320BEA52}"
@@ -97,12 +95,6 @@ Global
 		{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
 		{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19D7BEA7-D947-43A2-9A04-F3369AFB89F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Release (With MSI)|Any CPU.ActiveCfg = Release|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Release (With MSI)|Any CPU.Build.0 = Release|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B372684-DBCB-4C8A-9AB5-A42170071C7F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28C030E0-0298-44EB-9434-4B5565EB33AA}.Release (With MSI)|Any CPU.ActiveCfg = Release|Any CPU

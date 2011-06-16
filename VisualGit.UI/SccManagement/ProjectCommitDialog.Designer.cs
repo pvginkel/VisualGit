@@ -33,7 +33,6 @@ namespace VisualGit.UI.SccManagement
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.issueLabel = new System.Windows.Forms.Label();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -41,7 +40,6 @@ namespace VisualGit.UI.SccManagement
             this.panel1 = new System.Windows.Forms.Panel();
             this.pendingList = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
             this.logMessage = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
-            this.issueNumberBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -69,20 +67,13 @@ namespace VisualGit.UI.SccManagement
             // 
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
             this.tableLayoutPanel2.Controls.Add(this.logMessage, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.issueNumberBox, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.issueLabel, 1, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
-            // issueLabel
-            // 
-            resources.ApplyResources(this.issueLabel, "issueLabel");
-            this.issueLabel.Name = "issueLabel";
             // 
             // cancelButton
             // 
@@ -137,13 +128,6 @@ namespace VisualGit.UI.SccManagement
             this.logMessage.Name = "logMessage";
             this.logMessage.PasteSource = this.pendingList;
             // 
-            // issueNumberBox
-            // 
-            resources.ApplyResources(this.issueNumberBox, "issueNumberBox");
-            this.issueNumberBox.Name = "issueNumberBox";
-            this.issueNumberBox.TextChanged += new System.EventHandler(this.issueNumberBox_TextChanged);
-            this.issueNumberBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.issueNumberBox_KeyPress);
-            // 
             // ProjectCommitDialog
             // 
             this.AcceptButton = this.okButton;
@@ -171,13 +155,11 @@ namespace VisualGit.UI.SccManagement
         private VisualGit.UI.PendingChanges.Commits.PendingCommitsView pendingList;
         private VisualGit.UI.PendingChanges.LogMessageEditor logMessage;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label issueLabel;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox issueNumberBox;
     }
 }
