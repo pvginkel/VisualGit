@@ -31,15 +31,15 @@ namespace VisualGit.UI.SccManagement
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectCommitDialog));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pendingList = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.logMessage = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pendingList = new VisualGit.UI.PendingChanges.Commits.PendingCommitsView(this.components);
-            this.logMessage = new VisualGit.UI.PendingChanges.LogMessageEditor(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -63,12 +63,31 @@ namespace VisualGit.UI.SccManagement
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel2);
             // 
+            // pendingList
+            // 
+            this.pendingList.AllowColumnReorder = true;
+            this.pendingList.CheckBoxes = true;
+            resources.ApplyResources(this.pendingList, "pendingList");
+            this.pendingList.HideSelection = false;
+            this.pendingList.Name = "pendingList";
+            this.pendingList.ShowSelectAllCheckBox = true;
+            this.pendingList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pendingList_ItemChecked);
+            this.pendingList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pendingList_MouseDoubleClick);
+            // 
             // tableLayoutPanel2
             // 
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
             this.tableLayoutPanel2.Controls.Add(this.logMessage, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            // 
+            // logMessage
+            // 
+            this.logMessage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tableLayoutPanel2.SetColumnSpan(this.logMessage, 3);
+            resources.ApplyResources(this.logMessage, "logMessage");
+            this.logMessage.Name = "logMessage";
+            this.logMessage.PasteSource = this.pendingList;
             // 
             // label1
             // 
@@ -108,25 +127,6 @@ namespace VisualGit.UI.SccManagement
             this.panel1.Controls.Add(this.tableLayoutPanel1);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
-            // pendingList
-            // 
-            this.pendingList.AllowColumnReorder = true;
-            this.pendingList.CheckBoxes = true;
-            resources.ApplyResources(this.pendingList, "pendingList");
-            this.pendingList.HideSelection = false;
-            this.pendingList.Name = "pendingList";
-            this.pendingList.ShowSelectAllCheckBox = true;
-            this.pendingList.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.pendingList_ItemChecked);
-            this.pendingList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pendingList_MouseDoubleClick);
-            // 
-            // logMessage
-            // 
-            this.logMessage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tableLayoutPanel2.SetColumnSpan(this.logMessage, 3);
-            resources.ApplyResources(this.logMessage, "logMessage");
-            this.logMessage.Name = "logMessage";
-            this.logMessage.PasteSource = this.pendingList;
             // 
             // ProjectCommitDialog
             // 

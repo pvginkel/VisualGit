@@ -144,7 +144,7 @@
     <value>0</value>
   </data>
   <data name="topLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="issueLabel" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="issueNumberBox" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -202,7 +202,7 @@
     <value>pendingCommits</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4171.27673, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -252,18 +252,6 @@
   <data name="topLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;issueLabel.Name" xml:space="preserve">
-    <value>issueLabel</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
@@ -274,31 +262,19 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Name" xml:space="preserve">
     <value>logMessageEditor</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4171.27673, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Name" xml:space="preserve">
-    <value>issueNumberBox</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;lastRevLabel.Name" xml:space="preserve">
     <value>lastRevLabel</value>
@@ -310,7 +286,7 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;lastRevLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;lastRevBox.Name" xml:space="preserve">
     <value>lastRevBox</value>
@@ -322,7 +298,7 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;lastRevBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="topLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -355,46 +331,7 @@
     <value>0</value>
   </data>
   <data name="topLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="issueLabel" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="issueNumberBox" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="issueLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Right</value>
-  </data>
-  <data name="issueLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="issueLabel.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="issueLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>583, 0</value>
-  </data>
-  <data name="issueLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 20</value>
-  </data>
-  <data name="issueLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="issueLabel.Text" xml:space="preserve">
-    <value>&amp;Issue:</value>
-  </data>
-  <data name="issueLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="issueLabel.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.Name" xml:space="preserve">
-    <value>issueLabel</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;issueLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -430,7 +367,7 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="logMessageEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -445,7 +382,7 @@
     <value>pendingCommits</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4171.27673, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
     <value>splitContainer.Panel2</value>
@@ -463,43 +400,13 @@
     <value>logMessageEditor</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4171.27673, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="issueNumberBox.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="issueNumberBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>621, 0</value>
-  </data>
-  <data name="issueNumberBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="issueNumberBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 20</value>
-  </data>
-  <data name="issueNumberBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="issueNumberBox.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Name" xml:space="preserve">
-    <value>issueNumberBox</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;issueNumberBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="lastRevLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
@@ -535,7 +442,7 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;lastRevLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="lastRevBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -568,7 +475,7 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;lastRevBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -607,6 +514,6 @@
     <value>PendingCommitsPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4171.27673, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>

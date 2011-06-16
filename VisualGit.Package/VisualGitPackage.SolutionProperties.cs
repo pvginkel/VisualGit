@@ -14,7 +14,6 @@ namespace VisualGit.VSPackage
 {
     [ProvideSolutionProperties(VisualGitPackage.GitPropertyCategory)]
     [ProvideSolutionProperties(VisualGitId.SccStructureName)]
-    //[ProvideSolutionProperties(VisualGitId.IssueTrackerStructureName)]
     partial class VisualGitPackage : IVsPersistSolutionProps
     {
         const string GitPropertyCategory = VisualGitId.GitSccName;

@@ -115,15 +115,6 @@ namespace VisualGit.UI.PendingChanges {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &amp;Issue:.
-        /// </summary>
-        internal static string IssueLabelText {
-            get {
-                return ResourceManager.GetString("IssueLabelText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to &amp;Local Change.
         /// </summary>
         internal static string LocalChangeColumn {

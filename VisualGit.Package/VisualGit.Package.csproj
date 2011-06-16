@@ -171,8 +171,6 @@
     <Compile Include="OptionPages\EnvironmentSettingsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="OptionPages\IssueTrackerPage.cs" />
-    <Compile Include="OptionPages\SolutionSettingsPage.cs" />
     <Compile Include="OptionPages\UserToolsSettingsPage.cs">
       <SubType>Component</SubType>
     </Compile>

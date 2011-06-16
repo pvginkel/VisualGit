@@ -108,7 +108,6 @@ namespace VisualGit
 
         public const string EnvironmentSettingsPageGuid = "3DFCF4B7-2037-446A-9423-AB6AD794E906";
         public const string UserToolsSettingsPageGuid = "F6EF370E-EB7C-41E2-A725-F7976D11EFC2";
-        public const string IssueTrackerSettingsPageGuid = "E208E058-A2D5-423A-9746-9B49FCCBEDF5";
 
         /// <summary>
         /// The command set as a guid
