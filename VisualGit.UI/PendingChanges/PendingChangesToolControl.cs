@@ -21,7 +21,6 @@ namespace VisualGit.UI.PendingChanges
         readonly PendingActivationPage _activatePage;
         readonly PendingCommitsPage _commitsPage;
         readonly PendingIssuesPage _issuesPage;
-        readonly PendingConflictsPage _conflictsPage;
         PendingChangesPage _currentPage;
         PendingChangesPage _lastPage;
 
@@ -32,13 +31,11 @@ namespace VisualGit.UI.PendingChanges
             _activatePage = new PendingActivationPage();
             _commitsPage = new PendingCommitsPage();
             _issuesPage = new PendingIssuesPage();
-            _conflictsPage = new PendingConflictsPage();
 
             _pages = new List<PendingChangesPage>();
             _pages.Add(_activatePage);
             _pages.Add(_commitsPage);
             _pages.Add(_issuesPage);
-            _pages.Add(_conflictsPage);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -188,7 +185,6 @@ namespace VisualGit.UI.PendingChanges
 
             fileChangesButton.Checked = (_lastPage == _commitsPage);
             issuesButton.Checked = (_lastPage == _issuesPage);
-            conflictsButton.Checked = (_lastPage == _conflictsPage);
 
             if (select)
                 page.Select();
@@ -223,11 +219,6 @@ namespace VisualGit.UI.PendingChanges
         private void issuesButton_Click(object sender, EventArgs e)
         {
             ShowPanel(_issuesPage, true);
-        }
-
-        private void conflictsButton_Click(object sender, EventArgs e)
-        {
-            ShowPanel(_conflictsPage, true);
         }
 
         #region IVisualGitHasVsTextView Members

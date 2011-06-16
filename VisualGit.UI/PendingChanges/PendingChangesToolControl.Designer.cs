@@ -65,13 +65,6 @@ namespace VisualGit.UI.PendingChanges
 			this.issuesButton.Name = "issuesButton";
 			this.issuesButton.Click += new System.EventHandler(this.issuesButton_Click);
 			// 
-			// conflictsButton
-			// 
-			this.conflictsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			resources.ApplyResources(this.conflictsButton, "conflictsButton");
-			this.conflictsButton.Name = "conflictsButton";
-			this.conflictsButton.Click += new System.EventHandler(this.conflictsButton_Click);
-			// 
 			// panel1
 			// 
 			resources.ApplyResources(this.panel1, "panel1");
