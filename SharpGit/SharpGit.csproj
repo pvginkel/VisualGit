@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilePath.cs" />
     <Compile Include="FileSystemUtil.cs" />
     <Compile Include="GitAccept.cs" />
     <Compile Include="GitAddArgs.cs" />
