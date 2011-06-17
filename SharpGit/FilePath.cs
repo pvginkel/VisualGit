@@ -185,7 +185,15 @@ namespace SharpGit
 
         public string Parent
         {
-            get { return IOPath.GetDirectoryName(Path); }
+            get
+            {
+                string parent = IOPath.GetDirectoryName(Path);
+
+                if (parent == null || String.Empty.Equals(parent))
+                    return null;
+                else
+                    return parent;
+            }
         }
 
         public FilePath ParentPath
@@ -194,7 +202,7 @@ namespace SharpGit
             {
                 string parent = Parent;
 
-                if (String.IsNullOrEmpty(parent))
+                if (parent == null)
                     return null;
                 else
                     return new FilePath(parent);
