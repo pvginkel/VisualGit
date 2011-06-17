@@ -147,8 +147,14 @@
   <data name="OutOfDate" xml:space="preserve">
     <value>Repository is out of date</value>
   </data>
+  <data name="PathAbsolute" xml:space="preserve">
+    <value>Path is an absolute path</value>
+  </data>
   <data name="PathNoRepository" xml:space="preserve">
     <value>Path is not (part of) a Git repository</value>
+  </data>
+  <data name="PathNotAbsolute" xml:space="preserve">
+    <value>Path is not an absolute path</value>
   </data>
   <data name="PullFailed" xml:space="preserve">
     <value>Pull could not be completed successfully</value>

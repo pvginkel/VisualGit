@@ -113,7 +113,7 @@ namespace SharpGit
         private void Init(string path, FilePath child)
         {
             if (child.IsAbsolute)
-                throw new ArgumentException("Path name may not be absolute", "child");
+                throw new FilePathAbsoluteException("child");
 
             Path = IOPath.Combine(SanitizePath(path), child.Path);
         }

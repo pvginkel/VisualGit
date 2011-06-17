@@ -151,11 +151,29 @@ namespace SharpGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path is an absolute path.
+        /// </summary>
+        internal static string PathAbsolute {
+            get {
+                return ResourceManager.GetString("PathAbsolute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path is not (part of) a Git repository.
         /// </summary>
         internal static string PathNoRepository {
             get {
                 return ResourceManager.GetString("PathNoRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path is not an absolute path.
+        /// </summary>
+        internal static string PathNotAbsolute {
+            get {
+                return ResourceManager.GetString("PathNotAbsolute", resourceCulture);
             }
         }
         
