@@ -18,6 +18,7 @@ namespace VisualGit.Services.PendingChanges
         HybridCollection<PendingChange> _changes = new HybridCollection<PendingChange>();
         HybridCollection<string> _commitPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
         string _logMessage;
+        bool _amendLastCommit;
 
         public PendingCommitState(IVisualGitServiceProvider context, IEnumerable<PendingChange> changes)
             : base(context)
@@ -59,6 +60,12 @@ namespace VisualGit.Services.PendingChanges
         {
             get { return _logMessage; }
             set { _logMessage = value; }
+        }
+
+        public bool AmendLastCommit
+        {
+            get { return _amendLastCommit; }
+            set { _amendLastCommit = value; }
         }
 
         [DebuggerStepThrough]

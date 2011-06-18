@@ -38,6 +38,7 @@ namespace VisualGit.UI.SccManagement
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.amendBox = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -52,6 +53,7 @@ namespace VisualGit.UI.SccManagement
             // 
             // splitContainer1
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.splitContainer1, 2);
             resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -111,9 +113,16 @@ namespace VisualGit.UI.SccManagement
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.amendBox, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.splitContainer1, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // amendBox
+            // 
+            resources.ApplyResources(this.amendBox, "amendBox");
+            this.amendBox.Name = "amendBox";
+            this.amendBox.UseVisualStyleBackColor = true;
             // 
             // flowLayoutPanel1
             // 
@@ -161,5 +170,6 @@ namespace VisualGit.UI.SccManagement
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox amendBox;
     }
 }

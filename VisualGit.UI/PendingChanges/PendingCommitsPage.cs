@@ -351,10 +351,12 @@ namespace VisualGit.UI.PendingChanges
 
             PendingChangeCommitArgs a = new PendingChangeCommitArgs();
             a.LogMessage = logMessageEditor.Text;
+            a.AmendLastCommit = amendBox.Checked;
 
             if (pch.Commit(changes, a))
             {
                 logMessageEditor.Clear(true);
+                amendBox.Checked = false;
             }
         }
 
@@ -480,6 +482,29 @@ namespace VisualGit.UI.PendingChanges
 
                 return null;
             }
+        }
+
+        private void PendingCommitsPage_Load(object sender, EventArgs e)
+        {
+            CorrectLastRevisionMargins();
+        }
+
+        private void lastRevLabel_SizeChanged(object sender, EventArgs e)
+        {
+            CorrectLastRevisionMargins();
+        }
+
+        private void CorrectLastRevisionMargins()
+        {
+            int margin = (lastRevLabel.Height + lastRevLabel.Margin.Vertical) - lastRevBox.Height;
+            int topMargin = margin / 2 + margin % 2;
+
+            lastRevBox.Margin = new Padding(
+                lastRevBox.Margin.Left,
+                topMargin,
+                lastRevBox.Margin.Right,
+                Math.Max(margin - topMargin, 2)
+            );
         }
     }
 }

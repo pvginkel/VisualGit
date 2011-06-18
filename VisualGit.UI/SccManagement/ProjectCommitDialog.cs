@@ -116,12 +116,19 @@ namespace VisualGit.UI.SccManagement
         public void FillArgs(PendingChangeCommitArgs pca)
         {
             pca.LogMessage = logMessage.Text;
+            pca.AmendLastCommit = amendBox.Checked;
         }
 
         public string LogMessageText
         {
             get { return logMessage.Text; }
             set { logMessage.Text = value ?? ""; }
+        }
+
+        public bool AmendLastCommit
+        {
+            get { return amendBox.Checked; }
+            set { amendBox.Checked = value; }
         }
 
         class ItemLister : VisualGitService, IEnumerable<PendingChange>

@@ -172,7 +172,6 @@ namespace VisualGit
         LogShowChangedPaths,
         LogShowLogMessage,
 
-        LogChangeLogMessage,
         LogShowChanges,
 
         MigrateSettings,

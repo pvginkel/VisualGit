@@ -16,6 +16,7 @@ namespace VisualGit.Scc
     {
         string _logMessage;
         bool _storeMessageOnError;
+        bool _amendLastCommit;
 
         /// <summary>
         /// Gets or sets the log message.
@@ -25,6 +26,12 @@ namespace VisualGit.Scc
         {
             get { return _logMessage; }
             set { _logMessage = value; }
+        }
+
+        public bool AmendLastCommit
+        {
+            get { return _amendLastCommit; }
+            set { _amendLastCommit = value; }
         }
 
         public bool StoreMessageOnError

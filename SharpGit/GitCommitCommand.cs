@@ -90,6 +90,9 @@ namespace SharpGit
 
                     commitCommand.SetMessage(Args.LogMessage);
 
+                    if (Args.AmendLastCommit)
+                        commitCommand.SetAmend(true);
+
                     try
                     {
                         var commit = commitCommand.Call();

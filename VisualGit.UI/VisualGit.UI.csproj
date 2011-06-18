@@ -407,16 +407,9 @@
     <Compile Include="SccManagement\SccEditEnlistment.Designer.cs">
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitLog\Commands\ChangeLogMessage.cs" />
     <Compile Include="GitLog\Commands\ShowChangedPaths.cs" />
     <Compile Include="GitLog\Commands\ShowChanges.cs" />
     <Compile Include="GitLog\Commands\ShowLogMessage.cs" />
-    <Compile Include="GitLog\EditLogMessageDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GitLog\EditLogMessageDialog.Designer.cs">
-      <DependentUpon>EditLogMessageDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="GitLog\LogChangedPathsView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -759,10 +752,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SccManagement\SccEditEnlistment.resx">
       <DependentUpon>SccEditEnlistment.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GitLog\EditLogMessageDialog.resx">
-      <DependentUpon>EditLogMessageDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GitLog\LogToolWindowControl.resx">

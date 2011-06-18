@@ -190,6 +190,7 @@ namespace VisualGit.Services.PendingChanges
                     try
                     {
                         state.LogMessage = args.LogMessage;
+                        state.AmendLastCommit = args.AmendLastCommit;
 
                         if (!PreCommit_VerifySingleRoot(state)) // Verify single root 'first'
                             return false;
@@ -539,6 +540,7 @@ namespace VisualGit.Services.PendingChanges
                     GitCommitArgs ca = new GitCommitArgs();
                     ca.Depth = depth;
                     ca.LogMessage = state.LogMessage;
+                    ca.AmendLastCommit = state.AmendLastCommit;
                     ca.AddExpectedError(GitErrorCode.OutOfDate);
 
                     ok = e.Client.Commit(

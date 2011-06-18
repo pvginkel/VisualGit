@@ -14,6 +14,8 @@ namespace SharpGit
 
         public string LogMessage { get; set; }
 
+        public bool AmendLastCommit { get; set; }
+
         public event EventHandler<GitCommittingEventArgs> Committing;
 
         internal protected virtual void OnCommitting(GitCommittingEventArgs e)

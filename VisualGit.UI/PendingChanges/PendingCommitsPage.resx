@@ -131,33 +131,9 @@
   <data name="splitContainer.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
-  <data name="&gt;&gt;topLayoutPanel.Name" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;topLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;topLayoutPanel.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;topLayoutPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="topLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>768, 83</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="topLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
@@ -166,91 +142,10 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>splitContainer.Panel1</value>
+    <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel1.Name" xml:space="preserve">
-    <value>splitContainer.Panel1</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="splitContainer.Panel1MinSize" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="pendingCommits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="pendingCommits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pendingCommits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>768, 215</value>
-  </data>
-  <data name="pendingCommits.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Name" xml:space="preserve">
-    <value>pendingCommits</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
-    <value>splitContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel2.Name" xml:space="preserve">
-    <value>splitContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="splitContainer.Panel2MinSize" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="splitContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>768, 300</value>
-  </data>
-  <data name="splitContainer.SplitterDistance" type="System.Int32, mscorlib">
-    <value>83</value>
-  </data>
-  <data name="splitContainer.SplitterWidth" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="splitContainer.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Name" xml:space="preserve">
-    <value>splitContainer</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;splitContainer.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="topLayoutPanel.ColumnCount" type="System.Int32, mscorlib">
-    <value>5</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -262,18 +157,6 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Name" xml:space="preserve">
-    <value>logMessageEditor</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;lastRevLabel.Name" xml:space="preserve">
@@ -300,6 +183,18 @@
   <data name="&gt;&gt;lastRevBox.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;amendBox.Name" xml:space="preserve">
+    <value>amendBox</value>
+  </data>
+  <data name="&gt;&gt;amendBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;amendBox.Parent" xml:space="preserve">
+    <value>topLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;amendBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="topLayoutPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -313,7 +208,7 @@
     <value>2</value>
   </data>
   <data name="topLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>766, 81</value>
+    <value>535, 80</value>
   </data>
   <data name="topLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -325,13 +220,169 @@
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;topLayoutPanel.Parent" xml:space="preserve">
-    <value>panel1</value>
+    <value>splitContainer.Panel1</value>
   </data>
   <data name="&gt;&gt;topLayoutPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="topLayoutPanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="logMessageEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,368,Percent,50,Absolute,145" /&gt;&lt;Rows Styles="Absolute,20,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="4" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lastRevLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lastRevBox" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="amendBox" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel1.Name" xml:space="preserve">
+    <value>splitContainer.Panel1</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="splitContainer.Panel1MinSize" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="pendingCommits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="pendingCommits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pendingCommits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>535, 129</value>
+  </data>
+  <data name="pendingCommits.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Name" xml:space="preserve">
+    <value>pendingCommits</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4186.27436, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
+    <value>splitContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel2.Name" xml:space="preserve">
+    <value>splitContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="splitContainer.Panel2MinSize" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="splitContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>535, 211</value>
+  </data>
+  <data name="splitContainer.SplitterDistance" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="splitContainer.SplitterWidth" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="splitContainer.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Name" xml:space="preserve">
+    <value>splitContainer</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;splitContainer.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Name" xml:space="preserve">
+    <value>logMessageEditor</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4186.27436, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 20</value>
+  </data>
+  <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>535, 60</value>
+  </data>
+  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
+    <value>topLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="logMessageEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="logMessageEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="logMessageEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Name" xml:space="preserve">
+    <value>pendingCommits</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
+    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4186.27436, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
+    <value>splitContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;pendingCommits.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="logMessageEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>533, 58</value>
+  </data>
+  <data name="logMessageEditor.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Name" xml:space="preserve">
+    <value>logMessageEditor</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
+    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4186.27436, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
+    <value>panel1</value>
+  </data>
+  <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -367,45 +418,6 @@
     <value>topLayoutPanel</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="logMessageEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="logMessageEditor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 20</value>
-  </data>
-  <data name="logMessageEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Name" xml:space="preserve">
-    <value>pendingCommits</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.Commits.PendingCommitsView, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.Parent" xml:space="preserve">
-    <value>splitContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;pendingCommits.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="logMessageEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>766, 61</value>
-  </data>
-  <data name="logMessageEditor.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Name" xml:space="preserve">
-    <value>logMessageEditor</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.LogMessageEditor, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.Parent" xml:space="preserve">
-    <value>topLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;logMessageEditor.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="lastRevLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -415,7 +427,10 @@
     <value>True</value>
   </data>
   <data name="lastRevLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>82, 0</value>
+    <value>115, 0</value>
+  </data>
+  <data name="lastRevLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>60, 0, 3, 0</value>
   </data>
   <data name="lastRevLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>69, 20</value>
@@ -444,20 +459,20 @@
   <data name="&gt;&gt;lastRevLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="lastRevBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+  <data name="lastRevBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="lastRevBox.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="lastRevBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 3</value>
+    <value>190, 3</value>
   </data>
   <data name="lastRevBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 3, 2, 3</value>
+    <value>3, 3, 10, 3</value>
   </data>
   <data name="lastRevBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>364, 13</value>
+    <value>215, 13</value>
   </data>
   <data name="lastRevBox.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -477,11 +492,50 @@
   <data name="&gt;&gt;lastRevBox.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="amendBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="amendBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="amendBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="amendBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>418, 2</value>
+  </data>
+  <data name="amendBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 1</value>
+  </data>
+  <data name="amendBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 17</value>
+  </data>
+  <data name="amendBox.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="amendBox.Text" xml:space="preserve">
+    <value>&amp;Amend last commit</value>
+  </data>
+  <data name="&gt;&gt;amendBox.Name" xml:space="preserve">
+    <value>amendBox</value>
+  </data>
+  <data name="&gt;&gt;amendBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;amendBox.Parent" xml:space="preserve">
+    <value>topLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;amendBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>535, 211</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Source Files</value>
@@ -514,6 +568,6 @@
     <value>PendingCommitsPage</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4184.35477, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.PendingChanges.PendingChangesPage, VisualGit.UI, Version=2.2.4186.27436, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>
