@@ -212,9 +212,12 @@ namespace VisualGit.Commands
                         args.Force = force;
                         args.AddExpectedError(GitErrorCode.CheckoutFailed);
 
-#if false
+                        // TODO: Decide whether it is necessary for the switch
+                        // command to report conflicts.
+#if NOT_IMPLEMENTED
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
 #endif
+
                         a.Client.Switch(path, target, args, out result);
                     });
 
