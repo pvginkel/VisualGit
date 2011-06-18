@@ -49,9 +49,6 @@ namespace VisualGit
 
         FileSccAddSolutionToGit,
 
-        FileSccMenuUpdateLatest,
-        FileSccMenuUpdateSpecific,
-
         // Raw dump of old commands; to be sorted out
         AddItem,
         CheckForUpdates,
@@ -121,10 +118,8 @@ namespace VisualGit
         ItemOpenTextEditor,
         ItemOpenFolder,
         ItemOpenSolutionExplorer,
-        ItemOpenInRepositoryExplorer, // Unused
 
         ItemRevertBase,
-        PendingChangesSpacer, // Whitespace command to move all buttons a bit
 
         ItemIgnoreFile,
         ItemIgnoreFileType,
@@ -152,16 +147,9 @@ namespace VisualGit
         PcLogEditorPasteRecentLog,
 
         LogCompareWithWorkingCopy,
-        LogCompareWithPrevious,
-        LogCompareRevisions,
         LogRevertThisRevision,
         LogMergeThisRevision,
-        LogOpen,
-        LogOpenInVs,
-        LogOpenWith,
-        LogUpdateTo,
         LogRevertTo,
-        LogMergeTo,
         LogSwitchToRevision,
 
         ItemIgnoreFolder,
@@ -171,8 +159,6 @@ namespace VisualGit
         SolutionApplyPatch,
 
         ExplorerOpen,
-        ReposExplorerOpenWith,
-        ReposExplorerShowPrevChanges,
 
         RepositoryShowChanges,
         RepositoryCompareWithWc,
