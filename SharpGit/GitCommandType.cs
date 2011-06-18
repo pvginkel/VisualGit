@@ -9,7 +9,6 @@ namespace SharpGit
     {
         //Unknown = 0,
         Add = 1,
-        //AddToChangeList = 2,
         Blame = 3,
         //CheckOut = 4,
         //CleanUp = 5,
@@ -28,7 +27,6 @@ namespace SharpGit
         //Import = 18,
         Info = 19,
         //List = 20,
-        //ListChangeList = 21,
         //Lock = 22,
         Log = 23,
         Merge = 24,
@@ -38,7 +36,6 @@ namespace SharpGit
         //PropertyList = 28,
         //ReintegrationMerge = 29,
         //Relocate = 30,
-        //RemoveFromChangeList = 31,
         Resolved = 32,
         Revert = 33,
         //RevisionPropertyList = 34,

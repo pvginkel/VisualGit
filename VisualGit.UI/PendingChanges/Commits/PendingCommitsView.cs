@@ -253,10 +253,7 @@ namespace VisualGit.UI.PendingChanges.Commits
 
         protected override bool IsPartOfSelectAll(ListViewItem i)
         {
-            PendingCommitItem pci = i as PendingCommitItem;
-
-            return pci != null &&
-                !PendingChange.IsIgnoreOnCommitChangeList(pci.PendingChange.ChangeList);
+            return i is PendingCommitItem;
         }
     }
 }

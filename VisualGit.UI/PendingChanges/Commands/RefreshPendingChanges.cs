@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using VisualGit.Commands;
 using VisualGit.UI.PendingChanges.Commits;
-using VisualGit.UI.PendingChanges.Synchronize;
 
 namespace VisualGit.UI.PendingChanges.Commands
 {

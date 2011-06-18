@@ -57,21 +57,11 @@ namespace VisualGit.Scc
             get { return !PendingChange.IsPending(GitItem); }
         }
 
-        /// <summary>
-        /// Gets a boolean indicating this change should belong to an "ignore" change list.
-        /// </summary>
-        [Browsable(false)]
-        public bool IgnoreOnCommit
-        {
-            get { return (IsIgnoreOnCommitChangeList(ChangeList)); }
-        }
-
         int _iconIndex;
         string _projects;
         string _relativePath;
         PendingChangeStatus _status;
         PendingChangeKind _kind;
-        string _changeList;
         string _fileType;
 
         [Browsable(false)]
@@ -123,7 +113,6 @@ namespace VisualGit.Scc
             RefreshValue(ref m, ref _projects, GetProjects(context));
             RefreshValue(ref m, ref _status, GetStatus(context, item));
             RefreshValue(ref m, ref _relativePath, GetRelativePath(context));
-            RefreshValue(ref m, ref _changeList, GitItem.Status.ChangeList);
             RefreshValue(ref m, ref _fileType, GetFileType(context, item));
 
             return m || (_status == null);
@@ -234,19 +223,6 @@ namespace VisualGit.Scc
                 create = true;
 
             return create;
-        }
-
-        /// <summary>
-        /// Dtermines if a change list name is one of the "Ignore On Commit" change lists
-        /// </summary>
-        public static bool IsIgnoreOnCommitChangeList(string name)
-        {
-            return !string.IsNullOrEmpty(name)
-                && ( false
-                     || string.Equals(name, "ignore-on-commit")
-                     // TODO other "ignore on commit" change lists 
-                   )
-                ;
         }
 
         /// <summary>

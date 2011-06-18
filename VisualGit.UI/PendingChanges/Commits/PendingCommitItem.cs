@@ -12,7 +12,6 @@ namespace VisualGit.UI.PendingChanges.Commits
     class PendingCommitItem : SmartListViewItem
     {
         readonly PendingChange _change;
-        string _lastChangeList;
 
         public PendingCommitItem(PendingCommitsView view, PendingChange change)
             : base(view)
@@ -22,8 +21,7 @@ namespace VisualGit.UI.PendingChanges.Commits
 
             _change = change;
 
-            //initially check only if this change does not belong to an "ignore" change list
-            Checked = !change.IgnoreOnCommit;
+            Checked = true;
 
             RefreshText(view.Context);
         }
@@ -45,7 +43,7 @@ namespace VisualGit.UI.PendingChanges.Commits
 
             SetValues(
                 pcs.PendingCommitText,
-                _lastChangeList = PendingChange.ChangeList,
+                "", // Change list
                 GetDirectory(item),
                 PendingChange.FullPath,
                 "", // Locked
@@ -135,17 +133,6 @@ namespace VisualGit.UI.PendingChanges.Commits
         public string FullPath
         {
             get { return _change.FullPath; }
-        }
-
-
-        /// <summary>
-        /// Gets change list at the time of the last refresh
-        /// </summary>
-        /// <value>The last change list.</value>
-        /// <remarks>Used for checking for changelist changes</remarks>
-        internal string LastChangeList
-        {
-            get { return _lastChangeList; }
         }
     }
 }

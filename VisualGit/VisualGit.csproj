@@ -91,7 +91,6 @@
     <Compile Include="Commands\ItemAddToPending.cs" />
     <Compile Include="Commands\ItemCreatePatch.cs" />
     <Compile Include="Commands\ItemDelete.cs" />
-    <Compile Include="Commands\ItemMoveToChangeList.cs" />
     <Compile Include="Commands\ItemResolveCasing.cs" />
     <Compile Include="Commands\ItemResolveCommand.cs" />
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />

@@ -154,7 +154,5 @@ namespace VisualGit.Scc
         /// <c>true</c> if the specified path contains path; otherwise, <c>false</c>.
         /// </returns>
         bool Contains(string path);
-
-        IEnumerable<string> GetSuggestedChangeLists();
     }
 }

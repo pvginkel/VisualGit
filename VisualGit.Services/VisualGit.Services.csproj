@@ -86,7 +86,6 @@
     <Compile Include="Scc\IVisualGitTextEditingTracker.cs" />
     <Compile Include="Scc\ISccSettingsStore.cs" />
     <Compile Include="Scc\SccFileSystemNode.cs" />
-    <Compile Include="Scc\GitItemData.ChangeList.cs" />
     <Compile Include="Scc\UI\IVisualGitRevisionResolver.cs" />
     <Compile Include="UI\VisualGitPropertyGridItem.cs" />
     <Compile Include="Scc\UI\IAnnotateSection.cs" />

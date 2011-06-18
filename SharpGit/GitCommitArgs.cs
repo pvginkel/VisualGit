@@ -10,10 +10,8 @@ namespace SharpGit
         public GitCommitArgs()
             : base(GitCommandType.Commit)
         {
-            ChangeLists = new GitChangeListCollection();
         }
 
-        public GitChangeListCollection ChangeLists { get; private set; }
         public GitDepth Depth { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace SharpGit
         public string LastChangeAuthor { get; internal set; }
         public DateTime LastChangeTime { get; internal set; }
         public long LastChangeRevision { get; internal set; }
-        public string ChangeList { get; internal set; }
         public long Revision { get; internal set; }
     }
 }

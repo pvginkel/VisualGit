@@ -287,26 +287,5 @@ namespace VisualGit.Scc
 
             return _pendingChanges.Contains(path);
         }
-
-        const string IgnoreOnCommit = "ignore-on-commit";
-        public IEnumerable<string> GetSuggestedChangeLists()
-        {
-            Dictionary<string, string> usedNames = new Dictionary<string, string>();
-
-            foreach (PendingChange pc in GetAll()) // Get copy of list to make sure the list doesn't change on our back
-            {
-                string cl = pc.GitItem.Status.ChangeList;
-
-                if (!string.IsNullOrEmpty(cl) && !string.Equals(cl, IgnoreOnCommit))
-                {
-                    if (usedNames.ContainsKey(cl))
-                        continue;
-
-                    usedNames.Add(cl, cl);
-
-                    yield return cl;
-                }
-            }
-        }
     }
 }

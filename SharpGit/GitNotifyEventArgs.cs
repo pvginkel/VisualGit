@@ -8,7 +8,6 @@ namespace SharpGit
     public sealed class GitNotifyEventArgs : EventArgs
     {
         // public SvnMergeRange MergeRange { get; }
-        // public string ChangeListName { get; internal set; }
         public string FullPath { get; internal set; }
         public GitNodeKind NodeKind { get; internal set; }
         public GitNotifyState ContentState { get; internal set; }

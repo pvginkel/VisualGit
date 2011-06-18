@@ -289,21 +289,6 @@
                       defaultInvisible="true" textChanges="true" text="Ignore Parent Folder" />
             </Group>
           </Menu>
-          <Button id="Cmd_RemoveFromChangeList" name="GitRemoveFromChangeList" priority="0x100"
-                      text="&amp;Remove from Change List" defaultInvisible="true"/>
-          <Menu id="Menu_MoveToChangeList" text="Move to &amp;Change List" name="GitMoveToChangeList" priority="0x100">
-            <Group id="Cmd_MoveToNewChangeList" priority="0x100">
-              <Button id="Cmd_MoveToNewChangeList" name="MoveToChangeList" priority="0x100"
-                      text="&lt;&amp;Change List&gt;" defaultInvisible="true"/>
-            </Group>
-            <Group id="Cmd_MoveToExistingChangeList0" priority="0x200">
-              <Button id="Cmd_MoveToExistingChangeList0" priority="0x100" text="&#160;" dynamicItemStart="true" defaultInvisible="true" />
-            </Group>
-            <Group id="Cmd_MoveToIgnoreChangeList" priority="0xF00">
-              <Button id="Cmd_MoveToIgnoreChangeList" name="IgnoreOnCommit" priority="0x100"
-                      text="&amp;ignore-on-commit" defaultInvisible="true"/>
-            </Group>
-          </Menu>
         </Group>
         <Group id="Grp_SccCleanupRefresh" priority="0xE000">
           <Button id="Cmd_Refresh" name="GitRefreshStatus" priority="0x120" defaultInvisible="true"
@@ -517,9 +502,6 @@
               <Button id="Cmd_PendingChangesViewProject" name="ViewProject" priority="0x200"
                   text="&amp;Project"
                   toolTip="Project changes view" />
-              <Button id="Cmd_PendingChangesViewChangeList" name="ViewChangeList" priority="0x300"
-                  text="&amp;ChangeList"
-                  toolTip="ChangeList changes view" />
               <Button id="Cmd_PendingChangesViewFolder" name="ViewFolder" priority="0x400"
                   text="&amp;Folders"
                   toolTip="Folder changes view" />

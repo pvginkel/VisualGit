@@ -18,7 +18,6 @@ namespace VisualGit
     {
         readonly GitConflictData _treeConflict;
         readonly GitNodeKind _nodeKind;        
-        readonly string _changeList;
         readonly GitStatus _state;
         readonly bool _localCopied;
         readonly Uri _uri;
@@ -44,7 +43,6 @@ namespace VisualGit
                 _lastChangeRevision = args.WorkingCopyInfo.LastChangeRevision;
                 _lastChangeAuthor = args.WorkingCopyInfo.LastChangeAuthor;
                 _revision = args.WorkingCopyInfo.Revision;
-                _changeList = args.WorkingCopyInfo.ChangeList;
             }
 
             _treeConflict = args.TreeConflict;
@@ -89,16 +87,6 @@ namespace VisualGit
         public GitStatus State
         {
             get { return _state; }
-        }
-
-        /// <summary>
-        /// Gets the change list in which the file is placed
-        /// </summary>
-        /// <value>The change list.</value>
-        /// <remarks>The changelist value is only valid if the file is modified</remarks>
-        public string ChangeList
-        {
-            get { return _changeList; }
         }
 
         public GitNodeKind NodeKind

@@ -70,7 +70,6 @@ namespace VisualGit
 
         EditorScc,
 
-        MoveToChangeList,
         MdiSccMenu
     }
 }

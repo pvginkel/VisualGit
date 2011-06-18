@@ -116,7 +116,6 @@
     <Compile Include="GitRef.cs" />
     <Compile Include="GitChangeItem.cs" />
     <Compile Include="GitChangeItemCollection.cs" />
-    <Compile Include="GitChangeListCollection.cs" />
     <Compile Include="GitChangeAction.cs" />
     <Compile Include="GitCredentialItem.cs" />
     <Compile Include="GitCredentialsEventArgs.cs" />

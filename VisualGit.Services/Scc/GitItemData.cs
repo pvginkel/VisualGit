@@ -41,48 +41,6 @@ namespace VisualGit.Scc
             get { return _item.Name; }
         }
 
-        [Browsable(false)]
-        public string ChangeList
-        {
-            get { return _item.Status.ChangeList; }
-            set
-            {
-                string cl = string.IsNullOrEmpty(value) ? null : value.Trim();
-
-                if (_item.IsVersioned && _item.Status != null && _item.IsFile)
-                {
-                    if (value != _item.Status.ChangeList)
-                    {
-                        throw new NotImplementedException();
-#if false
-                        using (SvnClient client = _context.GetService<ISvnClientPool>().GetNoUIClient())
-                        {
-                            if (cl != null)
-                            {
-                                SvnAddToChangeListArgs ca = new SvnAddToChangeListArgs();
-                                ca.ThrowOnError = false;
-                                client.AddToChangeList(_item.FullPath, cl);
-                            }
-                            else
-                            {
-                                SvnRemoveFromChangeListArgs ca = new SvnRemoveFromChangeListArgs();
-                                ca.ThrowOnError = false;
-                                client.RemoveFromChangeList(_item.FullPath, ca);
-                            }
-                        }
-#endif
-                    }
-                }
-            }
-        }
-
-        [DisplayName("Change List"), Category("Git"), DefaultValue(null)]
-        public GitChangeList ChangeListValue
-        {
-            get { return ChangeList; }
-            set { ChangeList = value; }
-        }
-
         [DisplayName("Project"), Category("Visual Studio")]
         public string Project
         {

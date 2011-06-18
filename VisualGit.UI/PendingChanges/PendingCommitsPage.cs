@@ -217,17 +217,6 @@ namespace VisualGit.UI.PendingChanges
             }
             else
             {
-                if (PendingChange.IsIgnoreOnCommitChangeList(pci.PendingChange.ChangeList)
-                    && pci.Checked)
-                {
-                    // Uncheck items that were moved to the ignore list
-                    if (!PendingChange.IsIgnoreOnCommitChangeList(pci.LastChangeList))
-                        pci.Checked = false; // Uncheck items that weren't on the ignore list before
-
-                    // Note: We don't check items that were previously ignored, as the user didn't
-                    // ask us to do that.
-                }
-
                 pci.RefreshText(Context);
             }
         }

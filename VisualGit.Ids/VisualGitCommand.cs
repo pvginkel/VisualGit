@@ -95,7 +95,6 @@ namespace VisualGit
 
         PendingChangesViewFlat,
         PendingChangesViewProject,
-        PendingChangesViewChangeList,
         PendingChangesViewFolder,
 
         PendingChangesViewAll,
@@ -195,12 +194,6 @@ namespace VisualGit
         ListViewGroupMax = ListViewGroup0 + 64,
         ListViewShow0,
         ListViewShowMax = ListViewShow0 + 64,
-
-        MoveToNewChangeList,
-        MoveToExistingChangeList0,
-        MoveToExistingChangeListMax = MoveToExistingChangeList0 + 20,
-        MoveToIgnoreChangeList,
-        RemoveFromChangeList,
 
         DocumentAddToPending,
         DocumentRemoveFromPending,
