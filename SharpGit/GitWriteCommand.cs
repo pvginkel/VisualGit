@@ -87,7 +87,9 @@ namespace SharpGit
                         }
 
                         if (!found)
-                            throw new GitOperationCancelledException();
+                        {
+                            // TODO: We currently do not track renames.
+                        }
                     }
                     finally
                     {
