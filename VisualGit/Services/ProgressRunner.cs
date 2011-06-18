@@ -299,12 +299,9 @@ namespace VisualGit
             {
                 _sb.AppendLine();
                 _mgr.WriteToPane(_sb.ToString());
-                }
             }
         }
     }
-
-
     
     static class NativeMethods
     {
