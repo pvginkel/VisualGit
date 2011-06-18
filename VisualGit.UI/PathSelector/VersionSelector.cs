@@ -164,14 +164,11 @@ namespace VisualGit.UI.PathSelector
 
                 if (rt != null && !rt.IsValidOn(GitOrigin))
                 {
-                    throw new NotImplementedException();
-#if false
                     _newValue = GitOrigin.Target.Revision;
                     if (_newValue == null || _newValue == GitRevision.None)
-                        _newValue = (GitOrigin.Target is SvnUriTarget) ? GitRevision.Head : GitRevision.Base;
+                        _newValue = (GitOrigin.Target is GitUriTarget) ? GitRevision.Head : GitRevision.Base;
 
                     rt = RevisionResolver.Resolve(GitOrigin, _newValue);
-#endif
                 }
 
                 SetRevision(rt);
