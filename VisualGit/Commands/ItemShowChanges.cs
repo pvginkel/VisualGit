@@ -186,10 +186,8 @@ namespace VisualGit.Commands
                 if ((item.Status.IsCopied || item.IsReplaced) &&
                     (!revRange.StartRevision.RequiresWorkingCopy || !revRange.EndRevision.RequiresWorkingCopy))
                 {
-                    throw new NotImplementedException();
-#if false
                     // The file is copied, use its origins history instead of that of the new file
-                    SvnUriTarget copiedFrom = diff.GetCopyOrigin(item);
+                    GitUriTarget copiedFrom = diff.GetCopyOrigin(item);
 
                     // TODO: Maybe handle Previous/Committed as history
 
@@ -206,7 +204,6 @@ namespace VisualGit.Commands
                             return; // Canceled
                         da.MineTitle = diff.GetTitle(copiedFrom, revRange.EndRevision);
                     }
-#endif
                 }
 
                 if (da.BaseFile == null)
