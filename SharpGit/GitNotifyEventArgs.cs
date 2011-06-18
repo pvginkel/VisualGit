@@ -14,6 +14,6 @@ namespace SharpGit
         public GitNotifyAction Action { get; internal set; }
         public GitCommandType CommandType { get; internal set; }
         public GitException Error { get; internal set; }
-        public long Revision { get; internal set; }
+        public string Revision { get; internal set; }
     }
 }

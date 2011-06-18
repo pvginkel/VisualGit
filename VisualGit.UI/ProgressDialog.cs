@@ -130,7 +130,7 @@ namespace VisualGit.UI
         {
             string path = e.FullPath;
             GitNotifyAction action = e.Action;
-            long rev = e.Revision;
+            string rev = e.Revision;
 
             Enqueue(delegate()
             {
