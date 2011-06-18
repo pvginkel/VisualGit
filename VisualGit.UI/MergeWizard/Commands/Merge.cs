@@ -9,12 +9,15 @@ using VisualGit.VS;
 using VisualGit.Selection;
 using VisualGit.UI.Commands;
 using SharpGit;
+using VisualGit.Scc.UI;
+using System.Diagnostics;
 
 namespace VisualGit.UI.MergeWizard.Commands
 {
     [Command(VisualGitCommand.ItemMerge)]
     [Command(VisualGitCommand.ProjectMerge)]
     [Command(VisualGitCommand.SolutionMerge)]
+    [Command(VisualGitCommand.LogMergeThisRevision)]
     class Merge : ICommandHandler
     {
         /// <see cref="VisualGit.Commands.ICommandHandler.OnUpdate" />
@@ -24,6 +27,28 @@ namespace VisualGit.UI.MergeWizard.Commands
             int n = 0;
             switch (e.Command)
             {
+                case VisualGitCommand.LogMergeThisRevision:
+                    ILogControl logWindow = e.Selection.GetActiveControl<ILogControl>();
+
+                    if (logWindow == null)
+                    {
+                        e.Enabled = false;
+                        return;
+                    }
+
+                    GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
+
+                    if (origin == null || !(origin.Target is GitPathTarget))
+                    {
+                        e.Enabled = false;
+                        return;
+                    }
+
+                    IGitLogItem logItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
+
+                    e.Enabled = logItem != null;
+                    return;
+
                 case VisualGitCommand.ItemMerge:
                     foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
                     {
@@ -88,9 +113,26 @@ namespace VisualGit.UI.MergeWizard.Commands
         {
             List<GitItem> gitItems = new List<GitItem>();
             IFileStatusCache cache = e.GetService<IFileStatusCache>();
+            GitRevision revision = null;
+            string repositoryPath = null;
 
             switch (e.Command)
             {
+                case VisualGitCommand.LogMergeThisRevision:
+                    ILogControl logWindow = e.Selection.GetActiveControl<ILogControl>();
+                    IProgressRunner progressRunner = e.GetService<IProgressRunner>();
+
+                    if (logWindow == null)
+                        return;
+
+                    IGitLogItem logItem = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
+
+                    if (logItem == null)
+                        return;
+
+                    revision = logItem.Revision;
+                    repositoryPath = GitTools.GetAbsolutePath(logItem.RepositoryRoot);
+                    break;
                 case VisualGitCommand.ItemMerge:
                     // TODO: Check for solution and/or project selection to use the folder instead of the file
                     foreach (GitItem item in e.Selection.GetSelectedGitItems(false))
@@ -117,15 +159,22 @@ namespace VisualGit.UI.MergeWizard.Commands
                     throw new InvalidOperationException();
             }
 
-            string repositoryPath = RepositoryUtil.GetRepositoryRoot(gitItems[0].FullPath);
+            if (repositoryPath == null)
+            {
+                Debug.Assert(gitItems.Count > 0);
+                repositoryPath = RepositoryUtil.GetRepositoryRoot(gitItems[0].FullPath);
+            }
+
             GitRef mergeBranch;
             var args = new GitMergeArgs();
 
             using (var dialog = new MergeDialog())
             {
                 dialog.Context = e.Context;
+                dialog.Revision = revision;
                 dialog.RepositoryPath = repositoryPath;
-                dialog.GitItem = gitItems[0];
+                if (gitItems.Count > 0)
+                    dialog.GitItem = gitItems[0];
                 dialog.Args = args;
 
                 if (dialog.ShowDialog(e.Context) != DialogResult.OK)
@@ -133,11 +182,20 @@ namespace VisualGit.UI.MergeWizard.Commands
 
                 mergeBranch = dialog.MergeBranch;
             }
+            
+            // Get a list of all documents below the specified paths that are open in editors inside VS
+            HybridCollection<string> lockPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
+            IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
 
-            IEnumerable<string> selectedFiles = e.Selection.GetSelectedFiles(true);
-            IVisualGitOpenDocumentTracker tracker = e.GetService<IVisualGitOpenDocumentTracker>();
+            foreach (string file in documentTracker.GetDocumentsBelow(repositoryPath))
+            {
+                if (!lockPaths.Contains(file))
+                    lockPaths.Add(file);
+            }
 
-            using (DocumentLock lck = tracker.LockDocuments(selectedFiles, DocumentLockType.ReadOnly))
+            documentTracker.SaveDocuments(lockPaths); // Make sure all files are saved before merging!
+
+            using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
                 e.GetService<IProgressRunner>().RunModal(

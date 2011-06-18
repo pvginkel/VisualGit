@@ -416,13 +416,15 @@
           <Button id="Cmd_LogCompareWithWorkingCopy" name="Git.LogCompareWithWorkingCopy" priority="0x100"
                   text="Compare with &amp;Working copy" iconFile="PendingChanges/Compare.png" dynamicVisibility="true"/>
           <Button id="Cmd_LogChangeLogMessage" name="LogChangeLogMessage" priority="0xB000"
-                  text="Change Log &amp;Message" dynamicVisibility="true"/>
+                  text="Change &amp;Log Message..." dynamicVisibility="true"/>
           <Button id="Cmd_LogShowChanges" name="LogShowChanges" priority="0xB100"
                   text="Show &amp;Changes" iconFile="PendingChanges/Compare.png" dynamicVisibility="true"/>
           <Button id="Cmd_LogRevertTo" name="LogRevertTo" priority="0xB200"
                   text="Reset Current &amp;Branch to Here..." dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
           <Button id="Cmd_LogRevertThisRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Revert Changes From &amp;This Revision" dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
+          <Button id="Cmd_LogMergeThisRevision" name="LogMergeChangesFrom" priority="0xB300"
+                  text="&amp;Merge This Revision..." dynamicVisibility="true" iconFile="PendingChanges/Revert.png"/>
           <Button id="Cmd_LogSwitchToRevision" name="LogRevertChangesFrom" priority="0xB300"
                   text="Checkout &amp;Revision" dynamicVisibility="true" iconFile="PendingChanges/Switch.png"/>
           <Button id="Cmd_LogRevertThisRevision" name="LogRevertChangesFrom" priority="0xB300"

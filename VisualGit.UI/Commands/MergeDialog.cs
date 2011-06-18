@@ -35,6 +35,8 @@ namespace VisualGit.UI.Commands
                 mergeBranchBox.BeginUpdate();
                 mergeBranchBox.Items.Clear();
 
+                bool resolvedProvidedRevision = Revision == null;
+
                 foreach (var @ref in client.GetRefs(RepositoryPath))
                 {
                     switch (@ref.Type)
@@ -44,6 +46,15 @@ namespace VisualGit.UI.Commands
                         case GitRefType.Tag:
                             mergeBranchBox.Items.Add(@ref);
                             break;
+                    }
+
+                    if (
+                        !resolvedProvidedRevision &&
+                        Revision != null &&
+                        String.Equals(Revision.Revision, @ref.Revision, StringComparison.OrdinalIgnoreCase)
+                    ) {
+                        resolvedProvidedRevision = true;
+                        mergeBranchBox.SelectedIndex = mergeBranchBox.Items.Count - 1;
                     }
                 }
 
@@ -63,6 +74,8 @@ namespace VisualGit.UI.Commands
             else
                 errorProvider1.SetError(mergeBranchBox, null);
         }
+
+        public GitRevision Revision { get; set; }
 
         public GitItem GitItem { get; set; }
 
