@@ -143,9 +143,6 @@
     <Compile Include="Commands\ExportCommand.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\LocalDiffCommandBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\LogCommand.cs">
       <SubType>Code</SubType>
     </Compile>
