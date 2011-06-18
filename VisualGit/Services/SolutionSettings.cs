@@ -227,28 +227,8 @@ namespace VisualGit.Settings
             if (!sd.StartsWith(v, StringComparison.OrdinalIgnoreCase))
                 return;
 
-            Uri solUri;
-            Uri resUri;
-
-            if (!Uri.TryCreate("file:///" + sd.Replace('\\', '/'), UriKind.Absolute, out solUri)
-                || !Uri.TryCreate("file:///" + v.Replace('\\', '/'), UriKind.Absolute, out resUri))
-                return;
-
-            throw new NotImplementedException();
-#if false
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
-            {
-                SvnSetPropertyArgs ps = new SvnSetPropertyArgs();
-                ps.ThrowOnError = false;
-
-                client.SetProperty(SolutionFilename, VisualGitSccPropertyNames.ProjectRoot, solUri.MakeRelativeUri(resUri).ToString(), ps);
-
-                GetService<IFileStatusCache>().MarkDirty(SolutionFilename);
-                // The getter will reload the settings for us
-            }
-
+            GetService<IFileStatusCache>().MarkDirty(SolutionFilename);
             _cache = null;
-#endif
         }
 
         public string ProjectRootWithSeparator

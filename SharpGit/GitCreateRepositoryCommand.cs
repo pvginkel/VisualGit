@@ -28,6 +28,14 @@ namespace SharpGit
             try
             {
                 repository.Create();
+
+                RaiseNotify(new GitNotifyEventArgs
+                {
+                    Action = GitNotifyAction.UpdateUpdate,
+                    ContentState = GitNotifyState.Unknown,
+                    FullPath = repositoryPath,
+                    NodeKind = GitNodeKind.Directory
+                });
             }
             finally
             {
