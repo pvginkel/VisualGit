@@ -490,11 +490,11 @@ namespace VisualGit.Services.PendingChanges
             return true;
         }
 
-        static string GetGitCasing(GitItem item)
+        string GetGitCasing(GitItem item)
         {
             string name = null;
             // Find the correct casing
-            using (GitClient client = e.GetService<IGitClientPool>().GetNoUIClient())
+            using (GitClient client = Context.GetService<IGitClientPool>().GetNoUIClient())
             {
                 GitStatusArgs args = new GitStatusArgs();
 
