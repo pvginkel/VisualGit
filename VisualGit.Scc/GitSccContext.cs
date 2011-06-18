@@ -259,20 +259,10 @@ namespace VisualGit.Scc
 
         private void RecursiveCopyWc(string from, string to)
         {
-            throw new NotImplementedException();
-#if false
-            // First, copy the way Git likes it
-            SvnCopyArgs ca = new SvnCopyArgs();
-            ca.AlwaysCopyAsChild = false;
-            ca.CreateParents = false;
-            ca.ThrowOnError = false;
-            _svnClient.Copy(from, to, ca);
-
             // Now copy everything unversioned from our local backup back
             // into the new workingcopy, to be 100% sure VS finds what it expects
 
             RecursiveCopyNotVersioned(from, to, true);
-#endif
         }
 
         public bool SafeDeleteFile(string path)
