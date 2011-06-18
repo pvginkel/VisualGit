@@ -66,7 +66,7 @@ namespace VisualGit.Commands
                             return;
                         }
 
-                        if (item.IsReplaced || item.IsAdded)
+                        if (item.IsAdded)
                         {
                             if (item.HasCopyableHistory)
                                 needsRemoteCount++;
@@ -114,7 +114,7 @@ namespace VisualGit.Commands
                     {
                         Debug.Assert(i.IsVersioned);
 
-                        if (i.IsReplaced || i.IsAdded)
+                        if (i.IsAdded)
                         {
                             if (!i.HasCopyableHistory)
                                 continue;

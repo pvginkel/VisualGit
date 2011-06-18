@@ -362,8 +362,6 @@ namespace VisualGit.Scc
                     return PendingChangeKind.None;
                 case GitStatus.Modified:
                     return PendingChangeKind.Modified;
-                case GitStatus.Replaced:
-                    return PendingChangeKind.Replaced;
                 case GitStatus.Added:
                     if (item != null && item.HasCopyableHistory)
                         return PendingChangeKind.Copied;

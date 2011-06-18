@@ -71,8 +71,6 @@ namespace VisualGit.VS.SolutionExplorer
                         return VisualGitGlyph.Normal;
                 case GitStatus.Modified:
                     return VisualGitGlyph.Modified;
-                case GitStatus.Replaced:
-                    return VisualGitGlyph.CopiedOrMoved;
                 case GitStatus.Added:
                     return item.Status.IsCopied ? VisualGitGlyph.CopiedOrMoved : VisualGitGlyph.Added;
 

@@ -26,10 +26,6 @@ namespace VisualGit.Scc
         /// </summary>
         PropertyModified,
         /// <summary>
-        /// The item is replaced
-        /// </summary>
-        Replaced,
-        /// <summary>
         /// The item was copied from another location
         /// </summary>
         Copied,

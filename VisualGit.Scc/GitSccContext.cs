@@ -77,60 +77,6 @@ namespace VisualGit.Scc
             return entry;
         }
 
-        /// <summary>
-        /// Reverts the specified path if the path specifies a file replaced with itself
-        /// </summary>
-        /// <param name="path"></param>
-        void MaybeRevertReplaced(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            GitItem item = StatusCache[path];
-            item.MarkDirty();
-
-            if (!item.IsFile || item.Status.State != GitStatus.Replaced)
-                return;
-
-            throw new NotImplementedException();
-#if false
-            SvnInfoEventArgs info = null;
-            SvnInfoArgs ia = new SvnInfoArgs();
-            ia.ThrowOnError = false;
-            ia.Depth = SvnDepth.Empty;
-
-            if (!_svnClient.Info(new SvnPathTarget(path), ia,
-                delegate(object sender, SvnInfoEventArgs e)
-                {
-                    e.Detach();
-                    info = e;
-                }))
-            {
-                return;
-            }
-
-            if (info == null)
-                return;
-
-            if ((info.CopyFromUri != null) && (info.Uri != info.CopyFromUri))
-                return;
-            else if (info.CopyFromRevision >= 0 && info.CopyFromRevision != info.Revision)
-                return;
-
-            // Ok, the file was copied back to its original location!
-
-            SvnRevertArgs ra = new SvnRevertArgs();
-            ra.Depth = SvnDepth.Empty;
-            ra.ThrowOnError = false;
-
-            // Our callers should move away the file, but we can't be to sure here
-            using (MoveAway(path, true))
-            {
-                _svnClient.Revert(path, ra);
-            }
-#endif
-        }
-
         private void EnsureAdded(string toDir)
         {
             throw new NotImplementedException();
@@ -215,8 +161,6 @@ namespace VisualGit.Scc
             {
                 setReadOnly = (File.GetAttributes(toPath) & FileAttributes.ReadOnly) != (FileAttributes)0;
             }
-
-            MaybeRevertReplaced(toPath);
 
             return ok;
         }

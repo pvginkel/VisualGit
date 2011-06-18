@@ -459,7 +459,6 @@ namespace VisualGit.Scc.StatusCache
                 case GitStatus.Merged:
                 case GitStatus.Modified:
                 case GitStatus.Normal:
-                case GitStatus.Replaced:
                 case GitStatus.Deleted:
                 case GitStatus.Incomplete:
                     return false;

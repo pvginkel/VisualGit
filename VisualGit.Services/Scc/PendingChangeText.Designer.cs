@@ -169,15 +169,6 @@ namespace VisualGit.Scc {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Replaced.
-        /// </summary>
-        internal static string StateReplaced {
-            get {
-                return ResourceManager.GetString("StateReplaced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Tree Conflict.
         /// </summary>
         internal static string StateTreeConflicted {

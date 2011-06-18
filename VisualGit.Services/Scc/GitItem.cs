@@ -117,9 +117,8 @@ namespace VisualGit
             GitItemState set = GitItemState.None;
             GitItemState unset = GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
                 | GitItemState.Deleted | GitItemState.ContentConflicted | GitItemState.Ignored
-                | GitItemState.Obstructed | GitItemState.Replaced | GitItemState.Versioned
-                | GitItemState.GitDirty | GitItemState.Obstructed
-                | GitItemState.HasCopyOrigin | GitItemState.TreeConflicted;
+                | GitItemState.Obstructed | GitItemState.Versioned | GitItemState.GitDirty
+                | GitItemState.Obstructed | GitItemState.HasCopyOrigin | GitItemState.TreeConflicted;
 
             switch (status)
             {
@@ -160,7 +159,7 @@ namespace VisualGit
 
             const GitItemState unset = GitItemState.Modified | GitItemState.Added |
                 GitItemState.HasCopyOrigin | GitItemState.Deleted | GitItemState.ContentConflicted |
-                GitItemState.Ignored | GitItemState.Obstructed | GitItemState.Replaced;
+                GitItemState.Ignored | GitItemState.Obstructed;
 
             const GitItemState managed = GitItemState.Versioned;
 
@@ -199,12 +198,6 @@ namespace VisualGit
                         SetState(managed | GitItemState.Added | GitItemState.HasCopyOrigin, unset);
                     else
                         SetState(managed | GitItemState.Added, unset);
-                    break;
-                case GitStatus.Replaced:
-                    if (status.IsCopied)
-                        SetState(managed | GitItemState.Replaced | GitItemState.HasCopyOrigin, unset);
-                    else
-                        SetState(managed | GitItemState.Replaced, unset);
                     break;
                 case GitStatus.Conflicted:
                     SetState(managed | GitItemState.ContentConflicted, unset);
@@ -486,7 +479,7 @@ namespace VisualGit
                 if (!IsVersioned)
                     return false;
 
-                if (GetState(GitItemState.Added | GitItemState.Replaced) != 0)
+                if (GetState(GitItemState.Added) != 0)
                     return GetState(GitItemState.HasCopyOrigin) != 0;
                 else
                     return true;
@@ -526,7 +519,6 @@ namespace VisualGit
                 case GitStatus.Merged:
                 case GitStatus.Modified:
                 case GitStatus.Normal:
-                case GitStatus.Replaced:
                 case GitStatus.Deleted:
                 case GitStatus.Incomplete:
                     return true;
@@ -567,7 +559,6 @@ namespace VisualGit
                         // Probably property modified
                         return IsDocumentDirty;
                     case GitStatus.Added:
-                    case GitStatus.Replaced:
                         return HasCopyableHistory;
                     case GitStatus.Deleted:
                         // To be replaced
@@ -675,14 +666,6 @@ namespace VisualGit
         public bool IsDeleteScheduled
         {
             get { return 0 != GetState(GitItemState.Deleted); }
-        }
-
-        /// <summary>
-        /// Gets a boolean indicating whether the <see cref="GitItem"/> is scheduled for replacement
-        /// </summary>
-        public bool IsReplaced
-        {
-            get { return 0 != GetState(GitItemState.Replaced); }
         }
 
         /// <summary>
@@ -951,7 +934,7 @@ namespace VisualGit
         /// </summary>
         public bool IsNewAddition
         {
-            get { return IsAdded || IsReplaced || Status.IsCopied; }
+            get { return IsAdded || Status.IsCopied; }
         }
 
         static int _globalCookieBox = 0;

@@ -92,10 +92,6 @@ namespace VisualGit.Scc
         /// The node is scheduled for deletion
         /// </summary>
         Deleted                 = 0x00010000,
-        /// <summary>
-        /// The node is replaced
-        /// </summary>
-        Replaced                = 0x00020000,
 
         /// <summary>
         /// The content is marked as conflicted

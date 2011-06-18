@@ -21,8 +21,10 @@ namespace VisualGit
         GitItemState _validState;
         GitItemState _onceValid;
 
-        const GitItemState MaskRefreshTo = GitItemState.Versioned | GitItemState.Obstructed | GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
-            | GitItemState.Deleted | GitItemState.Replaced | GitItemState.ContentConflicted | GitItemState.GitDirty | GitItemState.Ignored;
+        const GitItemState MaskRefreshTo =
+            GitItemState.Versioned | GitItemState.Obstructed | GitItemState.Modified
+            | GitItemState.Added | GitItemState.HasCopyOrigin | GitItemState.Deleted
+            | GitItemState.ContentConflicted | GitItemState.GitDirty | GitItemState.Ignored;
 
         public GitItemState GetState(GitItemState flagsToGet)
         {

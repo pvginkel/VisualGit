@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Xml.Serialization;
 
-
 using VisualGit.UI;
 using VisualGit.VS;
 using VisualGit.Commands;
@@ -127,6 +126,7 @@ namespace VisualGit.Services
         {
             throw new NotSupportedException();
 
+#if NOT_IMPLEMENTED
             string stackTrace = ex.ToString();
             string message = GetNestedMessages(ex);
             System.Collections.Specialized.StringDictionary additionalInfo =
@@ -165,6 +165,7 @@ namespace VisualGit.Services
                         subject, ex, typeof(VisualGitErrorHandler).Assembly, additionalInfo);
                 }
             }
+#endif
         }
 
         private static string GetNestedMessages(Exception ex)

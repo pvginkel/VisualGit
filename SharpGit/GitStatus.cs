@@ -14,7 +14,6 @@ namespace SharpGit
         Added,
         Missing,
         Deleted,
-        Replaced,
         Modified,
         Merged,
         Conflicted,

@@ -183,7 +183,7 @@ namespace VisualGit.Commands
             {
                 VisualGitDiffArgs da = new VisualGitDiffArgs();
 
-                if ((item.Status.IsCopied || item.IsReplaced) &&
+                if (item.Status.IsCopied &&
                     (!revRange.StartRevision.RequiresWorkingCopy || !revRange.EndRevision.RequiresWorkingCopy))
                 {
                     // The file is copied, use its origins history instead of that of the new file

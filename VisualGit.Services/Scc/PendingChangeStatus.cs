@@ -40,8 +40,6 @@ namespace VisualGit.Scc
                     return PendingChangeText.StateCopied;
                 case PendingChangeKind.Deleted:
                     return PendingChangeText.StateDeleted;
-                case PendingChangeKind.Replaced:
-                    return PendingChangeText.StateReplaced;
                 case PendingChangeKind.Missing:
                     return PendingChangeText.StateMissing;
                 case PendingChangeKind.Modified:
