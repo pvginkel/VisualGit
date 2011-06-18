@@ -20,7 +20,7 @@ namespace SharpGit
         Diff = 10,
         //DiffMerge = 11,
         //DiffSummary = 12,
-        //Export = 13,
+        Export = 13,
         //GetAppliedMergeInfo = 14,
         //GetProperty = 15,
         //GetRevisionProperty = 16,

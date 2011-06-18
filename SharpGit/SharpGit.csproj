@@ -95,6 +95,8 @@
     <Compile Include="GitCreateRepositoryCommand.cs" />
     <Compile Include="GitDiffArgs.cs" />
     <Compile Include="GitDiffCommand.cs" />
+    <Compile Include="GitExportArgs.cs" />
+    <Compile Include="GitExportCommand.cs" />
     <Compile Include="GitIgnoreSpacing.cs" />
     <Compile Include="GitInfoArgs.cs" />
     <Compile Include="GitInfoCommand.cs" />

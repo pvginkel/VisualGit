@@ -76,17 +76,42 @@ namespace SharpGit
             if (path == null)
                 throw new ArgumentNullException("path");
 
+            if (depth < GitDepth.Empty)
+                throw new NotImplementedException();
+
+            // Path equals to rootPath always consitutes a match.
+
             if (String.Equals(rootPath, path, FileSystemUtil.StringComparison))
                 return true;
+
+            if (isSubTree && path[path.Length - 1] != '/')
+                path += '/';
+
+            // Check whether we recurse into a sub tree. This checks whether
+            // path is part of rootPath and only matches up to the actual folder.
+            // This does not depend on Depth because if we wouldn't match this,
+            // we wouldn't even get to the file.
+
+            if (isSubTree && rootPath.StartsWith(path, FileSystemUtil.StringComparison))
+                return true;
+
+            // If we didn't match the exact file and we're not descending into
+            // the folder of the exact file, we must be iterating files or
+            // children to match anything beyond this point.
+
+            if (depth <= GitDepth.Empty)
+                return false;
+
+            // Treat the rootPath like a directory. If it was a file and we'd
+            // have a match, it would have already been matched by the
+            // String.Equals above, so all matches below fail. Otherwise,
+            // this allows us to correctly match all sub folders.
 
             if (rootPath.Length > 0 && rootPath[rootPath.Length - 1] != '/')
                 rootPath += '/';
 
-            if (depth < GitDepth.Empty)
-                throw new NotImplementedException();
-            if (depth == GitDepth.Empty)
-                return false;
-
+            // Here we check whether we're in a sub folder when we're only
+            // matching the files of a specific folder.
             // If we do not recurse and we have a directory separater after
             // the root is long, we're sure we can skip it. Note we do not check
             // whether the path is actually of the root path because that's checked
@@ -95,10 +120,10 @@ namespace SharpGit
             if (depth == GitDepth.Files && path.LastIndexOf('/') > rootPath.Length)
                 return false;
 
-            if (isSubTree)
-                return rootPath.StartsWith(path, FileSystemUtil.StringComparison);
-            else
-                return path.StartsWith(rootPath, FileSystemUtil.StringComparison);
+            // Last, check whether the matching file is located in or below
+            // the root directory.
+
+            return path.StartsWith(rootPath, FileSystemUtil.StringComparison);
         }
 
         internal static Dictionary<RepositoryEntry, ICollection<string>> CollectPaths(IEnumerable<string> paths)

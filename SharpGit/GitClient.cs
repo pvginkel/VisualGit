@@ -314,6 +314,18 @@ namespace SharpGit
             return ExecuteCommand<GitResetCommand>(args, p => p.Execute(repositoryPath, revision, type));
         }
 
+        public bool Export(GitTarget target, string checkoutPath, GitExportArgs args)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+            if (checkoutPath == null)
+                throw new ArgumentNullException("checkoutPath");
+            if (args == null)
+                throw new ArgumentNullException("args");
+
+            return ExecuteCommand<GitExportCommand>(args, p => p.Execute(target, checkoutPath));
+        }
+
         private bool ExecuteCommand<T>(GitClientArgs args, Action<T> action)
             where T : GitCommand
         {

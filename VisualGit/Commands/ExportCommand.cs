@@ -2,6 +2,7 @@ using System.Windows.Forms;
 
 using VisualGit.UI.Commands;
 using System;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -18,6 +19,7 @@ namespace VisualGit.Commands
             if (i == null)
                 e.Enabled = false;
         }
+
         public override void OnExecute(CommandEventArgs e)
         {
             using (ExportDialog dlg = new ExportDialog(e.Context))
@@ -27,22 +29,18 @@ namespace VisualGit.Commands
                 if (dlg.ShowDialog(e.Context) != DialogResult.OK)
                     return;
 
-                throw new NotImplementedException();
-#if false
-
-                SvnDepth depth = dlg.NonRecursive ? SvnDepth.Empty : SvnDepth.Infinity;
+                GitDepth depth = dlg.NonRecursive ? GitDepth.Empty : GitDepth.Infinity;
 
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.Exporting,
                     delegate(object sender, ProgressWorkerArgs wa)
                     {
-                        SvnExportArgs args = new SvnExportArgs();
+                        GitExportArgs args = new GitExportArgs();
 
                         args.Depth = depth;
                         args.Revision = dlg.Revision;
 
-                        wa.SvnClient.Export(dlg.ExportSource, dlg.LocalPath, args);
+                        wa.Client.Export(dlg.ExportSource, dlg.LocalPath, args);
                     });
-#endif
             }
         }
     }
