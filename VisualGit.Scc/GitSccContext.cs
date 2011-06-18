@@ -77,26 +77,6 @@ namespace VisualGit.Scc
             return entry;
         }
 
-        private void EnsureAdded(string toDir)
-        {
-            throw new NotImplementedException();
-#if false
-            if (!GitTools.IsManagedPath(toDir))
-            {
-                SvnAddArgs aa = new SvnAddArgs();
-                aa.Depth = SvnDepth.Empty;
-                aa.AddParents = true;
-                aa.Force = true;
-                aa.ThrowOnError = false;
-
-                if (!_svnClient.Add(toDir, aa))
-                    throw new InvalidOperationException();
-            }
-
-            Debug.Assert(GitTools.IsManagedPath(toDir));
-#endif
-        }
-
         public bool WcDelete(string path)
         {
             throw new NotImplementedException();
@@ -426,46 +406,6 @@ namespace VisualGit.Scc
                     });
             else
                 return null;
-        }
-
-        public IDisposable TempRevertForCopy(IEnumerable<string> paths)
-        {
-            if (paths == null)
-                throw new ArgumentNullException("paths");
-
-            List<string> deletePaths = new List<string>();
-            throw new NotImplementedException();
-#if false
-            SvnRevertArgs ra = new SvnRevertArgs();
-            ra.ThrowOnError = false;
-
-            foreach (string p in paths)
-            {
-                if (_svnClient.Revert(p, ra))
-                    deletePaths.Add(p);
-            }
-
-            if (deletePaths.Count > 0)
-            {
-                return new DelegateRunner(
-                    delegate
-                    {
-                        SvnDeleteArgs da = new SvnDeleteArgs();
-                        da.ThrowOnError = false;
-                        foreach (string p in deletePaths)
-                        {
-                            GitItem item = StatusCache[p];
-
-                            item.MarkDirty();
-
-                            if (item.Exists && !item.IsDeleteScheduled)
-                                _svnClient.Delete(p, da);
-                        }
-                    });
-            }
-            else
-                return null;
-#endif
         }
 
         public IDisposable MoveAway(string path, bool touch)
