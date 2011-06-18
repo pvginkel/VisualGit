@@ -119,17 +119,11 @@
   </resheader>
   <data name="AboutDetails" xml:space="preserve">
     <value>VisualGit - Git Support for Visual Studio {0} 
- * VisualGit.Package {1}
- * Git {2} via NGit {3}</value>
-  </data>
-  <data name="AboutDynamicallyLinkedTo" xml:space="preserve">
-    <value>SharpSvn is dynamically linked to: </value>
+ * VisualGit Package {1}
+ * SharpGit {2} via NGit {3}</value>
   </data>
   <data name="AboutLinkedTo" xml:space="preserve">
-    <value>SharpSvn is linked to: </value>
-  </data>
-  <data name="AboutOptionallyLinkedTo" xml:space="preserve">
-    <value>SharpSvn is optionally linked to: </value>
+    <value>SharpGit is linked to: </value>
   </data>
   <data name="AboutProductId" xml:space="preserve">
     <value>{0}</value>

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio;
 using System.Reflection;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.Win32;
+using SharpGit;
 
 namespace VisualGit.VSPackage
 {
@@ -118,60 +119,35 @@ namespace VisualGit.VSPackage
 
         public int ProductDetails(out string pbstrProductDetails)
         {
-            throw new NotImplementedException();
-#if false
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat(Resources.AboutDetails,
                 UIVersion.ToString(),
                 PackageVersion.ToString(),
-                SvnClient.Version,
-                SvnClient.SharpSvnVersion);
+                GitClient.SharpGitVersion,
+                GitClient.NGitVersion
+            );
 
             sb.AppendLine();
             sb.AppendLine();
             sb.Append(Resources.AboutLinkedTo);
-            foreach (SharpSvn.Implementation.SvnLibrary lib in SvnClient.SvnLibraries)
-            {
-                if (!lib.DynamicallyLinked && !lib.Optional)
-                {
-                    sb.AppendFormat("{0} {1}", lib.Name, lib.VersionString);
-                    sb.Append(", ");
-                }
-            }
 
-            sb.Length -= 2;
+            bool hadOne = false;
+            foreach (SharpGit.Implementation.GitLibrary lib in GitClient.GitLibraries)
+            {
+                if (hadOne)
+                    sb.Append(", ");
+                else
+                    hadOne = true;
+
+                sb.AppendFormat("{0} {1}", lib.Name, lib.VersionString);
+                
+            }
 
             sb.AppendLine();
-
-            sb.Append(Resources.AboutDynamicallyLinkedTo);
-            foreach (SharpSvn.Implementation.SvnLibrary lib in SvnClient.SvnLibraries)
-            {
-                if (lib.DynamicallyLinked && !lib.Optional)
-                {
-                    sb.AppendFormat("{0} {1}", lib.Name, lib.VersionString);
-                    sb.Append(", ");
-                }
-            }
-
-            sb.Length -= 2;
-            sb.AppendLine();
-
-            sb.Append(Resources.AboutOptionallyLinkedTo);
-            foreach (SharpSvn.Implementation.SvnLibrary lib in SvnClient.SvnLibraries)
-            {
-                if (lib.Optional)
-                {
-                    sb.AppendFormat("{0} {1}", lib.Name, lib.VersionString);
-                    sb.Append(", ");
-                }
-            }
-
-            sb.Length -= 2;
 
             pbstrProductDetails = sb.ToString();
 
             return VSConstants.S_OK;
-#endif
         }
 
         public int ProductID(out string pbstrPID)

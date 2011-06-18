@@ -6,6 +6,7 @@ using System.IO;
 using NGit.Api.Errors;
 using System.Collections.ObjectModel;
 using NGit.Api;
+using SharpGit.Implementation;
 
 namespace SharpGit
 {
@@ -16,18 +17,21 @@ namespace SharpGit
 
         public static readonly string SharpGitVersion;
         public static readonly string NGitVersion;
+        public static readonly ICollection<GitLibrary> GitLibraries;
 
         static GitClient()
         {
-            SharpGitVersion = String.Format(
-                "SharpGit {0}",
-                typeof(GitClient).Assembly.GetName().Version
-            );
+            SharpGitVersion = typeof(GitClient).Assembly.GetName().Version.ToString();
+            NGitVersion = typeof(Git).Assembly.GetName().Version.ToString();
 
-            NGitVersion = String.Format(
-                "NGit {0}",
-                typeof(Git).Assembly.GetName().Version
-            );
+            GitLibraries = new ReadOnlyCollection<GitLibrary>(new[]
+            {
+                new GitLibrary(typeof(Git).Assembly),
+                new GitLibrary(typeof(ICSharpCode.SharpZipLib.SharpZipBaseException).Assembly),
+                new GitLibrary(typeof(NSch.Buffer).Assembly),
+                new GitLibrary(typeof(Mono.Unix.Catalog).Assembly),
+                new GitLibrary(typeof(Mono.Security.PKCS7).Assembly)
+            });
         }
 
         internal GitUIBindArgs BindArgs { get; set; }

@@ -196,6 +196,7 @@
     <Compile Include="IgnoreFile.cs" />
     <Compile Include="IgnoreManager.cs" />
     <Compile Include="IgnoreSpaceTextComparator.cs" />
+    <Compile Include="Implementation\GitLibrary.cs" />
     <Compile Include="NullOutputStream.cs" />
     <Compile Include="CustomPathFilter.cs" />
     <Compile Include="RawTextAccessor.cs" />

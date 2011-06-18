@@ -62,8 +62,8 @@ namespace VisualGit.VSPackage {
         
         /// <summary>
         ///   Looks up a localized string similar to VisualGit - Git Support for Visual Studio {0} 
-        /// * VisualGit.Package {1}
-        /// * Git {2} via NGit {3}.
+        /// * VisualGit Package {1}
+        /// * SharpGit {2} via NGit {3}.
         /// </summary>
         internal static string AboutDetails {
             get {
@@ -72,29 +72,11 @@ namespace VisualGit.VSPackage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SharpSvn is dynamically linked to: .
-        /// </summary>
-        internal static string AboutDynamicallyLinkedTo {
-            get {
-                return ResourceManager.GetString("AboutDynamicallyLinkedTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SharpSvn is linked to: .
+        ///   Looks up a localized string similar to SharpGit is linked to: .
         /// </summary>
         internal static string AboutLinkedTo {
             get {
                 return ResourceManager.GetString("AboutLinkedTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SharpSvn is optionally linked to: .
-        /// </summary>
-        internal static string AboutOptionallyLinkedTo {
-            get {
-                return ResourceManager.GetString("AboutOptionallyLinkedTo", resourceCulture);
             }
         }
         
