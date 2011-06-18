@@ -15,7 +15,7 @@ namespace VisualGit.UI.OptionsPages
         {
             InitializeComponent();
         }
-#if false
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -37,95 +37,51 @@ namespace VisualGit.UI.OptionsPages
         private void Refreshlist()
         {
             credentialList.Items.Clear();
-            SortedList<string, AuthenticationListItem> cache = new SortedList<string, AuthenticationListItem>();
-            using (SvnClient client = Context.GetService<ISvnClientPool>().GetClient())
+
+            ICollection<CredentialCacheItem> items = ConfigurationService.GetAllCredentialCacheItems();
+
+            foreach (CredentialCacheItem item in items)
             {
-                foreach(SvnAuthenticationCacheType tp in Enum.GetValues(typeof(SvnAuthenticationCacheType)))
-                {
-                    if(tp == SvnAuthenticationCacheType.None)
-                        continue;
-
-                    foreach(SvnAuthenticationCacheItem i in client.Authentication.GetCachedItems(tp))
-                    {
-                        if (i.RealmUri == null)
-                            continue; // Just ignore local repositories
-
-                        AuthenticationListItem lvi;
-                        if(!cache.TryGetValue(i.Realm, out lvi))
-                            cache[i.Realm] = lvi = new AuthenticationListItem(credentialList);
-
-                        lvi.CacheItems.Add(i);
-                    }
-                }                
+                AuthenticationListItem lvi = new AuthenticationListItem(credentialList);
+                lvi.CacheItem = item;
+                lvi.Refresh();
+                credentialList.Items.Add(lvi);
             }
-
-            foreach (AuthenticationListItem i in cache.Values)
-            {
-                i.Refresh();
-            }
-
-            credentialList.Items.AddRange(new List<AuthenticationListItem>(cache.Values).ToArray());
         }
+
         void ResizeList()
         {
             if (!DesignMode && credentialList != null)
-                credentialList.ResizeColumnsToFit(realmHeader, cachedHeader);
+                credentialList.ResizeColumnsToFit(uriHeader, promptTextHeader, typeHeader);
         }
 
         class AuthenticationListItem : SmartListViewItem
         {
-            readonly List<SvnAuthenticationCacheItem> _items = new List<SvnAuthenticationCacheItem>();
+            CredentialCacheItem _item;
+
             public AuthenticationListItem(SmartListView listview)
                 : base(listview)
             {
             }
 
-            public List<SvnAuthenticationCacheItem> CacheItems
+            public CredentialCacheItem CacheItem
             {
-                get { return _items; }
+                get { return _item; }
+                set { _item = value; }
             }
 
             public void Refresh()
             {
-                SvnAuthenticationCacheItem i = CacheItems[0];
                 SetValues(
-                    i.RealmUri != null ? i.RealmUri.ToString() : "",
-                    (i.Realm[0] == '<') ? i.Realm.Substring(i.Realm.IndexOf('>')+1).Trim() : i.Realm,
-                    MakeNames());
-            }
-
-            private string MakeNames()
-            {
-                StringBuilder sb = new StringBuilder();
-                bool next = false;
-
-                foreach (SvnAuthenticationCacheItem i in CacheItems)
-                {
-                    if (next)
-                        sb.Append(", ");
-                    else
-                        next = true;
-
-                    switch ((SvnAuthenticationCacheType)i.CacheType)
-                    {
-                        case SvnAuthenticationCacheType.UserNamePassword:
-                            sb.Append("Normal");
-                            break;
-                        default:
-                            sb.Append(i.CacheType);
-                            break;
-                    }
-                }
-
-                return sb.ToString();
+                    _item.Uri,
+                    _item.PromptText,
+                    _item.Type
+                );
             }
         }
-#endif
 
         private void credentialList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-#if false
             foreach (AuthenticationListItem li in credentialList.SelectedItems)
             {
                 if (li != null)
@@ -136,13 +92,10 @@ namespace VisualGit.UI.OptionsPages
             }
 
             removeButton.Enabled = false;
-#endif
         }
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-#if false
             VisualGitMessageBox mb = new VisualGitMessageBox(Context);
 
             if (DialogResult.OK != mb.Show(OptionsResources.TheSelectedCredentialsWillBeRemoved, "", MessageBoxButtons.OKCancel))
@@ -153,26 +106,20 @@ namespace VisualGit.UI.OptionsPages
             {
                 foreach (AuthenticationListItem li in credentialList.SelectedItems)
                 {
-                    foreach (SvnAuthenticationCacheItem i in li.CacheItems)
-                    {
-                        if (!i.IsDeleted)
-                        {
-                            changed = true;
-                            i.Delete();
-                        }
-                    }
+                    ConfigurationService.RemoveCredentialCacheItem(
+                        li.CacheItem.Uri,
+                        li.CacheItem.Type,
+                        li.CacheItem.PromptText
+                    );
+
+                    changed = true;
                 }
             }
             finally
             {
                 if (changed)
-                {
-                    Context.GetService<ISvnClientPool>().FlushAllClients();
-
                     Refreshlist();
-                }
             }
-#endif
         }
     }
 }

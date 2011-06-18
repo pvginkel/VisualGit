@@ -367,13 +367,27 @@ namespace VisualGit.Configuration
                     if (rksub == null)
                         return null;
 
-                    return new CredentialCacheItem(
-                        (string)rksub.GetValue("Uri"),
-                        (string)rksub.GetValue("Type"),
-                        (string)rksub.GetValue("PromptText"),
-                        Unprotect((string)rksub.GetValue("Response"))
-                    );
+                    return CreateCredentialCacheItemFromRegistryKey(rksub);
                 }
+            }
+        }
+
+        private CredentialCacheItem CreateCredentialCacheItemFromRegistryKey(RegistryKey rksub)
+        {
+            try
+            {
+                return new CredentialCacheItem(
+                    (string)rksub.GetValue("Uri"),
+                    (string)rksub.GetValue("Type"),
+                    (string)rksub.GetValue("PromptText"),
+                    Unprotect((string)rksub.GetValue("Response"))
+                    );
+            }
+            catch
+            {
+                // Don't fail on incorrect credentials configuration
+                // in the registry.
+                return null;
             }
         }
 
@@ -444,6 +458,40 @@ namespace VisualGit.Configuration
             }
 
             return sb.ToString();
+        }
+
+        public ICollection<CredentialCacheItem> GetAllCredentialCacheItems()
+        {
+            List<CredentialCacheItem> items = new List<CredentialCacheItem>();
+
+            using (RegistryKey rk = OpenHKCUKey("Credentials"))
+            {
+                foreach (string subKeyName in rk.GetSubKeyNames())
+                {
+                    using (RegistryKey rksub = rk.OpenSubKey(subKeyName))
+                    {
+                        CredentialCacheItem item = CreateCredentialCacheItemFromRegistryKey(rksub);
+
+                        if (item != null)
+                            items.Add(item);
+                    }
+                }
+            }
+
+            return items;
+        }
+
+        public void RemoveCredentialCacheItem(string uri, string type, string promptText)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            using (RegistryKey rk = OpenHKCUKey("Credentials"))
+            {
+                string hash = GetCacheKey(type, uri, promptText);
+
+                rk.DeleteSubKey(hash, false);
+            }
         }
 
         #endregion

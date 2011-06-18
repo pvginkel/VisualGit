@@ -24,12 +24,6 @@ namespace VisualGit.UI
             InitializeComponent();
         }
 
-        IVisualGitConfigurationService _configurationService;
-        private IVisualGitConfigurationService ConfigurationService
-        {
-            get { return _configurationService ?? (_configurationService = GetService<IVisualGitConfigurationService>()); }
-        }
-
         public GitTransportClientArgs ClientArgs
         {
             get { return _clientArgs; }
