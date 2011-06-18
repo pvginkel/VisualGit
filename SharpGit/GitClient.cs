@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using NGit.Api.Errors;
 using System.Collections.ObjectModel;
+using NGit.Api;
 
 namespace SharpGit
 {
@@ -12,6 +13,22 @@ namespace SharpGit
     {
         private static readonly Dictionary<string, Version> _clients = new Dictionary<string, Version>(StringComparer.OrdinalIgnoreCase);
         private bool _disposed;
+
+        public static readonly string SharpGitVersion;
+        public static readonly string NGitVersion;
+
+        static GitClient()
+        {
+            SharpGitVersion = String.Format(
+                "SharpGit {0}",
+                typeof(GitClient).Assembly.GetName().Version
+            );
+
+            NGitVersion = String.Format(
+                "NGit {0}",
+                typeof(Git).Assembly.GetName().Version
+            );
+        }
 
         internal GitUIBindArgs BindArgs { get; set; }
 
