@@ -35,6 +35,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
+            this.rememberBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -42,9 +43,10 @@
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.rememberBox, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.promptLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.credentialBox, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // promptLabel
@@ -79,11 +81,16 @@
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
+            // rememberBox
+            // 
+            resources.ApplyResources(this.rememberBox, "rememberBox");
+            this.rememberBox.Name = "rememberBox";
+            this.rememberBox.UseVisualStyleBackColor = true;
+            // 
             // GenericCredentialsDialog
             // 
             this.AcceptButton = this.okButton;
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
@@ -106,5 +113,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.CheckBox rememberBox;
     }
 }

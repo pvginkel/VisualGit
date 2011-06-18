@@ -17,12 +17,17 @@ namespace VisualGit.UI
         GitTransportClientArgs _clientArgs;
         bool _canceling;
         static readonly object _syncLock = new object();
-        static readonly Dictionary<string, string> _cache = new Dictionary<string, string>();
-        readonly Dictionary<string, string> _runCache = new Dictionary<string, string>();
+        readonly Dictionary<string, CredentialCacheItem> _runCache = new Dictionary<string, CredentialCacheItem>();
 
         public TransportProgressDialog()
         {
             InitializeComponent();
+        }
+
+        IVisualGitConfigurationService _configurationService;
+        private IVisualGitConfigurationService ConfigurationService
+        {
+            get { return _configurationService ?? (_configurationService = GetService<IVisualGitConfigurationService>()); }
         }
 
         public GitTransportClientArgs ClientArgs
@@ -58,7 +63,7 @@ namespace VisualGit.UI
                 {
                     foreach (var item in _runCache)
                     {
-                        _cache[item.Key] = item.Value;
+                        ConfigurationService.StoreCredentialCacheItem(item.Value);
                     }
                 }
             }
@@ -187,6 +192,7 @@ namespace VisualGit.UI
                 // combined dialog for this one.
 
                 bool hadUsernamePassword = usernameItem != null && passwordItem != null;
+                bool rememberPassword = false;
 
                 if (hadUsernamePassword)
                 {
@@ -195,7 +201,7 @@ namespace VisualGit.UI
                     if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version >= new Version(5, 1))
                     {
                         // If Windows XP/Windows 2003 or higher: Use the windows password dialog
-                        GetUserNamePasswordWindows(e, description, usernameItem, passwordItem);
+                        GetUserNamePasswordWindows(e, description, usernameItem, passwordItem, ref rememberPassword);
 
                         if (e.Cancel)
                             return;
@@ -206,12 +212,15 @@ namespace VisualGit.UI
                         {
                             dialog.UsernameItem = usernameItem;
                             dialog.PasswordItem = passwordItem;
+                            dialog.RememberPassword = rememberPassword;
 
                             if (dialog.ShowDialog(Context, this) != DialogResult.OK)
                             {
                                 e.Cancel = true;
                                 return;
                             }
+
+                            rememberPassword = dialog.RememberPassword;
                         }
                     }
                 }
@@ -231,15 +240,19 @@ namespace VisualGit.UI
 
                         case GitCredentialsType.Username:
                         case GitCredentialsType.Password:
+                            rememberPassword = item.Type == GitCredentialsType.Password;
+
                             if (!hadUsernamePassword)
                             {
-                                if (!ShowGeneric(item))
+                                if (!ShowGeneric(item, ref rememberPassword))
                                     _canceling = true;
                             }
                             break;
 
                         default:
-                            if (!ShowGeneric(item))
+                            rememberPassword = item.Type != GitCredentialsType.Username;
+
+                            if (!ShowGeneric(item, ref rememberPassword))
                                 _canceling = true;
                             break;
                     }
@@ -251,14 +264,17 @@ namespace VisualGit.UI
                     }
                 }
 
-                foreach (var item in e.Items)
+                if (rememberPassword)
                 {
-                    UpdateCache(e.Uri, item);
+                    foreach (var item in e.Items)
+                    {
+                        UpdateCache(e.Uri, item);
+                    }
                 }
             }
         }
 
-        private void GetUserNamePasswordWindows(GitCredentialsEventArgs e, string description, GitCredentialItem usernameItem, GitCredentialItem passwordItem)
+        private void GetUserNamePasswordWindows(GitCredentialsEventArgs e, string description, GitCredentialItem usernameItem, GitCredentialItem passwordItem, ref bool rememberPassword)
         {
             NativeMethods.CREDUI_INFO info = new NativeMethods.CREDUI_INFO();
             info.pszCaptionText = Properties.Resources.ConnectToGit;
@@ -269,17 +285,15 @@ namespace VisualGit.UI
             StringBuilder sbUserName = new StringBuilder("", 1024);
             StringBuilder sbPassword = new StringBuilder("", 1024);
 
-            bool dlgSave = true;
-
             var flags =
                 NativeMethods.CREDUI_FLAGS.GENERIC_CREDENTIALS |
                 NativeMethods.CREDUI_FLAGS.ALWAYS_SHOW_UI |
-                NativeMethods.CREDUI_FLAGS.DO_NOT_PERSIST /* |
-                NativeMethods.CREDUI_FLAGS.SHOW_SAVE_CHECK_BOX */;
+                NativeMethods.CREDUI_FLAGS.DO_NOT_PERSIST |
+                NativeMethods.CREDUI_FLAGS.SHOW_SAVE_CHECK_BOX;
 
             var result = NativeMethods.CredUIPromptForCredentials(
                 ref info, e.Uri, IntPtr.Zero, 0, sbUserName, 1024,
-                sbPassword, 1024, ref dlgSave, flags
+                sbPassword, 1024, ref rememberPassword, flags
             );
 
             switch (result)
@@ -306,17 +320,24 @@ namespace VisualGit.UI
                     case GitCredentialsType.Password:
                     case GitCredentialsType.String:
                     case GitCredentialsType.Username:
-                        string result;
+                        CredentialCacheItem result;
 
                         if (_runCache.TryGetValue(GetCacheKey(uri, item), out result))
                         {
-                            item.Value = result;
+                            item.Value = result.Response;
                             return true;
                         }
-                        else if (_cache.TryGetValue(GetCacheKey(uri, item), out result))
+                        else
                         {
-                            item.Value = result;
-                            return true;
+                            var cacheItem = ConfigurationService.GetCredentialCacheItem(
+                                uri, item.Type.ToString(), item.PromptText
+                            );
+
+                            if (cacheItem != null)
+                            {
+                                item.Value = cacheItem.Response;
+                                return true;
+                            }
                         }
 
                         break;
@@ -328,7 +349,9 @@ namespace VisualGit.UI
 
         private void UpdateCache(string uri, GitCredentialItem item)
         {
-            _runCache[GetCacheKey(uri, item)] = item.Value;
+            _runCache[GetCacheKey(uri, item)] = new CredentialCacheItem(
+                uri, item.Type.ToString(), item.PromptText, item.Value
+            );
         }
 
         private string GetCacheKey(string uri, GitCredentialItem item)
@@ -336,13 +359,19 @@ namespace VisualGit.UI
             return (uri ?? "") + ":" + item.Type + ":" + (item.PromptText ?? "");
         }
 
-        private bool ShowGeneric(GitCredentialItem item)
+        private bool ShowGeneric(GitCredentialItem item, ref bool rememberPassword)
         {
             using (var dialog = new GenericCredentialsDialog())
             {
                 dialog.Item = item;
+                dialog.RememberPassword = rememberPassword;
 
-                return dialog.ShowDialog(Context, this) == DialogResult.OK;
+                bool result = dialog.ShowDialog(Context, this) == DialogResult.OK;
+
+                if (result)
+                    rememberPassword = dialog.RememberPassword;
+
+                return result;
             }
         }
 

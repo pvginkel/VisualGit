@@ -4,6 +4,8 @@ using VisualGit.UI;
 using Microsoft.Win32;
 using System.ComponentModel;
 using VisualGit.VS;
+using System.Text;
+using System.Security.Cryptography;
 
 
 namespace VisualGit.Configuration
@@ -14,6 +16,7 @@ namespace VisualGit.Configuration
     [GlobalService(typeof(IVisualGitConfigurationService))]
     sealed class ConfigService : VisualGitService, IVisualGitConfigurationService
     {
+        static byte[] _additionalEntropy = { 108, 236, 208, 80, 227 };
         readonly object _lock = new object();
         VisualGitConfig _instance;
 
@@ -348,6 +351,99 @@ namespace VisualGit.Configuration
                 else
                     rk.DeleteValue(visualGitWarningBool.ToString());
             }
+        }
+
+        public CredentialCacheItem GetCredentialCacheItem(string uri, string type, string promptText)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            string hash = GetCacheKey(type, uri, promptText);
+
+            using (RegistryKey rk = OpenHKCUKey("Credentials"))
+            {
+                using (RegistryKey rksub = rk.OpenSubKey(hash))
+                {
+                    if (rksub == null)
+                        return null;
+
+                    return new CredentialCacheItem(
+                        (string)rksub.GetValue("Uri"),
+                        (string)rksub.GetValue("Type"),
+                        (string)rksub.GetValue("PromptText"),
+                        Unprotect((string)rksub.GetValue("Response"))
+                    );
+                }
+            }
+        }
+
+        private string Protect(string value)
+        {
+            var result = ProtectedData.Protect(
+                Encoding.UTF8.GetBytes(value ?? ""),
+                _additionalEntropy,
+                DataProtectionScope.CurrentUser
+            );
+
+            return Convert.ToBase64String(result);
+        }
+
+        private string Unprotect(string value)
+        {
+            var result = ProtectedData.Unprotect(
+                Convert.FromBase64String(value),
+                _additionalEntropy,
+                DataProtectionScope.CurrentUser
+            );
+
+            return Encoding.UTF8.GetString(result);
+        }
+
+        private string GetCacheKey(string type, string uri, string promptText)
+        {
+            return ComputeHash((uri ?? "") + ":" + type + ":" + (promptText ?? ":"));
+        }
+
+        public void StoreCredentialCacheItem(CredentialCacheItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (item.Type == null)
+                throw new ArgumentNullException("item.Type");
+
+            string hash = GetCacheKey(item.Type, item.Uri, item.PromptText);
+
+            using (RegistryKey rk = OpenHKCUKey("Credentials\\" + hash))
+            {
+                rk.SetValue("Uri", item.Uri);
+                rk.SetValue("Type", item.Type);
+                rk.SetValue("PromptText", item.PromptText);
+                rk.SetValue("Response", Protect(item.Response));
+            }
+        }
+
+        string ComputeHash(string input)
+        {
+            using(SHA256 hasher = new SHA256Managed())
+            {
+                return ToHex(
+                    hasher.ComputeHash(
+                        Encoding.UTF8.GetBytes(input)
+                    )
+                );
+            }
+        }
+
+        string ToHex(byte[] value)
+        {
+            var sb = new StringBuilder(value.Length * 2);
+
+            foreach (byte b in value)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
         }
 
         #endregion

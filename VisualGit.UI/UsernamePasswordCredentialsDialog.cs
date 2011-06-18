@@ -32,6 +32,12 @@ namespace VisualGit.UI
             set { _passwordItem = value; }
         }
 
+        public bool RememberPassword
+        {
+            get { return rememberBox.Checked; }
+            set { rememberBox.Checked = value; }
+        }
+
         private void UsernamePasswordCredentialsDialog_Load(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(_usernameItem.PromptText))

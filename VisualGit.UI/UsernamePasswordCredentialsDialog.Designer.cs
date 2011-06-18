@@ -38,6 +38,7 @@
             this.promptLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rememberBox = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +93,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.usernameBox, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.rememberBox, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // flowLayoutPanel1
@@ -102,11 +104,16 @@
             this.flowLayoutPanel1.Controls.Add(this.okButton);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
+            // rememberBox
+            // 
+            resources.ApplyResources(this.rememberBox, "rememberBox");
+            this.rememberBox.Name = "rememberBox";
+            this.rememberBox.UseVisualStyleBackColor = true;
+            // 
             // UsernamePasswordCredentialsDialog
             // 
             this.AcceptButton = this.okButton;
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
@@ -132,5 +139,6 @@
         private System.Windows.Forms.Label promptLabel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.CheckBox rememberBox;
     }
 }

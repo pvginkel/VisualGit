@@ -25,6 +25,12 @@ namespace VisualGit.UI
             set { _item = value; }
         }
 
+        public bool RememberPassword
+        {
+            get { return rememberBox.Checked; }
+            set { rememberBox.Checked = value; }
+        }
+
         private void GenericCredentialsDialog_Load(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(_item.PromptText))
@@ -34,6 +40,8 @@ namespace VisualGit.UI
 
             if (Item.Type != GitCredentialsType.Username)
                 credentialBox.UseSystemPasswordChar = true;
+            else
+                rememberBox.Visible = false;
         }
 
         private void okButton_Click(object sender, EventArgs e)

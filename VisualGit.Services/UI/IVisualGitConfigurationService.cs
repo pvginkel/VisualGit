@@ -89,6 +89,10 @@ namespace VisualGit.UI
 
         bool GetWarningBool(VisualGitWarningBool visualGitWarningBool);
         void SetWarningBool(VisualGitWarningBool visualGitWarningBool, bool value);
+
+        CredentialCacheItem GetCredentialCacheItem(string uri, string type, string promptText);
+
+        void StoreCredentialCacheItem(CredentialCacheItem item);
     }
 }
 
