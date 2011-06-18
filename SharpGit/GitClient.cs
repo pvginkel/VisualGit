@@ -203,6 +203,14 @@ namespace SharpGit
             return ExecuteCommand<GitResolveCommand>(args, p => p.Execute(fullPath, accept));
         }
 
+        public bool Resolved(string fullPath)
+        {
+            if (fullPath == null)
+                throw new ArgumentNullException("fullPath");
+
+            return Resolve(fullPath, GitAccept.Merged, new GitResolveArgs());
+        }
+
         public bool GetBlame(GitTarget target, GitBlameArgs args, out Collection<GitBlameEventArgs> result)
         {
             if (target == null)

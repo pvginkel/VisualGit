@@ -10,6 +10,10 @@ namespace SharpGit
         public GitResolveArgs()
             : base(GitCommandType.Resolved)
         {
+            Depth = GitDepth.Empty;
         }
+
+        public GitDepth Depth { get; set; }
+        internal GitConflictEventArgs ConflictArgs { get; set; }
     }
 }

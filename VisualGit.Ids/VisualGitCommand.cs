@@ -155,6 +155,7 @@ namespace VisualGit
         LogCompareWithPrevious,
         LogCompareRevisions,
         LogRevertThisRevision,
+        LogMergeThisRevision,
         LogOpen,
         LogOpenInVs,
         LogOpenWith,

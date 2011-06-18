@@ -3,6 +3,7 @@ using System;
 
 using VisualGit.Scc;
 using VisualGit.UI;
+using SharpGit;
 
 namespace VisualGit.Commands
 {
@@ -18,6 +19,15 @@ namespace VisualGit.Commands
     {
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
+            switch (e.Command)
+            {
+                case VisualGitCommand.ItemResolveMineConflict:
+                case VisualGitCommand.ItemResolveTheirsConflict:
+                case VisualGitCommand.ItemResolveMergeTool:
+                    e.Enabled = false;
+                    return;
+            }
+
             bool foundOne = false;
             bool canDiff = true;
             foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
@@ -62,8 +72,6 @@ namespace VisualGit.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-            throw new NotImplementedException();
-#if false
             switch (e.Command)
             {
                 case VisualGitCommand.ItemResolveMerge:
@@ -72,31 +80,31 @@ namespace VisualGit.Commands
                 case VisualGitCommand.ItemResolveMergeTool:
                     throw new NotSupportedException();
                 case VisualGitCommand.ItemResolveMineFull:
-                    Resolve(e, SvnAccept.MineFull);
+                    Resolve(e, GitAccept.MineFull);
                     break;
                 case VisualGitCommand.ItemResolveTheirsFull:
-                    Resolve(e, SvnAccept.TheirsFull);
+                    Resolve(e, GitAccept.TheirsFull);
                     break;
                 case VisualGitCommand.ItemResolveWorking:
-                    Resolve(e, SvnAccept.Merged);
+                    Resolve(e, GitAccept.Merged);
                     break;
                 case VisualGitCommand.ItemResolveBase:
-                    Resolve(e, SvnAccept.Base);
+                    Resolve(e, GitAccept.Base);
                     break;
                 case VisualGitCommand.ItemResolveMineConflict:
-                    Resolve(e, SvnAccept.Mine);
-                    break;
+                    throw new NotSupportedException();
+                    //Resolve(e, GitAccept.Mine);
+                    //break;
                 case VisualGitCommand.ItemResolveTheirsConflict:
-                    Resolve(e, SvnAccept.Theirs);
-                    break;
+                    throw new NotSupportedException();
+                    //Resolve(e, GitAccept.Theirs);
+                    //break;
                 default:
                     throw new NotSupportedException();
             }
-#endif
         }
 
-#if false
-        static void Resolve(CommandEventArgs e, SvnAccept accept)
+        static void Resolve(CommandEventArgs e, GitAccept accept)
         {
             HybridCollection<string> paths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -115,10 +123,10 @@ namespace VisualGit.Commands
 
             using (DocumentLock lck = documentTracker.LockDocuments(paths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
-            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (GitClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             {
-                SvnResolveArgs a = new SvnResolveArgs();
-                a.Depth = SvnDepth.Empty;
+                GitResolveArgs a = new GitResolveArgs();
+                a.Depth = GitDepth.Empty;
 
                 foreach (string p in paths)
                 {
@@ -129,7 +137,7 @@ namespace VisualGit.Commands
 
         static void Resolved(CommandEventArgs e)
         {
-            using (SvnClient client = e.GetService<ISvnClientPool>().GetNoUIClient())
+            using (GitClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             {
                 foreach (GitItem item in e.Selection.GetSelectedGitItems(true))
                 {
@@ -140,7 +148,6 @@ namespace VisualGit.Commands
                 }
             }
         }
-#endif
     }
 }
 

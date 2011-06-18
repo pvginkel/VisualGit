@@ -32,16 +32,9 @@ namespace VisualGit.UI.GitLog.Commands
                 return;
             }
 
-            int count = 0;
-            foreach (IGitLogItem item in e.Selection.GetSelection<IGitLogItem>())
-            {
-                count++;
+            IGitLogItem item = EnumTools.GetSingle(e.Selection.GetSelection<IGitLogItem>());
 
-                if (count > 1)
-                    break;
-            }
-
-            e.Enabled = count == 1;
+            e.Enabled = item != null;
         }
 
         public void OnExecute(CommandEventArgs e)

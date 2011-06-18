@@ -11,6 +11,8 @@ namespace SharpGit
         Merged,
         MineFull,
         TheirsFull,
-        Base
+        Base,
+        Mine,
+        Theirs
     }
 }
