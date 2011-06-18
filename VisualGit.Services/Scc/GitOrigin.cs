@@ -125,23 +125,7 @@ namespace VisualGit.Scc
                 if (reposRoot != null)
                     _reposRoot = reposRoot;
                 else
-                {
-                    throw new NotImplementedException();
-#if false
-                    using (SvnClient client = context.GetService<ISvnClientPool>().GetClient())
-                    {
-                        _reposRoot = client.GetRepositoryRoot(ut.Uri);
-
-                        if (_reposRoot == null)
-                            throw new InvalidOperationException("Can't retrieve the repository root of the UriTarget");
-
-#if DEBUG
-                        Debug.Assert(!_reposRoot.MakeRelativeUri(_uri).IsAbsoluteUri);
-#endif
-                    }
-#endif
-                }
-
+                    _reposRoot = GitTools.GetUri(RepositoryUtil.GetRepositoryRoot(ut.Uri));
                 return;
             }
 
