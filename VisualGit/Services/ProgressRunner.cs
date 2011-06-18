@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-
 using VisualGit.UI;
 using VisualGit.VS;
 using System.Text;
@@ -283,9 +282,6 @@ namespace VisualGit
         sealed class OutputPaneReporter : IDisposable
         {
             readonly IOutputPaneManager _mgr;
-#if false
-            readonly SvnClientReporter _reporter;
-#endif
             readonly StringBuilder _sb;
 
             public OutputPaneReporter(IVisualGitServiceProvider context, GitClient client)
@@ -297,24 +293,12 @@ namespace VisualGit
 
                 _mgr = context.GetService<IOutputPaneManager>();
                 _sb = new StringBuilder();
-
-#if false
-                _reporter = new SvnClientReporter(client, _sb);
-#endif
             }
 
             public void Dispose()
             {
-                try
-                {
-                    _sb.AppendLine();
-                    _mgr.WriteToPane(_sb.ToString());
-                }
-                finally
-                {
-#if false
-                    _reporter.Dispose();
-#endif
+                _sb.AppendLine();
+                _mgr.WriteToPane(_sb.ToString());
                 }
             }
         }
