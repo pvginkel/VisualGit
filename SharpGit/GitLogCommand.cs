@@ -162,6 +162,7 @@ namespace SharpGit
                             var diffFormatter = new DiffFormatter(NullOutputStream.Instance);
 
                             diffFormatter.SetRepository(repository);
+                            diffFormatter.SetDetectRenames(true);
 
                             e.ChangedPaths = new GitChangeItemCollection();
 
