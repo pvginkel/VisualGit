@@ -173,7 +173,6 @@ namespace VisualGit.Scc
             RegisterForSccCleanup(); // Clear the origins table after adding
 
             List<string> selectedFiles = null;
-            SortedList<string, string> copies = null;
 
             bool sccActive = SccProvider.IsActive;
 
@@ -183,8 +182,7 @@ namespace VisualGit.Scc
 
                 IVsSccProject2 sccProject = rgpProjects[iProject] as IVsSccProject2;
 
-                bool trackCopies;
-                bool track = SccProvider.TrackProjectChanges(sccProject, out trackCopies);
+                bool track = SccProvider.TrackProjectChanges(sccProject);
 
                 for (; iFile < iLastFileThisProject; iFile++)
                 {
@@ -207,76 +205,8 @@ namespace VisualGit.Scc
 
                     // We do this before the copies to make sure a failed copy doesn't break the project
                     SccProvider.OnProjectFileAdded(sccProject, newName, origin, rgFlags[iFile]);
-
-                    if (sccActive && trackCopies &&
-                        !string.IsNullOrEmpty(origin) &&
-                        StatusCache[origin].HasCopyableHistory)
-                    {
-                        if (copies == null)
-                            copies = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase);
-
-                        copies[newName] = origin;
-                    }
                 }
             }
-
-            if (copies != null)
-                using (GitSccContext git = new GitSccContext(Context))
-                {
-                    while (copies.Count > 0)
-                    {
-                        string toFile = copies.Keys[0];
-                        string fromFile = copies.Values[0];
-                        string dir = GitTools.GetNormalizedDirectoryName(toFile);
-
-                        copies.RemoveAt(0);
-                        Guid addGuid;
-
-                        if (!git.TryGetRepositoryId(dir, out addGuid))
-                        {
-                            continue; // No repository to fix up
-                        }
-
-                        Guid fileGuid;
-
-                        if (!git.TryGetRepositoryId(fromFile, out fileGuid) || fileGuid != addGuid)
-                            continue; // Can't fix history for this file
-
-                        if (string.Equals(Path.GetFileName(fromFile), Path.GetFileName(toFile), StringComparison.OrdinalIgnoreCase))
-                        {
-                            // If the names are the same we can handle all files to the same directory
-                            // without a sleep penalty             
-                            SortedList<string, string> now = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase);
-                            now.Add(toFile, fromFile);
-
-                            for (int i = 0; i < copies.Count; i++)
-                            {
-                                string fl = copies.Keys[i];
-                                string tl = copies.Values[i];
-
-                                if (string.Equals(GitTools.GetNormalizedDirectoryName(fl), dir, StringComparison.OrdinalIgnoreCase) &&
-                                    string.Equals(Path.GetFileName(fl), Path.GetFileName(tl), StringComparison.OrdinalIgnoreCase))
-                                {
-                                    Guid fromGuid;
-                                    if (git.TryGetRepositoryId(tl, out fromGuid) && (fromGuid == addGuid))
-                                        now.Add(fl, tl); // We can copy this item at the same time
-                                    // else 
-                                    // This copy comes from another repository, no history to save
-
-                                    copies.RemoveAt(i--);
-                                }
-                            }
-
-                            // Now contains all the files we are receiving in a single directory
-                            if (now.Count > 0)
-                                git.SafeWcCopyToDirFixup(now, dir);
-                            else
-                                git.SafeWcCopyFixup(fromFile, toFile);
-                        }
-                        else
-                            git.SafeWcCopyFixup(fromFile, toFile);
-                    }
-                }
 
             return VSConstants.S_OK;
         }

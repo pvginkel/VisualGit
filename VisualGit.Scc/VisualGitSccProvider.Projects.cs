@@ -465,46 +465,25 @@ namespace VisualGit.Scc
             }
         }
 
-        internal bool TrackProjectChanges(IVsSccProject2 project)
-        {
-            bool trackCopies;
-
-            return TrackProjectChanges(project, out trackCopies);
-        }
-
         IVsSolutionBuildManager2 _buildManager;
         IVsSolutionBuildManager2 BuildManager
         {
             get { return _buildManager ?? (_buildManager = GetService<IVsSolutionBuildManager2>(typeof(SVsSolutionBuildManager))); }
         }
 
-        internal bool TrackProjectChanges(IVsSccProject2 project, out bool trackCopies)
+        internal bool TrackProjectChanges(IVsSccProject2 project)
         {
             // We can be called with a null project
             SccProjectData data;
 
             if (project != null && _projectMap.TryGetValue(project, out data))
             {
-                trackCopies = true;
-
-                if (data.IsWebSite)
-                {
-                    int busy;
-                    if (BuildManager != null &&
-                        ErrorHandler.Succeeded(BuildManager.QueryBuildManagerBusy(out busy)) &&
-                        busy != 0)
-                    {
-                        trackCopies = false;
-                    }
-                }
-                else if (_syncMap)
+                if (!data.IsWebSite &&_syncMap)
                     data.Load();
-
 
                 return data.TrackProjectChanges(); // Allows temporary disabling changes
             }
 
-            trackCopies = false;
             return false;
         }
 
