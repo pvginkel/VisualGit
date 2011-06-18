@@ -71,8 +71,6 @@ namespace VisualGit.Settings
 
             public int SolutionCookie;
             public int RootCookie;
-
-            public Uri RepositoryRoot;
         }
 
         ISelectionContext _selectionContext;
