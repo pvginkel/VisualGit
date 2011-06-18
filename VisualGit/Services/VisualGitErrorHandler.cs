@@ -12,6 +12,7 @@ using VisualGit.VS;
 using VisualGit.Commands;
 using System.Text;
 using System.Runtime.InteropServices;
+using SharpGit;
 
 namespace VisualGit.Services
 {
@@ -21,7 +22,7 @@ namespace VisualGit.Services
     [GlobalService(typeof(IVisualGitErrorHandler), AllowPreRegistered = true)]
     class VisualGitErrorHandler : VisualGitService, IVisualGitErrorHandler
     {
-        const string _errorReportMailAddress = "error@support.ankhsvn.net";
+        const string _errorReportMailAddress = "";
         const string _errorReportSubject = "Exception";
         readonly HandlerDelegator Handler;
 
@@ -33,11 +34,10 @@ namespace VisualGit.Services
 
         public bool IsEnabled(Exception ex)
         {
-#if DEBUG
+            // TODO: Exception processing is currently disabled. This will be
+            // replaced by NBug later on.
+
             return false;
-#else
-            return true;
-#endif
         }
 
         /// <summary>
@@ -125,6 +125,8 @@ namespace VisualGit.Services
 
         private void ShowErrorDialog(Exception ex, bool showStackTrace, bool internalError, ExceptionInfo info)
         {
+            throw new NotSupportedException();
+
             string stackTrace = ex.ToString();
             string message = GetNestedMessages(ex);
             System.Collections.Specialized.StringDictionary additionalInfo =
@@ -141,10 +143,8 @@ namespace VisualGit.Services
             if (pkg != null)
                 additionalInfo.Add("VisualGit-Version", pkg.UIVersion.ToString());
 
-            throw new NotImplementedException();
-#if false
-            additionalInfo.Add("SharpSvn-Version", SharpSvn.SvnClient.SharpSvnVersion.ToString());
-            additionalInfo.Add("Svn-Version", SharpSvn.SvnClient.Version.ToString());
+            additionalInfo.Add("SharpSvn-Version", GitClient.SharpGitVersion.ToString());
+            additionalInfo.Add("Svn-Version", GitClient.NGitVersion.ToString());
             additionalInfo.Add("OS-Version", Environment.OSVersion.Version.ToString());
 
             using (ErrorDialog dlg = new ErrorDialog())
@@ -160,64 +160,12 @@ namespace VisualGit.Services
 
                     if (info != null && info.CommandArgs != null)
                         subject = string.Format("Error handling {0}", info.CommandArgs.Command);
-
-                    SvnException sx = ex as SvnException;
-                    SvnException ix;
-
-                    while (sx != null
-                           && sx.SvnErrorCode == SvnErrorCode.SVN_ERR_BASE
-                           && (null != (ix = sx.InnerException as SvnException)))
-                    {
-                        sx = ix;
-                    }
-
-                    if (sx != null)
-                    {
-                        SvnException rc = sx.RootCause as SvnException;
-                        if (rc == null || rc.SvnErrorCode == sx.SvnErrorCode)
-                            subject += " (" + ErrorToString(sx) + ")";
-                        else
-                            subject += " (" + ErrorToString(sx) + "-" + ErrorToString(rc) + ")";
-                    }
                     
                     VisualGitErrorMessage.SendByMail(_errorReportMailAddress,
                         subject, ex, typeof(VisualGitErrorHandler).Assembly, additionalInfo);
                 }
             }
-#endif
         }
-
-#if false
-        static string ErrorToString(SvnException ex)
-        {
-            if (Enum.IsDefined(typeof(SvnErrorCode), ex.SvnErrorCode))
-                return ex.SvnErrorCode.ToString();
-            else if (Enum.IsDefined(typeof(SvnAprErrorCode), ex.AprErrorCode))
-                return ex.AprErrorCode.ToString();
-            else if (ex.SvnErrorCategory == SvnErrorCategory.OperatingSystem)
-            {
-                if (Enum.IsDefined(typeof(SvnWindowsErrorCode), ex.WindowsErrorCode))
-                    return ex.WindowsErrorCode.ToString();
-                // 
-                int num = (int)ex.WindowsErrorCode;
-
-                if ((num & 0x80000000) == 0)
-                {
-                    num = unchecked((int)(((uint)num & 0xFFFF) | 0x80070000));
-                }
-
-                Exception sysEx = Marshal.GetExceptionForHR(num);
-
-                if (sysEx != null)
-                    return string.Format("OS:{0}/{1}", sysEx.GetType().Name, ex.WindowsErrorCode);
-            }
-            else if (ex.SvnErrorCategory > SvnErrorCategory.None
-                     && Enum.IsDefined(typeof(SvnErrorCategory), ex.SvnErrorCategory))
-                return string.Format("{0}:{1}", ex.SvnErrorCategory, ex.SvnErrorCode);
-
-            return ((int)ex.SvnErrorCode).ToString();
-        }
-#endif
 
         private static string GetNestedMessages(Exception ex)
         {
