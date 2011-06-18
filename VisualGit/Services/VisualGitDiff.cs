@@ -238,29 +238,13 @@ namespace VisualGit.Services
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            // TODO: Maybe handle cases where the parent was copied instead of the child?
+            // TODO: We currently do not provide access to copied files.
+            // VisualGitStatus.IsCopied/.IsReplaced will never be true, because
+            // the copied information currently is only provided through the
+            // changed paths interface. This method is only called when
+            // .IsCopied/.IsReplaced is true.
 
-            throw new NotImplementedException();
-#if false
-            GitUriTarget copiedFrom = null;
-
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
-            {
-                SvnInfoArgs ia = new SvnInfoArgs();
-                ia.ThrowOnError = false;
-                ia.Depth = SvnDepth.Empty;
-
-                client.Info(item.FullPath, ia,
-                    delegate(object sender, SvnInfoEventArgs ee)
-                    {
-                        if (ee.CopyFromUri != null)
-                        {
-                            copiedFrom = new SvnUriTarget(ee.CopyFromUri, ee.CopyFromRevision);
-                        }
-                    });
-            }
-            return copiedFrom;
-#endif
+            throw new NotSupportedException();
         }
 
         sealed class DiffToolMonitor : VisualGitService, IVsFileChangeEvents
