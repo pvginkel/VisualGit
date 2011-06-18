@@ -172,8 +172,11 @@ namespace SharpGit
                 if (cancelled)
                     return;
 
-                if ((Args.RetrieveIgnoredEntries || Args.RetrieveAllEntries) && actualNodeKind == GitNodeKind.Directory)
-                {
+                if (
+                    (Args.RetrieveIgnoredEntries || Args.RetrieveAllEntries) &&
+                    actualNodeKind == GitNodeKind.Directory &&
+                    Directory.Exists(path)
+                ) {
                     foreach (string fullPath in Directory.GetFiles(path))
                     {
                         // If the item has not yet been seen, or it is unclean
