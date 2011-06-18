@@ -837,55 +837,10 @@ namespace VisualGit.Services
             else if (to == null)
                 throw new ArgumentNullException("to");
 
-            string f1;
-            string f2;
-
-            if (from.RevisionType == GitRevisionType.Hash && to.RevisionType == GitRevisionType.Hash && from.Revision + 1 == to.Revision)
-            {
-                f1 = GetTempPath(target.FileName, from);
-                f2 = GetTempPath(target.FileName, to);
-
-                int n = 0;
-                ProgressRunnerResult r = Context.GetService<IProgressRunner>().RunModal("Getting revisions",
-                    delegate(object sender, ProgressWorkerArgs e)
-                    {
-                        throw new NotImplementedException();
-#if false
-                        SvnFileVersionsArgs ea = new SvnFileVersionsArgs();
-                        ea.Start = from;
-                        ea.End = to;
-
-                        e.SvnClient.FileVersions(target, ea,
-                            delegate(object sender2, SvnFileVersionEventArgs e2)
-                            {
-                                if (n++ == 0)
-                                    e2.WriteTo(f1);
-                                else
-                                    e2.WriteTo(f2);
-                            });
-#endif
-                    });
-
-                if (!r.Succeeded)
-                    return null;
-
-                if (n != 2)
-                {
-                    // Sloooooow workaround for SvnBridge / Codeplex
-
-                    f1 = GetTempFile(target, from, withProgress);
-                    if (f1 == null)
-                        return null; // Canceled
-                    f2 = GetTempFile(target, to, withProgress);
-                }
-            }
-            else
-            {
-                f1 = GetTempFile(target, from, withProgress);
-                if (f1 == null)
-                    return null; // Canceled
-                f2 = GetTempFile(target, to, withProgress);
-            }
+            string f1 = GetTempFile(target, from, withProgress);
+            if (f1 == null)
+                return null; // Canceled
+            string f2 = GetTempFile(target, to, withProgress);
 
             if (string.IsNullOrEmpty(f1) || string.IsNullOrEmpty(f2))
                 return null;
