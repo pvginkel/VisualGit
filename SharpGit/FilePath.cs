@@ -27,32 +27,28 @@ namespace SharpGit
             // file name with lower case and checking whether the upper case
             // exists.
 
-            string filename = null;
+            string filename = IOPath.GetTempFileName();
 
             try
             {
-                filename = IOPath.GetTempFileName();
-
-                CaseSensitive =
-                    !(File.Exists(filename.ToLower()) && File.Exists(filename.ToUpper()));
+                CaseSensitive = !(File.Exists(filename.ToLower()) && File.Exists(filename.ToUpper()));
 
                 // Select the correct string comparers for easy access.
 
                 if (CaseSensitive)
                 {
-                    StringComparer = System.StringComparer.OrdinalIgnoreCase;
-                    StringComparison = System.StringComparison.OrdinalIgnoreCase;
+                    StringComparer = System.StringComparer.Ordinal;
+                    StringComparison = System.StringComparison.Ordinal;
                 }
                 else
                 {
-                    StringComparer = System.StringComparer.Ordinal;
-                    StringComparison = System.StringComparison.Ordinal;
+                    StringComparer = System.StringComparer.OrdinalIgnoreCase;
+                    StringComparison = System.StringComparison.OrdinalIgnoreCase;
                 }
             }
             finally
             {
-                if (filename != null && File.Exists(filename))
-                    File.Delete(filename);
+                File.Delete(filename);
             }
         }
 
