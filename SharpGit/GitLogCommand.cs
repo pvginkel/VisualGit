@@ -166,7 +166,7 @@ namespace SharpGit
 
                             e.ChangedPaths = new GitChangeItemCollection();
 
-                            foreach (var diffEntry in diffFormatter.Scan(commit.Tree, commit.Parents[0].Tree))
+                            foreach (var diffEntry in diffFormatter.Scan(commit.Parents[0].Tree, commit.Tree))
                             {
                                 e.ChangedPaths.Add(new GitChangeItem
                                 {
