@@ -75,6 +75,9 @@ namespace SharpGit
                         var entry = dirCache.GetEntry(entryIndex);
 
                         var loader = objectReader.Open(entry.GetObjectId());
+
+                        EnsureDirectory(Path.GetDirectoryName(fullPath));
+
                         using (var inStream = new ObjectStreamWrapper(loader.OpenStream()))
                         using (var outStream = File.Create(fullPath))
                         {
@@ -86,6 +89,16 @@ namespace SharpGit
             finally
             {
                 objectReader.Release();
+            }
+        }
+
+        private void EnsureDirectory(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                EnsureDirectory(Path.GetDirectoryName(path));
+
+                Directory.CreateDirectory(path);
             }
         }
 
