@@ -247,9 +247,7 @@ namespace VisualGit.Scc
 
             if (maybeAdd != null)
             {
-                throw new NotImplementedException();
-#if false
-                using (SvnClient cl = GetService<ISvnClientPool>().GetNoUIClient())
+                using (GitClient cl = GetService<IGitClientPool>().GetNoUIClient())
                 {
                     foreach (string file in maybeAdd)
                     {
@@ -264,34 +262,14 @@ namespace VisualGit.Scc
                             item.IsVersionable && !item.IsIgnored &&
                             item.InSolution)
                         {
-                            SvnAddArgs aa = new SvnAddArgs();
+                            GitAddArgs aa = new GitAddArgs();
                             aa.ThrowOnError = false; // Just ignore errors here; make the user add them themselves
                             aa.AddParents = true;
 
                             cl.Add(item.FullPath, aa);
-
-                            // Detect if we have a file that Git might detect as binary
-                            if (!item.IsTextFile)
-                            {
-                                // Only check small files, avoid checking big binary files
-                                FileInfo fi = new FileInfo(item.FullPath);
-                                if (fi.Length < 10)
-                                {
-                                    // We're sure it's at most 10 bytes here, so just read all
-                                    byte[] fileBytes = File.ReadAllBytes(item.FullPath);
-
-                                    // If the file starts with a UTF8 BOM, we're sure enough it's a text file, keep UTF16 & 32 binary
-                                    if (StartsWith(fileBytes, new byte[] {0xEF, 0xBB, 0xBF}))
-                                    {
-                                        // Delete the mime type property, so it's detected as a text file again
-                                        cl.DeleteProperty(item.FullPath, SvnPropertyNames.SvnMimeType);
-                                    }
-                                }
-                            }
                         }
                     }
                 }
-#endif
             }
         }
 
