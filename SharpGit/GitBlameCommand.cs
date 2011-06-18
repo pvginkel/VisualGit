@@ -17,10 +17,18 @@ namespace SharpGit
 
         public GitBlameResult Execute(GitTarget target)
         {
-            if (FileSystemUtil.FileIsBinary(target.TargetName))
+            string fullPath;
+            if (target is GitPathTarget)
+                fullPath = ((GitPathTarget)target).FullPath;
+            else if (target is GitUriTarget)
+                fullPath = GitTools.GetAbsolutePath(((GitUriTarget)target).Uri);
+            else
+                throw new NotSupportedException();
+
+            if (FileSystemUtil.FileIsBinary(fullPath))
                 throw new GitClientBinaryFileException();
 
-            var repositoryEntry = Client.GetRepository(target.TargetName);
+            var repositoryEntry = Client.GetRepository(fullPath);
 
             using (repositoryEntry.Lock())
             {
@@ -28,7 +36,7 @@ namespace SharpGit
 
                 var command = new Git(repository).Blame();
 
-                command.SetFilePath(repository.GetRepositoryPath(target.TargetName));
+                command.SetFilePath(repository.GetRepositoryPath(fullPath));
                 command.SetFollowFileRenames(true);
 
                 if (Args.End != null)

@@ -75,11 +75,7 @@ namespace VisualGit.Commands
                     foreach (IGitLogChangedPathItem logItem in e.Selection.GetSelection<IGitLogChangedPathItem>())
                     {
                         targets.Add(logItem.Origin);
-
-                        throw new NotImplementedException();
-#if false
                         endRev = logItem.Revision;
-#endif
                     }
                     break;
                 case VisualGitCommand.GitNodeAnnotate:

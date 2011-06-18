@@ -23,23 +23,27 @@ namespace SharpGit
             if (stream == null)
                 throw new ArgumentNullException("stream");
 
-            var pathTarget = path as GitPathTarget;
+            string fullPath;
 
-            if (pathTarget == null)
-                throw new NotImplementedException();
+            if (path is GitPathTarget)
+                fullPath = ((GitPathTarget)path).FullPath;
+            else if (path is GitUriTarget)
+                fullPath = GitTools.GetAbsolutePath(((GitUriTarget)path).Uri);
+            else
+                throw new NotSupportedException();
 
-            var repositoryEntry = Client.GetRepository(pathTarget.FullPath);
+            var repositoryEntry = Client.GetRepository(fullPath);
 
             using (repositoryEntry.Lock())
             {
                 var repository = repositoryEntry.Repository;
 
                 if (Args.Revision == GitRevision.Working)
-                    WriteWorkingRevision(repository, stream, pathTarget.FullPath);
+                    WriteWorkingRevision(repository, stream, fullPath);
                 else if (Args.Revision == GitRevision.Base)
-                    WriteBaseRevision(repository, stream, pathTarget.FullPath);
+                    WriteBaseRevision(repository, stream, fullPath);
                 else if (Args.Revision.RevisionType == GitRevisionType.Hash)
-                    WriteSpecificRevision(repository, stream, pathTarget.FullPath, Args.Revision);
+                    WriteSpecificRevision(repository, stream, fullPath, Args.Revision);
                 else
                     throw new NotImplementedException();
             }
