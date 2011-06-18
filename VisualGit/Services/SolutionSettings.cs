@@ -427,32 +427,6 @@ namespace VisualGit.Settings
             get { return _hiveSuffix; }
         }
 
-        public Uri RepositoryRoot
-        {
-            get
-            {
-                RefreshIfDirty();
-
-                return _cache.RepositoryRoot ?? (_cache.RepositoryRoot = GetRepositoryRoot());
-            }
-        }
-
-        private Uri GetRepositoryRoot()
-        {
-            SettingsCache cache = _cache;
-
-            if (cache.SolutionFilename == null)
-                return null;
-
-            throw new NotImplementedException();
-#if false
-            using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
-            {
-                return cache.RepositoryRoot = client.GetRepositoryRoot(cache.SolutionFilename);
-            }
-#endif
-        }
-
         #endregion
 
         IVisualGitConfigurationService _config;
