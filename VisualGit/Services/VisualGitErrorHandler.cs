@@ -110,72 +110,12 @@ namespace VisualGit.Services
                 }
             }
 
-
             private void DoHandle(ProgressRunnerException ex, ExceptionInfo info)
             {
                 // we're only interested in the inner exception - we know where the 
                 // outer one comes from
                 Invoke(ex.InnerException, info);
             }
-
-#if false
-            private void DoHandle(SvnRepositoryHookException e, ExceptionInfo info)
-            {
-                string message;
-                if (e.InnerException != null)
-                    message = GetNestedMessages(e).Replace("\r", "").Replace("\n", Environment.NewLine);
-                else
-                    message = e.Message;
-
-                MessageBox.Show(Owner, message, "Repository hook failed", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-
-            private void DoHandle(SvnWorkingCopyLockException ex, ExceptionInfo info)
-            {
-                if (ex.SvnErrorCode != SvnErrorCode.SVN_ERR_WC_NOT_LOCKED)
-                {
-                    MessageBox.Show(Owner,
-                        "Your working copy appears to be locked. " + Environment.NewLine +
-                        "Run Cleanup to amend the situation.",
-                        "Working copy locked", MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    MessageBox.Show(Owner,
-                        "The working copy lock appears to be broken.",
-                        "Working copy not locked", MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                }
-            }
-
-            private void DoHandle(SvnAuthorizationException ex, ExceptionInfo info)
-            {
-                // TODO: Show at least some parts of the real error to help resolve it.
-                MessageBox.Show(Owner,
-                    "You failed to authorize against the remote repository. ",
-                    "Authorization failed", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-
-            private void DoHandle(SvnAuthenticationException ex, ExceptionInfo info)
-            {
-                MessageBox.Show(Owner,
-                    "You failed to authenticate against the remote repository. ",
-                    "Authentication failed", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-
-            private void DoHandle(SvnFileSystemOutOfDateException ex, ExceptionInfo info)
-            {
-                MessageBox.Show(Owner,
-                    "One or more of your local resources are out of date. " +
-                    "You need to run Update before you can proceed with the operation",
-                    "Resource(s) out of date", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-#endif
 
             private void DoHandle(Exception ex, ExceptionInfo info)
             {
