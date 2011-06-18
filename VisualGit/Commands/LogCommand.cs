@@ -156,11 +156,8 @@ namespace VisualGit.Commands
                     if (section == null)
                         return;
 
-                    throw new NotImplementedException();
-#if false
                     PerformLog(e.Context, new GitOrigin[] { section.Origin }, section.Revision, null);
                     break;
-#endif
             }
         }
 
