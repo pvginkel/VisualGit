@@ -232,6 +232,12 @@ namespace SharpGit
 
                 string fullPath = repository.GetAbsoluteRepositoryPath(deletedPath);
 
+                // Prevent double reporting of naming conflicts. This ensures
+                // that only the Missing is reported, and not the Untracked.
+
+                if (seen.Contains(fullPath))
+                    continue;
+
                 var e = new GitStatusEventArgs
                 {
                     FullPath = fullPath,
