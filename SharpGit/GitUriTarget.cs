@@ -61,10 +61,6 @@ namespace SharpGit
             return new GitUriTarget(value);
         }
 
-#if false
-        public static GitUriTarget FromString(string value, bool allowOperationalRevision);
-#endif
-
         public static implicit operator GitUriTarget(Uri value)
         {
             return value != null ? FromUri(value) : null;
@@ -125,21 +121,6 @@ namespace SharpGit
         {
             get { return UriToCanonicalString(_uri); }
         }
-
-#if false
-        public static bool TryParse(string path, out GitUriTarget pegUri)
-        {
-            return TryParse(path, false, out pegUri);
-        }
-
-        public static bool TryParse(string path, bool allowOperationalRevision, out GitUriTarget pegUri)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            throw new NotImplementedException();
-        }
-#endif
 
         public static ICollection<GitUriTarget> Map(IEnumerable<Uri> uris)
         {

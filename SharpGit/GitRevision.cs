@@ -167,13 +167,6 @@ namespace SharpGit
             return result;
         }
 
-#if false
-        public static implicit operator GitRevision(GitRevisionType value)
-        {
-            return new GitRevision(value);
-        }
-#endif
-
         public static implicit operator GitRevision(DateTime value)
         {
             return new GitRevision(value);

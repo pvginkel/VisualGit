@@ -79,13 +79,6 @@ namespace SharpGit
         {
         }
 
-#if false
-		public GitPathTarget(string path, GitRevisionType type)
-			: this(path, new GitRevision(type))
-		{
-		}
-#endif
-
         public override string TargetName { get { return _path; } }
 
         public override string FileName { get { return Path.GetFileName(_path); } }
@@ -101,11 +94,6 @@ namespace SharpGit
         public string TargetPath { get { return _path; } }
 
         public string FullPath { get { return _fullPath; } }
-
-#if false
-		public static bool TryParse(string targetName, out GitPathTarget target);
-		public static bool TryParse(string targetName, bool allowOperationalRevisions, out GitPathTarget target);
-#endif
 
         public static ICollection<GitPathTarget> Map(IEnumerable<string> paths)
         {

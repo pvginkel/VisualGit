@@ -49,10 +49,6 @@ namespace SharpGit
             return new GitPathTarget(value);
         }
 
-#if false
-        public static GitTarget FromString(string value, bool allowOperationalRevision);
-#endif
-
         public static implicit operator GitTarget(Uri value)
         {
             return value != null ? FromUri(value) : null;
@@ -87,18 +83,6 @@ namespace SharpGit
         {
             return TargetName.GetHashCode();
         }
-
-#if false
-        public static bool TryParse(String targetName, out GitTarget target)
-        {
-            return TryParse(targetName, false, out target);
-        }
-
-        internal static bool TryParse(String targetName, bool allowOperationalRevision, out GitTarget target)
-        {
-            throw new NotImplementedException();
-        }
-#endif
 
         internal abstract GitRevision GetGitRevision(GitRevision fileNoneValue, GitRevision uriNoneValue);
     }
