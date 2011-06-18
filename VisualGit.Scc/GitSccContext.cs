@@ -67,7 +67,7 @@ namespace VisualGit.Scc
 
             _client.Status(dir, sa, (sender, e) =>
                 {
-                    if (entry == null && path == e.FullPath)
+                    if (entry == null && String.Equals(path, e.FullPath, FileSystemUtil.StringComparison))
                     {
                         entry = e;
                         e.Cancel = true;
@@ -370,30 +370,45 @@ namespace VisualGit.Scc
             using (MarkIgnoreFile(fromPath))
             using (MarkIgnoreFile(toPath))
             {
-                using (TempFile(fromPath, toPath))
-                using (MoveAway(toPath, true))
+                if (String.Equals(fromPath, toPath, FileSystemUtil.StringComparison))
                 {
-                    string toDir = GitTools.GetNormalizedDirectoryName(toPath);
-
-                    Debug.Assert(GitTools.IsManagedPath(toDir));
-
-                    GitMoveArgs ma = new GitMoveArgs();
-                    ma.ThrowOnError = false;
-                    ma.Force = true;
-
-                    ok = _client.Move(fromPath, toPath, ma);
-
-                    if (ok)
+                    ok = PerformSafeWcMoveFixup(fromPath, toPath, ref setReadOnly);
+                }
+                else
+                {
+                    using (TempFile(fromPath, toPath))
+                    using (MoveAway(toPath, true))
                     {
-                        setReadOnly = (File.GetAttributes(toPath) & FileAttributes.ReadOnly) != (FileAttributes)0;
+                        ok = PerformSafeWcMoveFixup(fromPath, toPath, ref setReadOnly);
                     }
-
-                    MaybeRevertReplaced(toPath);
                 }
 
                 if (setReadOnly)
                     File.SetAttributes(toPath, File.GetAttributes(toPath) | FileAttributes.ReadOnly);
             }
+
+            return ok;
+        }
+
+        private bool PerformSafeWcMoveFixup(string fromPath, string toPath, ref bool setReadOnly)
+        {
+            bool ok;
+            string toDir = GitTools.GetNormalizedDirectoryName(toPath);
+
+            Debug.Assert(GitTools.IsManagedPath(toDir));
+
+            GitMoveArgs ma = new GitMoveArgs();
+            ma.ThrowOnError = false;
+            ma.Force = true;
+
+            ok = _client.Move(fromPath, toPath, ma);
+
+            if (ok)
+            {
+                setReadOnly = (File.GetAttributes(toPath) & FileAttributes.ReadOnly) != (FileAttributes)0;
+            }
+
+            MaybeRevertReplaced(toPath);
 
             return ok;
         }

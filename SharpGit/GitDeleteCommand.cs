@@ -29,7 +29,24 @@ namespace SharpGit
 
                 command.AddFilepattern(repository.GetRepositoryPath(path));
 
-                command.Call();
+                // DeleteCommand does not have an option to keep the local file
+                // to be deleted. Temporarily move it away so the DeleteCommand
+                // won't delete it.
+
+                IDisposable moveAwayHandle = null;
+
+                if (Args.KeepLocal && File.Exists(path))
+                    moveAwayHandle = MoveAway(path);
+
+                try
+                {
+                    command.Call();
+                }
+                finally
+                {
+                    if (moveAwayHandle != null)
+                        moveAwayHandle.Dispose();
+                }
 
                 RaiseNotify(new GitNotifyEventArgs
                 {

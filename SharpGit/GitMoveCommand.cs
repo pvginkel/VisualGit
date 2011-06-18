@@ -20,6 +20,12 @@ namespace SharpGit
             if (toPath == null)
                 throw new ArgumentNullException("toPath");
 
+            // Moving files with the same name is a no-op. This does prevent
+            // us from supporting renaming files on Windows.
+
+            if (String.Equals(fromPath, toPath, FileSystemUtil.StringComparison))
+                return;
+
             // Subversion requires a move operation, but we don't. We just
             // do a delete and an add.
 
@@ -36,7 +42,7 @@ namespace SharpGit
 
             Client.Delete(fromPath, new GitDeleteArgs
             {
-                KeepLocal = false,
+                KeepLocal = true,
                 Force = Args.Force
             });
 

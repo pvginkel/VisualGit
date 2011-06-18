@@ -171,6 +171,59 @@ namespace SharpGit
 
             return builder.Build();
         }
+
+        protected IDisposable MoveAway(string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            if (File.Exists(path))
+            {
+                string tmpPath;
+
+                for (int i = 0; ; i++)
+                {
+                    tmpPath = path + ".SharpGit." + i + ".tmp";
+
+                    if (!File.Exists(tmpPath))
+                        break;
+                }
+
+                File.Move(path, tmpPath);
+
+                return new RevertMove(path, tmpPath);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private class RevertMove : IDisposable
+        {
+            private bool _disposed;
+            private string _path;
+            private string _tmpPath;
+
+            public RevertMove(string path, string tmpPath)
+            {
+                _path = path;
+                _tmpPath = tmpPath;
+            }
+
+            public void Dispose()
+            {
+                if (!_disposed)
+                {
+                    if (File.Exists(_path))
+                        File.Delete(_path);
+
+                    File.Move(_tmpPath, _path);
+
+                    _disposed = true;
+                }
+            }
+        }
     }
 
     internal abstract class GitCommand<T> : GitCommand
