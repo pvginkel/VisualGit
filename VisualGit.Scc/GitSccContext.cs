@@ -79,14 +79,11 @@ namespace VisualGit.Scc
 
         public bool WcDelete(string path)
         {
-            throw new NotImplementedException();
-#if false
-            SvnDeleteArgs da = new SvnDeleteArgs();
+            GitDeleteArgs da = new GitDeleteArgs();
             da.ThrowOnError = false;
             da.Force = true;
 
-            return _svnClient.Delete(path, da);
-#endif
+            return _client.Delete(path, da);
         }
 
         internal bool SafeWcMoveFixup(string fromPath, string toPath)
