@@ -39,7 +39,7 @@ namespace VisualGit.Commands
             {
                 foreach (GitItem item in toResolve)
                 {
-                    string svnPath = GetGitCasing(item);
+                    string svnPath = GetGitCasing(e, item);
                     string actualPath = GitTools.GetTruePath(item.FullPath);
 
                     if (svnPath == null || actualPath == null)
@@ -80,30 +80,31 @@ namespace VisualGit.Commands
             }
         }
 
-        static string GetGitCasing(GitItem item)
+        static string GetGitCasing(CommandEventArgs e, GitItem item)
         {
-            throw new NotImplementedException();
-#if false
             string name = null;
             // Find the correct casing
-            using (SvnWorkingCopyClient wcc = new SvnWorkingCopyClient())
+            using (GitClient client = e.GetService<IGitClientPool>().GetNoUIClient())
             {
-                SvnWorkingCopyEntriesArgs ea = new SvnWorkingCopyEntriesArgs();
-                ea.ThrowOnCancel = false;
-                ea.ThrowOnError = false;
+                GitStatusArgs args = new GitStatusArgs();
 
-                wcc.ListEntries(item.Directory, ea,
-                    delegate(object sender, SvnWorkingCopyEntryEventArgs e)
+                args.Depth = GitDepth.Files;
+                args.RetrieveAllEntries = false;
+                args.RetrieveIgnoredEntries = false;
+                args.ThrowOnCancel = false;
+                args.ThrowOnError = false;
+
+                client.Status(item.Directory, args,
+                    delegate(object sender, GitStatusEventArgs ea)
                     {
-                        if (string.Equals(e.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(ea.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
                         {
-                            name = e.FullPath;
+                            name = ea.FullPath;
                         }
                     });
             }
 
             return name;
-#endif
         }
 
     }
