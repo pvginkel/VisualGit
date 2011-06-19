@@ -141,7 +141,6 @@ namespace SharpGit
                         break;
                 }
 
-                fetchCommand.SetCredentialsProvider(new CredentialsProvider(this));
                 fetchCommand.SetProgressMonitor(monitor);
 
                 if (monitor.IsCancelled())
@@ -149,7 +148,12 @@ namespace SharpGit
 
                 try
                 {
-                    var fetchResult = fetchCommand.Call();
+                    FetchResult fetchResult;
+
+                    using (new CredentialsProviderScope(new CredentialsProvider(this)))
+                    {
+                        fetchResult = fetchCommand.Call();
+                    }
 
                     monitor.Update(1);
 

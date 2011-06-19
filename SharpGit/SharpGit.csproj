@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CredentialsProviderScope.cs" />
     <Compile Include="FilePath.cs" />
     <Compile Include="FilePathAbsoluteException.cs" />
     <Compile Include="FilePathNotAbsoluteException.cs" />
@@ -84,6 +85,8 @@
     <Compile Include="GitBlameResult.cs" />
     <Compile Include="GitBranchArgs.cs" />
     <Compile Include="GitBranchCommand.cs" />
+    <Compile Include="GitCertificate.cs" />
+    <Compile Include="GitCertificates.cs" />
     <Compile Include="GitClientBinaryFileException.cs" />
     <Compile Include="GitCloneArgs.cs" />
     <Compile Include="GitCloneCommand.cs" />
@@ -214,7 +217,9 @@
     <Compile Include="RepositoryEntry.cs" />
     <Compile Include="RepositoryManager.cs" />
     <Compile Include="RepositoryExtensions.cs" />
+    <Compile Include="SshSessionFactory.cs" />
     <Compile Include="StreamExtensions.cs" />
+    <Compile Include="TransportWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Key.snk">

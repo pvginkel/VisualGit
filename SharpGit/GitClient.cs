@@ -7,11 +7,14 @@ using NGit.Api.Errors;
 using System.Collections.ObjectModel;
 using NGit.Api;
 using SharpGit.Implementation;
+using NGit.Transport;
 
 namespace SharpGit
 {
     public class GitClient : IDisposable
     {
+        private static readonly List<TransportWrapper> _transportProtocolWrappers = new List<TransportWrapper>();
+
         private bool _disposed;
 
         public static readonly string SharpGitVersion;
@@ -31,6 +34,24 @@ namespace SharpGit
                 new GitLibrary(typeof(Mono.Unix.Catalog).Assembly),
                 new GitLibrary(typeof(Mono.Security.PKCS7).Assembly)
             });
+
+            SetupTransports();
+        }
+
+        private static void SetupTransports()
+        {
+            foreach (var protocol in Transport.GetTransportProtocols())
+            {
+                var wrapper = new TransportWrapper(protocol);
+
+                Transport.Unregister(protocol);
+                Transport.Register(wrapper);
+
+                // We need to keep a reference to all protocol wrappers since Transport
+                // stores them as a WeakReference.
+
+                _transportProtocolWrappers.Add(wrapper);
+            }
         }
 
         internal GitUIBindArgs BindArgs { get; set; }

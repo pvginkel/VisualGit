@@ -26,7 +26,6 @@ namespace SharpGit
             var command = new CloneCommand();
 
             command.SetBranch(@ref.Name);
-            command.SetCredentialsProvider(new CredentialsProvider(this));
             command.SetProgressMonitor(new ProgressMonitor(this));
             command.SetDirectory(destination);
             command.SetURI(remote);
@@ -35,7 +34,10 @@ namespace SharpGit
 
             try
             {
-                command.Call();
+                using (new CredentialsProviderScope(new CredentialsProvider(this)))
+                {
+                    command.Call();
+                }
             }
             catch (JGitInternalException ex)
             {

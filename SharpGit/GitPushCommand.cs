@@ -56,13 +56,15 @@ namespace SharpGit
                         pushCommand.SetRemote(Args.RemoteUri);
 
                     pushCommand.SetProgressMonitor(new ProgressMonitor(this));
-                    pushCommand.SetCredentialsProvider(new CredentialsProvider(this));
 
                     var result = new GitPushResult();
 
                     try
                     {
-                        pushCommand.Call();
+                        using (new CredentialsProviderScope(new CredentialsProvider(this)))
+                        {
+                            pushCommand.Call();
+                        }
                     }
                     catch (JGitInternalException ex)
                     {

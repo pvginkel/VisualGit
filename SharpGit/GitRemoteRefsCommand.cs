@@ -28,82 +28,22 @@ namespace SharpGit
 
             try
             {
-                // LsRemoteCommand does not have the option of providing a
-                // CredentialsProvider. Below is the code from LsRemoteCommand
-                // copied/pasted with the added SetCredentialsProvider.
+                var command = new Git(repository).LsRemote();
+
+                command.SetRemote(remote);
 
                 var result = new GitRemoteRefsResult();
 
-                try
+                ICollection<Ref> refs;
+
+                using (new CredentialsProviderScope(new CredentialsProvider(this)))
                 {
-                    Transport transport = Transport.Open(repository, remote);
-
-                    transport.SetCredentialsProvider(new CredentialsProvider(this));
-
-                    try
-                    {
-                        var refSpecs = new List<RefSpec>();
-
-                        if (types.HasFlag(GitRemoteRefType.Tags))
-                        {
-                            refSpecs.Add(new RefSpec("refs/tags/*:refs/remotes/origin/tags/*"));
-                        }
-                        if (types.HasFlag(GitRemoteRefType.Branches))
-                        {
-                            refSpecs.Add(new RefSpec("refs/heads/*:refs/remotes/origin/*"));
-                        }
-                        ICollection<Ref> refs;
-                        IDictionary<string, Ref> refmap = new Dictionary<string, Ref>();
-                        FetchConnection fc = transport.OpenFetch();
-                        try
-                        {
-                            refs = fc.GetRefs();
-                            foreach (Ref r in refs)
-                            {
-                                bool found = refSpecs.Count == 0;
-                                foreach (RefSpec rs in refSpecs)
-                                {
-                                    if (rs.MatchSource(r))
-                                    {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (found)
-                                {
-                                    refmap.Add(r.GetName(), r);
-                                }
-                            }
-                        }
-                        finally
-                        {
-                            fc.Close();
-                        }
-
-                        foreach (var @ref in refmap.Values)
-                        {
-                            result.Items.Add(new GitRef(@ref));
-                        }
-                    }
-                    catch (TransportException e)
-                    {
-                        throw new JGitInternalException(JGitText.Get().exceptionCaughtDuringExecutionOfLsRemoteCommand, e);
-                    }
-                    finally
-                    {
-                        transport.Close();
-                    }
+                    refs = command.Call();
                 }
-                catch (JGitInternalException ex)
+
+                foreach (var item in refs)
                 {
-                    var exception = new GitException(GitErrorCode.GetRemoteRefsFailed, ex);
-
-                    Args.SetError(exception);
-
-                    result.PostGetRemoteRefsError = ex.Message;
-
-                    if (Args.ShouldThrow(exception.ErrorCode))
-                        throw exception;
+                    result.Items.Add(new GitRef(item));
                 }
 
                 return result;
