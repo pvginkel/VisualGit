@@ -60,7 +60,7 @@ namespace VisualGit.Scc
             _reposRoot = origin.RepositoryRoot;
 
             Debug.Assert(
-                String.Equals(RepositoryUtil.GetRepositoryRoot(path), _reposRoot, FileSystemUtil.StringComparison),
+                String.Equals(GitTools.GetRepositoryRoot(path), _reposRoot, FileSystemUtil.StringComparison),
                 "path must be of the repository pointed to by origin"
             );
         }
@@ -81,7 +81,7 @@ namespace VisualGit.Scc
             _reposRoot = reposRoot;
 
             Debug.Assert(
-                String.Equals(RepositoryUtil.GetRepositoryRoot(_target.FullPath), _reposRoot, FileSystemUtil.StringComparison),
+                String.Equals(GitTools.GetRepositoryRoot(_target.FullPath), _reposRoot, FileSystemUtil.StringComparison),
                 "path must be of the repository pointed to by origin"
             );
         }

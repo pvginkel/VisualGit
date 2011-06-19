@@ -229,7 +229,7 @@ namespace VisualGit.Scc
 
                     if (wa != null)
                         continue; // Not an unexpected WC root
-                    else if (!GitTools.IsManagedPath(newDir))
+                    else if (!GitTools.IsBelowManagedPath(newDir))
                         continue; // Not a wc root at all
 
                     git.SafeWcDirectoryCopyFixUp(oldDir, newDir, safeRename); // Recreate the old WC directory

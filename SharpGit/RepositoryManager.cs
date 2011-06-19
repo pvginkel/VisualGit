@@ -28,7 +28,7 @@ namespace SharpGit
 
                 if (!_repositoryRootLookup.TryGetValue(path, out repositoryRoot))
                 {
-                    RepositoryUtil.TryGetRepositoryRoot(path, out repositoryRoot);
+                    GitTools.TryGetRepositoryRoot(path, out repositoryRoot);
                     _repositoryRootLookup.Add(path, repositoryRoot);
                 }
 

@@ -97,7 +97,7 @@ namespace VisualGit.UI.PendingChanges.Commands
 
                 using (var client = e.Context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRoot);
+                    string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
 
                     foreach (var @ref in client.GetRefs(repositoryPath))
                     {
@@ -130,7 +130,7 @@ namespace VisualGit.UI.PendingChanges.Commands
         {
             if (ProjectRoot != null)
             {
-                string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRoot);
+                string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
 
                 using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
                 {

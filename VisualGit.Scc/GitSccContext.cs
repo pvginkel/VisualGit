@@ -126,7 +126,7 @@ namespace VisualGit.Scc
             bool ok;
             string toDir = GitTools.GetNormalizedDirectoryName(toPath);
 
-            Debug.Assert(GitTools.IsManagedPath(toDir));
+            Debug.Assert(GitTools.IsBelowManagedPath(toDir));
 
             GitMoveArgs ma = new GitMoveArgs();
             ma.ThrowOnError = false;

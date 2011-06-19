@@ -28,7 +28,7 @@ namespace SharpGit
 
         public override bool Include(TreeWalk walker)
         {
-            return RepositoryUtil.PathMatches(_path, walker.PathString, walker.IsSubtree, _depth);
+            return GitTools.PathMatches(_path, walker.PathString, walker.IsSubtree, _depth);
         }
 
         public override bool ShouldBeRecursive()

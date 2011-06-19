@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
+using NGit;
 
 namespace SharpGit
 {
@@ -85,7 +86,7 @@ namespace SharpGit
             return path;
         }
 
-        public static bool PathContainsInvalidChars(string path)
+        private static bool PathContainsInvalidChars(string path)
         {
             char[] invalidChars = _invalidChars;
 
@@ -98,7 +99,7 @@ namespace SharpGit
             return false;
         }
 
-        public static bool IsNormalizedFullPath(string path)
+        private static bool IsNormalizedFullPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -220,7 +221,7 @@ namespace SharpGit
             return 0 <= Array.IndexOf(invalidChars, v[index]);
         }
 
-        public static string LongGetFullPath(string path)
+        private static string LongGetFullPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -294,7 +295,7 @@ namespace SharpGit
         }
 
         [DllImport("kernel32.dll")]
-        static extern uint GetFullPathName(string lpFileName, uint nBufferLength, [Out] StringBuilder lpBuffer, [Out] StringBuilder lpFilePart);
+        private static extern uint GetFullPathName(string lpFileName, uint nBufferLength, [Out] StringBuilder lpBuffer, [Out] StringBuilder lpFilePart);
 
         internal static DateTime CreateDate(long milliSecondsSinceEpoch)
         {
@@ -327,16 +328,7 @@ namespace SharpGit
         public static bool IsBelowManagedPath(string fullPath)
         {
             string repositoryPath;
-            return RepositoryUtil.TryGetRepositoryRoot(fullPath, out repositoryPath);
-        }
-
-        public static bool IsManagedPath(string fullPath)
-        {
-            // With Subversion, every path is managed separately. With Git, they
-            // aren't, so we don't make a distinction between IsManagedPath and
-            // IsBelowManagedPath.
-
-            return IsBelowManagedPath(fullPath);
+            return GitTools.TryGetRepositoryRoot(fullPath, out repositoryPath);
         }
 
         public static string GetTruePath(string path)
@@ -440,6 +432,130 @@ namespace SharpGit
             }
 
             return result.ToString();
+        }
+
+        public static string GetRepositoryRoot(string path)
+        {
+            string result;
+
+            if (!TryGetRepositoryRoot(path, out result))
+                throw new GitNoRepositoryException();
+
+            return result;
+        }
+
+        public static bool TryGetRepositoryRoot(string path, out string repositoryRoot)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            path = Path.GetFullPath(path);
+            string pathRoot = Path.GetPathRoot(path);
+
+            while (true)
+            {
+                if (Directory.Exists(Path.Combine(path, Constants.DOT_GIT)))
+                {
+                    repositoryRoot = path;
+                    return true;
+                }
+
+                if (
+                    String.Empty.Equals(path) ||
+                    String.Equals(path, pathRoot, FileSystemUtil.StringComparison)
+                )
+                {
+                    repositoryRoot = null;
+                    return false;
+                }
+
+                path = Path.GetDirectoryName(path);
+            }
+        }
+
+        internal static bool PathMatches(string rootPath, string path, bool isSubTree, GitDepth depth)
+        {
+            if (rootPath == null)
+                throw new ArgumentNullException("rootPath");
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            if (depth < GitDepth.Empty)
+                throw new NotImplementedException();
+
+            // Path equals to rootPath always consitutes a match.
+
+            if (String.Equals(rootPath, path, FileSystemUtil.StringComparison))
+                return true;
+
+            if (isSubTree && path[path.Length - 1] != '/')
+                path += '/';
+
+            // Check whether we recurse into a sub tree. This checks whether
+            // path is part of rootPath and only matches up to the actual folder.
+            // This does not depend on Depth because if we wouldn't match this,
+            // we wouldn't even get to the file.
+
+            if (isSubTree && rootPath.StartsWith(path, FileSystemUtil.StringComparison))
+                return true;
+
+            // If we didn't match the exact file and we're not descending into
+            // the folder of the exact file, we must be iterating files or
+            // children to match anything beyond this point.
+
+            if (depth <= GitDepth.Empty)
+                return false;
+
+            // Treat the rootPath like a directory. If it was a file and we'd
+            // have a match, it would have already been matched by the
+            // String.Equals above, so all matches below fail. Otherwise,
+            // this allows us to correctly match all sub folders.
+
+            if (rootPath.Length > 0 && rootPath[rootPath.Length - 1] != '/')
+                rootPath += '/';
+
+            // Here we check whether we're in a sub folder when we're only
+            // matching the files of a specific folder.
+            // If we do not recurse and we have a directory separater after
+            // the root is long, we're sure we can skip it. Note we do not check
+            // whether the path is actually of the root path because that's checked
+            // later on.
+
+            if (depth == GitDepth.Files && path.LastIndexOf('/') > rootPath.Length)
+                return false;
+
+            // Last, check whether the matching file is located in or below
+            // the root directory.
+
+            return path.StartsWith(rootPath, FileSystemUtil.StringComparison);
+        }
+
+        internal static Dictionary<RepositoryEntry, ICollection<string>> CollectPaths(IEnumerable<string> paths)
+        {
+            if (paths == null)
+                throw new ArgumentNullException("paths");
+
+            var result = new Dictionary<RepositoryEntry, ICollection<string>>();
+
+            foreach (string path in paths)
+            {
+                var repositoryEntry = RepositoryManager.GetRepository(path);
+
+                if (repositoryEntry != null)
+                {
+                    ICollection<string> repositoryPaths;
+
+                    if (!result.TryGetValue(repositoryEntry, out repositoryPaths))
+                    {
+                        repositoryPaths = new List<string>();
+                        result.Add(repositoryEntry, repositoryPaths);
+                    }
+
+                    repositoryPaths.Add(repositoryEntry.Repository.GetRepositoryPath(path));
+                }
+            }
+
+            return result;
         }
     }
 }

@@ -469,7 +469,7 @@ namespace VisualGit.Scc
 
                 GitItem item = StatusCache[dir];
 
-                if (!item.Exists || !item.IsDirectory || !GitTools.IsManagedPath(dir))
+                if (!item.Exists || !item.IsDirectory || !GitTools.IsBelowManagedPath(dir))
                     continue;
 
                 if ((DateTime.UtcNow - GetCreated(item)) > new TimeSpan(0, 1, 0))
@@ -487,7 +487,7 @@ namespace VisualGit.Scc
 
                     // Don't unversion the directory if the parent is not versioned
                     string parentDir = GitTools.GetNormalizedDirectoryName(dir);
-                    if (parentDir == null || !GitTools.IsManagedPath(parentDir))
+                    if (parentDir == null || !GitTools.IsBelowManagedPath(parentDir))
                         continue; 
 
                     git.UnversionRecursive(dir);

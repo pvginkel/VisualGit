@@ -53,7 +53,7 @@ namespace VisualGit.Commands
             foreach (var projectRoot in GetAllRoots(e))
             {
                 if (
-                    RepositoryUtil.TryGetRepositoryRoot(projectRoot.FullPath, out repositoryRoot) &&
+                    GitTools.TryGetRepositoryRoot(projectRoot.FullPath, out repositoryRoot) &&
                     !repositoryRoots.Contains(repositoryRoot)
                 )
                     repositoryRoots.Add(repositoryRoot);

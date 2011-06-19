@@ -21,7 +21,7 @@ namespace SharpGit
             if (paths == null)
                 throw new ArgumentNullException("paths");
 
-            var collectedPaths = RepositoryUtil.CollectPaths(paths);
+            var collectedPaths = GitTools.CollectPaths(paths);
 
             if (collectedPaths.Count == 0)
                 throw new GitNoRepositoryException();

@@ -162,7 +162,7 @@ namespace VisualGit.UI.MergeWizard.Commands
             if (repositoryPath == null)
             {
                 Debug.Assert(gitItems.Count > 0);
-                repositoryPath = RepositoryUtil.GetRepositoryRoot(gitItems[0].FullPath);
+                repositoryPath = GitTools.GetRepositoryRoot(gitItems[0].FullPath);
             }
 
             GitRef mergeBranch;

@@ -56,7 +56,7 @@ namespace SharpGit
                     if (String.Equals(pathString, relativePath, FileSystemUtil.StringComparison))
                         actualNodeKind = GitNodeKind.File;
 
-                    if (RepositoryUtil.PathMatches(relativePath, pathString, false, Args.Depth))
+                    if (GitTools.PathMatches(relativePath, pathString, false, Args.Depth))
                     {
                         if (actualNodeKind == GitNodeKind.Unknown)
                             actualNodeKind = GitNodeKind.Directory;
@@ -74,7 +74,7 @@ namespace SharpGit
                             actualNodeKind = GitNodeKind.File;
                             break;
                         }
-                        if (RepositoryUtil.PathMatches(relativePath, pathString, false, Args.Depth))
+                        if (GitTools.PathMatches(relativePath, pathString, false, Args.Depth))
                         {
                             actualNodeKind = GitNodeKind.Directory;
                             break;
@@ -181,7 +181,7 @@ namespace SharpGit
                         // after we've read the entry.Repository, it's either added
                         // or ignored.
 
-                        if (!RepositoryUtil.PathMatches(relativePath, repository.GetRepositoryPath(fullPath), false, Args.Depth))
+                        if (!GitTools.PathMatches(relativePath, repository.GetRepositoryPath(fullPath), false, Args.Depth))
                             continue;
 
                         if (!seen.Contains(fullPath))
@@ -227,7 +227,7 @@ namespace SharpGit
 
             foreach (string deletedPath in paths)
             {
-                if (!RepositoryUtil.PathMatches(relativePath, deletedPath, false, Args.Depth))
+                if (!GitTools.PathMatches(relativePath, deletedPath, false, Args.Depth))
                     continue;
 
                 string fullPath = repository.GetAbsoluteRepositoryPath(deletedPath);

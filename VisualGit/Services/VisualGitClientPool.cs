@@ -53,9 +53,6 @@ namespace VisualGit.Services
             if (_ensuredNames)
                 return;
             _ensuredNames = true;
-
-            GitClient.AddClientName("VisualStudio", GetService<IVisualGitSolutionSettings>().VisualStudioVersion);
-            GitClient.AddClientName("VisualGit", GetService<IVisualGitPackage>().UIVersion);
         }
 
         public GitPoolClient GetClient()

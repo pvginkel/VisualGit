@@ -12,7 +12,6 @@ namespace SharpGit
 {
     public class GitClient : IDisposable
     {
-        private static readonly Dictionary<string, Version> _clients = new Dictionary<string, Version>(StringComparer.OrdinalIgnoreCase);
         private bool _disposed;
 
         public static readonly string SharpGitVersion;
@@ -460,14 +459,6 @@ namespace SharpGit
             if (_disposed)
             {
                 _disposed = true;
-            }
-        }
-
-        public static void AddClientName(string client, Version version)
-        {
-            lock (_clients)
-            {
-                _clients.Add(client, version);
             }
         }
 

@@ -129,7 +129,7 @@ namespace VisualGit.Commands
                                 args.Revision = dlg.Revision;
 
                                 ok = ee.Client.Branch(
-                                    RepositoryUtil.GetRepositoryRoot(root.FullPath),
+                                    GitTools.GetRepositoryRoot(root.FullPath),
                                     branchName,
                                     args
                                 );
@@ -197,7 +197,7 @@ namespace VisualGit.Commands
                                     }
 
                                     ok = ee.Client.Tag(
-                                        RepositoryUtil.GetRepositoryRoot(root.FullPath),
+                                        GitTools.GetRepositoryRoot(root.FullPath),
                                         tagName,
                                         args
                                     );

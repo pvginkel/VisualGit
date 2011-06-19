@@ -189,7 +189,7 @@ namespace VisualGit.Scc
 
                 if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
                 {
-                    if (!GitTools.IsManagedPath(dir))
+                    if (!GitTools.IsBelowManagedPath(dir))
                         return; // Not for us
 
                     // VisualGit 0.x and 1.x place VisualGit.Load files to trigger loading

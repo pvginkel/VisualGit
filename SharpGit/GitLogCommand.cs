@@ -21,7 +21,7 @@ namespace SharpGit
 
         internal void Execute(IEnumerable<string> paths)
         {
-            var collectedPaths = RepositoryUtil.CollectPaths(paths);
+            var collectedPaths = GitTools.CollectPaths(paths);
 
             if (collectedPaths.Count == 0)
                 return;

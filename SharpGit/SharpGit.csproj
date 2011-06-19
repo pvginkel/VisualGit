@@ -197,7 +197,6 @@
     <Compile Include="NullOutputStream.cs" />
     <Compile Include="CustomPathFilter.cs" />
     <Compile Include="RawTextAccessor.cs" />
-    <Compile Include="RepositoryUtil.cs" />
     <Compile Include="GitSchedule.cs" />
     <Compile Include="GitStatus.cs" />
     <Compile Include="GitStatusArgs.cs" />

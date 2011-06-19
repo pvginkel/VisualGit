@@ -175,7 +175,7 @@ namespace VisualGit.Commands
                     dlg.GitOrigin = new GitOrigin(pathItem);
                     dlg.Context = e.Context;
 
-                    dlg.LocalPath = RepositoryUtil.GetRepositoryRoot(path);
+                    dlg.LocalPath = GitTools.GetRepositoryRoot(path);
                     dlg.SwitchToBranch = currentBranch;
 
                     if (dlg.ShowDialog(e.Context) != DialogResult.OK)

@@ -158,7 +158,7 @@ namespace VisualGit.Scc
 
             string repositoryRoot;
 
-            RepositoryUtil.TryGetRepositoryRoot(FullPath, out repositoryRoot);
+            GitTools.TryGetRepositoryRoot(FullPath, out repositoryRoot);
 
             return repositoryRoot;
         }
