@@ -110,7 +110,6 @@ namespace SharpGit
                         FullPath = path,
                         LocalContentStatus = GetStatus(state),
                         NodeKind = GitNodeKind.Directory,
-                        Uri = GitTools.GetUri(path),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.Directory,
@@ -138,7 +137,6 @@ namespace SharpGit
                         LocalContentStatus = GetStatus(state),
                         InternalContentStatus = state,
                         NodeKind = GitNodeKind.File,
-                        Uri = GitTools.GetUri(fullPath),
                         WorkingCopyInfo = new GitWorkingCopyInfo
                         {
                             NodeKind = GitNodeKind.File,
@@ -203,7 +201,6 @@ namespace SharpGit
                                     LocalContentStatus = GetStatus(state),
                                     InternalContentStatus = state,
                                     NodeKind = GitNodeKind.File,
-                                    Uri = GitTools.GetUri(fullPath),
                                     WorkingCopyInfo = new GitWorkingCopyInfo
                                     {
                                         NodeKind = GitNodeKind.File,
@@ -247,7 +244,6 @@ namespace SharpGit
                     LocalContentStatus = GetStatus(state),
                     InternalContentStatus = state,
                     NodeKind = GitNodeKind.File,
-                    Uri = GitTools.GetUri(fullPath),
                     WorkingCopyInfo = new GitWorkingCopyInfo
                     {
                         NodeKind = GitNodeKind.File,

@@ -36,12 +36,6 @@ namespace VisualGit.VS
         Version VisualStudioVersion { get; }
 
         /// <summary>
-        /// Gets the project root URI.
-        /// </summary>
-        /// <value>The project root URI.</value>
-        Uri ProjectRootUri { get; }
-
-        /// <summary>
         /// Gets the project root SVN item.
         /// </summary>
         /// <value>The project root SVN item.</value>
@@ -93,13 +87,6 @@ namespace VisualGit.VS
         /// </summary>
         /// <value>The solution filter.</value>
         string SolutionFilter { get; }
-
-        /// <summary>
-        /// Gets a list of Uris for url dropdowns
-        /// </summary>
-        /// <param name="forBrowse">if set to <c>true</c> [for browse].</param>
-        /// <returns></returns>
-        IEnumerable<Uri> GetRepositoryUris(bool forBrowse);
 
         /// <summary>
         /// Tries to open the specified project or solution file.

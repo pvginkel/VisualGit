@@ -308,14 +308,6 @@ namespace SharpGit
             return CreateDate(time * 1000L);
         }
 
-        public static string GetRepositoryPath(Uri uri)
-        {
-            if (uri == null)
-                throw new ArgumentNullException("uri");
-
-            return GetRepositoryPath(GetAbsolutePath(uri));
-        }
-
         public static string GetRepositoryPath(string fullPath)
         {
             if (fullPath == null)
@@ -331,28 +323,7 @@ namespace SharpGit
 
             return repositoryEntry.Repository.GetRepositoryPath(fullPath);
         }
-
-        public static Uri GetUri(string absolutePath)
-        {
-            if (absolutePath == null)
-                throw new ArgumentNullException("absolutePath");
-
-            return new Uri("file:///" + absolutePath);
-        }
-
-        public static string GetAbsolutePath(Uri uri)
-        {
-            if (uri == null)
-                throw new ArgumentNullException("uri");
-
-            string stringUri = uri.ToString();
-
-            if (!stringUri.StartsWith("file:///", StringComparison.OrdinalIgnoreCase))
-                throw new GitException(GitErrorCode.UnsupportedUriScheme);
-
-            return stringUri.Substring(8).Replace('/', Path.DirectorySeparatorChar);
-        }
-
+        
         public static bool IsBelowManagedPath(string fullPath)
         {
             string repositoryPath;
@@ -470,50 +441,5 @@ namespace SharpGit
 
             return result.ToString();
         }
-
-        public static Uri GetNormalizedUri(Uri uri)
-        {
-            if (uri == null)
-                throw new ArgumentNullException("uri");
-            if (!uri.IsAbsoluteUri)
-                throw new ArgumentOutOfRangeException("uri");
-
-            return GitUriTarget.CanonicalizeUri(uri);
-        }
-
-        public static Uri PathToRelativeUri(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            return PathToUri(path);
-        }
-
-        private static Uri PathToUri(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            StringBuilder sb = new StringBuilder();
-            Uri result;
-
-            bool afterFirst = false;
-
-            foreach (string p in path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
-            {
-                if (afterFirst)
-                    sb.Append((Char)'/');
-                else
-                    afterFirst = true;
-
-                sb.Append(Uri.EscapeDataString(p));
-            }
-
-            if (Uri.TryCreate(sb.ToString(), UriKind.Relative, out result))
-                return result;
-
-            throw new ArgumentException("Path is not convertible to uri part", "path");
-        }
-
     }
 }

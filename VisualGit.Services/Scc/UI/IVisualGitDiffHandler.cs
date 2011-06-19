@@ -429,6 +429,6 @@ namespace VisualGit.Scc.UI
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        GitUriTarget GetCopyOrigin(GitItem item);
+        GitTarget GetCopyOrigin(GitItem item);
     }
 }

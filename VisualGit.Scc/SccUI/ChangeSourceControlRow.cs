@@ -181,29 +181,10 @@ namespace VisualGit.Scc.SccUI
 
         string SafeRepositoryPath(GitItem item)
         {
-            if (item == null || item.Uri == null)
+            if (item == null || String.IsNullOrEmpty(item.FullPath))
                 return "";
 
-            GitWorkingCopy wc = item.WorkingCopy;
-            if (wc != null)
-            {
-                Uri root = wc.RepositoryRoot;
-
-                if (root != null)
-                {
-                    Uri relative = root.MakeRelativeUri(item.Uri);
-
-                    if (!relative.IsAbsoluteUri)
-                    {
-                        string v = GitUriTarget.UriPartToPath(relative.ToString()).Replace(Path.DirectorySeparatorChar, '/');
-
-                        if (!string.IsNullOrEmpty(v) && !v.StartsWith("/") && !v.StartsWith("../") && v != ".")
-                            return "^/" + v;
-                    }
-                }
-            }
-
-            return item.Uri.ToString();
+            return GitTools.GetRepositoryPath(item.FullPath);
         }
 
         string SafeRepositoryRoot(GitItem item)
@@ -211,12 +192,7 @@ namespace VisualGit.Scc.SccUI
             if (item == null || item.WorkingCopy == null)
                 return "";
 
-            Uri root = item.WorkingCopy.RepositoryRoot;
-
-            if (root != null)
-                return root.ToString();
-
-            return "";
+            return item.WorkingCopy.RepositoryRoot;
         }
 
         private string EmptyToDot(string value)

@@ -20,7 +20,6 @@ namespace VisualGit
         readonly GitNodeKind _nodeKind;        
         readonly GitStatus _state;
         readonly bool _localCopied;
-        readonly Uri _uri;
 
         readonly DateTime _lastChangeTime;
         readonly string _lastChangeAuthor;
@@ -35,7 +34,6 @@ namespace VisualGit
             _nodeKind = args.NodeKind;
             _state = args.LocalContentStatus;
             _localCopied = args.LocalCopied;
-            _uri = args.Uri;
 
             if (args.WorkingCopyInfo != null)
             {
@@ -120,11 +118,6 @@ namespace VisualGit
         public bool IsCopied
         {
             get { return _localCopied; }
-        }
-
-        internal Uri Uri
-        {
-            get { return _uri; }
         }
 
         internal bool HasTreeConflict

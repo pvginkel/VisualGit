@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Globalization;
 using SharpGit;
+using System.IO;
 
 namespace VisualGit.Scc
 {
@@ -13,8 +14,7 @@ namespace VisualGit.Scc
     public class GitOrigin : IEquatable<GitOrigin>, IFormattable
     {
         readonly GitTarget _target;
-        readonly Uri _uri;
-        readonly Uri _reposRoot;
+        readonly string _reposRoot;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitOrigin"/> class using a GitItem
@@ -29,8 +29,7 @@ namespace VisualGit.Scc
             if (!gitItem.IsVersioned)
                 throw new InvalidOperationException("Can only create a GitOrigin from versioned items");
 
-            _target = new GitPathTarget(gitItem.FullPath);
-            _uri = gitItem.Status.Uri;
+            _target = new GitTarget(gitItem.FullPath);
             _reposRoot = gitItem.WorkingCopy.RepositoryRoot;
         }
 
@@ -39,53 +38,52 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <param name="reposRoot">The repos root.</param>
-        public GitOrigin(Uri uri, Uri reposRoot)
-            : this(new GitUriTarget(uri, GitRevision.Head), reposRoot)
+        public GitOrigin(string path, string reposRoot)
+            : this(new GitTarget(path, GitRevision.Head), reposRoot)
         {
-            _uri = uri; // Keep Uri unnormalized for UI purposes
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitOrigin"/> class.
         /// </summary>
-        /// <param name="uri">The URI.</param>
+        /// <param name="path">The URI.</param>
         /// <param name="origin">The original origin to calculate from</param>
-        public GitOrigin(Uri uri, GitOrigin origin)
+        public GitOrigin(string path, GitOrigin origin)
         {
-            if (uri == null)
-                throw new ArgumentNullException("uri");
+            if (path == null)
+                throw new ArgumentNullException("path");
             else if (origin == null)
                 throw new ArgumentNullException("origin");
 
-            GitUriTarget target = new GitUriTarget(uri, origin.Target.Revision);
+            GitTarget target = new GitTarget(path, origin.Target.Revision);
             _target = target;
-            _uri = uri;
             _reposRoot = origin.RepositoryRoot;
 
-#if DEBUG
-            Debug.Assert(!_reposRoot.MakeRelativeUri(_uri).IsAbsoluteUri);
-#endif
-
+            Debug.Assert(
+                String.Equals(RepositoryUtil.GetRepositoryRoot(path), _reposRoot, FileSystemUtil.StringComparison),
+                "path must be of the repository pointed to by origin"
+            );
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitOrigin"/> class.
         /// </summary>
-        /// <param name="uriTarget">The URI target.</param>
+        /// <param name="target">The URI target.</param>
         /// <param name="reposRoot">The repos root.</param>
-        public GitOrigin(GitUriTarget uriTarget, Uri reposRoot)
+        public GitOrigin(GitTarget target, string reposRoot)
         {
-            if (uriTarget == null)
-                throw new ArgumentNullException("uriTarget");
+            if (target == null)
+                throw new ArgumentNullException("target");
             else if (reposRoot == null)
                 throw new ArgumentNullException("reposRoot");
 
-            _target = uriTarget;
-            _uri = uriTarget.Uri;
+            _target = target;
             _reposRoot = reposRoot;
-#if DEBUG
-            Debug.Assert(!_reposRoot.MakeRelativeUri(_uri).IsAbsoluteUri);
-#endif
+
+            Debug.Assert(
+                String.Equals(RepositoryUtil.GetRepositoryRoot(_target.FullPath), _reposRoot, FileSystemUtil.StringComparison),
+                "path must be of the repository pointed to by origin"
+            );
         }
 
         /// <summary>
@@ -94,60 +92,31 @@ namespace VisualGit.Scc
         /// <param name="context">The context.</param>
         /// <param name="target">The target.</param>
         /// <param name="reposRoot">The repos root or <c>null</c> to retrieve the repository root from target</param>
-        public GitOrigin(IVisualGitServiceProvider context, GitTarget target, Uri reposRoot)
+        public GitOrigin(IVisualGitServiceProvider context, GitTarget target, string reposRoot)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
             else if (target == null)
                 throw new ArgumentNullException("target");
 
-            GitPathTarget pt = target as GitPathTarget;
+            GitItem item = context.GetService<IFileStatusCache>()[target.FullPath];
 
-            if (pt != null)
-            {
-                GitItem item = context.GetService<IFileStatusCache>()[pt.FullPath];
+            if (item == null || !item.IsVersioned)
+                throw new InvalidOperationException("Can only create a GitOrigin from versioned items");
 
-                if (item == null || !item.IsVersioned)
-                    throw new InvalidOperationException("Can only create a GitOrigin from versioned items");
+            _target = target;
+            _reposRoot = item.WorkingCopy.RepositoryRoot; // BH: Prefer the actual root over the provided
 
-                _target = target;
-                _uri = item.Status.Uri;
-                _reposRoot = item.WorkingCopy.RepositoryRoot; // BH: Prefer the actual root over the provided
-                return;
-            }
-
-            GitUriTarget ut = target as GitUriTarget;
-
-            if (ut != null)
-            {
-                _target = ut;
-                _uri = ut.Uri;
-                if (reposRoot != null)
-                    _reposRoot = reposRoot;
-                else
-                    _reposRoot = GitTools.GetUri(RepositoryUtil.GetRepositoryRoot(ut.Uri));
-                return;
-            }
-
-            throw new InvalidOperationException("Invalid target type");
+            Debug.Assert(String.Equals(_reposRoot, reposRoot, FileSystemUtil.StringComparison));
         }
 
         /// <summary>
         /// Gets the repository root.
         /// </summary>
         /// <value>The repository root.</value>
-        public Uri RepositoryRoot
+        public string RepositoryRoot
         {
             get { return _reposRoot; }
-        }
-
-        /// <summary>
-        /// Gets the repository URI of the item
-        /// </summary>
-        /// <value>The URI.</value>
-        public Uri Uri
-        {
-            get { return _uri; }
         }
 
         /// <summary>
@@ -171,6 +140,9 @@ namespace VisualGit.Scc
         /// </exception>
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
+
             return Equals(obj as GitOrigin);
         }
 
@@ -183,10 +155,15 @@ namespace VisualGit.Scc
         /// </returns>
         public bool Equals(GitOrigin other)
         {
-            if (other == null)
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if ((object)other == null)
                 return false;
 
-            return other.Target == Target && other.Uri == Uri;
+            return
+                other._target == _target &&
+                String.Equals(_reposRoot, other._reposRoot, FileSystemUtil.StringComparison);
         }
 
         /// <summary>
@@ -197,7 +174,7 @@ namespace VisualGit.Scc
         /// </returns>
         public override int GetHashCode()
         {
-            return _target.GetHashCode();
+            return _target.GetHashCode() ^ _reposRoot.GetHashCode();
         }
 
         /// <summary>
@@ -208,15 +185,13 @@ namespace VisualGit.Scc
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(GitOrigin o1, GitOrigin o2)
         {
-            bool n1 = (object)o1 == null;
-            bool n2 = (object)o2 == null;
-
-            if (n1 ^ n2)
-                return false;
-            else if (n1 && n2)
+            if (ReferenceEquals(o1, o2))
                 return true;
 
-            return o1.Target == o2.Target && o1.RepositoryRoot == o2.RepositoryRoot && o1.Uri == o2.Uri;
+            if ((object)o1 == null || (object)o2 == null)
+                return false;
+
+            return o1.Equals(o2);
         }
 
         /// <summary>
@@ -240,7 +215,11 @@ namespace VisualGit.Scc
         {
             get
             {
-                return GitTools.GetNormalizedUri(RepositoryRoot) == GitTools.GetNormalizedUri(Uri);
+                return String.Equals(
+                    Path.GetFullPath(_reposRoot),
+                    Path.GetFullPath(_target.FullPath),
+                    FileSystemUtil.StringComparison
+                );
             }
         }
 

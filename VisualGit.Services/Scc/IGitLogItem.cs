@@ -14,7 +14,6 @@ namespace VisualGit.Scc
         string Revision { get; }
         int Index { get; }
         GitChangeItemCollection ChangedPaths { get; }
-
-        Uri RepositoryRoot { get; }
+        string RepositoryRoot { get; }
     }
 }

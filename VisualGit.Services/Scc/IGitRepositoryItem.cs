@@ -10,7 +10,8 @@ namespace VisualGit.Scc
         /// <summary>
         /// Gets the Uri of the item (Required)
         /// </summary>
-        Uri Uri { get; }
+        string Path { get; }
+
         /// <summary>
         /// Gets the <see cref="GitNodeKind"/> of the item (Optional)
         /// </summary>

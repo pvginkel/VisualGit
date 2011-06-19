@@ -19,7 +19,7 @@ namespace VisualGit.Commands
         {
             GitItem item = GetRoot(e);
 
-            if(item == null || !item.IsVersioned || item.IsDeleteScheduled || item.Status.State == GitStatus.Added || item.Uri == null)
+            if(item == null || !item.IsVersioned || item.IsDeleteScheduled || item.Status.State == GitStatus.Added || item.FullPath == null)
                 e.Enabled = false;
         }
 

@@ -93,7 +93,7 @@ namespace VisualGit.UI.GitLog
             logControl.StartLog(_origins, start, end);
         }
 
-        public void StartMergesEligible(IVisualGitServiceProvider context, GitItem target, Uri source)
+        public void StartMergesEligible(IVisualGitServiceProvider context, GitItem target, string source)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -104,7 +104,7 @@ namespace VisualGit.UI.GitLog
             logControl.StartMergesEligible(context, origin, source);
         }
 
-        public void StartMergesMerged(IVisualGitServiceProvider context, GitItem target, Uri source)
+        public void StartMergesMerged(IVisualGitServiceProvider context, GitItem target, string source)
         {
             if (target == null)
                 throw new ArgumentNullException("target");

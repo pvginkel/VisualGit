@@ -9,6 +9,5 @@ namespace SharpGit
     {
         public int MergeLogNestingLevel { get; internal set; }
         public bool HasChildren { get; internal set; }
-        public Uri LogOrigin { get; internal set; }
     }
 }

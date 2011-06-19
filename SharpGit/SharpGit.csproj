@@ -172,7 +172,6 @@
     <Compile Include="GitNotifyState.cs" />
     <Compile Include="GitNoRepositoryException.cs" />
     <Compile Include="GitOperationCancelledException.cs" />
-    <Compile Include="GitPathTarget.cs" />
     <Compile Include="GitRevertItemArgs.cs" />
     <Compile Include="GitRevertItemCommand.cs" />
     <Compile Include="GitRevision.cs" />
@@ -187,12 +186,10 @@
     <Compile Include="GitTransportCommand.cs" />
     <Compile Include="GitUI.cs" />
     <Compile Include="GitUIBindArgs.cs" />
-    <Compile Include="GitUriTarget.cs" />
     <Compile Include="GitWriteArgs.cs" />
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitConflictsClientArgs.cs" />
-    <Compile Include="IGitOrigin.cs" />
     <Compile Include="IgnoreFile.cs" />
     <Compile Include="IgnoreManager.cs" />
     <Compile Include="IgnoreSpaceTextComparator.cs" />

@@ -226,7 +226,6 @@
     <Compile Include="GitLog\RevisionGrid\DvcsGraph.Designer.cs">
       <DependentUpon>DvcsGraph.cs</DependentUpon>
     </Compile>
-    <Compile Include="GitLog\RevisionGrid\GitCommandHelpers.cs" />
     <Compile Include="GitLog\RevisionGrid\GitHead.cs" />
     <Compile Include="GitLog\RevisionGrid\GitRevisionGrid.cs">
       <SubType>Component</SubType>
@@ -242,6 +241,7 @@
     <Compile Include="GitLog\RevisionGrid\RevisionGridControl.Designer.cs">
       <DependentUpon>RevisionGridControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GitLog\RevisionGrid\RevisionItem.cs" />
     <Compile Include="IHasErrorProvider.cs" />
     <Compile Include="MergeWizard\Commands\Merge.cs">
       <SubType>Code</SubType>
@@ -369,7 +369,6 @@
     <Compile Include="SccManagement\ProjectCommitDialog.Designer.cs">
       <DependentUpon>ProjectCommitDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SccManagement\RepositoryUrlUtils.cs" />
     <Compile Include="SccManagement\UpdateAvailableDialog.cs">
       <SubType>Form</SubType>
     </Compile>

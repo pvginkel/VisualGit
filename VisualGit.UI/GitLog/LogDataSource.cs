@@ -41,7 +41,7 @@ namespace VisualGit.UI.GitLog
             set { _mergeTarget = value; }
         }
 
-        public Uri RepositoryRoot
+        public string RepositoryRoot
         {
             get
             {

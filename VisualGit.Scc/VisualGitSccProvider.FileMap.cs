@@ -854,16 +854,6 @@ namespace VisualGit.Scc
             }
 
             /// <summary>
-            /// Gets or sets the SCC base URI.
-            /// </summary>
-            /// <value>The SCC base URI.</value>
-            public Uri SccBaseUri
-            {
-                get { return null; }
-                set { throw new InvalidOperationException(); }
-            }
-
-            /// <summary>
             /// Gets the SCC enlist mode.
             /// </summary>
             /// <value>The SCC enlist mode.</value>

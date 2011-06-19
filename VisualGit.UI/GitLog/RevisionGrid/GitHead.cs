@@ -7,7 +7,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
     {
         private readonly string _mergeSettingName;
         private readonly string _remoteSettingName;
-        private List<IGitItem> _subItems;
 
         public GitHead(string hash, string completeName) : this(hash, completeName, string.Empty) { }
 
@@ -51,39 +50,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         public string Remote { get; private set; }
 
-        public string TrackingRemote
-        {
-            get { return GitCommandHelpers.GetSetting(_remoteSettingName); }
-            set
-            {
-                if (String.IsNullOrEmpty(value))
-                    GitCommandHelpers.UnsetSetting(_remoteSettingName);
-                else
-                {
-                    GitCommandHelpers.SetSetting(_remoteSettingName, value);
-
-                    if (MergeWith == "")
-                        MergeWith = Name;
-                }
-            }
-        }
-
-        public string MergeWith
-        {
-            get
-            {
-                var merge = GitCommandHelpers.GetSetting(_mergeSettingName);
-                return merge.StartsWith("refs/heads/") ? merge.Substring(11) : merge;
-            }
-            set
-            {
-                if (String.IsNullOrEmpty(value))
-                    GitCommandHelpers.UnsetSetting(_mergeSettingName);
-                else
-                    GitCommandHelpers.SetSetting(_mergeSettingName, "refs/heads/" + value);
-            }
-        }
-
         public static GitHead NoHead
         {
             get { return new GitHead(null, ""); }
@@ -98,11 +64,6 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         public string Revision { get; private set; }
         public string Name { get; private set; }
-
-        public List<IGitItem> SubItems
-        {
-            get { return _subItems ?? (_subItems = GitCommandHelpers.GetTree(Revision)); }
-        }
 
         #endregion
 

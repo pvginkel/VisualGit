@@ -125,9 +125,9 @@ namespace VisualGit.UI.Annotate
 
         #region IGitRepositoryItem Members
 
-        Uri IGitRepositoryItem.Uri
+        string IGitRepositoryItem.Path
         {
-            get { return Origin.Uri; }
+            get { return Origin.Target.FullPath; }
         }
 
         GitNodeKind IGitRepositoryItem.NodeKind

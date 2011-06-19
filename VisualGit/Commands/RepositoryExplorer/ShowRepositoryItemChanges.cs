@@ -18,15 +18,6 @@ namespace VisualGit.Commands.RepositoryExplorer
             if (reposItem != null && reposItem.Origin != null && reposItem.NodeKind != GitNodeKind.Directory
                 && reposItem.Revision.RevisionType == GitRevisionType.Hash)
             {
-                if (e.Command == VisualGitCommand.RepositoryCompareWithWc)
-                {
-                    if (!(reposItem.Origin.Target is GitPathTarget))
-                    {
-                        e.Enabled = false;
-                        return;
-                    }
-                }
-
                 return;
             }
 
@@ -62,7 +53,7 @@ namespace VisualGit.Commands.RepositoryExplorer
                 if (da.BaseFile == null)
                     return; // User canceled
 
-                da.MineFile = ((GitPathTarget)reposItem.Origin.Target).FullPath;
+                da.MineFile = reposItem.Origin.Target.FullPath;
             }
             else
             {

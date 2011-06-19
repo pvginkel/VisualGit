@@ -73,7 +73,7 @@ namespace VisualGit.Commands
 
                     GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
-                    if (origin == null || !(origin.Target is GitPathTarget))
+                    if (origin == null)
                     {
                         e.Enabled = false;
                         return;
@@ -130,7 +130,7 @@ namespace VisualGit.Commands
                 if (item == null)
                     return;
 
-                path = GitTools.GetAbsolutePath(item.RepositoryRoot);
+                path = item.RepositoryRoot;
                 currentBranch = new GitRef(item.Revision);
             }
             else
@@ -169,8 +169,6 @@ namespace VisualGit.Commands
             {
                 target = new GitRef((string)e.Argument);
             }
-            else if (e.Argument is Uri)
-                throw new NotImplementedException();
             else
                 using (SwitchDialog dlg = new SwitchDialog())
                 {

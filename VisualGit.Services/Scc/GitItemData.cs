@@ -146,12 +146,6 @@ namespace VisualGit.Scc
             }
         }
 
-        [DisplayName("Url"), Category("Git")]
-        public Uri Uri
-        {
-            get { return GitItem.Status.Uri; }
-        }
-
         protected override string ComponentName
         {
             get { return Name; }

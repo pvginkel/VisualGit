@@ -233,7 +233,7 @@ namespace VisualGit.Services
             }
         }
 
-        public GitUriTarget GetCopyOrigin(GitItem item)
+        public GitTarget GetCopyOrigin(GitItem item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -787,7 +787,7 @@ namespace VisualGit.Services
                     wa.Revision = revision;
 
                     using (Stream s = File.Create(file))
-                        aa.Client.Write(new GitPathTarget(target.FullPath), s, wa);
+                        aa.Client.Write(new GitTarget(target.FullPath), s, wa);
                 });
 
             if (!r.Succeeded)

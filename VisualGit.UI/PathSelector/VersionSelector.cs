@@ -166,7 +166,7 @@ namespace VisualGit.UI.PathSelector
                 {
                     _newValue = GitOrigin.Target.Revision;
                     if (_newValue == null || _newValue == GitRevision.None)
-                        _newValue = (GitOrigin.Target is GitUriTarget) ? GitRevision.Head : GitRevision.Base;
+                        _newValue = GitRevision.Base;
 
                     rt = RevisionResolver.Resolve(GitOrigin, _newValue);
                 }

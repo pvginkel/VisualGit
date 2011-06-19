@@ -187,7 +187,7 @@ namespace VisualGit.Commands
                     (!revRange.StartRevision.RequiresWorkingCopy || !revRange.EndRevision.RequiresWorkingCopy))
                 {
                     // The file is copied, use its origins history instead of that of the new file
-                    GitUriTarget copiedFrom = diff.GetCopyOrigin(item);
+                    GitTarget copiedFrom = diff.GetCopyOrigin(item);
 
                     // TODO: Maybe handle Previous/Committed as history
 

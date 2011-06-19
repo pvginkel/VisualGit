@@ -66,7 +66,6 @@ namespace VisualGit.Settings
         {
             public string SolutionFilename;
             public string ProjectRoot;
-            public Uri ProjectRootUri;
             public GitItem ProjectRootItem;
 
             public int SolutionCookie;
@@ -155,7 +154,6 @@ namespace VisualGit.Settings
                 if (parent != null)
                 {
                     cache.ProjectRoot = parent.FullPath;
-                    cache.ProjectRootUri = parent.Uri;
                     cache.ProjectRootItem = parent;
                 }
 
@@ -216,13 +214,13 @@ namespace VisualGit.Settings
             if (SolutionFilename == null)
                 return;
 
-            string sd = GitTools.PathToRelativeUri(GitTools.GetNormalizedDirectoryName(SolutionFilename).TrimEnd('\\') + '\\').ToString();
-            string v = GitTools.PathToRelativeUri(GitTools.GetNormalizedFullPath(value)).ToString();
+            string sd = GitTools.GetRepositoryPath(GitTools.GetNormalizedDirectoryName(SolutionFilename).TrimEnd('\\') + '\\');
+            string v = GitTools.GetRepositoryPath(GitTools.GetNormalizedFullPath(value)).ToString();
 
             if (!v.EndsWith("/"))
                 v += "/";
 
-            if (!sd.StartsWith(v, StringComparison.OrdinalIgnoreCase))
+            if (!sd.StartsWith(v, FileSystemUtil.StringComparison))
                 return;
 
             GetService<IFileStatusCache>().MarkDirty(SolutionFilename);
@@ -239,16 +237,6 @@ namespace VisualGit.Settings
                     return pr + Path.DirectorySeparatorChar;
                 else
                     return pr;
-            }
-        }
-
-        public Uri ProjectRootUri
-        {
-            get
-            {
-                RefreshIfDirty();
-
-                return _cache.ProjectRootUri;
             }
         }
 
@@ -431,83 +419,6 @@ namespace VisualGit.Settings
         IVisualGitConfigurationService Config
         {
             get { return _config ?? (_config = GetService<IVisualGitConfigurationService>()); }
-        }
-
-        public IEnumerable<Uri> GetRepositoryUris(bool forBrowse)
-        {
-            HybridCollection<Uri> uris = new HybridCollection<Uri>();
-
-            if (ProjectRootUri != null)
-                uris.Add(ProjectRootUri);
-
-            // Global keys (over all versions)
-            using (RegistryKey rk = Config.OpenGlobalKey("Repositories"))
-            {
-                if (rk != null)
-                    LoadUris(uris, rk);
-            }
-
-            // Per hive
-            using (RegistryKey rk = Config.OpenInstanceKey("Repositories"))
-            {
-                if (rk != null)
-                    LoadUris(uris, rk);
-            }
-
-            // Per user + Per hive
-            using (RegistryKey rk = Config.OpenUserInstanceKey("Repositories"))
-            {
-                if (rk != null)
-                    LoadUris(uris, rk);
-            }
-
-            // Finally add the last used list from TortoiseSVN
-            try
-            {
-                using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(
-                     "SOFTWARE\\TortoiseGit\\History\\repoURLS", RegistryKeyPermissionCheck.ReadSubTree))
-                {
-                    if (rk != null)
-                        LoadUris(uris, rk);
-                }
-
-            }
-            catch (SecurityException)
-            { /* Ignore no read only access; stupid sysadmins */ }
-
-            IVisualGitConfigurationService configSvc = Context.GetService<IVisualGitConfigurationService>();
-            if (configSvc != null)
-            {
-                foreach (string u in configSvc.GetRecentReposUrls())
-                {
-                    Uri uri;
-                    if (u != null && Uri.TryCreate(u, UriKind.Absolute, out uri))
-                    {
-                        if (!uris.Contains(uri))
-                            uris.Add(uri);
-                    }
-                }
-            }
-
-            return uris;
-        }
-
-        static void LoadUris(HybridCollection<Uri> uris, RegistryKey rk)
-        {
-            foreach (string name in rk.GetValueNames())
-            {
-                string value = rk.GetValue(name) as string;
-
-                if (value != null && !value.EndsWith("/"))
-                    value += "/";
-
-                Uri uri;
-                if (value != null && Uri.TryCreate(value, UriKind.Absolute, out uri))
-                {
-                    if (!uris.Contains(uri))
-                        uris.Add(uri);
-                }
-            }
         }
 
         string _solutionFilter;

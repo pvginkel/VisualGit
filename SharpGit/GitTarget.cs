@@ -2,19 +2,81 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace SharpGit
 {
-    public abstract class GitTarget : IEquatable<GitTarget>
+    public sealed class GitTarget : IEquatable<GitTarget>
     {
         readonly GitRevision _revision;
+        readonly string _path;
+        readonly string _fullPath;
 
-        internal GitTarget(GitRevision revision)
+        public GitTarget(string path, GitRevision revision)
         {
+            if (String.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
             if (revision == null)
                 _revision = GitRevision.None;
             else
                 _revision = revision;
+
+            _path = SanitizeTargetPath(path);
+            _fullPath = Path.GetFullPath(_path);
+        }
+
+        public GitTarget(string path)
+            : this(path, GitRevision.None)
+        {
+        }
+
+        public GitTarget(string path, string revision)
+            : this(path, new GitRevision(revision))
+        {
+        }
+
+        public GitTarget(string path, DateTime date)
+            : this(path, new GitRevision(date))
+        {
+        }
+
+        public string TargetPath { get { return _path; } }
+
+        public string FullPath { get { return _fullPath; } }
+
+        private string SanitizeTargetPath(string path)
+        {
+            if (String.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            if (Path.IsPathRooted(path))
+                return GitTools.GetNormalizedFullPath(path);
+
+            path = path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            string dualSeparator = String.Concat(Path.DirectorySeparatorChar, Path.DirectorySeparatorChar);
+
+            int nNext;
+            // Remove double backslash
+            while ((nNext = path.IndexOf(dualSeparator, StringComparison.Ordinal)) >= 0)
+                path = path.Remove(nNext, 1);
+
+            // Remove '\.\'
+            while ((nNext = path.IndexOf("\\.\\", StringComparison.Ordinal)) >= 0)
+                path = path.Remove(nNext, 2);
+
+            while (path.StartsWith(".\\", StringComparison.Ordinal))
+                path = path.Substring(2);
+
+            if (path.EndsWith("\\.", StringComparison.Ordinal))
+                path = path.Substring(0, path.Length - 2);
+
+            path = path.TrimEnd(Path.DirectorySeparatorChar);
+
+            if (path.Length == 0)
+                path = ".";
+
+            return path;
         }
 
         /// <summary>Gets the operational revision</summary>
@@ -24,39 +86,25 @@ namespace SharpGit
         }
 
         /// <summary>Gets the target name in normalized format</summary>
-        public abstract string TargetName { get; }
+        internal string GitTargetName
+        {
+            get { return _path.Replace(Path.DirectorySeparatorChar, '/').TrimEnd('/'); }
+        }
 
-        public abstract string FileName { get; }
-
-        internal virtual string GitTargetName { get { return TargetName; } }
+        public string FileName { get { return Path.GetFileName(_path); } }
 
         /// <summary>Gets the GitTarget as string</summary>
         public override string ToString()
         {
             if (Revision.RevisionType == GitRevisionType.None)
-                return TargetName;
+                return TargetPath;
             else
-                return TargetName + "@" + Revision.ToString();
-        }
-
-        public static GitTarget FromUri(Uri value)
-        {
-            return new GitUriTarget(value);
-        }
-
-        public static GitTarget FromString(string value)
-        {
-            return new GitPathTarget(value);
-        }
-
-        public static implicit operator GitTarget(Uri value)
-        {
-            return value != null ? FromUri(value) : null;
+                return TargetPath + "@" + Revision.ToString();
         }
 
         public static implicit operator GitTarget(string value)
         {
-            return value != null ? FromString(value) : null;
+            return value != null ? new GitTarget(value) : null;
         }
 
         public override bool Equals(object obj)
@@ -67,12 +115,12 @@ namespace SharpGit
             return Equals(obj as GitTarget);
         }
 
-        public virtual bool Equals(GitTarget other)
+        public bool Equals(GitTarget other)
         {
             if (ReferenceEquals(this, other))
-                return false;
+                return true;
 
-            if (!String.Equals(other.GitTargetName, GitTargetName))
+            if (!String.Equals(other.GitTargetName, GitTargetName, FileSystemUtil.StringComparison))
                 return false;
 
             return Revision.Equals(other.Revision);
@@ -81,9 +129,43 @@ namespace SharpGit
         /// <summary>Serves as a hashcode for the specified type</summary>
         public override int GetHashCode()
         {
-            return TargetName.GetHashCode();
+            return TargetPath.GetHashCode();
         }
 
-        internal abstract GitRevision GetGitRevision(GitRevision fileNoneValue, GitRevision uriNoneValue);
+        internal GitRevision GetGitRevision(GitRevision fileNoneValue, GitRevision uriNoneValue)
+        {
+            if (Revision.RevisionType != GitRevisionType.None)
+                return Revision;
+            else
+                return fileNoneValue;
+        }
+
+        public static ICollection<GitTarget> Map(IEnumerable<string> paths)
+        {
+            var result = new List<GitTarget>();
+
+            foreach (string path in paths)
+            {
+                result.Add(path);
+            }
+
+            return result;
+        }
+
+        public static bool operator ==(GitTarget a, GitTarget b)
+        {
+            if (ReferenceEquals(a, b))
+                return true;
+
+            if ((object)a == null || (object)b == null)
+                return false;
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(GitTarget a, GitTarget b)
+        {
+            return !(a == b);
+        }
     }
 }

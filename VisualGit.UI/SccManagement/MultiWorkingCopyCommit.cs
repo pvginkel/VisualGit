@@ -40,11 +40,11 @@ namespace VisualGit.UI.SccManagement
             {
                 SmartListViewItem lvi = new SmartListViewItem(wcList);
                 GitWorkingCopy wc = wcs[i];
-                Uri wcRoot = wc.RepositoryRoot;
+                string wcRoot = wc.RepositoryRoot;
                 lvi.SetValues(
                     wc.FullPath,
                     pcs[i].Count.ToString(),
-                    wcRoot != null ? wcRoot.ToString() : "");
+                    wcRoot != null ? wcRoot : "");
                 lvi.Checked = (i == 0);
                 lvi.Tag = new List<PendingChange>(pcs[i]);
                 wcList.Items.Add(lvi);

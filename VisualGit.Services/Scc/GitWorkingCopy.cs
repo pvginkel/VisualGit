@@ -20,7 +20,7 @@ namespace VisualGit.Scc
         readonly GitItem _rootItem;
         IVisualGitServiceProvider _context;
         bool _checkedUri;
-        Uri _repositoryRoot;
+        string _repositoryRoot;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GitWorkingCopy"/> class.
@@ -144,12 +144,12 @@ namespace VisualGit.Scc
             return new GitWorkingCopy(context, gitItem);
         }
 
-        public Uri RepositoryRoot
+        public string RepositoryRoot
         {
-            get { return _repositoryRoot ?? GetRepositoryRoot(); }
+            get { return _repositoryRoot ?? (_repositoryRoot = GetRepositoryRoot()); }
         }
 
-        private Uri GetRepositoryRoot()
+        private string GetRepositoryRoot()
         {
             if (_checkedUri)
                 return null;
@@ -158,10 +158,9 @@ namespace VisualGit.Scc
 
             string repositoryRoot;
 
-            if (RepositoryUtil.TryGetRepositoryRoot(FullPath, out repositoryRoot))
-                return _repositoryRoot = new Uri("file:///" + repositoryRoot);
-            else
-                return _repositoryRoot = null;
+            RepositoryUtil.TryGetRepositoryRoot(FullPath, out repositoryRoot);
+
+            return repositoryRoot;
         }
     }
 }

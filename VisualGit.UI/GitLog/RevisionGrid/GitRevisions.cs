@@ -10,16 +10,12 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         public IList<string> ParentRevisions { get; set; }
 
-        private List<IGitItem> _subItems;
-
         public GitRevision()
         {
             Heads = new List<GitHead>();
         }
 
         public ICollection<GitHead> Heads { get; set; }
-
-        public string TreeHash { get; set; }
 
         public string Author { get; set; }
         public string AuthorEmail { get; set; }
@@ -34,17 +30,12 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         public string Revision { get; set; }
         public string Name { get; set; }
 
-        public List<IGitItem> SubItems
-        {
-            get { return _subItems ?? (_subItems = GitCommandHelpers.GetTree(TreeHash)); }
-        }
-
         #endregion
 
         #region IGitLogItem Members
 
         public int Index { get; set; }
-        public Uri RepositoryRoot { get; set; }
+        public string RepositoryRoot { get; set; }
 
         SharpGit.GitChangeItemCollection VisualGit.Scc.IGitLogItem.ChangedPaths
         {

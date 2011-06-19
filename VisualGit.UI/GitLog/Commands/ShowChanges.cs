@@ -41,16 +41,11 @@ namespace VisualGit.UI.GitLog.Commands
                 return;
             }
 
-            GitPathTarget pt = first.Target as GitPathTarget;
-
-            if (pt != null)
+            if (e.GetService<IFileStatusCache>()[first.Target.FullPath].IsDirectory)
             {
-                if (e.GetService<IFileStatusCache>()[pt.FullPath].IsDirectory)
-                {
-                    // We can't diff directories at this time
-                    e.Enabled = false;
-                    return;
-                }
+                // We can't diff directories at this time
+                e.Enabled = false;
+                return;
             }
 
             // Note: We can't have a local directory, but we can have a remote one.
@@ -154,14 +149,6 @@ namespace VisualGit.UI.GitLog.Commands
             var target = EnumTools.GetSingle(targets);
             GitTarget diffTarget = target.Target;
 
-            if (diffTarget is GitUriTarget)
-            {
-                diffTarget = new GitPathTarget(
-                    GitTools.GetAbsolutePath(((GitUriTarget)diffTarget).Uri),
-                    diffTarget.Revision
-                );
-            }
-
             IVisualGitDiffHandler diff = e.GetService<IVisualGitDiffHandler>();
             VisualGitDiffArgs da = new VisualGitDiffArgs();
 
@@ -187,7 +174,7 @@ namespace VisualGit.UI.GitLog.Commands
             {
                 foreach (string s in changedPaths)
                 {
-                    if (i.Uri.ToString().EndsWith(s))
+                    if (i.FullPath.ToString().EndsWith(s))
                     {
                         yield return i;
                         break;

@@ -1102,18 +1102,5 @@ namespace VisualGit
         {
             return StringComparer.OrdinalIgnoreCase.GetHashCode(FullPath);
         }
-
-        /// <summary>
-        /// Gets the Uri of the node
-        /// </summary>
-        public Uri Uri
-        {
-            get
-            {
-                VisualGitStatus status = Status;
-
-                return status.Uri;
-            }
-        }
     }
 }

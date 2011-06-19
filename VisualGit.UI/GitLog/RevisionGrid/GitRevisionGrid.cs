@@ -102,7 +102,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         private void PrepareParameters()
         {
-            _control.RepositoryPath = GitTools.GetAbsolutePath(LogSource.RepositoryRoot);
+            _control.RepositoryPath = LogSource.RepositoryRoot;
 
             _control.Args = new GitLogArgs();
 
@@ -123,11 +123,11 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 // TODO: Use peg information
             }
 
-            _control.Uris = new List<Uri>();
+            _control.Paths = new List<string>();
 
             foreach (GitOrigin o in LogSource.Targets)
             {
-                _control.Uris.Add(o.Uri);
+                _control.Paths.Add(o.Target.FullPath);
             }
         }
 
@@ -313,19 +313,19 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             return GetSelection(item).LogMessage;
         }
 
-        private IGitLogItem GetSelection(DataGridViewRow item)
+        private GitRevision GetSelection(DataGridViewRow item)
         {
             return _control.GetRevision(item.Index);
         }
 
         object ISelectionMapOwner<DataGridViewRow>.GetSelectionObject(DataGridViewRow item)
         {
-            return GetSelection(item);
+            return new RevisionItem(GetSelection(item));
         }
 
         DataGridViewRow ISelectionMapOwner<DataGridViewRow>.GetItemFromSelectionObject(object item)
         {
-            var revision = item as IGitLogItem;
+            var revision = item as RevisionItem;
 
             if (revision == null)
                 return null;

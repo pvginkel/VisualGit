@@ -25,19 +25,14 @@ namespace VisualGit.UI.GitLog.Commands
 
                     if (origin != null)
                     {
-                        GitPathTarget pt = origin.Target as GitPathTarget;
+                        GitItem gitItem = e.GetService<IFileStatusCache>()[origin.Target.FullPath];
 
-                        if (pt != null)
+                        if (gitItem != null && !gitItem.IsDirectory)
                         {
-                            GitItem gitItem = e.GetService<IFileStatusCache>()[pt.FullPath];
+                            if (null == e.Selection.GetActiveControl<ILogControl>())
+                                e.Enabled = false;
 
-                            if (gitItem != null && !gitItem.IsDirectory)
-                            {
-                                if (null == e.Selection.GetActiveControl<ILogControl>())
-                                    e.Enabled = false;
-
-                                return;
-                            }
+                            return;
                         }
                     }
                 }
@@ -60,7 +55,7 @@ namespace VisualGit.UI.GitLog.Commands
             da.BaseFile = diff.GetTempFile(origin.Target, item.Revision, true);
             if (da.BaseFile == null)
                 return; // User cancel
-            da.MineFile = ((GitPathTarget)origin.Target).FullPath;
+            da.MineFile = origin.Target.FullPath;
             da.BaseTitle = string.Format("Base (r{0})", item.Revision);
             da.MineTitle = "Working";
 

@@ -10,9 +10,7 @@ namespace VisualGit.Scc
 		GitChangeAction Action { get; }
 		string OldPath { get; }
 		string OldRevision { get; }
-		string Path { get; }
         new string Revision { get; }
-
         new GitOrigin Origin { get; }
 	}
 }

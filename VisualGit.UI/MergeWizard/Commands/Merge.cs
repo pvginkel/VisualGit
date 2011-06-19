@@ -38,7 +38,7 @@ namespace VisualGit.UI.MergeWizard.Commands
 
                     GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
-                    if (origin == null || !(origin.Target is GitPathTarget))
+                    if (origin == null)
                     {
                         e.Enabled = false;
                         return;
@@ -131,7 +131,7 @@ namespace VisualGit.UI.MergeWizard.Commands
                         return;
 
                     revision = logItem.Revision;
-                    repositoryPath = GitTools.GetAbsolutePath(logItem.RepositoryRoot);
+                    repositoryPath = logItem.RepositoryRoot;
                     break;
                 case VisualGitCommand.ItemMerge:
                     // TODO: Check for solution and/or project selection to use the folder instead of the file

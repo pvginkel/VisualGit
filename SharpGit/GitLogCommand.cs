@@ -19,15 +19,8 @@ namespace SharpGit
         {
         }
 
-        internal void Execute(IEnumerable<Uri> uris)
+        internal void Execute(IEnumerable<string> paths)
         {
-            var paths = new List<string>();
-
-            foreach (var uri in uris)
-            {
-                paths.Add(GitTools.GetAbsolutePath(uri));
-            }
-
             var collectedPaths = RepositoryUtil.CollectPaths(paths);
 
             if (collectedPaths.Count == 0)

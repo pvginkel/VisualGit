@@ -23,12 +23,7 @@ namespace SharpGit
             if (targetPath == null)
                 throw new ArgumentNullException("targetPath");
 
-            var pathTarget = target as GitPathTarget;
-
-            if (pathTarget == null)
-                throw new ArgumentException("target must be of type GitPathTarget", "target");
-
-            var repositoryEntry = Client.GetRepository(pathTarget.FullPath);
+            var repositoryEntry = Client.GetRepository(target.FullPath);
 
             using (repositoryEntry.Lock())
             {
@@ -39,8 +34,8 @@ namespace SharpGit
                 var objectReader = repository.NewObjectReader();
                 var revision = Args.Revision ?? GitRevision.Head;
                 var tw = new TreeWalk(objectReader);
-                
-                tw.Filter = new CustomPathFilter(repository.GetRepositoryPath(pathTarget.FullPath), Args.Depth);
+
+                tw.Filter = new CustomPathFilter(repository.GetRepositoryPath(target.FullPath), Args.Depth);
 
                 try
                 {

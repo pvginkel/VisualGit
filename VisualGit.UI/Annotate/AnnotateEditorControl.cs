@@ -163,7 +163,7 @@ namespace VisualGit.UI.Annotate
                     la.ThrowOnError = false;
                     la.Log += lr;
 
-                    cl.Log(GitTools.GetAbsolutePath(origin.Uri), la);
+                    cl.Log(origin.Target.FullPath, la);
                 }
             };
 

@@ -83,29 +83,6 @@ namespace VisualGit.Scc.ProjectMap
             set { _sccBasePath = value ?? ""; }
         }
 
-        Uri _sccBaseUri;
-        public Uri SccBaseUri
-        {
-            get
-            {
-                if (_sccBaseUri != null)
-                    return _sccBaseUri;
-                else
-                {
-                    GitItem dirItem = GetService<IFileStatusCache>()[SccBaseDirectory];
-
-                    if (dirItem != null && dirItem.Uri != null)
-                        return dirItem.Uri;
-                }
-
-                return null;
-            }
-            private set
-            {
-                _sccBaseUri = value;
-            }
-        }
-
         public string SccRelativePath
         {
             get { return PackageUtilities.MakeRelative(SccBaseDirectory, SccPathName); }

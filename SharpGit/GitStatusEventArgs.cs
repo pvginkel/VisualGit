@@ -11,8 +11,6 @@ namespace SharpGit
     {
         private string _name;
 
-        public Uri Uri { get; internal set; }
-
         public string Name
         {
             get

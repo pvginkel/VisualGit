@@ -42,7 +42,7 @@ namespace VisualGit.UI.PendingChanges.Commands
 
         public void OnUpdate(CommandUpdateEventArgs e)
         {
-            if (ProjectRootUri == null)
+            if (ProjectRoot == null)
                 e.Enabled = false;
         }
 
@@ -77,12 +77,12 @@ namespace VisualGit.UI.PendingChanges.Commands
         }
 
 
-        protected Uri ProjectRootUri
+        protected string ProjectRoot
         {
             get
             {
                 if (SolutionSettings != null)
-                    return SolutionSettings.ProjectRootUri;
+                    return SolutionSettings.ProjectRoot;
 
                 return null;
             }
@@ -91,13 +91,13 @@ namespace VisualGit.UI.PendingChanges.Commands
 
         void OnExecuteFill(CommandEventArgs e)
         {
-            if (ProjectRootUri != null)
+            if (ProjectRoot != null)
             {
                 var branches = new List<string>();
 
                 using (var client = e.Context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
+                    string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRoot);
 
                     foreach (var @ref in client.GetRefs(repositoryPath))
                     {
@@ -128,9 +128,9 @@ namespace VisualGit.UI.PendingChanges.Commands
 
         void OnExecuteGet(CommandEventArgs e)
         {
-            if (ProjectRootUri != null)
+            if (ProjectRoot != null)
             {
-                string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRootUri);
+                string repositoryPath = RepositoryUtil.GetRepositoryRoot(ProjectRoot);
 
                 using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
                 {

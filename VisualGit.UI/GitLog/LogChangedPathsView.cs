@@ -74,7 +74,7 @@ namespace VisualGit.UI.GitLog
         readonly bool _isInSelection;
         readonly GitOrigin _origin;
 
-        public PathListViewItem(LogChangedPathsView view, IGitLogItem logItem, GitChangeItem change, Uri reposRoot, bool isInSelection)
+        public PathListViewItem(LogChangedPathsView view, IGitLogItem logItem, GitChangeItem change, string reposRoot, bool isInSelection)
             : base(view)
         {
             if (logItem == null)
@@ -84,16 +84,11 @@ namespace VisualGit.UI.GitLog
             _logItem = logItem;
             _change = change;
             _isInSelection = isInSelection;
-            Uri uri;
 
-            string path = change.Path.TrimStart('/');
-
-            if (string.IsNullOrEmpty(path))
-                uri = reposRoot;
-            else
-                uri = GitTools.GetUri(path);
-
-            _origin = new GitOrigin(new GitUriTarget(uri, logItem.Revision), reposRoot);
+            _origin = new GitOrigin(
+                new GitTarget(change.Path.TrimStart('/'), logItem.Revision),
+                reposRoot
+            );
 
             RefreshText();
             UpdateColors();
@@ -205,14 +200,14 @@ namespace VisualGit.UI.GitLog
         }
 
         [Category("Origin")]
-        [DisplayName("Previous path")]
+        [DisplayName("Previous Path")]
         public string OldPath
         {
             get { return _lvi.OldPath; }
         }
 
         [Category("Origin")]
-        [DisplayName("Parent revision")]
+        [DisplayName("Parent Revision")]
         public string OldRevision
         {
             get { return _lvi.OldRevision; }
@@ -228,13 +223,6 @@ namespace VisualGit.UI.GitLog
         public string Path
         {
             get { return _lvi.Path; }
-        }
-
-        [Category("Git")]
-        [DisplayName("Url")]
-        public Uri Uri
-        {
-            get { return _lvi.Origin.Uri; }
         }
 
         [Category("Git")]

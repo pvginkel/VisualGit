@@ -126,12 +126,12 @@ namespace SharpGit
             return ExecuteCommand<GitLogCommand>(args, p => p.Execute(repositoryPath));
         }
 
-        public bool Log(IEnumerable<Uri> uris, GitLogArgs args)
+        public bool Log(IEnumerable<string> paths, GitLogArgs args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return ExecuteCommand<GitLogCommand>(args, p => p.Execute(uris));
+            return ExecuteCommand<GitLogCommand>(args, p => p.Execute(paths));
         }
 
         public bool Switch(string repositoryPath, GitRef target, GitSwitchArgs args, out GitSwitchResult result)

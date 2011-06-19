@@ -89,7 +89,7 @@ namespace VisualGit.UI.GitLog
 
                 using (var client = _context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    client.Log(GitTools.GetAbsolutePath(e.Source.FocusedItem.RepositoryRoot), la);
+                    client.Log(e.Source.FocusedItem.RepositoryRoot, la);
                 }
 
                 if (changeItems != null)
@@ -99,7 +99,7 @@ namespace VisualGit.UI.GitLog
                     List<string> origins = new List<string>();
                     foreach (GitOrigin o in LogSource.Targets)
                     {
-                        string origin = GitTools.GetRepositoryPath(o.Uri);
+                        string origin = GitTools.GetRepositoryPath(o.Target.FullPath);
 
                         origins.Add(origin.TrimEnd('/'));
                     }

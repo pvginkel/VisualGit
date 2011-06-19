@@ -6,7 +6,5 @@ namespace VisualGit.UI.GitLog.RevisionGrid
     {
         string Revision { get; }
         string Name { get; }
-
-        List<IGitItem> SubItems { get; }
     }
 }

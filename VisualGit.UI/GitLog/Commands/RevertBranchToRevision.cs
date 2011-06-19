@@ -25,7 +25,7 @@ namespace VisualGit.UI.GitLog.Commands
 
             GitOrigin origin = EnumTools.GetSingle(logWindow.Origins);
 
-            if (origin == null || !(origin.Target is GitPathTarget))
+            if (origin == null)
             {
                 e.Enabled = false;
                 return;
@@ -61,7 +61,7 @@ namespace VisualGit.UI.GitLog.Commands
             using (var dialog = new ResetBranchDialog())
             {
                 dialog.Revision = logItem.Revision;
-                dialog.RepositoryPath = GitTools.GetAbsolutePath(logItem.RepositoryRoot);
+                dialog.RepositoryPath = logItem.RepositoryRoot;
 
                 if (dialog.ShowDialog(e.Context) != DialogResult.OK)
                     return;
@@ -78,11 +78,7 @@ namespace VisualGit.UI.GitLog.Commands
 
             foreach (GitOrigin o in logWindow.Origins)
             {
-                GitPathTarget pt = o.Target as GitPathTarget;
-                if (pt == null)
-                    continue;
-
-                foreach (string file in tracker.GetDocumentsBelow(pt.FullPath))
+                foreach (string file in tracker.GetDocumentsBelow(o.Target.FullPath))
                 {
                     if (!nodes.Contains(file))
                         nodes.Add(file);
@@ -101,15 +97,10 @@ namespace VisualGit.UI.GitLog.Commands
                 {
                     foreach (GitOrigin item in logWindow.Origins)
                     {
-                        GitPathTarget target = item.Target as GitPathTarget;
-
-                        if (target == null)
-                            continue;
-
                         var args = new GitResetArgs();
 
                         ee.Client.Reset(
-                            GitTools.GetAbsolutePath(logItem.RepositoryRoot),
+                            logItem.RepositoryRoot,
                             logItem.Revision,
                             type,
                             args

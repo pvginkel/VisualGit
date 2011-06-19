@@ -152,10 +152,7 @@ namespace VisualGit.UI.Commands
         {
 			using (FolderBrowserDialog browser = new FolderBrowserDialog())
             {
-                GitPathTarget pt = ExportSource as GitPathTarget;
-
-                if (pt != null)
-                    browser.SelectedPath = pt.FullPath;
+                browser.SelectedPath = ExportSource.FullPath;
 
 				browser.ShowNewFolderButton = false;
 

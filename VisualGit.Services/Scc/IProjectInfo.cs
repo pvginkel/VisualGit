@@ -66,12 +66,6 @@ namespace VisualGit.Scc
         string SccBaseDirectory { get; set;  }
 
         /// <summary>
-        /// Gets or sets the SCC base URI.
-        /// </summary>
-        /// <value>The SCC base URI.</value>
-        Uri SccBaseUri { get; set; }
-
-        /// <summary>
         /// Gets the enlist mode.
         /// </summary>
         /// <value>The enlist mode.</value>

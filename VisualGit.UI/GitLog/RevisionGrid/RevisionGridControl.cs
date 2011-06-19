@@ -31,7 +31,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         public ICollection<string> LastSelectedRows { get; private set; }
         public string CurrentCheckout { get; private set; }
         public GitClient Client { get; set; }
-        public IList<Uri> Uris { get; set; }
+        public IList<string> Paths { get; set; }
         public string RepositoryPath { get; set; }
 
         public GitLogArgs Args
@@ -71,8 +71,8 @@ namespace VisualGit.UI.GitLog.RevisionGrid
 
         public void BeginRefresh()
         {
-            if (Client == null || Uris == null || RepositoryPath == null || _args == null)
-                throw new InvalidOperationException("Both Client, Uris, RepositoryPath as Args must be set in order to retrieve revisions");
+            if (Client == null || Paths == null || RepositoryPath == null || _args == null)
+                throw new InvalidOperationException("Both Client, Paths, RepositoryPath as Args must be set in order to retrieve revisions");
 
             try
             {
@@ -121,7 +121,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
             {
                 _args.ThrowOnCancel = false;
 
-                Client.Log(Uris, _args);
+                Client.Log(Paths, _args);
 
                 BeginInvoke(new Action<bool>(UpdateContents), true);
 
@@ -180,7 +180,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 ParentRevisions = e.ParentRevisions,
                 Heads = heads,
                 Index = _revisionsLoaded++,
-                RepositoryRoot = GitTools.GetUri(RepositoryPath)
+                RepositoryRoot = RepositoryPath
             });
 
             // Force an early refresh to get some content into the grid.

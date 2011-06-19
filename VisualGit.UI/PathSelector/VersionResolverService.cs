@@ -125,28 +125,22 @@ namespace VisualGit.UI.PathSelector
                 if (origin == null)
                     throw new ArgumentNullException("origin");
 
-                GitPathTarget pt = origin.Target as GitPathTarget;
-                bool isPath = (pt != null);
-
                 yield return _head;
 
-                if (isPath)
-                {
-                    GitItem item = GetService<IFileStatusCache>()[pt.FullPath];
+                GitItem item = GetService<IFileStatusCache>()[origin.Target.FullPath];
 
-                    if (item.IsVersioned)
-                    {
-                        yield return _working;
-                        // yield return _base;
-                    }
-                    if (item.HasCopyableHistory)
-                    {
-                        // yield return _committed;
-                        // yield return _previous;
-                    }
-                    else
-                        yield break;
+                if (item.IsVersioned)
+                {
+                    yield return _working;
+                    // yield return _base;
                 }
+                if (item.HasCopyableHistory)
+                {
+                    // yield return _committed;
+                    // yield return _previous;
+                }
+                else
+                    yield break;
 
                 // yield return new DateRevisionType(this, origin);
                 yield return new ExplicitRevisionType(this, origin);
@@ -237,7 +231,7 @@ namespace VisualGit.UI.PathSelector
                         case GitRevisionType.Committed:
                         case GitRevisionType.Previous:
                         case GitRevisionType.Working:
-                            return origin.Target is GitPathTarget;
+                            return true;
                         default:
                             return base.IsValidOn(origin);
                     }
