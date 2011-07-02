@@ -161,32 +161,6 @@ namespace VisualGit.UI.Commands
                 SwitchToBranch = _repositoryBranch;
         }
 
-        private void SwitchDialog_Validating(object sender, CancelEventArgs e)
-        {
-            errorProvider.SetError(localBranchBox, null);
-            errorProvider.SetError(trackingBranchBox, null);
-            errorProvider.SetError(tagBox, null);
-            errorProvider.SetError(versionBox, null);
-
-            if (SwitchToBranch == _repositoryBranch)
-            {
-                Control selectedControl;
-
-                if (localBranchRadioBox.Checked)
-                    selectedControl = localBranchBox;
-                else if (trackingBranchRadioBox.Checked)
-                    selectedControl = trackingBranchBox;
-                else if (tagRadioBox.Checked)
-                    selectedControl = tagBox;
-                else
-                    selectedControl = versionBox;
-
-                errorProvider.SetError(selectedControl, CommandStrings.SelectABranchTagOrRevision);
-
-                e.Cancel = true;
-            }
-        }
-
         protected override void OnContextChanged(EventArgs e)
         {
             base.OnContextChanged(e);
@@ -220,6 +194,36 @@ namespace VisualGit.UI.Commands
             trackingBranchBox.Enabled = trackingBranchRadioBox.Checked;
             tagBox.Enabled = tagRadioBox.Checked;
             versionBox.Enabled = revisionRadioBox.Checked;
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            errorProvider.SetError(localBranchBox, null);
+            errorProvider.SetError(trackingBranchBox, null);
+            errorProvider.SetError(tagBox, null);
+            errorProvider.SetError(versionBox, null);
+
+            GitRef selectedRef = SwitchToBranch;
+
+            if (selectedRef == null || selectedRef == _repositoryBranch)
+            {
+                Control selectedControl;
+
+                if (localBranchRadioBox.Checked)
+                    selectedControl = localBranchBox;
+                else if (trackingBranchRadioBox.Checked)
+                    selectedControl = trackingBranchBox;
+                else if (tagRadioBox.Checked)
+                    selectedControl = tagBox;
+                else
+                    selectedControl = versionBox;
+
+                errorProvider.SetError(selectedControl, CommandStrings.SelectABranchTagOrRevision);
+            }
+            else
+            {
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

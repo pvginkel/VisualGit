@@ -176,9 +176,9 @@ namespace VisualGit.UI.Commands
             // okButton
             // 
             resources.ApplyResources(this.okButton, "okButton");
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Name = "okButton";
             this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // errorProvider
             // 
@@ -215,7 +215,6 @@ namespace VisualGit.UI.Commands
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SwitchDialog";
             this.Shown += new System.EventHandler(this.SwitchDialog_Shown);
-            this.Validating += new System.ComponentModel.CancelEventHandler(this.SwitchDialog_Validating);
             this.switchBox.ResumeLayout(false);
             this.switchBox.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
