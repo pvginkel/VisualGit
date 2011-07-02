@@ -183,6 +183,8 @@ namespace SharpGit
         {
             if (ReferenceEquals(rev1, rev2))
                 return true;
+            if ((object)rev1 == null || (object)rev2 == null)
+                return false;
 
             return rev1.Equals(rev2);
         }
