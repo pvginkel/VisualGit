@@ -37,8 +37,6 @@
             this.mergeStrategyBox = new System.Windows.Forms.ComboBox();
             this.doNotCommitBox = new System.Windows.Forms.CheckBox();
             this.squashCommitsBox = new System.Windows.Forms.CheckBox();
-            this.mergeBranchBox = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.currentBranchBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -48,10 +46,18 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tagBox = new System.Windows.Forms.ComboBox();
+            this.trackingBranchBox = new System.Windows.Forms.ComboBox();
+            this.localBranchBox = new System.Windows.Forms.ComboBox();
+            this.localBranchRadioBox = new System.Windows.Forms.RadioButton();
+            this.trackingBranchRadioBox = new System.Windows.Forms.RadioButton();
+            this.tagRadioBox = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.strategyBox = new System.Windows.Forms.PictureBox();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -59,10 +65,12 @@
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.strategyBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // panel3
@@ -74,7 +82,7 @@
             this.panel3.Location = new System.Drawing.Point(94, 0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(8);
-            this.panel3.Size = new System.Drawing.Size(554, 276);
+            this.panel3.Size = new System.Drawing.Size(581, 360);
             this.panel3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -85,12 +93,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.mergeBranchBox, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.currentBranchBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 8);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -100,7 +107,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(538, 260);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(565, 344);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox1
@@ -110,10 +117,10 @@
             this.groupBox1.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Location = new System.Drawing.Point(3, 131);
+            this.groupBox1.Location = new System.Drawing.Point(3, 215);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
-            this.groupBox1.Size = new System.Drawing.Size(532, 97);
+            this.groupBox1.Size = new System.Drawing.Size(559, 97);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "&Advanced settings";
@@ -135,7 +142,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(516, 73);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(543, 73);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // label3
@@ -156,7 +163,7 @@
             this.mergeStrategyBox.FormattingEnabled = true;
             this.mergeStrategyBox.Location = new System.Drawing.Point(89, 3);
             this.mergeStrategyBox.Name = "mergeStrategyBox";
-            this.mergeStrategyBox.Size = new System.Drawing.Size(424, 21);
+            this.mergeStrategyBox.Size = new System.Drawing.Size(451, 21);
             this.mergeStrategyBox.TabIndex = 1;
             // 
             // doNotCommitBox
@@ -179,28 +186,6 @@
             this.squashCommitsBox.Text = "S&quash commits";
             this.squashCommitsBox.UseVisualStyleBackColor = true;
             // 
-            // mergeBranchBox
-            // 
-            this.mergeBranchBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mergeBranchBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.mergeBranchBox.FormattingEnabled = true;
-            this.mergeBranchBox.Location = new System.Drawing.Point(89, 28);
-            this.mergeBranchBox.Margin = new System.Windows.Forms.Padding(3, 3, 26, 3);
-            this.mergeBranchBox.Name = "mergeBranchBox";
-            this.mergeBranchBox.Size = new System.Drawing.Size(423, 21);
-            this.mergeBranchBox.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 25);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 27);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Merge &with:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // currentBranchBox
             // 
             this.currentBranchBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -209,7 +194,7 @@
             this.currentBranchBox.Margin = new System.Windows.Forms.Padding(3, 6, 26, 6);
             this.currentBranchBox.Name = "currentBranchBox";
             this.currentBranchBox.ReadOnly = true;
-            this.currentBranchBox.Size = new System.Drawing.Size(423, 13);
+            this.currentBranchBox.Size = new System.Drawing.Size(450, 13);
             this.currentBranchBox.TabIndex = 1;
             // 
             // label1
@@ -230,10 +215,10 @@
             this.groupBox2.AutoSize = true;
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox2, 2);
             this.groupBox2.Controls.Add(this.tableLayoutPanel3);
-            this.groupBox2.Location = new System.Drawing.Point(3, 55);
+            this.groupBox2.Location = new System.Drawing.Point(3, 139);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
-            this.groupBox2.Size = new System.Drawing.Size(532, 70);
+            this.groupBox2.Size = new System.Drawing.Size(559, 70);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Merge strategy";
@@ -252,7 +237,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(516, 46);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(543, 46);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // fastForwardRadioBox
@@ -283,7 +268,7 @@
             this.flowLayoutPanel1.Controls.Add(this.okButton);
             this.flowLayoutPanel1.Controls.Add(this.cancelButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(376, 231);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(403, 315);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(162, 29);
@@ -310,6 +295,121 @@
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.AutoSize = true;
+            this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBox3, 2);
+            this.groupBox3.Controls.Add(this.tableLayoutPanel4);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(3, 28);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
+            this.groupBox3.Size = new System.Drawing.Size(559, 105);
+            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Merge &with";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.AutoSize = true;
+            this.tableLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.tagBox, 1, 2);
+            this.tableLayoutPanel4.Controls.Add(this.trackingBranchBox, 1, 1);
+            this.tableLayoutPanel4.Controls.Add(this.localBranchBox, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.localBranchRadioBox, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.trackingBranchRadioBox, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.tagRadioBox, 0, 2);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(8, 16);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(543, 81);
+            this.tableLayoutPanel4.TabIndex = 8;
+            // 
+            // tagBox
+            // 
+            this.tagBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
+            this.tagBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tagBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tagBox.FormattingEnabled = true;
+            this.tagBox.Location = new System.Drawing.Point(115, 57);
+            this.tagBox.Margin = new System.Windows.Forms.Padding(3, 3, 26, 3);
+            this.tagBox.Name = "tagBox";
+            this.tagBox.Size = new System.Drawing.Size(402, 21);
+            this.tagBox.TabIndex = 5;
+            // 
+            // trackingBranchBox
+            // 
+            this.trackingBranchBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
+            this.trackingBranchBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackingBranchBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.trackingBranchBox.FormattingEnabled = true;
+            this.trackingBranchBox.Location = new System.Drawing.Point(115, 30);
+            this.trackingBranchBox.Margin = new System.Windows.Forms.Padding(3, 3, 26, 3);
+            this.trackingBranchBox.Name = "trackingBranchBox";
+            this.trackingBranchBox.Size = new System.Drawing.Size(402, 21);
+            this.trackingBranchBox.TabIndex = 3;
+            // 
+            // localBranchBox
+            // 
+            this.localBranchBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
+            this.localBranchBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.localBranchBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.localBranchBox.FormattingEnabled = true;
+            this.localBranchBox.Location = new System.Drawing.Point(115, 3);
+            this.localBranchBox.Margin = new System.Windows.Forms.Padding(3, 3, 26, 3);
+            this.localBranchBox.Name = "localBranchBox";
+            this.localBranchBox.Size = new System.Drawing.Size(402, 21);
+            this.localBranchBox.TabIndex = 1;
+            // 
+            // localBranchRadioBox
+            // 
+            this.localBranchRadioBox.AutoSize = true;
+            this.localBranchRadioBox.Checked = true;
+            this.localBranchRadioBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.localBranchRadioBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.localBranchRadioBox.Location = new System.Drawing.Point(3, 3);
+            this.localBranchRadioBox.Name = "localBranchRadioBox";
+            this.localBranchRadioBox.Size = new System.Drawing.Size(90, 21);
+            this.localBranchRadioBox.TabIndex = 0;
+            this.localBranchRadioBox.TabStop = true;
+            this.localBranchRadioBox.Text = "&Local branch:";
+            this.localBranchRadioBox.UseVisualStyleBackColor = true;
+            this.localBranchRadioBox.CheckedChanged += new System.EventHandler(this.localBranchRadioBox_CheckedChanged);
+            // 
+            // trackingBranchRadioBox
+            // 
+            this.trackingBranchRadioBox.AutoSize = true;
+            this.trackingBranchRadioBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.trackingBranchRadioBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.trackingBranchRadioBox.Location = new System.Drawing.Point(3, 30);
+            this.trackingBranchRadioBox.Name = "trackingBranchRadioBox";
+            this.trackingBranchRadioBox.Size = new System.Drawing.Size(106, 21);
+            this.trackingBranchRadioBox.TabIndex = 2;
+            this.trackingBranchRadioBox.Text = "Trac&king branch:";
+            this.trackingBranchRadioBox.UseVisualStyleBackColor = true;
+            this.trackingBranchRadioBox.CheckedChanged += new System.EventHandler(this.trackingBranchRadioBox_CheckedChanged);
+            // 
+            // tagRadioBox
+            // 
+            this.tagRadioBox.AutoSize = true;
+            this.tagRadioBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tagRadioBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tagRadioBox.Location = new System.Drawing.Point(3, 57);
+            this.tagRadioBox.Name = "tagRadioBox";
+            this.tagRadioBox.Size = new System.Drawing.Size(47, 21);
+            this.tagRadioBox.TabIndex = 4;
+            this.tagRadioBox.Text = "&Tag:";
+            this.tagRadioBox.UseVisualStyleBackColor = true;
+            this.tagRadioBox.CheckedChanged += new System.EventHandler(this.tagRadioBox_CheckedChanged);
+            // 
             // panel1
             // 
             this.panel1.AutoSize = true;
@@ -319,7 +419,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(0, 0, 1, 0);
-            this.panel1.Size = new System.Drawing.Size(94, 276);
+            this.panel1.Size = new System.Drawing.Size(94, 360);
             this.panel1.TabIndex = 2;
             // 
             // panel2
@@ -331,7 +431,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(8);
-            this.panel2.Size = new System.Drawing.Size(93, 276);
+            this.panel2.Size = new System.Drawing.Size(93, 360);
             this.panel2.TabIndex = 0;
             // 
             // strategyBox
@@ -339,28 +439,29 @@
             this.strategyBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.strategyBox.Location = new System.Drawing.Point(8, 8);
             this.strategyBox.Name = "strategyBox";
-            this.strategyBox.Size = new System.Drawing.Size(77, 260);
+            this.strategyBox.Size = new System.Drawing.Size(77, 344);
             this.strategyBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.strategyBox.TabIndex = 0;
             this.strategyBox.TabStop = false;
             // 
-            // errorProvider1
+            // errorProvider
             // 
-            this.errorProvider1.ContainerControl = this;
+            this.errorProvider.ContainerControl = this;
             // 
             // MergeDialog
             // 
+            this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(648, 276);
+            this.CancelButton = this.cancelButton;
+            this.ClientSize = new System.Drawing.Size(675, 360);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MergeDialog";
             this.Text = "Merge";
             this.Load += new System.EventHandler(this.MergeDialog_Load);
-            this.Validating += new System.ComponentModel.CancelEventHandler(this.MergeDialog_Validating);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -374,11 +475,15 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.strategyBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,8 +499,6 @@
         private System.Windows.Forms.ComboBox mergeStrategyBox;
         private System.Windows.Forms.CheckBox doNotCommitBox;
         private System.Windows.Forms.CheckBox squashCommitsBox;
-        private System.Windows.Forms.ComboBox mergeBranchBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox currentBranchBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -408,6 +511,14 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox strategyBox;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.ComboBox tagBox;
+        private System.Windows.Forms.ComboBox trackingBranchBox;
+        private System.Windows.Forms.ComboBox localBranchBox;
+        private System.Windows.Forms.RadioButton localBranchRadioBox;
+        private System.Windows.Forms.RadioButton trackingBranchRadioBox;
+        private System.Windows.Forms.RadioButton tagRadioBox;
     }
 }

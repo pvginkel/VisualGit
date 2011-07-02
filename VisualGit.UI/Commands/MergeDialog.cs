@@ -15,6 +15,8 @@ namespace VisualGit.UI.Commands
         public MergeDialog()
         {
             InitializeComponent();
+
+            UpdateEnabled();
         }
 
         private void MergeDialog_Load(object sender, EventArgs e)
@@ -32,48 +34,77 @@ namespace VisualGit.UI.Commands
             {
                 currentBranchBox.Text = client.GetCurrentBranch(RepositoryPath).ShortName;
 
-                mergeBranchBox.BeginUpdate();
-                mergeBranchBox.Items.Clear();
+                localBranchBox.BeginUpdate();
+                localBranchBox.Items.Clear();
+                trackingBranchBox.BeginUpdate();
+                trackingBranchBox.Items.Clear();
+                tagBox.BeginUpdate();
+                tagBox.Items.Clear();
 
-                bool resolvedProvidedRevision = Revision == null;
+                // When a revision ref was provided, try to resolve it to a branch,
+                // tag or remote branch.
+
+                bool resolved = Revision == null;
+
+                GitRef resolvedRef = null;
 
                 foreach (var @ref in client.GetRefs(RepositoryPath))
                 {
+                    bool setCurrent = false;
+
+                    if (
+                        !resolved &&
+                        String.Equals(Revision.Revision, @ref.Revision, StringComparison.OrdinalIgnoreCase)
+                    )
+                    {
+                        resolvedRef = @ref;
+                        resolved = true;
+                        setCurrent = true;
+                    }
+
                     switch (@ref.Type)
                     {
                         case GitRefType.Branch:
-                        case GitRefType.RemoteBranch:
-                        case GitRefType.Tag:
-                            mergeBranchBox.Items.Add(@ref);
+                            localBranchBox.Items.Add(@ref);
+                            if (setCurrent)
+                            {
+                                localBranchRadioBox.Checked = true;
+                                localBranchBox.SelectedIndex = localBranchBox.Items.Count - 1;
+                            }
                             break;
-                    }
 
-                    if (
-                        !resolvedProvidedRevision &&
-                        Revision != null &&
-                        String.Equals(Revision.Revision, @ref.Revision, StringComparison.OrdinalIgnoreCase)
-                    ) {
-                        resolvedProvidedRevision = true;
-                        mergeBranchBox.SelectedIndex = mergeBranchBox.Items.Count - 1;
+                        case GitRefType.RemoteBranch:
+                            trackingBranchBox.Items.Add(@ref);
+                            if (setCurrent)
+                            {
+                                trackingBranchRadioBox.Checked = true;
+                                trackingBranchBox.SelectedIndex = trackingBranchBox.Items.Count - 1;
+                            }
+                            break;
+
+                        case GitRefType.Tag:
+                            tagBox.Items.Add(@ref);
+                            if (setCurrent)
+                            {
+                                tagRadioBox.Checked = true;
+                                tagBox.SelectedIndex = tagBox.Items.Count - 1;
+                            }
+                            break;
                     }
                 }
 
-                mergeBranchBox.EndUpdate();
+                if (resolvedRef != null)
+                    Revision = resolvedRef;
+
+                localBranchBox.EndUpdate();
+                trackingBranchBox.EndUpdate();
+                tagBox.EndUpdate();
+
+                UpdateEnabled();
             }
         }
 
         public string RepositoryPath { get; set; }
-
-        private void MergeDialog_Validating(object sender, CancelEventArgs e)
-        {
-            if (mergeBranchBox.SelectedItem == null)
-            {
-                errorProvider1.SetError(mergeBranchBox, CommandStrings.SelectABranch);
-                e.Cancel = true;
-            }
-            else
-                errorProvider1.SetError(mergeBranchBox, null);
-        }
 
         public GitRevision Revision { get; set; }
 
@@ -83,17 +114,74 @@ namespace VisualGit.UI.Commands
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            Args.FastForward = fastForwardRadioBox.Checked;
-            Args.Strategy = ((MergeStrategy)mergeStrategyBox.SelectedItem).Strategy;
-            Args.SquashCommits = squashCommitsBox.Checked;
-            Args.DoNotCommit = doNotCommitBox.Checked;
+            errorProvider.SetError(localBranchBox, null);
+            errorProvider.SetError(trackingBranchBox, null);
+            errorProvider.SetError(tagBox, null);
 
-            DialogResult = DialogResult.OK;
+            if (MergeBranch == null)
+            {
+                Control selectedControl;
+
+                if (localBranchRadioBox.Checked)
+                    selectedControl = localBranchBox;
+                else if (trackingBranchRadioBox.Checked)
+                    selectedControl = trackingBranchBox;
+                else // if (tagRadioBox.Checked)
+                    selectedControl = tagBox;
+
+                errorProvider.SetError(selectedControl, CommandStrings.SelectABranchTagOrRevision);
+            }
+            else
+            {
+                Args.FastForward = fastForwardRadioBox.Checked;
+                Args.Strategy = ((MergeStrategy)mergeStrategyBox.SelectedItem).Strategy;
+                Args.SquashCommits = squashCommitsBox.Checked;
+                Args.DoNotCommit = doNotCommitBox.Checked;
+
+                DialogResult = DialogResult.OK;
+            }
         }
 
         public GitRef MergeBranch
         {
-            get { return (GitRef)mergeBranchBox.SelectedItem; }
+            get
+            {
+                if (localBranchRadioBox.Checked)
+                    return localBranchBox.SelectedItem as GitRef;
+                else if (trackingBranchRadioBox.Checked)
+                    return trackingBranchBox.SelectedItem as GitRef;
+                else if (tagRadioBox.Checked)
+                    return tagBox.SelectedItem as GitRef;
+                else
+                    return null;
+            }
+        }
+
+        private void localBranchRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void UpdateEnabled()
+        {
+            localBranchBox.Enabled = localBranchRadioBox.Checked;
+            trackingBranchBox.Enabled = trackingBranchRadioBox.Checked;
+            tagBox.Enabled = tagRadioBox.Checked;
+        }
+
+        private void trackingBranchRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void tagRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
+        }
+
+        private void revisionRadioBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateEnabled();
         }
     }
 }
