@@ -32,7 +32,7 @@ namespace VisualGit.UI.OptionsPages
             this.authenticationEdit = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.proxyEdit = new System.Windows.Forms.Button();
+            this.certificatesEdit = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.interactiveMergeOnConflict = new System.Windows.Forms.CheckBox();
@@ -51,7 +51,6 @@ namespace VisualGit.UI.OptionsPages
             // 
             resources.ApplyResources(this.authenticationEdit, "authenticationEdit");
             this.authenticationEdit.Name = "authenticationEdit";
-            this.authenticationEdit.UseVisualStyleBackColor = true;
             this.authenticationEdit.Click += new System.EventHandler(this.authenticationEdit_Click);
             // 
             // label1
@@ -63,6 +62,12 @@ namespace VisualGit.UI.OptionsPages
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
+            // 
+            // certificatesEdit
+            // 
+            resources.ApplyResources(this.certificatesEdit, "certificatesEdit");
+            this.certificatesEdit.Name = "certificatesEdit";
+            this.certificatesEdit.Click += new System.EventHandler(this.certificatesEdit_Click);
             // 
             // groupBox1
             // 
@@ -76,7 +81,7 @@ namespace VisualGit.UI.OptionsPages
             resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
             this.tableLayoutPanel2.Controls.Add(this.authenticationEdit, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.proxyEdit, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.certificatesEdit, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             // 
@@ -151,7 +156,7 @@ namespace VisualGit.UI.OptionsPages
         private System.Windows.Forms.Button authenticationEdit;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button proxyEdit;
+        private System.Windows.Forms.Button certificatesEdit;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox interactiveMergeOnConflict;
         private System.Windows.Forms.CheckBox autoAddFiles;

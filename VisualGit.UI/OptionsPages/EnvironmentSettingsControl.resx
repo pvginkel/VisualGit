@@ -121,9 +121,12 @@
   <data name="authenticationEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="authenticationEdit.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>System</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="authenticationEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 32</value>
+    <value>441, 32</value>
   </data>
   <data name="authenticationEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -157,7 +160,7 @@
     <value>3, 29</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>298, 30</value>
+    <value>432, 30</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -186,17 +189,20 @@
   <data name="label2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>298, 29</value>
+    <value>432, 29</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
-    <value>&amp;Proxy Settings:</value>
+    <value>Manage &amp;Certificates:</value>
   </data>
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -213,31 +219,31 @@
   <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="proxyEdit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="certificatesEdit.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>System</value>
   </data>
-  <data name="proxyEdit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>307, 3</value>
+  <data name="certificatesEdit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>441, 3</value>
   </data>
-  <data name="proxyEdit.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="certificatesEdit.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="proxyEdit.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="certificatesEdit.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="proxyEdit.Text" xml:space="preserve">
+  <data name="certificatesEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="&gt;&gt;proxyEdit.Name" xml:space="preserve">
-    <value>proxyEdit</value>
+  <data name="&gt;&gt;certificatesEdit.Name" xml:space="preserve">
+    <value>certificatesEdit</value>
   </data>
-  <data name="&gt;&gt;proxyEdit.Type" xml:space="preserve">
+  <data name="&gt;&gt;certificatesEdit.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;proxyEdit.Parent" xml:space="preserve">
+  <data name="&gt;&gt;certificatesEdit.Parent" xml:space="preserve">
     <value>tableLayoutPanel2</value>
   </data>
-  <data name="&gt;&gt;proxyEdit.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;certificatesEdit.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
@@ -253,7 +259,7 @@
     <value>2</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>385, 59</value>
+    <value>519, 59</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -271,19 +277,19 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="authenticationEdit" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="proxyEdit" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="authenticationEdit" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="certificatesEdit" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="groupBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 196</value>
+    <value>3, 261</value>
   </data>
   <data name="groupBox1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 3, 8, 8</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>401, 83</value>
+    <value>535, 83</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -454,7 +460,7 @@
     <value>3, 116</value>
   </data>
   <data name="pcDefaultDoubleClick.Size" type="System.Drawing.Size, System.Drawing">
-    <value>401, 21</value>
+    <value>535, 21</value>
   </data>
   <data name="pcDefaultDoubleClick.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -484,7 +490,7 @@
     <value>8</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>407, 282</value>
+    <value>541, 347</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -514,12 +520,12 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>407, 282</value>
+    <value>541, 347</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>EnvironmentSettingsControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.OptionsPages.VisualGitOptionsPageControl, VisualGit.UI, Version=2.2.4184.22232, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.OptionsPages.VisualGitOptionsPageControl, VisualGit.UI, Version=2.2.4200.16623, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>

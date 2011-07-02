@@ -6,6 +6,7 @@ using System.ComponentModel;
 using VisualGit.VS;
 using System.Text;
 using System.Security.Cryptography;
+using SharpGit;
 
 
 namespace VisualGit.Configuration
@@ -23,6 +24,11 @@ namespace VisualGit.Configuration
         public ConfigService(IVisualGitServiceProvider context)
             : base(context)
         {
+        }
+
+        protected override void OnInitialize()
+        {
+            RegisterCertificates();
         }
 
         public VisualGitConfig Instance
@@ -491,6 +497,97 @@ namespace VisualGit.Configuration
                 string hash = GetCacheKey(type, uri, promptText);
 
                 rk.DeleteSubKey(hash, false);
+            }
+        }
+
+        public void StoreCertificate(GitCertificate item)
+        {
+            // Ensure the certificate doesn't exist yet.
+
+            RemoveCertificate(item.Path);
+
+            // Add the new one.
+
+            int largestIndex = 0;
+
+            using (RegistryKey rk = OpenHKCUKey("Certificates"))
+            {
+                foreach (string name in rk.GetValueNames())
+                {
+                    int index;
+
+                    if (int.TryParse(name, out index))
+                        largestIndex = Math.Max(largestIndex, index);
+                }
+
+                rk.SetValue((largestIndex + 1).ToString(), item.Path);
+            }
+
+            // Update the SharpGit registrations.
+
+            RegisterCertificates();
+        }
+
+        public ICollection<GitCertificate> GetAllCertificates()
+        {
+            List<GitCertificate> items = new List<GitCertificate>();
+
+            using (RegistryKey rk = OpenHKCUKey("Certificates"))
+            {
+                foreach (string name in rk.GetValueNames())
+                {
+                    string value = (string)rk.GetValue(name);
+
+                    if (!String.IsNullOrEmpty(value))
+                        items.Add(new GitCertificate(value));
+                }
+            }
+
+            return items;
+        }
+
+        public void RemoveCertificate(string path)
+        {
+            using (RegistryKey rk = OpenHKCUKey("Certificates"))
+            {
+                List<string> toRemove = new List<string>();
+
+                foreach (string name in rk.GetValueNames())
+                {
+                    string value = (string)rk.GetValue(name);
+
+                    if (
+                        !String.IsNullOrEmpty(value) &&
+                        String.Equals(value, path, FileSystemUtil.StringComparison)
+                    )
+                        toRemove.Add(name);
+                }
+
+                foreach (string name in toRemove)
+                {
+                    rk.DeleteValue(name);
+                }
+            }
+
+            // Update the SharpGit registrations.
+
+            RegisterCertificates();
+        }
+
+        public void RegisterCertificates()
+        {
+            // Remove all current certificates.
+
+            foreach (GitCertificate item in GitCertificates.GetAllCertificates())
+            {
+                GitCertificates.RemoveCertificate(item);
+            }
+
+            // All all certificates we know of.
+
+            foreach (GitCertificate item in GetAllCertificates())
+            {
+                GitCertificates.AddCertificate(item);
             }
         }
 

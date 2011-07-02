@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using VisualGit.Configuration;
 using Microsoft.Win32;
+using SharpGit;
 
 namespace VisualGit.UI
 {
@@ -94,6 +95,11 @@ namespace VisualGit.UI
         void StoreCredentialCacheItem(CredentialCacheItem item);
         ICollection<CredentialCacheItem> GetAllCredentialCacheItems();
         void RemoveCredentialCacheItem(string uri, string type, string promptText);
+
+        void StoreCertificate(GitCertificate item);
+        ICollection<GitCertificate> GetAllCertificates();
+        void RemoveCertificate(string path);
+        void RegisterCertificates();
     }
 }
 

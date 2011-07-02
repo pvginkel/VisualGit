@@ -40,6 +40,13 @@ namespace SharpGit
 
         private static void SetupTransports()
         {
+            // We wrap all protocols in our own wrapper. This allows us to set
+            // the SshSessionFactory so to allow us to provide the
+            // certificates and gives is a way to set the CredentialsProvider
+            // without having to depend on NGit to allow us to set one.
+            // Specifically, LsRemoteCommand does not provide a way to set
+            // the CredentialsProvider.
+
             foreach (var protocol in Transport.GetTransportProtocols())
             {
                 var wrapper = new TransportWrapper(protocol);

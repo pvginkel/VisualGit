@@ -12,7 +12,7 @@ namespace SharpGit
 
         public static IEnumerable<GitCertificate> GetAllCertificates()
         {
-            return _certificates.Values;
+            return new List<GitCertificate>(_certificates.Values);
         }
 
         public static void AddCertificate(GitCertificate certificate)

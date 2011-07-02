@@ -34,5 +34,13 @@ namespace VisualGit.UI.OptionsPages
             flashWindowAfterOperation.Checked = Config.FlashWindowWhenOperationCompletes;
             pcDefaultDoubleClick.SelectedIndex = Config.PCDoubleClickShowsChanges ? 1 : 0;
         }
+
+        private void certificatesEdit_Click(object sender, EventArgs e)
+        {
+            using (GitCertificateEditor editor = new GitCertificateEditor())
+            {
+                editor.ShowDialog(Context);
+            }
+        }
     }
 }
