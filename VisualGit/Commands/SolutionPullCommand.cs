@@ -82,20 +82,36 @@ namespace VisualGit.Commands
             pa.TransportClientArgs = args;
 
             args.AddExpectedError(GitErrorCode.PullFailed);
+            
+            // Get a list of all documents below the specified paths that are open in editors inside VS
+            HybridCollection<string> lockPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
+            IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
 
-            e.GetService<IProgressRunner>().RunModal(CommandStrings.PullingSolution, pa,
-                delegate(object sender, ProgressWorkerArgs a)
-                {
-                    e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
-
-                    a.Client.Pull(repositoryRoot, args, out result);
-                });
-
-            if (args.LastException != null)
+            foreach (string file in documentTracker.GetDocumentsBelow(repositoryRoot))
             {
-                e.Context.GetService<IVisualGitDialogOwner>()
-                    .MessageBox.Show(result.PostPullError,
-                    args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!lockPaths.Contains(file))
+                    lockPaths.Add(file);
+            }
+
+            documentTracker.SaveDocuments(lockPaths); // Make sure all files are saved before merging!
+
+            using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
+            using (lck.MonitorChangesForReload())
+            {
+                e.GetService<IProgressRunner>().RunModal(CommandStrings.PullingSolution, pa,
+                    delegate(object sender, ProgressWorkerArgs a)
+                    {
+                        e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
+
+                        a.Client.Pull(repositoryRoot, args, out result);
+                    });
+
+                if (args.LastException != null)
+                {
+                    e.Context.GetService<IVisualGitDialogOwner>()
+                        .MessageBox.Show(result.PostPullError,
+                        args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
