@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using VisualGit.Scc;
 using System.ComponentModel;
+using SharpGit;
 
 namespace VisualGit.UI.GitLog.RevisionGrid
 {
-    class RevisionItem : VisualGitPropertyGridItem
+    class RevisionItem : VisualGitPropertyGridItem, IGitLogItem
     {
         private GitRevision _revision;
 
@@ -62,6 +63,26 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         protected override string ComponentName
         {
             get { return _revision.Revision; }
+        }
+
+        DateTime IGitLogItem.CommitDate
+        {
+            get { return _revision.CommitDate; }
+        }
+
+        IList<string> IGitLogItem.ParentRevisions
+        {
+            get { return _revision.ParentRevisions; }
+        }
+
+        int IGitLogItem.Index
+        {
+            get { return _revision.Index; }
+        }
+
+        GitChangeItemCollection IGitLogItem.ChangedPaths
+        {
+            get { return null; }
         }
     }
 }
