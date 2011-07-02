@@ -8,7 +8,6 @@ namespace SharpGit
 {
     public abstract class GitClientArgs
     {
-        private HashSet<GitErrorCategory> _expectedErrorCategories;
         private HashSet<GitErrorCode> _expectedErrorCodes;
 
         internal GitClientArgs(GitCommandType commandType)
@@ -49,26 +48,6 @@ namespace SharpGit
                 ev(this, e);
         }
 
-        public void AddExpectedError(params GitErrorCategory[] errorCategories)
-        {
-            if (errorCategories == null)
-                throw new ArgumentNullException("errorCategories");
-
-            foreach (var item in errorCategories)
-            {
-                AddExpectedError(item);
-            }
-        }
-
-        public void AddExpectedError(GitErrorCategory errorCategory)
-        {
-            if (_expectedErrorCategories == null)
-                _expectedErrorCategories = new HashSet<GitErrorCategory>();
-
-            if (!_expectedErrorCategories.Contains(errorCategory))
-                _expectedErrorCategories.Add(errorCategory);
-        }
-
         public void AddExpectedError(params GitErrorCode[] errorCodes)
         {
             if (errorCodes == null)
@@ -105,9 +84,7 @@ namespace SharpGit
             if (errorCode == null)
                 throw new ArgumentNullException("errorCode");
 
-            return
-                (_expectedErrorCodes != null && _expectedErrorCodes.Contains(errorCode)) ||
-                (_expectedErrorCategories != null && _expectedErrorCategories.Contains(errorCode.Category));
+            return _expectedErrorCodes != null && _expectedErrorCodes.Contains(errorCode);
         }
 
         public event EventHandler<GitErrorEventArgs> GitError;

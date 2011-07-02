@@ -11,8 +11,6 @@ namespace SharpGit
     {
         public GitErrorCode ErrorCode { get; set; }
 
-        public GitErrorCategory ErrorCategory { get; private set; }
-
         public GitException(GitErrorCode errorCode)
             : base(errorCode.Message)
         {

@@ -162,7 +162,6 @@
     <Compile Include="GitClient.cs" />
     <Compile Include="GitClientArgs.cs" />
     <Compile Include="GitCommandType.cs" />
-    <Compile Include="GitErrorCategory.cs" />
     <Compile Include="GitErrorEventArgs.cs" />
     <Compile Include="GitException.cs" />
     <Compile Include="GitLogArgs.cs" />
