@@ -8,6 +8,9 @@ using System.Collections.ObjectModel;
 using NGit.Api;
 using SharpGit.Implementation;
 using NGit.Transport;
+using NGit.Storage.File;
+using NGit;
+using NGit.Util;
 
 namespace SharpGit
 {
@@ -551,6 +554,28 @@ namespace SharpGit
             {
                 return revision.GetObjectId(repositoryEntry.Repository).Name;
             }
+        }
+
+        public IGitConfig GetUserConfig()
+        {
+            string userHome = Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
+
+            string configPath = Path.Combine(userHome, ".gitconfig");
+
+            // Create an empty config file when none yet exists.
+
+            if (!File.Exists(configPath))
+            {
+                File.WriteAllBytes(configPath, new byte[0]);
+
+                new FileInfo(configPath).Attributes |= FileAttributes.Hidden;
+            }
+
+            var config = new FileBasedConfig(configPath, FS.DETECTED);
+
+            config.Load();
+
+            return new GitConfigWrapper(config);
         }
     }
 }

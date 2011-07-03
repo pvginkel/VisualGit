@@ -87,5 +87,59 @@ namespace SharpGit
         {
             return _config.GetNames(section, subsection);
         }
+
+
+        public void SetInt(string section, string subsection, string name, int value)
+        {
+            _config.SetInt(section, subsection, name, value);
+        }
+
+        public void SetLong(string section, string subsection, string name, long value)
+        {
+            _config.SetLong(section, subsection, name, value);
+        }
+
+        public void SetBoolean(string section, string subsection, string name, bool value)
+        {
+            _config.SetBoolean(section, subsection, name, value);
+        }
+
+        public void SetEnum<T>(string section, string subsection, string name, T value)
+        {
+            _config.SetEnum<T>(section, subsection, name, value);
+        }
+
+        public void SetString(string section, string subsection, string name, string value)
+        {
+            _config.SetString(section, subsection, name, value);
+        }
+
+        public void SetStringList(string section, string subsection, string name, IList<string> values)
+        {
+            _config.SetStringList(section, subsection, name, values);
+        }
+
+        public void Unset(string section, string subsection, string name)
+        {
+            _config.Unset(section, subsection, name);
+        }
+
+        public void UnsetSection(string section, string subsection)
+        {
+            _config.UnsetSection(section, subsection);
+        }
+
+        public bool CanSave
+        {
+            get { return _config is StoredConfig; }
+        }
+
+        public void Save()
+        {
+            if (!CanSave)
+                throw new InvalidOperationException("Config cannot be saved");
+
+            ((StoredConfig)_config).Save();
+        }
     }
 }

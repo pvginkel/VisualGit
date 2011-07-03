@@ -265,6 +265,12 @@
     <Compile Include="OptionsPages\GitCertificateEditor.Designer.cs">
       <DependentUpon>GitCertificateEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="OptionsPages\GitSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OptionsPages\GitSettingsControl.Designer.cs">
+      <DependentUpon>GitSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="OptionsPages\VisualGitOptionsPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -639,6 +645,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsPages\GitCertificateEditor.resx">
       <DependentUpon>GitCertificateEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsPages\GitSettingsControl.resx">
+      <DependentUpon>GitSettingsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PathSelector\PathSelectionTreeView.resx">
       <DependentUpon>PathSelectionTreeView.cs</DependentUpon>

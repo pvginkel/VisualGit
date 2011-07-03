@@ -192,6 +192,9 @@ namespace VisualGit.Services.PendingChanges
                         state.LogMessage = args.LogMessage;
                         state.AmendLastCommit = args.AmendLastCommit;
 
+                        if (!PreCommit_VerifyConfiguration(state))
+                            return false;
+
                         if (!PreCommit_VerifySingleRoot(state)) // Verify single root 'first'
                             return false;
 
@@ -266,6 +269,27 @@ namespace VisualGit.Services.PendingChanges
                         "",
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool PreCommit_VerifyConfiguration(PendingCommitState state)
+        {
+            using (GitPoolClient client = state.GetService<IGitClientPool>().GetNoUIClient())
+            {
+                IGitConfig config = client.GetUserConfig();
+
+                if (
+                    String.IsNullOrEmpty(config.GetString("user", null, "name")) ||
+                    String.IsNullOrEmpty(config.GetString("user", null, "email"))
+                ) {
+                    state.MessageBox.Show(PccStrings.NameOrEmailNotSet,
+                        "",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
                     return false;
                 }
             }
