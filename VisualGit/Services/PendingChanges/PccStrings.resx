@@ -165,4 +165,7 @@
   <data name="NameOrEmailNotSet" xml:space="preserve">
     <value>You have not provided a name and/or e-mail address for your commits. Go to Tools | Options and provide your personal information on the Source Control | Git Configuration page.</value>
   </data>
+  <data name="NoMessageProvided" xml:space="preserve">
+    <value>You have not provided a commit message. Are you sure you want to continue?</value>
+  </data>
 </root>

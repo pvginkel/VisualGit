@@ -151,6 +151,15 @@ namespace VisualGit.Services.PendingChanges {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have not provided a commit message. Are you sure you want to continue?.
+        /// </summary>
+        internal static string NoMessageProvided {
+            get {
+                return ResourceManager.GetString("NoMessageProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are trying to commit conflicted items. Please review the conflicted files and resolve them, or remove the check when retrying the commit..
         /// </summary>
         internal static string OneOrMoreItemsConflicted {

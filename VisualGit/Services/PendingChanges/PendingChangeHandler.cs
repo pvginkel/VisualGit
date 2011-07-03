@@ -334,6 +334,16 @@ namespace VisualGit.Services.PendingChanges
         /// <returns></returns>
         private bool PreCommit_VerifyLogMessage(PendingCommitState state)
         {
+            if (String.IsNullOrWhiteSpace(state.LogMessage))
+            {
+                DialogResult result = state.MessageBox.Show(PccStrings.NoMessageProvided,
+                    "",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return false;
+            }
+
             if (state.LogMessage == null)
                 return true; // Skip checks
 
