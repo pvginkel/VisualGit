@@ -106,6 +106,8 @@ namespace VisualGit.UI.PendingChanges
             // Hide the tab because we just have one button on it.
 
             pendingChangesTabs.Visible = false;
+
+            ShowPanel(_commitsPage, false);
         }
 
         void OnSccShellActivate(object sender, EventArgs e)
@@ -127,6 +129,7 @@ namespace VisualGit.UI.PendingChanges
         void OnSccProviderActivated(object sender, EventArgs e)
         {
             pendingChangesTabs.Enabled = true;
+            ShowPanel(_commitsPage, false);
         }
 
         protected override void OnFrameCreated(EventArgs e)
