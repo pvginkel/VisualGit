@@ -115,16 +115,23 @@ namespace VisualGit.UI.PendingChanges.Commands
 
                 using (var client = e.Context.GetService<IGitClientPool>().GetNoUIClient())
                 {
-                    string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
-
-                    foreach (var @ref in client.GetRefs(repositoryPath))
+                    try
                     {
-                        switch (@ref.Type)
+                        string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
+
+                        foreach (var @ref in client.GetRefs(repositoryPath))
                         {
-                            case GitRefType.Branch:
-                                branches.Add(@ref.ShortName);
-                                break;
+                            switch (@ref.Type)
+                            {
+                                case GitRefType.Branch:
+                                    branches.Add(@ref.ShortName);
+                                    break;
+                            }
                         }
+                    }
+                    catch (GitNoRepositoryException)
+                    {
+                        // Ignore no repository exceptions.
                     }
                 }
 
@@ -148,16 +155,23 @@ namespace VisualGit.UI.PendingChanges.Commands
         {
             if (ProjectRoot != null)
             {
-                string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
-
-                using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
+                try
                 {
-                    var repositoryBranch = client.GetCurrentBranch(repositoryPath);
+                    string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
 
-                    if (repositoryBranch.Type == GitRefType.Unknown)
-                        e.Result = Properties.Resources.NoBranch;
-                    else
-                        e.Result = repositoryBranch.ShortName;
+                    using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
+                    {
+                        var repositoryBranch = client.GetCurrentBranch(repositoryPath);
+
+                        if (repositoryBranch.Type == GitRefType.Unknown)
+                            e.Result = Properties.Resources.NoBranch;
+                        else
+                            e.Result = repositoryBranch.ShortName;
+                    }
+                }
+                catch (GitNoRepositoryException)
+                {
+                    // Ignore no repository exceptions.
                 }
             }
         }
