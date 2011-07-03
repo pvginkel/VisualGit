@@ -83,7 +83,7 @@
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(8);
             this.panel3.Size = new System.Drawing.Size(581, 360);
-            this.panel3.TabIndex = 3;
+            this.panel3.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -121,7 +121,7 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
             this.groupBox1.Size = new System.Drawing.Size(559, 97);
-            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "&Advanced settings";
             // 
@@ -219,7 +219,7 @@
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
             this.groupBox2.Size = new System.Drawing.Size(559, 70);
-            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Merge strategy";
             // 
@@ -272,7 +272,7 @@
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(162, 29);
-            this.flowLayoutPanel1.TabIndex = 6;
+            this.flowLayoutPanel1.TabIndex = 5;
             // 
             // okButton
             // 
@@ -306,7 +306,7 @@
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(8, 3, 8, 8);
             this.groupBox3.Size = new System.Drawing.Size(559, 105);
-            this.groupBox3.TabIndex = 7;
+            this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Merge &with";
             // 
@@ -331,7 +331,7 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.Size = new System.Drawing.Size(543, 81);
-            this.tableLayoutPanel4.TabIndex = 8;
+            this.tableLayoutPanel4.TabIndex = 0;
             // 
             // tagBox
             // 
