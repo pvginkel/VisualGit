@@ -7,7 +7,7 @@
     <Description xml:space="preserve">VisualGit - Git support for Visual Studio</Description>
     <Locale>1033</Locale>
     <MoreInfoUrl>http://github.com/pvginkel/VisualGit/</MoreInfoUrl>
-    <License>..\LICENSE.rtf</License>
+    <License>Resources\LICENSE.rtf</License>
     <Icon>Resources\Package.ico</Icon>
     <PreviewImage>Resources\Preview.png</PreviewImage>
     <SupportedProducts>
