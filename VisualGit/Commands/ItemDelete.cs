@@ -112,7 +112,7 @@ namespace VisualGit.Commands
             }
 
             if (!ErrorHandler.Succeeded(hr))
-                mb.Show(Marshal.GetExceptionForHR(hr).Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.GetService<IVisualGitErrorHandler>().OnWarning(Marshal.GetExceptionForHR(hr));
         }
     }
 }

@@ -373,7 +373,7 @@ namespace VisualGit.UI
         {
             var result = Context.GetService<IVisualGitDialogOwner>()
                 .MessageBox.Show(item.PromptText,
-                "Credentials", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                Properties.Resources.Credentials, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
             item.YesNoValue = result == DialogResult.Yes;
 
@@ -384,7 +384,7 @@ namespace VisualGit.UI
         {
             Context.GetService<IVisualGitDialogOwner>()
                 .MessageBox.Show(item.PromptText,
-                "Credentials", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Properties.Resources.Credentials, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             return true;
         }
@@ -402,7 +402,7 @@ namespace VisualGit.UI
 
             OnCancel(EventArgs.Empty);
 
-            cancelButton.Text = "Cancelling...";
+            cancelButton.Text = Properties.Resources.Cancelling;
             cancelButton.Enabled = false;
         }
 

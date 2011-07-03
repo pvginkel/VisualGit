@@ -1,0 +1,5 @@
+Crash Reporter is a library for reporting exceptions from the .NET framework
+to the Crash Collector website.
+
+See http://github.com/pvginkel/CrashCollector for more information about the
+website the crashes are reported to.

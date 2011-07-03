@@ -506,7 +506,7 @@ namespace VisualGit.Settings
             }
 
             if (!ErrorHandler.Succeeded(hr))
-                new VisualGitMessageBox(this).Show(Marshal.GetExceptionForHR(hr).Message, "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                GetService<IVisualGitErrorHandler>().OnWarning(Marshal.GetExceptionForHR(hr));
         }
 
         #endregion

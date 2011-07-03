@@ -13,5 +13,7 @@ namespace VisualGit
         void OnError(Exception ex);
 
         void OnError(Exception ex, BaseCommandEventArgs commandInfo);
+
+        void OnWarning(Exception ex);
     }
 }

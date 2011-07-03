@@ -407,14 +407,8 @@ namespace VisualGit.Services.PendingChanges
 
                     if (!state.Client.Add(pc.FullPath, a))
                     {
-                        if (a.LastException != null && a.LastException.ErrorCode == GitErrorCode.PathNoRepository)
-                        {
-                            state.MessageBox.Show(a.LastException.Message + Environment.NewLine + Environment.NewLine
-                                + PccStrings.YouCanDownloadVisualGit, "", MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                            return false;
-                        }
-                        else if (state.MessageBox.Show(a.LastException.Message, "", MessageBoxButtons.OKCancel, System.Windows.Forms.MessageBoxIcon.Error) == DialogResult.Cancel)
-                            return false;
+                        GetService<IVisualGitErrorHandler>().OnWarning(a.LastException);
+                        return false;
                     }
                 }
             }
@@ -516,7 +510,7 @@ namespace VisualGit.Services.PendingChanges
 
                     if (!state.Client.Delete(path, da))
                     {
-                        state.MessageBox.Show(da.LastException.Message, "", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                        GetService<IVisualGitErrorHandler>().OnWarning(da.LastException);
                         return false;
                     }
                 }
@@ -567,7 +561,6 @@ namespace VisualGit.Services.PendingChanges
             if (depth == GitDepth.Unknown)
                 return false;
 
-            StringBuilder outOfDateMessage = null;
             ProgressRunnerResult r = state.GetService<IProgressRunner>().RunModal(PccStrings.CommitTitle,
                 delegate(object sender, ProgressWorkerArgs e)
                 {
@@ -581,28 +574,12 @@ namespace VisualGit.Services.PendingChanges
                         state.CommitPaths,
                         ca, out rslt);
 
-                    if(!ok && ca.LastException != null)
+                    if (ca.LastException != null)
                     {
-                        if (ca.LastException.ErrorCode == GitErrorCode.OutOfDate)
-                        {
-                            outOfDateMessage = new StringBuilder();
-                            Exception ex = ca.LastException;
-
-                            while(ex != null)
-                            {
-                                outOfDateMessage.AppendLine(ex.Message);
-                                ex = ex.InnerException;
-                            }
-                        }
+                        GetService<IVisualGitErrorHandler>().OnWarning(ca.LastException);
+                        ok = false;
                     }
                 });
-
-            if (outOfDateMessage != null)
-            {
-                state.MessageBox.Show(outOfDateMessage.ToString(),
-                                      PccStrings.OutOfDateCaption,
-                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
 
             if (rslt != null)
             {
@@ -610,10 +587,8 @@ namespace VisualGit.Services.PendingChanges
 
                 if (ci != null && rslt.Revision != null)
                     ci.SetLastChange(PccStrings.CommittedPrefix, rslt.Revision.ToString());
-
-                if (!string.IsNullOrEmpty(rslt.PostCommitError))
-                    state.MessageBox.Show(rslt.PostCommitError, PccStrings.PostCommitError, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+
             return ok;
         }
     }

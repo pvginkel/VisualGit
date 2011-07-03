@@ -153,9 +153,6 @@
   <data name="WorkingCopyX" xml:space="preserve">
     <value>Working Copy: {0}</value>
   </data>
-  <data name="YouCanDownloadVisualGit" xml:space="preserve">
-    <value>You can download the latest VisualGit release on http://github.com/pvginkel/visualgit/</value>
-  </data>
   <data name="OneOrMoreItemsConflicted" xml:space="preserve">
     <value>You are trying to commit conflicted items. Please review the conflicted files and resolve them, or remove the check when retrying the commit.</value>
   </data>
@@ -167,5 +164,8 @@
   </data>
   <data name="NoMessageProvided" xml:space="preserve">
     <value>You have not provided a commit message. Are you sure you want to continue?</value>
+  </data>
+  <data name="YouCanDownloadVisualGit" xml:space="preserve">
+    <value>You can download the latest VisualGit release on http://github.com/pvginkel/visualgit/</value>
   </data>
 </root>

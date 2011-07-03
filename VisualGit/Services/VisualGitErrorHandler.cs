@@ -1,3 +1,5 @@
+#define TEST_ERROR_HANDLING
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,6 +14,7 @@ using VisualGit.Commands;
 using System.Text;
 using System.Runtime.InteropServices;
 using SharpGit;
+using CrashReporter;
 
 namespace VisualGit.Services
 {
@@ -21,22 +24,59 @@ namespace VisualGit.Services
     [GlobalService(typeof(IVisualGitErrorHandler), AllowPreRegistered = true)]
     class VisualGitErrorHandler : VisualGitService, IVisualGitErrorHandler
     {
-        const string _errorReportMailAddress = "";
-        const string _errorReportSubject = "Exception";
-        readonly HandlerDelegator Handler;
-
         public VisualGitErrorHandler(IVisualGitServiceProvider context)
             : base(context)
         {
-            Handler = new HandlerDelegator(this);
+        }
+
+        protected override void OnInitialize()
+        {
+            Reporter.SetConfiguration(new CrashReporter.Configuration
+            {
+                AllowComments = true,
+                AllowEmailAddress = true,
+                AlwaysSubmit = false,
+                ApplicationTitle = VisualGitId.PlkProduct,
+#if TEST_ERROR_HANDLING
+                Application = new Guid("d82540cf-0bbc-4149-bb26-9c212b4ed44b"),
+                Url = "http://localhost:8888/submit",
+#else
+                Application = new Guid("7d62d6b9-893f-471e-a5cb-e5423a836c14"),
+                Url = "http://visualgit-bugs.appspot.com/submit",
+#endif
+                DialogType = ExceptionDialogType.Technical,
+                ShowUI = true,
+                Version = GetType().Assembly.GetName().Version.ToString()
+            });
+
+            Reporter.AddFormatter(new ExceptionFormatter<Exception>(FormatException));
+        }
+
+        private string FormatException(Exception ex)
+        {
+            var sb = new StringBuilder();
+
+            string message = ex.Message.TrimEnd();
+
+            sb.Append(message);
+
+            if (message.Contains("\n"))
+                sb.Append("\n");
+            else
+                sb.Append(" ");
+
+            sb.AppendFormat("({0})", ex.GetType().FullName);
+
+            return sb.ToString();
         }
 
         public bool IsEnabled(Exception ex)
         {
-            // TODO: Exception processing is currently disabled. This will be
-            // replaced by NBug later on.
-
+#if DEBUG && !TEST_ERROR_HANDLING
             return false;
+#else
+            return true;
+#endif
         }
 
         /// <summary>
@@ -48,7 +88,7 @@ namespace VisualGit.Services
             if (ex == null)
                 return;
 
-            Handler.Invoke(ex, null);
+            Handle(ex, null);
         }
 
         public void OnError(Exception ex, BaseCommandEventArgs commandArgs)
@@ -58,127 +98,41 @@ namespace VisualGit.Services
             else if (commandArgs == null)
                 OnError(ex);
             else
-                Handler.Invoke(ex, new ExceptionInfo(commandArgs));
+                Handle(ex, commandArgs);
         }
 
-        sealed class ExceptionInfo
+        public void OnWarning(Exception ex)
         {
-            readonly BaseCommandEventArgs _commandArgs;
-            public ExceptionInfo(BaseCommandEventArgs e)
-            {
-                _commandArgs = e;
-            }
+            if (ex == null)
+                return;
 
-            public BaseCommandEventArgs CommandArgs
-            {
-                get { return _commandArgs; }
-            }
+            Handle(ex, null);
         }
 
-        sealed class HandlerDelegator : VisualGitService
+        private void Handle(Exception ex, BaseCommandEventArgs exceptionInfo)
         {
-            VisualGitErrorHandler _handler;
-            public HandlerDelegator(VisualGitErrorHandler context)
-                : base(context)
+            if (ex == null)
+                throw new ArgumentNullException("ex");
+
+            // We're not interested in the ProgressRunnerException. Get the inner
+            // exception unless we don't have one.
+
+            while (ex is ProgressRunnerException && ex.InnerException != null)
             {
-                _handler = context;
-            }
-
-            IWin32Window Owner
-            {
-                get { return GetService<IUIService>().GetDialogOwnerWindow(); }
-            }
-
-            public void Invoke(Exception ex, ExceptionInfo info)
-            {
-                try
-                {
-                    // BH: Uses reflection to find the best match based on the exception??
-
-                    Type t = typeof(HandlerDelegator);
-                    MethodInfo method = t.GetMethod("DoHandle", BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { ex.GetType(), typeof(ExceptionInfo) }, null);
-
-                    if (method != null)
-                        method.Invoke(this, new object[] { ex, info });
-                    else
-                        DoHandle(ex, info);
-                }
-                catch (Exception x)
-                {
-                    Debug.WriteLine(x);
-                }
-            }
-
-            private void DoHandle(ProgressRunnerException ex, ExceptionInfo info)
-            {
-                // we're only interested in the inner exception - we know where the 
-                // outer one comes from
-                Invoke(ex.InnerException, info);
-            }
-
-            private void DoHandle(Exception ex, ExceptionInfo info)
-            {
-                _handler.ShowErrorDialog(ex, true, true, info);
-            }
-        }
-
-        private void ShowErrorDialog(Exception ex, bool showStackTrace, bool internalError, ExceptionInfo info)
-        {
-            throw new NotSupportedException();
-
-#if NOT_IMPLEMENTED
-            string stackTrace = ex.ToString();
-            string message = GetNestedMessages(ex);
-            System.Collections.Specialized.StringDictionary additionalInfo =
-                new System.Collections.Specialized.StringDictionary();
-
-            IVisualGitSolutionSettings ss = GetService<IVisualGitSolutionSettings>();
-            if (ss != null)
-                additionalInfo.Add("VS-Version", ss.VisualStudioVersion.ToString());
-
-            if (info != null && info.CommandArgs != null)
-                additionalInfo.Add("Command", info.CommandArgs.Command.ToString());
-
-            IVisualGitPackage pkg = GetService<IVisualGitPackage>();
-            if (pkg != null)
-                additionalInfo.Add("VisualGit-Version", pkg.UIVersion.ToString());
-
-            additionalInfo.Add("SharpSvn-Version", GitClient.SharpGitVersion.ToString());
-            additionalInfo.Add("Svn-Version", GitClient.NGitVersion.ToString());
-            additionalInfo.Add("OS-Version", Environment.OSVersion.Version.ToString());
-
-            using (ErrorDialog dlg = new ErrorDialog())
-            {
-                dlg.ErrorMessage = message;
-                dlg.ShowStackTrace = showStackTrace;
-                dlg.StackTrace = stackTrace;
-                dlg.InternalError = internalError;
-
-                if (dlg.ShowDialog(Context) == DialogResult.Retry)
-                {
-                    string subject = _errorReportSubject;
-
-                    if (info != null && info.CommandArgs != null)
-                        subject = string.Format("Error handling {0}", info.CommandArgs.Command);
-                    
-                    VisualGitErrorMessage.SendByMail(_errorReportMailAddress,
-                        subject, ex, typeof(VisualGitErrorHandler).Assembly, additionalInfo);
-                }
-            }
-#endif
-        }
-
-        private static string GetNestedMessages(Exception ex)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            while (ex != null)
-            {
-                sb.AppendLine(ex.Message.Trim());
                 ex = ex.InnerException;
             }
 
-            return sb.ToString();
+#if DEBUG && !TEST_ERROR_HANDLING
+            GetService<IVisualGitDialogOwner>()
+                .MessageBox.Show(
+                    ex.Message,
+                    CommandResources.OperationNotCompletedSuccessfully,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+#else
+            Reporter.Report(ex);
+#endif
         }
     }
 }

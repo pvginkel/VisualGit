@@ -221,9 +221,7 @@ namespace VisualGit.Commands
 
                 if (args.LastException != null)
                 {
-                    e.Context.GetService<IVisualGitDialogOwner>()
-                        .MessageBox.Show(result.PostSwitchError,
-                        args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
                 }
             }
         }

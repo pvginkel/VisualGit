@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CrashReporter</name>
+    </assembly>
+    <members>
+        <member name="T:CrashReporter.Reporter">
+            <summary>
+            Processes and reports exceptions.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.Reporter.SetConfiguration(CrashReporter.IConfiguration)">
+            <summary>
+            Sets the configuration used when sending reports.
+            </summary>
+            <param name="configuration">Configuration used when sending reports.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="configuration"/> is null.</exception>
+            <exception cref="T:System.InvalidOperationException">Thrown when a configuration has already been provided.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when either the Url or Version haven't been set on the configuration.</exception>
+        </member>
+        <member name="M:CrashReporter.Reporter.UnhandledExceptionHandler(System.Object,System.UnhandledExceptionEventArgs)">
+            <summary>
+            Unhandled exception handler. Use this method as an event handler
+            for <see cref="E:System.AppDomain.UnhandledException"/> on <see cref="P:System.AppDomain.CurrentDomain"/>.
+            </summary>
+            <example>
+            This example shows how to apply the event handler:
+            <code>
+            AppDomain.CurrentDomain.UnhandledException += Reporter.UnhandledExceptionHandler;
+            </code>
+            </example>
+            <param name="sender">The source of the unhandled exception.</param>
+            <param name="e">An <see cref="T:System.UnhandledExceptionEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:CrashReporter.Reporter.ThreadExceptionHandler(System.Object,System.Threading.ThreadExceptionEventArgs)">
+            <summary>
+            Unhandled thread exception handler. Use this method as an event handler
+            for <see cref="E:System.Windows.Forms.Application.ThreadException"/>.
+            </summary>
+            <example>
+            This example shows how to apply the event handler:
+            <code>
+            Application.ThreadException += Reporter.ThreadExceptionHandler;
+            </code>
+            </example>
+            <param name="sender">The source of the thread exception.</param>
+            <param name="e">An <see cref="T:System.Threading.ThreadExceptionEventArgs"/> that contains the event data.</param>
+        </member>
+        <member name="M:CrashReporter.Reporter.Report(System.Exception)">
+            <summary>
+            Reports an exception. When called directly, this can be used in a
+            try/catch statement.
+            </summary>
+            <example>
+            This example shows how to report an exception.
+            <code>
+            try
+            {
+                // Will throw a devide by zero exception.
+            
+                int i = 0;
+                int j = 1 / i;
+            }
+            catch (DivideByZeroException ex)
+            {
+                Reporter.Report(ex);
+            }
+            </code>
+            </example>
+            <param name="exception">Exception to report.</param>
+        </member>
+        <member name="M:CrashReporter.Reporter.AddFormatter(CrashReporter.ExceptionFormatter)">
+            <summary>
+            Adds a custom formatter used when presenting exception information
+            to the user when using the technical exception dialog type.
+            </summary>
+            <param name="formatter"></param>
+        </member>
+        <member name="P:CrashReporter.Reporter.Configuration">
+            <summary>
+            Gets the current configuration of Crash Reporter.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Reporter.SystemInformation">
+            <summary>
+            Gets the system information used by Crash Reporter when
+            sending reports.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.SendForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.SendForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporter.SendForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.TechnicalExceptionForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.TechnicalExceptionForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporter.TechnicalExceptionForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.Configuration">
+            <summary>
+            Specifies a set of values used as configuration for exception reporting.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.IConfiguration">
+            <summary>
+            Specifies a set of values used as configuration for exception reporting.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.Url">
+            <summary>
+            Gets the Url used to report exceptions to. This is the full Url
+            to the submit servlet of CrashCollector.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.Application">
+            <summary>
+            Gets the Guid of the application used to report exceptions for.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.ApplicationTitle">
+            <summary>
+            Gets the title of the application used to display messages to the
+            user with.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.Version">
+            <summary>
+            Gets the version of the application used when reporting exceptions.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.ShowUI">
+            <summary>
+            Gets whether to show a user interface when reporting exceptions.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.AllowComments">
+            <summary>
+            Gets whether to allow the user to add a comment to the
+            exception report before it's repored.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.AllowEmailAddress">
+            <summary>
+            Gets whether to allow the user to add an e-mail address to
+            the exception report before it's reported.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.AlwaysSubmit">
+            <summary>
+            Gets whether exceptions should always be submitted. When set
+            to false, the user will be presented with a "Submit exception report"
+            button.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.DialogType">
+            <summary>
+            Gets the dialog type to be shown to the user when an exception
+            is being reported.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.IConfiguration.UnhandledExceptionBehavior">
+            <summary>
+            Gets the action to take when catching an unhandled exception.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.Configuration.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CrashReporter.Configuration"/> class.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.Url">
+            <summary>
+            Gets or sets the Url used to report exceptions to. This is the full Url
+            to the submit servlet of CrashCollector.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.Application">
+            <summary>
+            Gets or sets the Guid of the application used to report exceptions for.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.ApplicationTitle">
+            <summary>
+            Gets or sets the title of the application used to display messages to the
+            user with.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.Version">
+            <summary>
+            Gets or sets the version of the application used when reporting exceptions.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.ShowUI">
+            <summary>
+            Gets or sets whether to show a user interface when reporting exceptions.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.AllowComments">
+            <summary>
+            Gets or sets whether to allow the user to add a comment to the
+            exception report before it's repored.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.AllowEmailAddress">
+            <summary>
+            Gets or sets whether to allow the user to add an e-mail address to
+            the exception report before it's reported.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.AlwaysSubmit">
+            <summary>
+            Gets or sets whether exceptions should always be submitted. When set
+            to false, the user will be presented with a "Submit exception report"
+            button.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.DialogType">
+            <summary>
+            Gets or sets the dialog type to be shown to the user when an exception
+            is being reported.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Configuration.UnhandledExceptionBehavior">
+            <summary>
+            Gets or sets the action to take when catching an unhandled exception.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.SystemInformation">
+            <summary>
+            Provides access to system information used when reporting exceptions.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.InstallationDateTime">
+            <summary>
+            Gets the installation date of the product using Crash Reporter.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.LastStartupDateTime">
+            <summary>
+            Gets the last startup date of the product using Crash Reporter.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.LastReportDateTime">
+            <summary>
+            Gets the last date a report was processed.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.OperatingSystem">
+            <summary>
+            Gets the operating system.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.OperationSystemVersion">
+            <summary>
+            Gets the version of the operation system.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.Cpu">
+            <summary>
+            Gets the name of the CPU.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.SystemInformation.CpuInformation">
+            <summary>
+            Gets information of the CPU.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.ReportForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.ReportForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporter.ReportForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.UnhandledExceptionBehavior">
+            <summary>
+            Action to take when an unhandled exception is caught.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.UnhandledExceptionBehavior.Shutdown">
+            <summary>
+            Immediately shutdown the application.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.UnhandledExceptionBehavior.Continue">
+            <summary>
+            Continue the running application.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.GenericExceptionForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.GenericExceptionForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporter.GenericExceptionForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.ConfigurationAbsentException">
+            <summary>
+            The exception that is thrown when no configuration has been provided
+            and an exception is reported.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.ConfigurationAbsentException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CrashReporter.ConfigurationAbsentException"/>
+            class.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.ExceptionDialogType">
+            <summary>
+            Type of exception dialog to present the user with when an exception
+            is reported.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.ExceptionDialogType.Technical">
+            <summary>
+            Technical dialog which shows the stack of exceptions and inner
+            exceptions with their message and exception type.
+            </summary>
+        </member>
+        <member name="F:CrashReporter.ExceptionDialogType.Generic">
+            <summary>
+            Generic error dialog without detaild information.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.AdditionalInformation">
+            <summary>
+              Looks up a localized string similar to Additional information.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.ConfigurationAbsent">
+            <summary>
+              Looks up a localized string similar to Configuration has not been provided.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.ConfigurationAlreadyProvided">
+            <summary>
+              Looks up a localized string similar to Configuration can only be provided once.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.Connecting">
+            <summary>
+              Looks up a localized string similar to Connecting....
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.CouldNotSubmitException">
+            <summary>
+              Looks up a localized string similar to Unable to submit the exception ({0})..
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.CrashReporter">
+            <summary>
+              Looks up a localized string similar to CrashReporter.NET.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.Done">
+            <summary>
+              Looks up a localized string similar to Done.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.GettingResponse">
+            <summary>
+              Looks up a localized string similar to Getting response....
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.SendingRequest">
+            <summary>
+              Looks up a localized string similar to Sending request....
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.SendReportFailed">
+            <summary>
+              Looks up a localized string similar to Unable to submit the report to the server.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.UrlIsRequired">
+            <summary>
+              Looks up a localized string similar to URL is required.
+            </summary>
+        </member>
+        <member name="P:CrashReporter.Properties.Resources.VersionIsRequired">
+            <summary>
+              Looks up a localized string similar to Version is required.
+            </summary>
+        </member>
+        <member name="T:CrashReporter.ExceptionFormatter">
+            <summary>
+            Formatter for formatting exceptions.
+            </summary>
+        </member>
+        <member name="M:CrashReporter.ExceptionFormatter.Format(System.Exception)">
+            <summary>
+            Formats an exception to a human readable string.
+            </summary>
+            <param name="exception">Exception to format.</param>
+            <returns>Human readable string for the provided exception.</returns>
+        </member>
+        <member name="T:CrashReporter.ExceptionFormatter`1">
+            <summary>
+            Formatter for formatting exceptions.
+            </summary>
+            <typeparam name="T">Type of exception this formatter supports.</typeparam>
+        </member>
+        <member name="M:CrashReporter.ExceptionFormatter`1.#ctor(CrashReporter.ExceptionFormatterCallback)">
+            <summary>
+            Initializes a new instance of <see cref="T:CrashReporter.ExceptionFormatter`1"/>
+            with a formatter.
+            </summary>
+            <param name="formatter">Delegate used to format the exception with.</param>
+        </member>
+        <member name="M:CrashReporter.ExceptionFormatter`1.Format(System.Exception)">
+            <summary>
+            Formats an exception to a human readable string.
+            </summary>
+            <param name="exception">Exception to format.</param>
+            <returns>Human readable string for the provided exception.</returns>
+        </member>
+        <member name="T:CrashReporter.ExceptionFormatterCallback">
+            <summary>
+            Delegate for formatting an exception.
+            </summary>
+            <param name="exception">Exception to format.</param>
+            <returns>Human readable string for the provided exception.</returns>
+        </member>
+    </members>
+</doc>

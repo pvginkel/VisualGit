@@ -140,19 +140,19 @@ namespace VisualGit.Commands
                 }
                 catch (IOException ee)
                 {
-                    mb.Show(ee.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(ee);
                 }
                 catch (COMException ee)
                 {
-                    mb.Show(ee.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(ee);
                 }
                 catch (InvalidOperationException ee)
                 {
-                    mb.Show(ee.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(ee);
                 }
                 catch (System.ComponentModel.Win32Exception ee)
                 {
-                    mb.Show(ee.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(ee);
                 }
 
             }

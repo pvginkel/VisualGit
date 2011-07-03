@@ -209,9 +209,7 @@ namespace VisualGit.UI.MergeWizard.Commands
 
                 if (args.LastException != null)
                 {
-                    e.Context.GetService<IVisualGitDialogOwner>()
-                        .MessageBox.Show(args.LastException.Message,
-                        args.LastException.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
                 }
             }
         }
