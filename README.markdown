@@ -15,9 +15,9 @@ bugs or issues you encounter so they can be solved promptly.
 Review the issue list at <http://github.com/pvginkel/VisualGit/issues> for a complete list
 of issues. The most important issues currently are:
 
-* Project load and refresh is very slow on large projects [http://github.com/pvginkel/VisualGit/issues/25](#25);
-* Maintenance on branches and tags is missing [http://github.com/pvginkel/VisualGit/issues/8](#8);
-* Maintenance on remotes is missing [http://github.com/pvginkel/VisualGit/issues/30](#30).
+* Project load and refresh is very slow on large projects [#25](http://github.com/pvginkel/VisualGit/issues/25);
+* Maintenance on branches and tags is missing [#8](http://github.com/pvginkel/VisualGit/issues/8);
+* Maintenance on remotes is missing [#30](http://github.com/pvginkel/VisualGit/issues/30).
 
 ## Dependencies
 
@@ -31,7 +31,7 @@ JGit can be found at <http://eclipse.org/jgit>.
 
 ## Reporting bugs
 
-Integrated with VisualGit is [http://github.com/pvginkel/CrashReporter.NET](CrashReporter.NET).
+Integrated with VisualGit is [CrashReporter.NET](http://github.com/pvginkel/CrashReporter.NET).
 If you encounter a bug, send a crash report through the CrashReporter.NET interface.
 These issues are collected at http://visualgit-bugs.appspot.com/.
 
