@@ -16,7 +16,7 @@
 //
 // Changes and additions made for VisualGit Copyright 2011 Pieter van Ginkel.
 
-#define TEST_ERROR_HANDLING
+// #define TEST_ERROR_HANDLING
 
 using System;
 using System.Diagnostics;
