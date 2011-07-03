@@ -166,7 +166,6 @@
     <None Include="Gui\menu\Properties.pdn" />
     <None Include="Gui\PendingChanges\RepositoryExplorer.pdn" />
     <None Include="Gui\PendingChanges\WCExplorer.pdn" />
-    <None Include="Resources\VisualGitLogo32x32.pdn" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VisualGitEditorFactories.cs" />
@@ -193,6 +192,10 @@
     <Compile Include="Attributes\ProvideTextMarker.cs" />
     <Compile Include="Attributes\ProvideToolsOptionsPageVisibility.cs" />
     <Compile Include="Attributes\ProvideUIVersion.cs" />
+    <Content Include="Resources\Preview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Gui\Gui-To-Vsct.xsl" />
     <None Include="Gui\Gui-Common.xsl" />
     <Content Include="Gui\menu\Add.png" />
@@ -264,7 +267,10 @@
     <Content Include="Gui\PendingChanges\ViewItems.png" />
     <Content Include="Gui\PendingChanges\Views.png" />
     <Content Include="Gui\PendingChanges\WCExplorer.png" />
-    <Content Include="Resources\Package.ico" />
+    <Content Include="Resources\Package.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpGit\SharpGit.csproj">
