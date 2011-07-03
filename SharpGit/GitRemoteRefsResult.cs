@@ -13,6 +13,5 @@ namespace SharpGit
         }
 
         public ICollection<GitRef> Items { get; private set; }
-        public string PostGetRemoteRefsError { get; internal set; }
     }
 }

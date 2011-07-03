@@ -26,7 +26,7 @@ namespace SharpGit
             if (collectedPaths.Count == 0)
                 return;
             else if (collectedPaths.Count > 1)
-                throw new GitException(GitErrorCode.UnexpectedMultipleRepositories);
+                throw new GitUnexpectedMultipleRepositoriesException(Properties.Resources.UnexpectedMultipleRepositories);
 
             var collectedPathsEntry = collectedPaths.Single();
 

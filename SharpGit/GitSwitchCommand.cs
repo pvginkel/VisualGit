@@ -14,7 +14,7 @@ namespace SharpGit
         {
         }
 
-        internal GitSwitchResult Execute(GitRef target, string repositoryPath)
+        internal void Execute(GitRef target, string repositoryPath)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
@@ -23,32 +23,13 @@ namespace SharpGit
 
             using (repositoryEntry.Lock())
             {
-                var result = new GitSwitchResult();
-
                 var checkoutCommand = new Git(repositoryEntry.Repository).Checkout();
 
                 checkoutCommand.SetName(target.Name);
                 checkoutCommand.SetForce(Args.Force);
-
-                try
-                {
-                    checkoutCommand.Call();
-                }
-                catch (JGitInternalException ex)
-                {
-                    var exception = new GitException(GitErrorCode.CheckoutFailed, ex);
-
-                    Args.SetError(exception);
-
-                    result.PostSwitchError = ex.Message;
-
-                    if (Args.ShouldThrow(exception.ErrorCode))
-                        throw exception;
-                }
+                checkoutCommand.Call();
 
                 RaiseNotifyFromDiff(repositoryEntry.Repository);
-
-                return result;
             }
         }
     }

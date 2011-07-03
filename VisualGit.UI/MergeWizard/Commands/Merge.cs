@@ -198,18 +198,27 @@ namespace VisualGit.UI.MergeWizard.Commands
             using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
+                GitException exception = null;
+
                 e.GetService<IProgressRunner>().RunModal(
                     "Changing Current Branch",
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
 
-                        a.Client.Merge(repositoryPath, mergeBranch, args);
+                        try
+                        {
+                            a.Client.Merge(repositoryPath, mergeBranch, args);
+                        }
+                        catch (GitException ex)
+                        {
+                            exception = ex;
+                        }
                     });
 
-                if (args.LastException != null)
+                if (exception != null)
                 {
-                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(exception);
                 }
             }
         }

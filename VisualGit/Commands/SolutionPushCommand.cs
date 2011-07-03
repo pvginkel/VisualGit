@@ -75,26 +75,31 @@ namespace VisualGit.Commands
                     break;
             }
 
-            GitPushResult result = null;
-
             ProgressRunnerArgs pa = new ProgressRunnerArgs();
             pa.CreateLog = true;
             pa.TransportClientArgs = args;
 
-            args.AddExpectedError(GitErrorCode.PushFailed);
-            
+            GitException exception = null;
+
             e.GetService<IProgressRunner>().RunModal(CommandStrings.PushingSolution, pa,
                 delegate(object sender, ProgressWorkerArgs a)
                 {
                     using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
                     {
-                        client.Push(repositoryRoot, args, out result);
+                        try
+                        {
+                            client.Push(repositoryRoot, args);
+                        }
+                        catch (GitException ex)
+                        {
+                            exception = ex;
+                        }
                     }
                 });
             
-            if (args.LastException != null)
+            if (exception != null)
             {
-                e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
+                e.GetService<IVisualGitErrorHandler>().OnWarning(exception);
             }
         }
 

@@ -146,76 +146,62 @@ namespace SharpGit
                 if (monitor.IsCancelled())
                     throw new GitOperationCancelledException();
 
-                try
+                FetchResult fetchResult;
+
+                using (new CredentialsProviderScope(new CredentialsProvider(this)))
                 {
-                    FetchResult fetchResult;
-
-                    using (new CredentialsProviderScope(new CredentialsProvider(this)))
-                    {
-                        fetchResult = fetchCommand.Call();
-                    }
-
-                    monitor.Update(1);
-
-                    if (monitor.IsCancelled())
-                        throw new GitOperationCancelledException();
-
-                    var commitId = GetCommitToMerge(fetchResult, remoteBranchName);
-
-                    if (commitId != null)
-                    {
-                        result.Commit = commitId.Name;
-                    }
-
-                    var mergeStrategy = Args.MergeStrategy;
-
-                    if (mergeStrategy == GitMergeStrategy.DefaultForBranch)
-                    {
-                        bool doRebase = config.GetBoolean(
-                            ConfigConstants.CONFIG_BRANCH_SECTION,
-                            currentBranch,
-                            ConfigConstants.CONFIG_KEY_REBASE,
-                            false
-                        );
-
-                        mergeStrategy = doRebase ? GitMergeStrategy.Rebase : GitMergeStrategy.Merge;
-                    }
-
-                    if (mergeStrategy != GitMergeStrategy.Unset && commitId == null)
-                    {
-                        throw new InvalidOperationException(String.Format(
-                            "Could not get advertised refs for branch {0}", remoteBranchName
-                        ));
-                    }
-
-                    switch (mergeStrategy)
-                    {
-                        case GitMergeStrategy.Merge:
-                            monitor.Update(1);
-
-                            mergeResult = PerformMerge(repository, fetchResult, result, commitId, remoteBranchName, remoteUri, monitor);
-                            break;
-
-                        case GitMergeStrategy.Rebase:
-                            monitor.Update(1);
-
-                            PerformRebase(repository, fetchResult, result, commitId, monitor);
-                            break;
-                    }
-
-                    monitor.EndTask();
+                    fetchResult = fetchCommand.Call();
                 }
-                catch (JGitInternalException ex)
+
+                monitor.Update(1);
+
+                if (monitor.IsCancelled())
+                    throw new GitOperationCancelledException();
+
+                var commitId = GetCommitToMerge(fetchResult, remoteBranchName);
+
+                if (commitId != null)
                 {
-                    var exception = new GitException(GitErrorCode.PullFailed, ex);
-
-                    Args.SetError(exception);
-
-                    result.PostPullError = ex.Message;
-
-                    if (Args.ShouldThrow(exception.ErrorCode))
-                        throw exception;
+                    result.Commit = commitId.Name;
                 }
+
+                var mergeStrategy = Args.MergeStrategy;
+
+                if (mergeStrategy == GitMergeStrategy.DefaultForBranch)
+                {
+                    bool doRebase = config.GetBoolean(
+                        ConfigConstants.CONFIG_BRANCH_SECTION,
+                        currentBranch,
+                        ConfigConstants.CONFIG_KEY_REBASE,
+                        false
+                    );
+
+                    mergeStrategy = doRebase ? GitMergeStrategy.Rebase : GitMergeStrategy.Merge;
+                }
+
+                if (mergeStrategy != GitMergeStrategy.Unset && commitId == null)
+                {
+                    throw new InvalidOperationException(String.Format(
+                        "Could not get advertised refs for branch {0}", remoteBranchName
+                    ));
+                }
+
+                switch (mergeStrategy)
+                {
+                    case GitMergeStrategy.Merge:
+                        monitor.Update(1);
+
+                        mergeResult = PerformMerge(repository, fetchResult, result, commitId, remoteBranchName, remoteUri, monitor);
+                        break;
+
+                    case GitMergeStrategy.Rebase:
+                        monitor.Update(1);
+
+                        PerformRebase(repository, fetchResult, result, commitId, monitor);
+                        break;
+                }
+
+                monitor.EndTask();
             }
 
             if (mergeResult != null)
@@ -246,13 +232,13 @@ namespace SharpGit
         {
             var mergeCommand = new Git(repository).Merge();
 
-			string name = "branch \'" + Repository.ShortenRefName(remoteBranchName) + "\' of " + remoteUri;
+            string name = "branch \'" + Repository.ShortenRefName(remoteBranchName) + "\' of " + remoteUri;
 
             mergeCommand.Include(name, commitId);
 
-			var mergeResult = mergeCommand.Call();
+            var mergeResult = mergeCommand.Call();
 
-			monitor.Update(1);
+            monitor.Update(1);
 
             result.MergeResult = PackMergeStatus(mergeResult.GetMergeStatus());
 

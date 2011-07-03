@@ -216,7 +216,7 @@ namespace SharpGit
             }
             catch (IOException e)
             {
-                throw new GitException(GitErrorCode.Unspecified, e);
+                throw new GitException(Properties.Resources.Unspecified, e);
             }
         }
 

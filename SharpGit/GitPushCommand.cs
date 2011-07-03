@@ -15,7 +15,7 @@ namespace SharpGit
         {
         }
 
-        internal GitPushResult Execute(string repositoryPath)
+        internal void Execute(string repositoryPath)
         {
             var repositoryEntry = Client.GetRepository(repositoryPath);
 
@@ -57,28 +57,10 @@ namespace SharpGit
 
                     pushCommand.SetProgressMonitor(new ProgressMonitor(this));
 
-                    var result = new GitPushResult();
-
-                    try
+                    using (new CredentialsProviderScope(new CredentialsProvider(this)))
                     {
-                        using (new CredentialsProviderScope(new CredentialsProvider(this)))
-                        {
-                            pushCommand.Call();
-                        }
+                        pushCommand.Call();
                     }
-                    catch (JGitInternalException ex)
-                    {
-                        var exception = new GitException(GitErrorCode.PushFailed, ex);
-
-                        Args.SetError(exception);
-
-                        result.PostPushError = ex.Message;
-
-                        if (Args.ShouldThrow(exception.ErrorCode))
-                            throw exception;
-                    }
-
-                    return result;
                 }
                 finally
                 {

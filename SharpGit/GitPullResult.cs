@@ -12,8 +12,6 @@ namespace SharpGit
             FailedMergePaths = new Dictionary<string, GitMergeFailureReason>(FileSystemUtil.StringComparer);
         }
 
-        public string PostPullError { get; internal set; }
-
         public string Commit { get; internal set; }
 
         public GitMergeResult MergeResult { get; internal set; }

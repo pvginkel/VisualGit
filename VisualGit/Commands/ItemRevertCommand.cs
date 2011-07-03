@@ -98,7 +98,6 @@ namespace VisualGit.Commands
                 {
                     GitRevertItemArgs ra = new GitRevertItemArgs();
                     ra.Depth = GitDepth.Empty;
-                    ra.AddExpectedError(GitErrorCode.PathNoRepository); // Parent revert invalidated this change
 
                     List<string> toRevertPaths = new List<string>();
 
@@ -109,7 +108,14 @@ namespace VisualGit.Commands
 
                     foreach (GitItem item in toRevert)
                     {
-                        a.Client.RevertItem(toRevertPaths, ra);
+                        try
+                        {
+                            a.Client.RevertItem(toRevertPaths, ra);
+                        }
+                        catch (GitNoRepositoryException)
+                        {
+                            // Ignore path no repository exceptions.
+                        }
                     }
                 });
             }

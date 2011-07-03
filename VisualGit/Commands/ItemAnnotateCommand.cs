@@ -148,17 +148,14 @@ namespace VisualGit.Commands
                 {
                     ee.Client.Write(target, fs, wa);
                 }
-
-                ba.GitError +=
-                    delegate(object errorSender, GitErrorEventArgs errorEventArgs)
-                    {
-                        if (errorEventArgs.Exception is GitClientBinaryFileException)
-                        {
-                            retry = true;
-                            errorEventArgs.Cancel = true;
-                        }
-                    };
-                ee.Client.GetBlame(target, ba, out blameResult);
+                try
+                {
+                    ee.Client.GetBlame(target, ba, out blameResult);
+                }
+                catch (GitClientBinaryFileException)
+                {
+                    retry = true;
+                }
             });
 
             if (retry)

@@ -7,7 +7,6 @@ namespace SharpGit
 {
     public sealed class GitCommitResult : GitCommandResult
     {
-        public string PostCommitError { get; internal set; }
         public GitRevision Revision { get; internal set; }
     }
 }

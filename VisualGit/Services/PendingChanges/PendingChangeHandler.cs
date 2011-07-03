@@ -403,11 +403,14 @@ namespace VisualGit.Services.PendingChanges
                     GitAddArgs a = new GitAddArgs();
                     a.AddParents = true;
                     a.Depth = GitDepth.Empty;
-                    a.ThrowOnError = false;
 
-                    if (!state.Client.Add(pc.FullPath, a))
+                    try
                     {
-                        GetService<IVisualGitErrorHandler>().OnWarning(a.LastException);
+                        state.Client.Add(pc.FullPath, a);
+                    }
+                    catch (GitException ex)
+                    {
+                        GetService<IVisualGitErrorHandler>().OnWarning(ex);
                         return false;
                     }
                 }
@@ -506,11 +509,14 @@ namespace VisualGit.Services.PendingChanges
                 {
                     GitDeleteArgs da = new GitDeleteArgs();
                     da.KeepLocal = true;
-                    da.ThrowOnError = false;
 
-                    if (!state.Client.Delete(path, da))
+                    try
                     {
-                        GetService<IVisualGitErrorHandler>().OnWarning(da.LastException);
+                        state.Client.Delete(path, da);
+                    }
+                    catch (GitException ex)
+                    {
+                        GetService<IVisualGitErrorHandler>().OnWarning(ex);
                         return false;
                     }
                 }
@@ -568,15 +574,16 @@ namespace VisualGit.Services.PendingChanges
                     ca.Depth = depth;
                     ca.LogMessage = state.LogMessage;
                     ca.AmendLastCommit = state.AmendLastCommit;
-                    ca.AddExpectedError(GitErrorCode.OutOfDate);
 
-                    ok = e.Client.Commit(
-                        state.CommitPaths,
-                        ca, out rslt);
-
-                    if (ca.LastException != null)
+                    try
                     {
-                        GetService<IVisualGitErrorHandler>().OnWarning(ca.LastException);
+                        ok = e.Client.Commit(
+                            state.CommitPaths,
+                            ca, out rslt);
+                    }
+                    catch (GitException ex)
+                    {
+                        GetService<IVisualGitErrorHandler>().OnWarning(ex);
                         ok = false;
                     }
                 });

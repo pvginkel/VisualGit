@@ -14,7 +14,7 @@ namespace SharpGit
         {
         }
 
-        internal GitCloneResult Execute(string remote, GitRef @ref, string destination)
+        internal void Execute(string remote, GitRef @ref, string destination)
         {
             if (remote == null)
                 throw new ArgumentNullException("remote");
@@ -30,28 +30,10 @@ namespace SharpGit
             command.SetDirectory(destination);
             command.SetURI(remote);
 
-            var result = new GitCloneResult();
-
-            try
+            using (new CredentialsProviderScope(new CredentialsProvider(this)))
             {
-                using (new CredentialsProviderScope(new CredentialsProvider(this)))
-                {
-                    command.Call();
-                }
+                command.Call();
             }
-            catch (JGitInternalException ex)
-            {
-                var exception = new GitException(GitErrorCode.CloneFailed, ex);
-
-                Args.SetError(exception);
-
-                result.PostCloneError = ex.Message;
-
-                if (Args.ShouldThrow(exception.ErrorCode))
-                    throw exception;
-            }
-
-            return result;
         }
     }
 }

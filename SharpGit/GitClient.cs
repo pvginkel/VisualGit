@@ -87,7 +87,7 @@ namespace SharpGit
 
             if (!args.ThrowOnError && !GitTools.IsBelowManagedPath(path))
             {
-                args.SetError(new GitNoRepositoryException());
+                args.LastException = new GitNoRepositoryException(Properties.Resources.PathNoRepository);
                 return false;
             }
 #endif
@@ -164,7 +164,7 @@ namespace SharpGit
             return ExecuteCommand<GitLogCommand>(args, p => p.Execute(paths));
         }
 
-        public bool Switch(string repositoryPath, GitRef target, GitSwitchArgs args, out GitSwitchResult result)
+        public bool Switch(string repositoryPath, GitRef target, GitSwitchArgs args)
         {
             if (repositoryPath == null)
                 throw new ArgumentNullException("repositoryPath");
@@ -173,17 +173,17 @@ namespace SharpGit
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return ExecuteCommand<GitSwitchCommand, GitSwitchResult>(args, p => p.Execute(target, repositoryPath), out result);
+            return ExecuteCommand<GitSwitchCommand>(args, p => p.Execute(target, repositoryPath));
         }
 
-        public bool Push(string repositoryPath, GitPushArgs args, out GitPushResult result)
+        public bool Push(string repositoryPath, GitPushArgs args)
         {
             if (repositoryPath == null)
                 throw new ArgumentNullException("repositoryPath");
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return ExecuteCommand<GitPushCommand, GitPushResult>(args, p => p.Execute(repositoryPath), out result);
+            return ExecuteCommand<GitPushCommand>(args, p => p.Execute(repositoryPath));
         }
 
         public bool Pull(string repositoryPath, GitPullArgs args, out GitPullResult result)
@@ -293,7 +293,7 @@ namespace SharpGit
             return ExecuteCommand<GitRemoteRefsCommand, GitRemoteRefsResult>(args, p => p.Execute(remote, types), out result);
         }
 
-        public bool Clone(string remote, GitRef @ref, string destination, GitCloneArgs args, out GitCloneResult result)
+        public bool Clone(string remote, GitRef @ref, string destination, GitCloneArgs args)
         {
             if (remote == null)
                 throw new ArgumentNullException("remote");
@@ -304,7 +304,7 @@ namespace SharpGit
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            return ExecuteCommand<GitCloneCommand, GitCloneResult>(args, p => p.Execute(remote, @ref, destination), out result);
+            return ExecuteCommand<GitCloneCommand>(args, p => p.Execute(remote, @ref, destination));
         }
 
         public bool CreateRepository(string repositoryPath, GitCreateRepositoryArgs args)
@@ -386,7 +386,14 @@ namespace SharpGit
 
                 T command = (T)Activator.CreateInstance(typeof(T), new object[] { this, args });
 
-                action(command);
+                try
+                {
+                    action(command);
+                }
+                catch (JGitInternalException ex)
+                {
+                    throw new GitCommandFailedException(Properties.Resources.CommandFailed, ex);
+                }
 
                 return args.LastException == null;
             }
@@ -403,9 +410,9 @@ namespace SharpGit
             }
             catch (GitException ex)
             {
-                args.SetError(ex);
+                args.LastException = ex;
 
-                if (args.ShouldThrow(ex.ErrorCode))
+                if (args.ThrowOnError)
                     throw;
 
                 return false;
@@ -426,7 +433,14 @@ namespace SharpGit
 
                 TCommand command = (TCommand)Activator.CreateInstance(typeof(TCommand), new object[] { this, args });
 
-                result = action(command);
+                try
+                {
+                    result = action(command);
+                }
+                catch (JGitInternalException ex)
+                {
+                    throw new GitCommandFailedException(Properties.Resources.CommandFailed, ex);
+                }
 
                 return args.LastException == null;
             }
@@ -445,13 +459,12 @@ namespace SharpGit
             }
             catch (GitException ex)
             {
-                args.SetError(ex);
+                args.LastException = ex;
 
-                if (args.ShouldThrow(ex.ErrorCode))
+                if (args.ThrowOnError)
                     throw;
 
                 result = null;
-
                 return false;
             }
             finally

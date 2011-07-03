@@ -34,7 +34,7 @@ namespace SharpGit
                 if (Args.Force)
                     File.Delete(toPath);
                 else
-                    throw new GitException(GitErrorCode.MoveObstructed);
+                    throw new GitMoveObstructedException(Properties.Resources.MoveObstructed);
             }
 
             if (File.Exists(fromPath))

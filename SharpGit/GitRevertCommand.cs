@@ -38,19 +38,7 @@ namespace SharpGit
             {
                 var repository = repositoryEntry.Repository;
 
-                try
-                {
-                    mergeResults = PerformRevert(revision, repository);
-                }
-                catch (JGitInternalException ex)
-                {
-                    var exception = new GitException(GitErrorCode.RevertFailed, ex);
-
-                    Args.SetError(exception);
-
-                    if (Args.ShouldThrow(exception.ErrorCode))
-                        throw exception;
-                }
+                mergeResults = PerformRevert(revision, repository);
 
                 RaiseNotifyFromDiff(repository);
             }

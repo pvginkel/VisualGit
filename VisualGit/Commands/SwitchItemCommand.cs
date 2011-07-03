@@ -200,15 +200,15 @@ namespace VisualGit.Commands
             using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
-                GitSwitchResult result = null;
                 GitSwitchArgs args = new GitSwitchArgs();
+
+                GitException exception = null;
 
                 e.GetService<IProgressRunner>().RunModal(
                     "Changing Current Branch",
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         args.Force = force;
-                        args.AddExpectedError(GitErrorCode.CheckoutFailed);
 
                         // TODO: Decide whether it is necessary for the switch
                         // command to report conflicts.
@@ -216,12 +216,19 @@ namespace VisualGit.Commands
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
 #endif
 
-                        a.Client.Switch(path, target, args, out result);
+                        try
+                        {
+                            a.Client.Switch(path, target, args);
+                        }
+                        catch (GitException ex)
+                        {
+                            exception = ex;
+                        }
                     });
 
-                if (args.LastException != null)
+                if (exception != null)
                 {
-                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(exception);
                 }
             }
         }

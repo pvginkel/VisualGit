@@ -25,26 +25,31 @@ namespace VisualGit.Commands
                 {
                 }
 
-                GitCloneResult result = null;
-
                 GitCloneArgs args = new GitCloneArgs();
-                args.AddExpectedError(GitErrorCode.CloneFailed);
 
                 ProgressRunnerArgs pa = new ProgressRunnerArgs();
                 pa.CreateLog = true;
                 pa.TransportClientArgs = args;
 
                 string destination = Path.GetFullPath(dialog.Destination);
+                GitException exception = null;
 
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.CloningRepository, pa,
                     delegate(object sender, ProgressWorkerArgs a)
                     {
-                        a.Client.Clone(dialog.Remote, dialog.RemoteRef, destination, args, out result);
+                        try
+                        {
+                            a.Client.Clone(dialog.Remote, dialog.RemoteRef, destination, args);
+                        }
+                        catch (GitException ex)
+                        {
+                            exception = ex;
+                        }
                     });
 
-                if (args.LastException != null)
+                if (exception != null)
                 {
-                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(exception);
                 }
                 else
                 {

@@ -9,24 +9,18 @@ namespace SharpGit
     [Serializable]
     public class GitException : Exception
     {
-        public GitErrorCode ErrorCode { get; set; }
-
-        public GitException(GitErrorCode errorCode)
-            : base(errorCode.Message)
+        public GitException()
         {
-            if (errorCode == null)
-                throw new ArgumentNullException("errorCode");
-
-            ErrorCode = errorCode;
         }
 
-        public GitException(GitErrorCode errorCode, Exception innerException)
-            : base(errorCode.Message, innerException)
+        public GitException(string message)
+            : base(message)
         {
-            if (errorCode == null)
-                throw new ArgumentNullException("errorCode");
+        }
 
-            ErrorCode = errorCode;
+        public GitException(string message, Exception innerException)
+            : base(message, innerException)
+        {
         }
 
         protected GitException(SerializationInfo info, StreamingContext context)

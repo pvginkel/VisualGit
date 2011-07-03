@@ -90,7 +90,7 @@
     <Compile Include="GitClientBinaryFileException.cs" />
     <Compile Include="GitCloneArgs.cs" />
     <Compile Include="GitCloneCommand.cs" />
-    <Compile Include="GitCloneResult.cs" />
+    <Compile Include="GitCommandFailedException.cs" />
     <Compile Include="GitConfigWrapper.cs" />
     <Compile Include="GitConflictEventArgs.cs" />
     <Compile Include="GitConflictReason.cs" />
@@ -111,6 +111,7 @@
     <Compile Include="GitMergeResult.cs" />
     <Compile Include="GitMoveArgs.cs" />
     <Compile Include="GitMoveCommand.cs" />
+    <Compile Include="GitMoveObstructedException.cs" />
     <Compile Include="GitPullArgs.cs" />
     <Compile Include="GitPullCommand.cs" />
     <Compile Include="GitMergeStrategy.cs" />
@@ -126,7 +127,6 @@
     <Compile Include="GitProgressEventArgs.cs" />
     <Compile Include="GitPushArgs.cs" />
     <Compile Include="GitPushCommand.cs" />
-    <Compile Include="GitPushResult.cs" />
     <Compile Include="GitRefType.cs" />
     <Compile Include="GitRemoteRefsCommand.cs" />
     <Compile Include="GitRemoteRefsArgs.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="GitResolveCommand.cs" />
     <Compile Include="GitRevertArgs.cs" />
     <Compile Include="GitRevertCommand.cs" />
+    <Compile Include="GitRevisionNotFoundException.cs" />
     <Compile Include="GitSwitchArgs.cs" />
     <Compile Include="GitSwitchCommand.cs" />
     <Compile Include="GitClientArgsWithCommit.cs" />
@@ -158,7 +159,6 @@
     <Compile Include="GitDeleteArgs.cs" />
     <Compile Include="GitDeleteCommand.cs" />
     <Compile Include="GitDepth.cs" />
-    <Compile Include="GitErrorCode.cs" />
     <Compile Include="GitClient.cs" />
     <Compile Include="GitClientArgs.cs" />
     <Compile Include="GitCommandType.cs" />
@@ -179,7 +179,6 @@
     <Compile Include="GitRevision.cs" />
     <Compile Include="GitRevisionRange.cs" />
     <Compile Include="GitRevisionType.cs" />
-    <Compile Include="GitSwitchResult.cs" />
     <Compile Include="GitTagArgs.cs" />
     <Compile Include="GitTagCommand.cs" />
     <Compile Include="GitTarget.cs" />
@@ -188,6 +187,8 @@
     <Compile Include="GitTransportCommand.cs" />
     <Compile Include="GitUI.cs" />
     <Compile Include="GitUIBindArgs.cs" />
+    <Compile Include="GitUnexpectedMultipleRepositoriesException.cs" />
+    <Compile Include="GitUnstagedFileCommitException.cs" />
     <Compile Include="GitWriteArgs.cs" />
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitConfig.cs" />

@@ -45,7 +45,7 @@ namespace SharpGit
             var objectId = revision.GetObjectId(repository);
 
             if (objectId == null)
-                throw new GitException(GitErrorCode.RevisionNotFound);
+                throw new GitRevisionNotFoundException(Properties.Resources.RevisionNotFound);
 
             string relativePath = repository.GetRepositoryPath(path);
 

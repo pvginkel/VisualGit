@@ -119,8 +119,6 @@ namespace VisualGit.UI.Commands
 
         private bool GetRemoteRefs(string remote, GitRemoteRefType types, GitRemoteRefsArgs args, out GitRemoteRefsResult result)
         {
-            args.AddExpectedError(GitErrorCode.GetRemoteRefsFailed);
-
             ProgressRunnerArgs pa = new ProgressRunnerArgs();
             pa.CreateLog = true;
             pa.TransportClientArgs = args;

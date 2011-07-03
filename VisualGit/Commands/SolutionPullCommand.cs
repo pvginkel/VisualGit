@@ -81,8 +81,6 @@ namespace VisualGit.Commands
             pa.CreateLog = true;
             pa.TransportClientArgs = args;
 
-            args.AddExpectedError(GitErrorCode.PullFailed);
-            
             // Get a list of all documents below the specified paths that are open in editors inside VS
             HybridCollection<string> lockPaths = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
             IVisualGitOpenDocumentTracker documentTracker = e.GetService<IVisualGitOpenDocumentTracker>();
@@ -98,17 +96,26 @@ namespace VisualGit.Commands
             using (DocumentLock lck = documentTracker.LockDocuments(lockPaths, DocumentLockType.NoReload))
             using (lck.MonitorChangesForReload())
             {
+                GitException exception = null;
+
                 e.GetService<IProgressRunner>().RunModal(CommandStrings.PullingSolution, pa,
                     delegate(object sender, ProgressWorkerArgs a)
                     {
                         e.GetService<IConflictHandler>().RegisterConflictHandler(args, a.Synchronizer);
 
-                        a.Client.Pull(repositoryRoot, args, out result);
+                        try
+                        {
+                            a.Client.Pull(repositoryRoot, args, out result);
+                        }
+                        catch (GitException ex)
+                        {
+                            exception = ex;
+                        }
                     });
 
-                if (args.LastException != null)
+                if (exception != null)
                 {
-                    e.GetService<IVisualGitErrorHandler>().OnWarning(args.LastException);
+                    e.GetService<IVisualGitErrorHandler>().OnWarning(exception);
                 }
             }
         }

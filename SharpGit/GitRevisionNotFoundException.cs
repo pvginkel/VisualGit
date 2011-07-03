@@ -7,23 +7,23 @@ using System.Text;
 namespace SharpGit
 {
     [Serializable]
-    public class GitCouldNotLockException : GitException
+    public class GitRevisionNotFoundException : GitException
     {
-        public GitCouldNotLockException()
+        public GitRevisionNotFoundException()
         {
         }
 
-        public GitCouldNotLockException(string message)
+        public GitRevisionNotFoundException(string message)
             : base(message)
         {
         }
 
-        public GitCouldNotLockException(string message, Exception innerException)
+        public GitRevisionNotFoundException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        protected GitCouldNotLockException(SerializationInfo info, StreamingContext context)
+        protected GitRevisionNotFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

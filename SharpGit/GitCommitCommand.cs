@@ -26,7 +26,7 @@ namespace SharpGit
             if (collectedPaths.Count == 0)
                 throw new GitNoRepositoryException();
             else if (collectedPaths.Count > 1)
-                throw new GitException(GitErrorCode.UnexpectedMultipleRepositories);
+                throw new GitUnexpectedMultipleRepositoriesException(Properties.Resources.UnexpectedMultipleRepositories);
 
             var result = new GitCommitResult();
 
@@ -56,9 +56,7 @@ namespace SharpGit
 
                     if (sb.Length > 0)
                     {
-                        result.PostCommitError = sb.ToString();
-
-                        return result;
+                        throw new GitUnstagedFileCommitException(sb.ToString());
                     }
 
                     // Prepare the commit command.
@@ -93,27 +91,20 @@ namespace SharpGit
                     if (Args.AmendLastCommit)
                         commitCommand.SetAmend(true);
 
-                    try
+                    var commit = commitCommand.Call();
+
+                    result.Revision = new GitRevision(commit.Id.Name);
+
+                    foreach (var commitAction in notifyActions)
                     {
-                        var commit = commitCommand.Call();
-
-                        result.Revision = new GitRevision(commit.Id.Name);
-
-                        foreach (var commitAction in notifyActions)
+                        RaiseNotify(new GitNotifyEventArgs
                         {
-                            RaiseNotify(new GitNotifyEventArgs
-                            {
-                                Action = commitAction.Value,
-                                CommandType = Args.CommandType,
-                                ContentState = GetContentState(commitAction.Value),
-                                FullPath = repository.GetAbsoluteRepositoryPath(commitAction.Key),
-                                NodeKind = GitNodeKind.File
-                            });
-                        }
-                    }
-                    catch (JGitInternalException ex)
-                    {
-                        result.PostCommitError = ex.Message;
+                            Action = commitAction.Value,
+                            CommandType = Args.CommandType,
+                            ContentState = GetContentState(commitAction.Value),
+                            FullPath = repository.GetAbsoluteRepositoryPath(commitAction.Key),
+                            NodeKind = GitNodeKind.File
+                        });
                     }
                 }
             }
