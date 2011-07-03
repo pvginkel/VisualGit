@@ -128,6 +128,7 @@ namespace VisualGit.UI.OptionsPages
             // 
             resources.ApplyResources(this.authenticationEdit, "authenticationEdit");
             this.authenticationEdit.Name = "authenticationEdit";
+            this.authenticationEdit.Click += new System.EventHandler(this.authenticationEdit_Click);
             // 
             // label1
             // 
@@ -138,6 +139,7 @@ namespace VisualGit.UI.OptionsPages
             // 
             resources.ApplyResources(this.certificatesEdit, "certificatesEdit");
             this.certificatesEdit.Name = "certificatesEdit";
+            this.certificatesEdit.Click += new System.EventHandler(this.certificatesEdit_Click);
             // 
             // label2
             // 

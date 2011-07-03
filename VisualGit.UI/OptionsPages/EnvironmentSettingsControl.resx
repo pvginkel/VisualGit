@@ -616,6 +616,6 @@
     <value>EnvironmentSettingsControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>VisualGit.UI.OptionsPages.VisualGitOptionsPageControl, VisualGit.UI, Version=2.2.4201.13067, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
+    <value>VisualGit.UI.OptionsPages.VisualGitOptionsPageControl, VisualGit.UI, Version=0.1.4201.29662, Culture=neutral, PublicKeyToken=8977b679c0ec9374</value>
   </data>
 </root>
