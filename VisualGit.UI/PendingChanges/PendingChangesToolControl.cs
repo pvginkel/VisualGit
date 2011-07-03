@@ -126,7 +126,6 @@ namespace VisualGit.UI.PendingChanges
 
         void OnSccProviderActivated(object sender, EventArgs e)
         {
-            ShowPanel(_lastPage, false);
             pendingChangesTabs.Enabled = true;
         }
 
