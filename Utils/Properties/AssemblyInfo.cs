@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VisualGit")]
 [assembly: AssemblyProduct("VisualGit - Git support for Visual Studio")]
-[assembly: AssemblyCopyright("Copyright © VisualGit 2011")]
+[assembly: AssemblyCopyright("Copyright © VisualGit 2011 And Copyright © AnkhSVN Team 2003-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -30,4 +30,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersionAttribute("2.2.*")]
+[assembly: AssemblyVersion("0.1.*")]

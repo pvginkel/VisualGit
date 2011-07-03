@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Resources;
 using VisualGit;
+using System.Runtime.InteropServices;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -21,7 +22,7 @@ using VisualGit;
 [assembly: NeutralResourcesLanguage("en-US")]
 
 // We only want the Connect class to be visible
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
+[assembly: ComVisible(false)]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -34,4 +35,4 @@ using VisualGit;
 // You can specify all the value or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersionAttribute("2.2.*")]
+[assembly: AssemblyVersion("0.1.*")]

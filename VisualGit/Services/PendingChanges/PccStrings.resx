@@ -166,6 +166,6 @@
     <value>You have not provided a commit message. Are you sure you want to continue?</value>
   </data>
   <data name="YouCanDownloadVisualGit" xml:space="preserve">
-    <value>You can download the latest VisualGit release on http://github.com/pvginkel/visualgit/</value>
+    <value>You can download the latest VisualGit release on http://github.com/pvginkel/VisualGit/</value>
   </data>
 </root>

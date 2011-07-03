@@ -11,7 +11,7 @@ using System;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VisualGit")]
 [assembly: AssemblyProduct("VisualGit - Git Support for Visual Studio")]
-[assembly: AssemblyCopyright("Copyright © VisualGit 2011")]
+[assembly: AssemblyCopyright("Copyright © VisualGit 2011 And Copyright © AnkhSVN Team 2003-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.2.*")]
+[assembly: AssemblyVersion("0.1.*")]
 

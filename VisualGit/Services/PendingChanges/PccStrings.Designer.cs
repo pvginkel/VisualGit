@@ -205,7 +205,7 @@ namespace VisualGit.Services.PendingChanges {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can download the latest VisualGit release on http://github.com/pvginkel/visualgit/.
+        ///   Looks up a localized string similar to You can download the latest VisualGit release on http://github.com/pvginkel/VisualGit/.
         /// </summary>
         internal static string YouCanDownloadVisualGit {
             get {
