@@ -5,6 +5,19 @@
 VisualGit is an extension for Visual Studio 2010 providing a fully functional source control
 provider without any dependencies other than this extension.
 
+## Getting started
+
+After you've installed the extension, it may not be enabled automatically. Go to Tools | Options
+and find the Source Control options page. Here you can select the "VisualGit - Git Support for Visual
+Studio" source control plug-in.
+
+After enabling the extension, you should provide your name and e-mail address. These can be
+entered on the Source Control | Git Configuration page.
+
+Last, when you want to communicate with Git servers, you have to provide the location of the
+certificate you use to communicate with this server. This can be done by going to the Source Control |
+Git Environment options page and clicking Edit for Manage Certificates.
+
 ## Project status
 
 This project is currently in Alpha state and under heavy development. Please report any
