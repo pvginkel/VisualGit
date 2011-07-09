@@ -197,7 +197,8 @@ namespace VisualGit.Scc
 
             foreach (SccProjectData data in _projectMap.Values)
             {
-                GitTools.InvalidateDirectory(data.ProjectDirectory);
+                if (!String.IsNullOrEmpty(data.ProjectDirectory))
+                    GitTools.InvalidateDirectory(data.ProjectDirectory);
             }
 
             if (!IsActive)
