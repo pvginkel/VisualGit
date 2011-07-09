@@ -155,10 +155,10 @@ namespace VisualGit.UI.PendingChanges.Commands
         {
             if (ProjectRoot != null)
             {
-                try
-                {
-                    string repositoryPath = GitTools.GetRepositoryRoot(ProjectRoot);
+                string repositoryPath;
 
+                if (GitTools.TryGetRepositoryRoot(ProjectRoot, out repositoryPath))
+                {
                     using (var client = e.GetService<IGitClientPool>().GetNoUIClient())
                     {
                         var repositoryBranch = client.GetCurrentBranch(repositoryPath);
@@ -168,10 +168,6 @@ namespace VisualGit.UI.PendingChanges.Commands
                         else
                             e.Result = repositoryBranch.ShortName;
                     }
-                }
-                catch (GitNoRepositoryException)
-                {
-                    // Ignore no repository exceptions.
                 }
             }
         }
