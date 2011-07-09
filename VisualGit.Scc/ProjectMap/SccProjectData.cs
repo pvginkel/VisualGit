@@ -446,7 +446,7 @@ namespace VisualGit.Scc.ProjectMap
                 return;
 
             if (managed)
-                Marshal.ThrowExceptionForHR(SccProject.SetSccLocation("Svn", "Svn", "Svn", VisualGitId.GitSccName));
+                Marshal.ThrowExceptionForHR(SccProject.SetSccLocation("Git", "Git", "Git", VisualGitId.GitSccName));
             else
             {
                 // The managed package framework assumes empty strings for clearing; null will fail there
