@@ -419,7 +419,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
                 case 3:
                     lineRun.Items.Add(new LineRunItem
                     {
-                        Text = TimeToString(ShowAuthorDate ? revision.AuthorDate : revision.CommitDate),
+                        Text = TimeToString(ShowAuthorDate ? revision.AuthorDate : revision.CommitDate.ToLocalTime()),
                         Font = rowFont,
                         Color = foreColor
                     });

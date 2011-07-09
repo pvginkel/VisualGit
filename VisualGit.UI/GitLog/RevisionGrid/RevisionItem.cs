@@ -49,7 +49,7 @@ namespace VisualGit.UI.GitLog.RevisionGrid
         [Description("Date the revision was committed")]
         public DateTime AuthorDate
         {
-            get { return _revision.AuthorDate; }
+            get { return _revision.AuthorDate.ToLocalTime(); }
         }
 
         [DisplayName("Log Message")]
