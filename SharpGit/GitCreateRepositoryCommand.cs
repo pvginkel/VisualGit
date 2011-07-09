@@ -47,6 +47,8 @@ namespace SharpGit
             {
                 repository.Create();
 
+                RepositoryManager.InvalidateRepositoryRoot(repositoryPath);
+
                 RaiseNotify(new GitNotifyEventArgs
                 {
                     Action = GitNotifyAction.UpdateUpdate,

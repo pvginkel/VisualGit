@@ -193,6 +193,13 @@ namespace VisualGit.Scc
             _solutionLoaded = true;
             _solutionFile = _solutionDirectory = null;
 
+            GitTools.InvalidateDirectory(SolutionDirectory);
+
+            foreach (SccProjectData data in _projectMap.Values)
+            {
+                GitTools.InvalidateDirectory(data.ProjectDirectory);
+            }
+
             if (!IsActive)
             {
                 IVisualGitCommandStates states = GetService<IVisualGitCommandStates>();

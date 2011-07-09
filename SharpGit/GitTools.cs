@@ -53,7 +53,6 @@ namespace SharpGit
             else if (IsNormalizedFullPath(path))
                 return path;
 
-
             bool retry = true;
 
             if (path.Length < MAX_PATH)
@@ -574,6 +573,14 @@ namespace SharpGit
             }
 
             return result;
+        }
+
+        public static void InvalidateDirectory(string path)
+        {
+            if (path == null)
+                throw new ArgumentNullException("path");
+
+            RepositoryManager.InvalidateRepositoryRoot(path);
         }
     }
 }

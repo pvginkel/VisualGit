@@ -65,5 +65,51 @@ namespace SharpGit
                 return entry;
             }
         }
+
+        internal static void InvalidateRepositoryRoot(string repositoryPath)
+        {
+            repositoryPath = TruncatePath(repositoryPath);
+
+            var toDelete = new HashSet<string>();
+            string repositoryPathPrefix = repositoryPath + Path.DirectorySeparatorChar;
+
+            foreach (var entry in _repositoryCache)
+            {
+                if (
+                    String.Equals(entry.Key, repositoryPath, FileSystemUtil.StringComparison) ||
+                    entry.Key.StartsWith(repositoryPathPrefix, FileSystemUtil.StringComparison)
+                )
+                    toDelete.Add(entry.Key);
+            }
+
+            foreach (string key in toDelete)
+            {
+                _repositoryCache.Remove(key);
+            }
+
+            toDelete.Clear();
+
+            foreach (var entry in _repositoryRootLookup)
+            {
+                if (
+                    String.Equals(entry.Key, repositoryPath, FileSystemUtil.StringComparison) ||
+                    entry.Key.StartsWith(repositoryPathPrefix, FileSystemUtil.StringComparison)
+                )
+                    toDelete.Add(entry.Key);
+            }
+
+            foreach (string key in toDelete)
+            {
+                _repositoryRootLookup.Remove(key);
+            }
+        }
+
+        private static string TruncatePath(string path)
+        {
+            if (!String.Equals(Path.GetPathRoot(path), path, FileSystemUtil.StringComparison))
+                return path.TrimEnd(Path.DirectorySeparatorChar);
+            else
+                return path;
+        }
     }
 }
