@@ -589,9 +589,7 @@ namespace SharpGit
 
         public IGitConfig GetUserConfig()
         {
-            string userHome = Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile);
-
-            string configPath = Path.Combine(userHome, ".gitconfig");
+            string configPath = new Sharpen.FilePath(FS.DETECTED.UserHome(), ".gitconfig");
 
             // Create an empty config file when none yet exists.
 
