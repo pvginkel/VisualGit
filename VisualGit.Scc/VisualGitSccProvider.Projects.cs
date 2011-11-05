@@ -30,6 +30,7 @@ using VisualGit.Selection;
 using VisualGit.VS;
 using System.IO;
 using SharpGit;
+using VisualGit.Scc.StatusCache;
 
 namespace VisualGit.Scc
 {
@@ -276,7 +277,10 @@ namespace VisualGit.Scc
             if (mgr != null && mgr.IsActive)
                 mgr.FullRefresh(false);
 
-            UpdateSolutionGlyph();
+            using (new FileStatusRefreshHint(GitDepth.Infinity))
+            {
+                UpdateSolutionGlyph();
+            }
         }
 
         string _solutionFile;

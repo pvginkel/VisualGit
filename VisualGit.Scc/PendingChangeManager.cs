@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using VisualGit.Commands;
 using VisualGit.Selection;
+using VisualGit.Scc.StatusCache;
 
 namespace VisualGit.Scc
 {
@@ -122,7 +123,12 @@ namespace VisualGit.Scc
             }
 
             if (fullRefresh)
-                InnerRefresh();
+            {
+                using (new FileStatusRefreshHint(SharpGit.GitDepth.Infinity))
+                {
+                    InnerRefresh();
+                }
+            }
             else
             {
                 foreach (string path in toRefresh)

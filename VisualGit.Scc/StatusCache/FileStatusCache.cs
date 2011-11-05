@@ -73,7 +73,12 @@ namespace VisualGit.Scc.StatusCache
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            RefreshPath(item.FullPath, nodeKind, GitDepth.Files);
+            var depth = GitDepth.Files;
+
+            if (FileStatusRefreshHint.Current != null)
+                depth = FileStatusRefreshHint.Current.Depth;
+
+            RefreshPath(item.FullPath, nodeKind, depth);
 
             IGitItemUpdate updateItem = (IGitItemUpdate)item;
 

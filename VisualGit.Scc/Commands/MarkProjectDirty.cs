@@ -18,6 +18,8 @@
 
 using System;
 using VisualGit.Commands;
+using VisualGit.Scc.StatusCache;
+using SharpGit;
 
 namespace VisualGit.Scc.Commands
 {
@@ -40,7 +42,10 @@ namespace VisualGit.Scc.Commands
 
             _commandService.TockCommand(e.Command);
 
-            _projectNotifier.HandleEvent(e.Command);
+            using (new FileStatusRefreshHint(GitDepth.Infinity))
+            {
+                _projectNotifier.HandleEvent(e.Command);
+            }
         }
     }
 }

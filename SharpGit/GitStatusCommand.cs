@@ -114,31 +114,28 @@ namespace SharpGit
 
                 // Return an entry for the directory.
 
-                GitStatusEventArgs e;
-
                 if (actualNodeKind == GitNodeKind.Directory)
                 {
-                    var state =
-                        repositoryEntry.IgnoreManager.IsIgnored(path, GitNodeKind.Directory)
-                        ? GitInternalStatus.Ignored
-                        : GitInternalStatus.Unset;
+                    if (ReportDirectory(path, callback, repositoryEntry.IgnoreManager))
+                       return;
+                }
 
-                    e = new GitStatusEventArgs
+                // Report the rest of the directories.
+
+                if (Args.Depth > GitDepth.Files)
+                {
+                    foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
                     {
-                        FullPath = path,
-                        LocalContentStatus = GetStatus(state),
-                        NodeKind = GitNodeKind.Directory,
-                        WorkingCopyInfo = new GitWorkingCopyInfo
-                        {
-                            NodeKind = GitNodeKind.Directory,
-                            Schedule = GetScheduleState(state)
-                        }
-                    };
+                        // Skip over our directory
 
-                    callback(Client, e);
+                        if (String.Equals(path, directory, FileSystemUtil.StringComparison))
+                            continue;
 
-                    if (CancelRequested(e))
-                        return;
+                        repositoryEntry.IgnoreManager.RefreshPath(directory);
+
+                        if (ReportDirectory(directory, callback, repositoryEntry.IgnoreManager))
+                            return;
+                    }
                 }
 
                 var seen = new HashSet<string>(FileSystemUtil.StringComparer);
@@ -149,7 +146,7 @@ namespace SharpGit
 
                     var state = GetInternalStatus(entry, diff);
 
-                    e = new GitStatusEventArgs
+                    var e = new GitStatusEventArgs
                     {
                         FullPath = fullPath,
                         LocalContentStatus = GetStatus(state),
@@ -193,7 +190,14 @@ namespace SharpGit
                     actualNodeKind == GitNodeKind.Directory &&
                     Directory.Exists(path)
                 ) {
-                    foreach (string fullPath in Directory.GetFiles(path))
+                    string[] files;
+
+                    if (Args.Depth > GitDepth.Files)
+                        files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
+                    else
+                        files = Directory.GetFiles(path);
+
+                    foreach (string fullPath in files)
                     {
                         // If the item has not yet been seen, or it is unclean
                         // after we've read the entry.Repository, it's either added
@@ -213,7 +217,7 @@ namespace SharpGit
                                 (Args.RetrieveAllEntries && (state == GitInternalStatus.Untracked || state == GitInternalStatus.Ignored)) ||
                                 (Args.RetrieveIgnoredEntries && state == GitInternalStatus.Ignored)
                             ) {
-                                e = new GitStatusEventArgs
+                                var e = new GitStatusEventArgs
                                 {
                                     FullPath = fullPath,
                                     LocalContentStatus = GetStatus(state),
@@ -237,6 +241,30 @@ namespace SharpGit
                     }
                 }
             }
+        }
+
+        private bool ReportDirectory(string path, EventHandler<GitStatusEventArgs> callback, IgnoreManager ignoreManager)
+        {
+            var state =
+                ignoreManager.IsIgnored(path, GitNodeKind.Directory)
+                    ? GitInternalStatus.Ignored
+                    : GitInternalStatus.Unset;
+
+            var e = new GitStatusEventArgs
+            {
+                FullPath = path,
+                LocalContentStatus = GetStatus(state),
+                NodeKind = GitNodeKind.Directory,
+                WorkingCopyInfo = new GitWorkingCopyInfo
+                {
+                    NodeKind = GitNodeKind.Directory,
+                    Schedule = GetScheduleState(state)
+                }
+            };
+
+            callback(Client, e);
+
+            return CancelRequested(e);
         }
 
         private void AddUnseenFiles(EventHandler<GitStatusEventArgs> callback, Repository repository, string relativePath, HashSet<string> seen, ICollection<string> paths, GitInternalStatus state, out bool cancelled)

@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StatusCache\FileStatusRefreshHint.cs" />
     <Compile Include="VisualGitSccModule.cs" />
     <Compile Include="VisualGitSccProvider.cs" />
     <Compile Include="VisualGitSccProvider.Enlistment.cs" />
