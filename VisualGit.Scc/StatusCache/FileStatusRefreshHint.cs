@@ -8,7 +8,7 @@ namespace VisualGit.Scc.StatusCache
 {
     public class FileStatusRefreshHint : IDisposable
     {
-        public GitDepth Depth { get; private set; }
+        public bool FullRefresh { get; private set; }
 
         [ThreadStatic]
         private static List<FileStatusRefreshHint> _stack;
@@ -26,9 +26,9 @@ namespace VisualGit.Scc.StatusCache
 
         private bool _disposed;
 
-        public FileStatusRefreshHint(GitDepth depth)
+        public FileStatusRefreshHint(bool fullRefresh)
         {
-            Depth = depth;
+            FullRefresh = fullRefresh;
 
             if (_stack == null)
                 _stack = new List<FileStatusRefreshHint>();

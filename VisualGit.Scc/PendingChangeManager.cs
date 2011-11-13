@@ -122,18 +122,18 @@ namespace VisualGit.Scc
                 _toMonitor.Clear();
             }
 
-            if (fullRefresh)
+            using (new FileStatusRefreshHint(true))
             {
-                using (new FileStatusRefreshHint(SharpGit.GitDepth.Infinity))
+                if (fullRefresh)
                 {
                     InnerRefresh();
                 }
-            }
-            else
-            {
-                foreach (string path in toRefresh)
+                else
                 {
-                    ItemRefresh(path);
+                    foreach (string path in toRefresh)
+                    {
+                        ItemRefresh(path);
+                    }
                 }
             }
         }

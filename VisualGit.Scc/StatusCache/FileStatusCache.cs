@@ -74,11 +74,28 @@ namespace VisualGit.Scc.StatusCache
                 throw new ArgumentNullException("item");
 
             var depth = GitDepth.Files;
+            string fullPath = item.FullPath;
 
-            if (FileStatusRefreshHint.Current != null)
-                depth = FileStatusRefreshHint.Current.Depth;
+            if (
+                FileStatusRefreshHint.Current != null &&
+                FileStatusRefreshHint.Current.FullRefresh
+            ) {
+                string repositoryRoot;
 
-            RefreshPath(item.FullPath, nodeKind, depth);
+                depth = GitDepth.Infinity;
+
+                if (GitTools.TryGetRepositoryRoot(fullPath, out repositoryRoot))
+                {
+                    fullPath = repositoryRoot;
+                    nodeKind = GitNodeKind.Directory;
+                }
+                else
+                {
+                    int i = 0;
+                }
+            }
+
+            RefreshPath(fullPath, nodeKind, depth);
 
             IGitItemUpdate updateItem = (IGitItemUpdate)item;
 

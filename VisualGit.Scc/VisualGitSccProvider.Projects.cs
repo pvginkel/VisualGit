@@ -277,7 +277,7 @@ namespace VisualGit.Scc
             if (mgr != null && mgr.IsActive)
                 mgr.FullRefresh(false);
 
-            using (new FileStatusRefreshHint(GitDepth.Infinity))
+            using (new FileStatusRefreshHint(true))
             {
                 UpdateSolutionGlyph();
             }
