@@ -42,10 +42,7 @@ namespace VisualGit.Scc.Commands
 
             _commandService.TockCommand(e.Command);
 
-            using (new FileStatusRefreshHint(true))
-            {
-                _projectNotifier.HandleEvent(e.Command);
-            }
+            _projectNotifier.HandleEvent(e.Command);
         }
     }
 }

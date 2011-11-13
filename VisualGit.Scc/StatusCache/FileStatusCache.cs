@@ -82,16 +82,11 @@ namespace VisualGit.Scc.StatusCache
             ) {
                 string repositoryRoot;
 
-                depth = GitDepth.Infinity;
-
                 if (GitTools.TryGetRepositoryRoot(fullPath, out repositoryRoot))
                 {
+                    depth = GitDepth.Infinity;
                     fullPath = repositoryRoot;
                     nodeKind = GitNodeKind.Directory;
-                }
-                else
-                {
-                    int i = 0;
                 }
             }
 

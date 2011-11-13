@@ -46,7 +46,7 @@ namespace VisualGit.Commands
 
             IFileStatusMonitor monitor = e.GetService<IFileStatusMonitor>();
 
-            monitor.ScheduleGitStatus(e.Selection.GetSelectedFiles(true));
+            monitor.ScheduleGitStatus(e.Selection.GetSelectedFiles(true), true);
 
             IVisualGitOpenDocumentTracker dt = e.GetService<IVisualGitOpenDocumentTracker>();
 

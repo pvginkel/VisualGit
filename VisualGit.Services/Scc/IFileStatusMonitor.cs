@@ -40,6 +40,11 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="path">The path.</param>
         void ScheduleGitStatus(IEnumerable<string> path);
+        /// <summary>
+        /// Marks the specified paths dirty in the file status cache and calls <see cref="ScheduleGlyphUpdate"/> on the paths
+        /// </summary>
+        /// <param name="path">The path.</param>
+        void ScheduleGitStatus(IEnumerable<string> path, bool forceFull);
 
         /// <summary>
         /// Schedules a glyph and pending changes update for the specified path.

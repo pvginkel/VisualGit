@@ -29,6 +29,7 @@ using VisualGit.Commands;
 using VisualGit.Selection;
 using VisualGit.UI;
 using SharpGit;
+using VisualGit.Scc.StatusCache;
 
 namespace VisualGit.Scc
 {
@@ -41,6 +42,7 @@ namespace VisualGit.Scc
         List<GitProject> _dirtyProjects;
         HybridCollection<string> _maybeAdd;
         uint _cookie;
+        bool _forceFullRefresh;
 
         public ProjectNotifier(IVisualGitServiceProvider context)
             : base(context)
@@ -110,6 +112,12 @@ namespace VisualGit.Scc
                 if (checkDelay)
                     Selection.MaybeInstallDelayHandler();
 
+                if (
+                    FileStatusRefreshHint.Current != null &&
+                    FileStatusRefreshHint.Current.FullRefresh
+                )
+                    _forceFullRefresh = true;
+
                 CommandService.PostTickCommand(ref _posted, VisualGitCommand.MarkProjectDirty);
             }
         }
@@ -143,7 +151,7 @@ namespace VisualGit.Scc
                         _dirtyProjects.Add(project);
                 }
 
-                PostDirty(false);
+               PostDirty(false);
             }
         }
 
@@ -218,6 +226,7 @@ namespace VisualGit.Scc
             List<GitProject> dirtyProjects;
             HybridCollection<string> dirtyCheck;
             HybridCollection<string> maybeAdd;
+            bool forceFullRefresh;
 
             VisualGitSccProvider provider = Context.GetService<VisualGitSccProvider>();
 
@@ -232,59 +241,64 @@ namespace VisualGit.Scc
                 dirtyProjects = _dirtyProjects;
                 dirtyCheck = _dirtyCheck;
                 maybeAdd = _maybeAdd;
+                forceFullRefresh = _forceFullRefresh;
                 _dirtyProjects = null;
                 _dirtyCheck = null;
                 _maybeAdd = null;
+                _forceFullRefresh = false;
             }
 
-            if (dirtyCheck != null)
-                foreach (string file in dirtyCheck)
-                {
-                    DocumentTracker.CheckDirty(file);
-                }
-
-            if (dirtyProjects != null)
+            using (new FileStatusRefreshHint(forceFullRefresh))
             {
-                foreach (GitProject project in dirtyProjects)
-                {
-                    if (project.RawHandle == null)
+                if (dirtyCheck != null)
+                    foreach (string file in dirtyCheck)
                     {
-                        if (project.IsSolution)
-                            provider.UpdateSolutionGlyph();
-
-                        continue; // All IVsSccProjects have a RawHandle
+                        DocumentTracker.CheckDirty(file);
                     }
 
-                    try
-                    {
-                        project.RawHandle.SccGlyphChanged(0, null, null, null);
-                    }
-                    catch { }
-                }
-            }
-
-            if (maybeAdd != null)
-            {
-                using (GitClient cl = GetService<IGitClientPool>().GetNoUIClient())
+                if (dirtyProjects != null)
                 {
-                    foreach (string file in maybeAdd)
+                    foreach (GitProject project in dirtyProjects)
                     {
-                        GitItem item = Cache[file];
-                        // Only add
-                        // * files
-                        // * that are unversioned
-                        // * that are addable
-                        // * that are not ignored
-                        // * and just to be sure: that are still part of the solution
-                        if (item.IsFile && !item.IsVersioned &&
-                            item.IsVersionable && !item.IsIgnored &&
-                            item.InSolution)
+                        if (project.RawHandle == null)
                         {
-                            GitAddArgs aa = new GitAddArgs();
-                            aa.ThrowOnError = false; // Just ignore errors here; make the user add them themselves
-                            aa.AddParents = true;
+                            if (project.IsSolution)
+                                provider.UpdateSolutionGlyph();
 
-                            cl.Add(item.FullPath, aa);
+                            continue; // All IVsSccProjects have a RawHandle
+                        }
+
+                        try
+                        {
+                            project.RawHandle.SccGlyphChanged(0, null, null, null);
+                        }
+                        catch { }
+                    }
+                }
+
+                if (maybeAdd != null)
+                {
+                    using (GitClient cl = GetService<IGitClientPool>().GetNoUIClient())
+                    {
+                        foreach (string file in maybeAdd)
+                        {
+                            GitItem item = Cache[file];
+                            // Only add
+                            // * files
+                            // * that are unversioned
+                            // * that are addable
+                            // * that are not ignored
+                            // * and just to be sure: that are still part of the solution
+                            if (item.IsFile && !item.IsVersioned &&
+                                item.IsVersionable && !item.IsIgnored &&
+                                item.InSolution)
+                            {
+                                GitAddArgs aa = new GitAddArgs();
+                                aa.ThrowOnError = false; // Just ignore errors here; make the user add them themselves
+                                aa.AddParents = true;
+
+                                cl.Add(item.FullPath, aa);
+                            }
                         }
                     }
                 }
@@ -321,8 +335,16 @@ namespace VisualGit.Scc
 
         public void ScheduleGitStatus(IEnumerable<string> paths)
         {
+            ScheduleGitStatus(paths, false);
+        }
+
+        public void ScheduleGitStatus(IEnumerable<string> paths, bool forceFull)
+        {
             if (paths == null)
                 throw new ArgumentNullException("paths");
+
+            if (forceFull)
+                _forceFullRefresh = true;
 
             Cache.MarkDirty(paths);
 
