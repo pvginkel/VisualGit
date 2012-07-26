@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using NGit;
 using NGit.Api;
+using NGit.Internal;
 using NGit.Transport;
 using NGit.Api.Errors;
 using NGit.Merge;
@@ -274,18 +275,20 @@ namespace SharpGit
 
         private GitMergeResult PackMergeStatus(MergeStatus value)
         {
-            switch (value)
-            {
-                case MergeStatus.ALREADY_UP_TO_DATE: return GitMergeResult.UpToDate;
-                case MergeStatus.CONFLICTING: return GitMergeResult.Conflicting;
-                case MergeStatus.FAILED: return GitMergeResult.Failed;
-                case MergeStatus.FAST_FORWARD: return GitMergeResult.FastForward;
-                case MergeStatus.MERGED: return GitMergeResult.Merged;
-                case MergeStatus.NOT_SUPPORTED: return GitMergeResult.NotSupported;
-
-                default:
-                    throw new ArgumentOutOfRangeException("value");
-            }
+            if (value == MergeStatus.ALREADY_UP_TO_DATE)
+                return GitMergeResult.UpToDate;
+            else if (value == MergeStatus.CONFLICTING)
+                return GitMergeResult.Conflicting;
+            else if (value == MergeStatus.FAILED)
+                return GitMergeResult.Failed;
+            else if (value == MergeStatus.FAST_FORWARD)
+                return GitMergeResult.FastForward;
+            else if (value == MergeStatus.MERGED)
+                return GitMergeResult.Merged;
+            else if (value == MergeStatus.NOT_SUPPORTED)
+                return GitMergeResult.NotSupported;
+            else
+                throw new ArgumentOutOfRangeException("value");
         }
 
         private void PerformRebase(Repository repository, FetchResult fetchResult, GitPullResult result, ObjectId commitId, ProgressMonitor monitor)
@@ -329,18 +332,20 @@ namespace SharpGit
 
         private GitMergeResult PackRebaseResult(RebaseResult.Status value)
         {
-            switch (value)
-            {
-                case RebaseResult.Status.ABORTED: return GitMergeResult.Aborted;
-                case RebaseResult.Status.FAILED: return GitMergeResult.Failed;
-                case RebaseResult.Status.FAST_FORWARD: return GitMergeResult.FastForward;
-                case RebaseResult.Status.OK: return GitMergeResult.Success;
-                case RebaseResult.Status.STOPPED: return GitMergeResult.Stopped;
-                case RebaseResult.Status.UP_TO_DATE: return GitMergeResult.UpToDate;
-
-                default:
-                    throw new ArgumentOutOfRangeException("value");
-            }
+            if (value == RebaseResult.Status.ABORTED)
+                return GitMergeResult.Aborted;
+            else if (value == RebaseResult.Status.FAILED)
+                return GitMergeResult.Failed;
+            else if (value == RebaseResult.Status.FAST_FORWARD)
+                return GitMergeResult.FastForward;
+            else if (value == RebaseResult.Status.OK)
+                return GitMergeResult.Success;
+            else if (value == RebaseResult.Status.STOPPED)
+                return GitMergeResult.Stopped;
+            else if (value == RebaseResult.Status.UP_TO_DATE)
+                return GitMergeResult.UpToDate;
+            else
+                throw new ArgumentOutOfRangeException("value");
         }
     }
 }

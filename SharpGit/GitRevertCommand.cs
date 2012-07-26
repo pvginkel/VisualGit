@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 using NGit.Api;
 using System.Diagnostics;
+using NGit.Internal;
 using NGit.Revwalk;
 using NGit;
 using NGit.Api.Errors;

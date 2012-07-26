@@ -78,6 +78,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Sharpen.dll</HintPath>
     </Reference>
+    <Reference Include="Sharpen.Unix">
+      <HintPath>lib\Sharpen.Unix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
