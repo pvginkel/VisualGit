@@ -1,5 +1,6 @@
-
 /*.suo
 /*.user
 Thumbs.db
 /*.docstates
+/_ReSharper.*
+/*.dotCover
