@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualGit", "VisualGit\VisualGit.csproj", "{05C0EC96-01D6-47F3-A9D1-8EEA5EA920BB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A7E9216C-498A-4D5B-9BD4-2434B9AB0F3F} = {A7E9216C-498A-4D5B-9BD4-2434B9AB0F3F}

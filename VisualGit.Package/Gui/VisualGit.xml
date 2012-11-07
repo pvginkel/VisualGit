@@ -5,7 +5,6 @@
   <Imports>
     <Import include="stdidcmd.h" />
     <Import include="vsshlids.h" />
-    <Import include="office10/msobtnid.h" />
     <Import include="virtkeys.h" />
     <Import type="VisualGit.VisualGitId" from="..\..\VisualGit.Ids\bin\$(Configuration)\VisualGit.Ids.dll" prefix="VisualGit_" />
     <Import type="VisualGit.VisualGitCommand" from="..\..\VisualGit.Ids\bin\$(Configuration)\VisualGit.Ids.dll" prefix="Cmd_" />

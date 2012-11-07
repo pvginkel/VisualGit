@@ -52,18 +52,25 @@ namespace VisualGit.GenerateVSIXManifest
                 xw.WriteElementString("MoreInfoUrl", VisualGitId.ExtensionMoreInfoUrl);
                 xw.WriteElementString("License", "License.rtf");
                 xw.WriteElementString("GettingStartedGuide", VisualGitId.ExtensionGettingStartedUrl);
-                xw.WriteElementString("Icon", VisualGitId.PlkProduct + "-Icon.png");
-                xw.WriteElementString("PreviewImage", VisualGitId.PlkProduct + "-Preview.png");
+                xw.WriteElementString("Icon", "Resources\\Package.ico");
+                xw.WriteElementString("PreviewImage", "Resources\\Preview.png");
                 xw.WriteElementString("InstalledByMsi", "true");
 
                 xw.WriteStartElement("SupportedProducts", vsix2010);
-                xw.WriteStartElement("VisualStudio", vsix2010);
-                xw.WriteAttributeString("Version", "10.0");
-                xw.WriteElementString("Edition", "Ultimate");
-                xw.WriteElementString("Edition", "Premium");
-                xw.WriteElementString("Edition", "Pro");
-                xw.WriteElementString("Edition", "IntegratedShell");
-                xw.WriteEndElement();
+
+                foreach (string version in new[] { "10.0", "11.0" })
+                {
+                    xw.WriteStartElement("VisualStudio", vsix2010);
+                    xw.WriteAttributeString("Version", version);
+                    xw.WriteElementString("Edition", "VSTS");
+                    xw.WriteElementString("Edition", "VSTD");
+                    xw.WriteElementString("Edition", "Ultimate");
+                    xw.WriteElementString("Edition", "Premium");
+                    xw.WriteElementString("Edition", "Pro");
+                    xw.WriteElementString("Edition", "IntegratedShell");
+                    xw.WriteEndElement();
+                }
+
                 xw.WriteEndElement(); // /SupportedProducts
 
                 xw.WriteStartElement("SupportedFrameworkRuntimeEdition", vsix2010);
@@ -76,6 +83,8 @@ namespace VisualGit.GenerateVSIXManifest
                 xw.WriteStartElement("References", vsix2010);
                 xw.WriteEndElement();
                 xw.WriteStartElement("Content", vsix2010);
+                xw.WriteElementString("VsPackage", "VisualGit.Package.dll");
+                xw.WriteElementString("VsPackage", "VisualGit.Trigger.dll");
                 xw.WriteEndElement();
 
                 xw.WriteEndElement(); // /Vsix
