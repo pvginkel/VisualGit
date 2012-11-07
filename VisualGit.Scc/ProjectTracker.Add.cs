@@ -496,7 +496,7 @@ namespace VisualGit.Scc
                 using (GitSccContext git = new GitSccContext(Context))
                 {
                     // Ok; we have a 'new' directory here.. Lets check if VS broke the Git working copy
-                    GitStatusEventArgs entry = git.SafeGetEntry(dir);
+                    GitFileStatus entry = git.SafeGetEntry(dir);
 
                     if (entry != null && entry.NodeKind == GitNodeKind.Directory) // Entry exists, valid dir
                         continue;

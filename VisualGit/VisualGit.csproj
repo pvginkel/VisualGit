@@ -96,6 +96,9 @@
     <Compile Include="Commands\RepositoryExplorer\ShowRepositoryItemChanges.cs" />
     <Compile Include="Commands\SolutionPullCommand.cs" />
     <Compile Include="Commands\SolutionPushCommand.cs" />
+    <Compile Include="Services\StatusManager\CacheEntry.cs" />
+    <Compile Include="Services\StatusManager\DirectoryCache.cs" />
+    <Compile Include="Services\StatusManager\RepositoryCache.cs" />
     <Compile Include="Services\VisualGitClientPool.cs" />
     <Compile Include="Services\VisualGitHelpService.cs" />
     <Compile Include="Services\VisualGitErrorMessage.cs" />
@@ -118,6 +121,7 @@
     <Compile Include="Commands\MigrateVisualGitSettings.cs" />
     <Compile Include="Commands\OpenInXExplorer.cs" />
     <Compile Include="Commands\SolutionCommitCommand.cs" />
+    <Compile Include="Services\VisualGitStatusManager.cs" />
     <Compile Include="VisualGitModule.cs" />
     <Compile Include="CommandResources.Designer.cs">
       <AutoGen>True</AutoGen>

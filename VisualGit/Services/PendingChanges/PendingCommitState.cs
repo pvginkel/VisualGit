@@ -164,51 +164,50 @@ namespace VisualGit.Services.PendingChanges
 
                 // Let's see if committing with depth infinity would go wrong
                 bool hasOther = false;
-                using (GitClient cl = GetService<IGitClientPool>().GetNoUIClient())
+                var statusManager = GetService<IGitStatusManager>();
+
+                bool cancel = false;
+
+                foreach (string path in CommitPaths)
                 {
-                    bool cancel = false;
-                    GitStatusArgs sa = new GitStatusArgs();
-                    sa.ThrowOnError = false;
-                    sa.ThrowOnCancel = false;
-                    sa.RetrieveIgnoredEntries = false;
-                    sa.Depth = GitDepth.Infinity;
+                    GitItem item = Cache[path];
 
-                    foreach (string path in CommitPaths)
-                    {
-                        GitItem item = Cache[path];
+                    if (!IsDirectory(item) || item.IsDeleteScheduled)
+                        continue; // Only check not to be deleted directories
 
-                        if (!IsDirectory(item) || item.IsDeleteScheduled)
-                            continue; // Only check not to be deleted directories
-
-                        if (!cl.Status(path, sa,
-                            delegate(object sender, GitStatusEventArgs ee)
-                            {
-                                switch (ee.LocalContentStatus)
-                                {
-                                    case GitStatus.Zero:
-                                    case GitStatus.None:
-                                    case GitStatus.Normal:
-                                    case GitStatus.Ignored:
-                                    case GitStatus.NotVersioned:
-                                        return;
-                                }
-                                if (!CommitPaths.Contains(ee.FullPath))
-                                {
-                                    nodeNotToCommit = ee.FullPath;
-                                    nodeToCommit = path;
-                                    hasOther = true;
-                                    ee.Cancel = true;
-                                    cancel = true;
-                                }
-                            }))
+                    if (!statusManager.GetFileStatus(
+                        path,
+                        GitDepth.Infinity,
+                        status =>
                         {
-                            if (cancel)
-                                break;
-                        }
+                            switch (status.LocalContentStatus)
+                            {
+                                case GitStatus.Zero:
+                                case GitStatus.None:
+                                case GitStatus.Normal:
+                                case GitStatus.Ignored:
+                                case GitStatus.NotVersioned:
+                                    return true;
+                            }
 
-                        if (hasOther)
+                            if (!CommitPaths.Contains(status.FullPath))
+                            {
+                                nodeNotToCommit = status.FullPath;
+                                nodeToCommit = path;
+                                hasOther = true;
+                                cancel = true;
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    )) {
+                        if (cancel)
                             break;
                     }
+
+                    if (hasOther)
+                        break;
                 }
 
                 if (!hasOther)

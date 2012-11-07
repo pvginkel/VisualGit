@@ -242,7 +242,7 @@ namespace VisualGit.Scc
 
                 using (GitSccContext git = new GitSccContext(Context))
                 {
-                    GitStatusEventArgs wa = git.SafeGetEntry(newDir);
+                    GitFileStatus wa = git.SafeGetEntry(newDir);
                     string newParent = GitTools.GetNormalizedDirectoryName(newDir);
 
                     if (wa != null)

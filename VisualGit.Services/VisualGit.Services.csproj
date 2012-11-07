@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IGitClientPool.cs" />
+    <Compile Include="IGitStatusManager.cs" />
     <Compile Include="Scc\UI\ILastChangeInfo.cs" />
     <Compile Include="UI\CredentialCacheItem.cs" />
     <Compile Include="VisualGitModule.cs" />

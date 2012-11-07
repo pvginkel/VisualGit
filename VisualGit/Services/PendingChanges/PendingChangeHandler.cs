@@ -546,26 +546,22 @@ namespace VisualGit.Services.PendingChanges
         string GetGitCasing(GitItem item)
         {
             string name = null;
+
             // Find the correct casing
-            using (GitClient client = Context.GetService<IGitClientPool>().GetNoUIClient())
-            {
-                GitStatusArgs args = new GitStatusArgs();
-
-                args.Depth = GitDepth.Files;
-                args.RetrieveAllEntries = false;
-                args.RetrieveIgnoredEntries = false;
-                args.ThrowOnCancel = false;
-                args.ThrowOnError = false;
-
-                client.Status(item.Directory, args,
-                    delegate(object sender, GitStatusEventArgs ea)
+            Context.GetService<IGitStatusManager>().GetFileStatus(
+                item.Directory,
+                GitDepth.Files,
+                status =>
+                {
+                    if (String.Equals(status.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (string.Equals(ea.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
-                        {
-                            name = ea.FullPath;
-                        }
-                    });
-            }
+                        name = status.FullPath;
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
 
             return name;
         }

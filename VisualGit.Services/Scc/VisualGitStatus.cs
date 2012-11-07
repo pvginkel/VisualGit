@@ -44,26 +44,27 @@ namespace VisualGit
         readonly long _lastChangeRevision;
         readonly long _revision;
 
-        public VisualGitStatus(GitStatusEventArgs args)
+        public VisualGitStatus(GitFileStatus args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
 
             _nodeKind = args.NodeKind;
             _state = args.LocalContentStatus;
-            _localCopied = args.LocalCopied;
 
-            if (args.WorkingCopyInfo != null)
-            {
-                _lastChangeTime = args.WorkingCopyInfo.LastChangeTime;
-                _lastChangeRevision = args.WorkingCopyInfo.LastChangeRevision;
-                _lastChangeAuthor = args.WorkingCopyInfo.LastChangeAuthor;
-                _revision = args.WorkingCopyInfo.Revision;
-            }
+            //_localCopied = args.LocalCopied;
 
-            _treeConflict = args.TreeConflict;
-            if(_treeConflict != null)
-                _treeConflict.Detach();
+            //if (args.WorkingCopyInfo != null)
+            //{
+            //    _lastChangeTime = args.WorkingCopyInfo.LastChangeTime;
+            //    _lastChangeRevision = args.WorkingCopyInfo.LastChangeRevision;
+            //    _lastChangeAuthor = args.WorkingCopyInfo.LastChangeAuthor;
+            //    _revision = args.WorkingCopyInfo.Revision;
+            //}
+
+            //_treeConflict = args.TreeConflict;
+            //if(_treeConflict != null)
+            //    _treeConflict.Detach();
         }
 
         /// <summary>

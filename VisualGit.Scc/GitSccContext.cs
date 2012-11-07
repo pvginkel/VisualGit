@@ -33,14 +33,18 @@ namespace VisualGit.Scc
     /// </summary>
     sealed class GitSccContext : VisualGitService
     {
-        readonly GitClient _client;
-        readonly IFileStatusCache _statusCache;
-        bool _disposed;
+        private readonly GitClient _client;
+        private readonly IFileStatusCache _statusCache;
+        private bool _disposed;
+        private string _adminDir;
+        private readonly IGitStatusManager _statusManager;
+
 
         public GitSccContext(IVisualGitServiceProvider context)
             : base(context)
         {
             _client = context.GetService<IGitClientPool>().GetNoUIClient();
+            _statusManager = context.GetService<IGitStatusManager>();
             _statusCache = GetService<IFileStatusCache>();
         }
 
@@ -64,7 +68,7 @@ namespace VisualGit.Scc
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public GitStatusEventArgs SafeGetEntry(string path)
+        public GitFileStatus SafeGetEntry(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
@@ -72,25 +76,22 @@ namespace VisualGit.Scc
             // We only have to look in the parent.
             // If the path is the working copy root, the name doesn't matter!
 
-            string dir = GitTools.GetNormalizedDirectoryName(path);
+            GitFileStatus entry = null;
 
-            var sa = new GitStatusArgs();
-            sa.Depth = GitDepth.Files;
-            sa.RetrieveAllEntries = false;
-            sa.RetrieveIgnoredEntries = false;
-            sa.ThrowOnError = false;
-            sa.ThrowOnCancel = false;
-
-            GitStatusEventArgs entry = null;
-
-            _client.Status(dir, sa, (sender, e) =>
+            _statusManager.GetFileStatus(
+                GitTools.GetNormalizedDirectoryName(path),
+                GitDepth.Files,
+                status =>
                 {
-                    if (entry == null && String.Equals(path, e.FullPath, FileSystemUtil.StringComparison))
+                    if (entry == null && String.Equals(path, status.FullPath, FileSystemUtil.StringComparison))
                     {
-                        entry = e;
-                        e.Cancel = true;
+                        entry = status;
+                        return false;
                     }
-                });
+
+                    return true;
+                }
+            );
 
             return entry;
         }
@@ -302,12 +303,12 @@ namespace VisualGit.Scc
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            GitStatusEventArgs status = SafeGetEntry(name);
+            var status = SafeGetEntry(name);
 
             if (status == null)
                 return true;
 
-            switch (status.WorkingCopyInfo.Schedule)
+            switch (status.Schedule)
             {
                 case GitSchedule.Delete:
                     return true; // The item was already deleted
@@ -625,33 +626,31 @@ namespace VisualGit.Scc
                 return true; // Not in a versioned directory -> Fast out
 
             // Item does exist; check casing
-            string parentDir = GitTools.GetNormalizedDirectoryName(path);
-            GitStatusArgs wa = new GitStatusArgs();
-            wa.ThrowOnError = false;
-            wa.ThrowOnCancel = false;
-            wa.Depth = GitDepth.Files;
 
             bool ok = true;
 
-            using (GitClient client = GetService<IGitClientPool>().GetNoUIClient())
-            {
-                client.Status(parentDir, wa,
-                delegate(object sender, GitStatusEventArgs e)
+            _statusManager.GetFileStatus(
+                GitTools.GetNormalizedDirectoryName(path),
+                GitDepth.Files,
+                status =>
                 {
-                    if (string.Equals(e.FullPath, path, StringComparison.OrdinalIgnoreCase))
+                    if (String.Equals(status.FullPath, path, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!string.Equals(e.Name, file, StringComparison.Ordinal))
-                        {
+                        string correctFileName = Path.GetFileName(status.FullPath);
+
+                        if (!string.Equals(correctFileName, file, StringComparison.Ordinal))
                             ok = false; // Casing issue
-                        }
+
+                        return false;
                     }
-                });
-            }
+
+                    return true;
+                }
+            );
 
             return ok;
         }
 
-        string _adminDir;
         private bool BelowAdminDir(GitItem item)
         {
             if (item == null)

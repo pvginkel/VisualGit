@@ -113,6 +113,7 @@
     <Compile Include="GitDiffCommand.cs" />
     <Compile Include="GitExportArgs.cs" />
     <Compile Include="GitExportCommand.cs" />
+    <Compile Include="GitFileStatus.cs" />
     <Compile Include="GitIgnoreSpacing.cs" />
     <Compile Include="GitInfoArgs.cs" />
     <Compile Include="GitInfoCommand.cs" />
@@ -206,8 +207,6 @@
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitConflictsClientArgs.cs" />
-    <Compile Include="IgnoreFile.cs" />
-    <Compile Include="IgnoreManager.cs" />
     <Compile Include="IgnoreSpaceTextComparator.cs" />
     <Compile Include="Implementation\GitLibrary.cs" />
     <Compile Include="NullOutputStream.cs" />
@@ -218,7 +217,6 @@
     <Compile Include="GitStatusArgs.cs" />
     <Compile Include="GitStatusCommand.cs" />
     <Compile Include="GitStatusEventArgs.cs" />
-    <Compile Include="GitWorkingCopyInfo.cs" />
     <Compile Include="ObjectStreamWrapper.cs" />
     <Compile Include="ObjectUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

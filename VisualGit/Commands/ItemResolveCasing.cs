@@ -98,29 +98,25 @@ namespace VisualGit.Commands
             }
         }
 
-        static string GetGitCasing(CommandEventArgs e, GitItem item)
+        string GetGitCasing(CommandEventArgs e, GitItem item)
         {
             string name = null;
+
             // Find the correct casing
-            using (GitClient client = e.GetService<IGitClientPool>().GetNoUIClient())
-            {
-                GitStatusArgs args = new GitStatusArgs();
-
-                args.Depth = GitDepth.Files;
-                args.RetrieveAllEntries = false;
-                args.RetrieveIgnoredEntries = false;
-                args.ThrowOnCancel = false;
-                args.ThrowOnError = false;
-
-                client.Status(item.Directory, args,
-                    delegate(object sender, GitStatusEventArgs ea)
+            e.GetService<IGitStatusManager>().GetFileStatus(
+                item.Directory,
+                GitDepth.Files,
+                status =>
+                {
+                    if (string.Equals(status.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (string.Equals(ea.FullPath, item.FullPath, StringComparison.OrdinalIgnoreCase))
-                        {
-                            name = ea.FullPath;
-                        }
-                    });
-            }
+                        name = status.FullPath;
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
 
             return name;
         }

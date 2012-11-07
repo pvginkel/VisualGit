@@ -35,10 +35,10 @@ namespace VisualGit.Scc.StatusCache
     sealed partial class FileStatusCache : VisualGitService, VisualGit.Scc.IFileStatusCache, IGitItemChange
     {
         readonly object _lock = new object();
-        readonly GitClient _client;
         readonly Dictionary<string, GitItem> _map; // Maps from full-normalized paths to SvnItems
         readonly Dictionary<string, GitDirectory> _dirMap;
         IVisualGitCommandService _commandService;
+        readonly IGitStatusManager _statusManager;
 
         public FileStatusCache(IVisualGitServiceProvider context)
             : base(context)
@@ -46,7 +46,7 @@ namespace VisualGit.Scc.StatusCache
             if (context == null)
                 throw new ArgumentNullException("context");
 
-            _client = new GitClient();
+            _statusManager = context.GetService<IGitStatusManager>();
             _map = new Dictionary<string, GitItem>(StringComparer.OrdinalIgnoreCase);
             _dirMap = new Dictionary<string, GitDirectory>(StringComparer.OrdinalIgnoreCase);
             InitializeShellMonitor();
@@ -84,6 +84,8 @@ namespace VisualGit.Scc.StatusCache
 
                 if (GitTools.TryGetRepositoryRoot(fullPath, out repositoryRoot))
                 {
+                    _statusManager.InvalidatePath(repositoryRoot);
+
                     depth = GitDepth.Infinity;
                     fullPath = repositoryRoot;
                     nodeKind = GitNodeKind.Directory;
@@ -252,12 +254,6 @@ namespace VisualGit.Scc.StatusCache
                     break;
             }
 
-            GitStatusArgs args = new GitStatusArgs();
-            args.Depth = depth;
-            args.RetrieveAllEntries = true;
-            args.RetrieveIgnoredEntries = true;
-            args.ThrowOnError = false;
-
             lock (_lock)
             {
                 GitDirectory directory = null;
@@ -293,7 +289,7 @@ namespace VisualGit.Scc.StatusCache
 
                 bool statSelf = false;
 
-                bool ok = _client.Status(walkPath, args, RefreshCallback);
+                bool ok = _statusManager.GetFileStatus(walkPath, depth, RefreshCallback);
 
                 if (!ok)
                     statSelf = true;
@@ -511,12 +507,12 @@ namespace VisualGit.Scc.StatusCache
         /// All information we receive here is live from SVN and Disk and is therefore propagated
         /// in all SvnItems wishing information
         /// </remarks>
-        void RefreshCallback(object sender, GitStatusEventArgs e)
+        bool RefreshCallback(GitFileStatus gitStatus)
         {
             // Note: There is a lock(_lock) around this in our caller
 
-            VisualGitStatus status = new VisualGitStatus(e);
-            string path = e.FullPath; // Fully normalized
+            VisualGitStatus status = new VisualGitStatus(gitStatus);
+            string path = gitStatus.FullPath; // Fully normalized
 
             GitItem item;
             if (!_map.TryGetValue(path, out item) || !NewFullPathOk(item, path, status))
@@ -539,6 +535,8 @@ namespace VisualGit.Scc.StatusCache
                 ((IGitItemUpdate)item).RefreshTo(status);
 
             // Note: There is a lock(_lock) around this in our caller
+
+            return true;
         }
 
         /// <summary>

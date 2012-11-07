@@ -29,9 +29,5 @@ namespace SharpGit
             : base(GitCommandType.Status)
         {
         }
-
-        public bool RetrieveAllEntries { get; set; }
-        public bool RetrieveIgnoredEntries { get; set; }
-        public GitDepth Depth { get; set; }
     }
 }
