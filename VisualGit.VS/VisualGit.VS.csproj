@@ -133,10 +133,13 @@
       <LastGenOutput>SolutionExplorerStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SolutionExplorer\UpDnListView.png" />
-    <EmbeddedResource Include="SolutionExplorer\StatusGlyphs.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SolutionExplorer\StatusGlyphs7.bmp" />
+    <EmbeddedResource Include="SolutionExplorer\StatusGlyphs8.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

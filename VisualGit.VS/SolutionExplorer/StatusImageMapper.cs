@@ -17,6 +17,7 @@
 // Changes and additions made for VisualGit Copyright 2011 Pieter van Ginkel.
 
 using System;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
@@ -39,12 +40,18 @@ namespace VisualGit.VS.SolutionExplorer
         ImageList _statusImageList;
         public ImageList StatusImageList
         {
-            get { return _statusImageList ?? (_statusImageList = CreateStatusImageList()); }
+            get { return _statusImageList ?? (_statusImageList = CreateStatusImageList(true)); }
         }
 
-        public ImageList CreateStatusImageList()
+        ImageList IStatusImageMapper.CreateStatusImageList()
         {
-            using (Stream images = typeof(StatusImageMapper).Assembly.GetManifestResourceStream(typeof(StatusImageMapper).Namespace + ".StatusGlyphs.bmp"))
+            return CreateStatusImageList(false);
+        }
+
+        public ImageList CreateStatusImageList(bool width8)
+        {
+            int width = width8 ? 8 : 7;
+            using (Stream images = typeof(StatusImageMapper).Assembly.GetManifestResourceStream(typeof(StatusImageMapper).Namespace + string.Format(CultureInfo.InvariantCulture, ".StatusGlyphs{0}.bmp", width)))
             {
                 if (images == null)
                     return null;
@@ -52,7 +59,7 @@ namespace VisualGit.VS.SolutionExplorer
                 Bitmap bitmap = (Bitmap)Image.FromStream(images, true);
 
                 ImageList imageList = new ImageList();
-                imageList.ImageSize = new Size(8, bitmap.Height);
+                imageList.ImageSize = new Size(width, bitmap.Height);
                 bitmap.MakeTransparent(bitmap.GetPixel(0, 0));
 
                 imageList.Images.AddStrip(bitmap);
