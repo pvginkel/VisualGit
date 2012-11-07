@@ -58,10 +58,6 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Posix, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Mono.Posix.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Security, Version=3.5.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Mono.Security.dll</HintPath>
@@ -77,9 +73,6 @@
     <Reference Include="Sharpen, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bcf96c0becf06347, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\Sharpen.dll</HintPath>
-    </Reference>
-    <Reference Include="Sharpen.Unix">
-      <HintPath>lib\Sharpen.Unix.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

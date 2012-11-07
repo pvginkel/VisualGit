@@ -52,7 +52,6 @@ namespace SharpGit
                 new GitLibrary(typeof(Git).Assembly),
                 new GitLibrary(typeof(ICSharpCode.SharpZipLib.SharpZipBaseException).Assembly),
                 new GitLibrary(typeof(NSch.Buffer).Assembly),
-                new GitLibrary(typeof(Mono.Unix.Catalog).Assembly),
                 new GitLibrary(typeof(Mono.Security.PKCS7).Assembly)
             });
 
@@ -513,7 +512,7 @@ namespace SharpGit
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
+            System.GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
