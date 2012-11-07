@@ -254,8 +254,11 @@ namespace VisualGit.Scc.ProjectMap
             IGitItemStateUpdate sisu = item;
             sisu.SetDocumentDirty(dirty);
 
-            if (item.IsModified)
-                return; // No need to update glyph!
+            // HACK: Removed call because this triggers a refresh which may be
+            // delayed.
+
+            // if (item.IsModified)
+            //    return; // No need to update glyph!
 
             UpdateGlyph(true);
         }
