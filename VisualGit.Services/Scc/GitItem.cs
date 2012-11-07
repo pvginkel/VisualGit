@@ -57,13 +57,6 @@ namespace VisualGit
         readonly IFileStatusCache _context;
         readonly string _fullPath;
 
-        enum XBool : sbyte
-        {
-            None = 0, // The three fastest values to check for most CPU's
-            True = -1,
-            False = 1
-        }
-
         VisualGitStatus _status;
         bool _enqueued;
 
@@ -71,7 +64,7 @@ namespace VisualGit
         static bool _scheduled;
 
         IGitWcReference _workingCopy;
-        XBool _statusDirty; // updating, dirty, dirty 
+        bool? _statusDirty; // updating, dirty, dirty 
         bool _ticked;
         int _cookie;
         DateTime _modified;
@@ -130,7 +123,7 @@ namespace VisualGit
         void RefreshTo(NoSccStatus status, GitNodeKind nodeKind)
         {
             _cookie = NextCookie();
-            _statusDirty = XBool.False;
+            _statusDirty = false;
 
             GitItemState set = GitItemState.None;
             GitItemState unset = GitItemState.Modified | GitItemState.Added | GitItemState.HasCopyOrigin
@@ -152,7 +145,7 @@ namespace VisualGit
                 case NoSccStatus.Unknown:
                 default:
                     SetDirty(set | unset);
-                    _statusDirty = XBool.True;
+                    _statusDirty = true;
                     break;
             }
 
@@ -172,7 +165,7 @@ namespace VisualGit
                 throw new ArgumentNullException("status");
 
             _cookie = NextCookie();
-            _statusDirty = XBool.False;
+            _statusDirty = false;
             _status = status;
 
             const GitItemState unset = GitItemState.Modified | GitItemState.Added |
@@ -336,9 +329,10 @@ namespace VisualGit
 
         public void MarkDirty()
         {
-            Debug.Assert(_statusDirty != XBool.None, "MarkDirty called while updating status");
+            Debug.Assert(_statusDirty.HasValue, "MarkDirty called while updating status");
 
-            _statusDirty = XBool.True;
+            _statusDirty = true;
+            _context.GetService<IGitStatusManager>().InvalidatePath(_fullPath);
 
             _validState = GitItemState.None;
             _cookie = NextCookie();
@@ -348,7 +342,7 @@ namespace VisualGit
 
         bool IGitItemUpdate.IsStatusClean()
         {
-            return _statusDirty == XBool.False;
+            return _statusDirty == false;
         }
 
         /// <summary>
@@ -369,7 +363,7 @@ namespace VisualGit
 
         public bool ShouldClean()
         {
-            return _ticked || (_statusDirty == XBool.False && _status == VisualGitStatus.NotExisting);
+            return _ticked || (_statusDirty == false && _status == VisualGitStatus.NotExisting);
         }
 
         /// <summary>
@@ -383,7 +377,7 @@ namespace VisualGit
 
         bool IGitItemUpdate.ShouldRefresh()
         {
-            return _ticked || _statusDirty != XBool.False;
+            return _ticked || _statusDirty != false;
         }
 
         /// <summary>
@@ -506,7 +500,7 @@ namespace VisualGit
 
         void RefreshStatus()
         {
-            _statusDirty = XBool.None;
+            _statusDirty = null;
             IFileStatusCache statusCache = StatusCache;
 
             try
@@ -515,8 +509,8 @@ namespace VisualGit
             }
             finally
             {
-                Debug.Assert(_statusDirty == XBool.False, "No longer dirty after refresh", string.Format("Path = {0}", FullPath));
-                _statusDirty = XBool.False;
+                Debug.Assert(_statusDirty == false, "No longer dirty after refresh", string.Format("Path = {0}", FullPath));
+                _statusDirty = false;
             }
         }
 
@@ -803,10 +797,10 @@ namespace VisualGit
 
         void EnsureClean()
         {
-            Debug.Assert(_statusDirty != XBool.None, "Recursive refresh call");
+            Debug.Assert(_statusDirty.HasValue, "Recursive refresh call");
 
-            if (_statusDirty == XBool.True)
-                this.RefreshStatus();
+            if (_statusDirty == true)
+                RefreshStatus();
         }
 
         public void Dispose()

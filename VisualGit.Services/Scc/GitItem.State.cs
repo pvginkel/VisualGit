@@ -53,7 +53,7 @@ namespace VisualGit
 
             if (0 != (unavailable & MaskRefreshTo))
             {
-                Debug.Assert(_statusDirty != XBool.False);
+                Debug.Assert(_statusDirty != false);
                 RefreshStatus();
 
                 unavailable = flagsToGet & ~_validState;
