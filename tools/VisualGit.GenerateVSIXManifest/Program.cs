@@ -46,7 +46,7 @@ namespace VisualGit.GenerateVSIXManifest
 
                 xw.WriteElementString("Name", VisualGitId.ExtensionTitle);
                 xw.WriteElementString("Author", VisualGitId.AssemblyCompany);
-                xw.WriteElementString("Version", infoAsm.Version.ToString());
+                xw.WriteElementString("Version", GetVersion(infoAsm.Version));
                 xw.WriteElementString("Description", VisualGitId.ExtensionDescription);
                 xw.WriteElementString("Locale", "1033");
                 xw.WriteElementString("MoreInfoUrl", VisualGitId.ExtensionMoreInfoUrl);
@@ -89,6 +89,11 @@ namespace VisualGit.GenerateVSIXManifest
 
                 xw.WriteEndElement(); // /Vsix
             }
+        }
+
+        private static string GetVersion(Version version)
+        {
+            return String.Format("{0}.{1}", version.Major, version.Minor);
         }
     }
 }
