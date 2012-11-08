@@ -332,7 +332,6 @@ namespace VisualGit
             Debug.Assert(_statusDirty.HasValue, "MarkDirty called while updating status");
 
             _statusDirty = true;
-            _context.GetService<IGitStatusManager>().InvalidatePath(_fullPath);
 
             _validState = GitItemState.None;
             _cookie = NextCookie();

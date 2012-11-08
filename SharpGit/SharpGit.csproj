@@ -206,8 +206,6 @@
     <Compile Include="GitWriteCommand.cs" />
     <Compile Include="IGitConfig.cs" />
     <Compile Include="IGitConflictsClientArgs.cs" />
-    <Compile Include="IgnoreFile.cs" />
-    <Compile Include="IgnoreManager.cs" />
     <Compile Include="IgnoreSpaceTextComparator.cs" />
     <Compile Include="Implementation\GitLibrary.cs" />
     <Compile Include="NullOutputStream.cs" />

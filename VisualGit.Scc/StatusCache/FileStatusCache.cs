@@ -254,7 +254,6 @@ namespace VisualGit.Scc.StatusCache
 
             GitStatusArgs args = new GitStatusArgs();
             args.Depth = depth;
-            args.RetrieveAllEntries = true;
             args.RetrieveIgnoredEntries = true;
             args.ThrowOnError = false;
 

@@ -38,7 +38,6 @@ namespace SharpGit
             Path = repositoryPath;
 
             Repository = CreateNew();
-            IgnoreManager = new IgnoreManager(this);
         }
 
         public Repository Repository { get; private set; }
@@ -58,8 +57,6 @@ namespace SharpGit
         {
             return new RepositoryLock(this);
         }
-
-        public IgnoreManager IgnoreManager { get; private set; }
 
         public void Dispose()
         {

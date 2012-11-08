@@ -22,14 +22,17 @@ using System.Linq;
 using System.Text;
 using NGit.Treewalk;
 using NGit;
-using NGit.Treewalk.Filter;
-using NGit.Dircache;
 using System.IO;
 
 namespace SharpGit
 {
     internal sealed class GitStatusCommand : GitCommand<GitStatusArgs>
     {
+        private HashSet<string> _seen;
+        private EventHandler<GitStatusEventArgs> _callback;
+        private Repository _repository;
+        private string _relativePath;
+
         public GitStatusCommand(GitClient client, GitClientArgs args)
             : base(client, args)
         {
@@ -43,110 +46,57 @@ namespace SharpGit
             var repositoryEntry = Client.GetRepository(path);
 
             if (Args.Depth < GitDepth.Files)
-                throw new NotImplementedException();
+                throw new InvalidOperationException("Expected GitDepth to be greater than or equal to Files");
 
             using (repositoryEntry.Lock())
             {
-                var repository = repositoryEntry.Repository;
+                _seen = new HashSet<string>(FileSystemUtil.StringComparer);
+                _callback = callback;
+                _repository = repositoryEntry.Repository;
 
-                // First collect all DirCacheEntry's also to detect whether the
-                // provided entry was a directory or file.
+                _relativePath = _repository.GetRepositoryPath(path);
 
-                var actualNodeKind = GitNodeKind.Unknown;
-                var dirCacheEntries = new List<DirCacheEntry>();
-                string relativePath = repository.GetRepositoryPath(path);
+                var diff = new IndexDiff(_repository, Constants.HEAD, new FileTreeIterator(_repository));
 
-                var workingTreeIt = new FileTreeIterator(repository);
-                var diff = new IndexDiff(repository, Constants.HEAD, workingTreeIt);
+                diff.SetFilter(new CustomPathFilter(_relativePath, Args.Depth));
 
-                var filter = new CustomPathFilter(relativePath, Args.Depth);
-                diff.SetFilter(filter);
                 diff.Diff();
 
-                var dirCache = repository.ReadDirCache();
-                int entryCount = dirCache.GetEntryCount();
+                if (GetNodeKind(path, diff) == GitNodeKind.File)
+                    throw new NotImplementedException();
 
-                for (int i = 0; i < entryCount; i++)
+                ExecuteDirectory(path, diff);
+            }
+        }
+
+        private void ExecuteDirectory(string path, IndexDiff diff)
+        {
+            bool cancelled;
+
+            ReportDirectory(path, out cancelled);
+
+            if (cancelled)
+                return;
+
+            if (Args.Depth > GitDepth.Files)
+            {
+                foreach (string fullPath in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
                 {
-                    var entry = dirCache.GetEntry(i);
-                    string pathString = entry.PathString;
+                    ReportDirectory(fullPath, out cancelled);
 
-                    if (String.Equals(pathString, relativePath, FileSystemUtil.StringComparison))
-                        actualNodeKind = GitNodeKind.File;
-
-                    if (GitTools.PathMatches(relativePath, pathString, false, Args.Depth))
-                    {
-                        if (actualNodeKind == GitNodeKind.Unknown)
-                            actualNodeKind = GitNodeKind.Directory;
-
-                        dirCacheEntries.Add(entry);
-                    }
+                    if (cancelled)
+                        return;
                 }
+            }
 
-                if (actualNodeKind == GitNodeKind.Unknown)
-                {
-                    foreach (string pathString in diff.GetRemoved())
-                    {
-                        if (String.Equals(pathString, relativePath, FileSystemUtil.StringComparison))
-                        {
-                            actualNodeKind = GitNodeKind.File;
-                            break;
-                        }
-                        if (GitTools.PathMatches(relativePath, pathString, false, Args.Depth))
-                        {
-                            actualNodeKind = GitNodeKind.Directory;
-                            break;
-                        }
-                    }
-                }
+            foreach (string fullPath in Directory.GetFiles(path, "*", Args.Depth > GitDepth.Files ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly))
+            {
+                string relativePath = _repository.GetRepositoryPath(fullPath);
 
-                if (actualNodeKind == GitNodeKind.Unknown)
-                {
-                    if (Directory.Exists(path))
-                        actualNodeKind = GitNodeKind.Directory;
-                    else if (File.Exists(path))
-                        actualNodeKind = GitNodeKind.File;
-                }
+                var state = GetInternalStatus(relativePath, diff);
 
-                // Inform the ignore manager we are working of a file or path.
-
-                repositoryEntry.IgnoreManager.RefreshPath(path);
-
-                // Return an entry for the directory.
-
-                if (actualNodeKind == GitNodeKind.Directory)
-                {
-                    if (ReportDirectory(path, callback, repositoryEntry.IgnoreManager))
-                       return;
-                }
-
-                // Report the rest of the directories.
-
-                if (Args.Depth > GitDepth.Files)
-                {
-                    foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
-                    {
-                        // Skip over our directory
-
-                        if (String.Equals(path, directory, FileSystemUtil.StringComparison))
-                            continue;
-
-                        repositoryEntry.IgnoreManager.RefreshPath(directory);
-
-                        if (ReportDirectory(directory, callback, repositoryEntry.IgnoreManager))
-                            return;
-                    }
-                }
-
-                var seen = new HashSet<string>(FileSystemUtil.StringComparer);
-
-                foreach (var entry in dirCacheEntries)
-                {
-                    string fullPath = repository.GetAbsoluteRepositoryPath(entry.PathString);
-
-                    var state = GetInternalStatus(entry, diff);
-
-                    var e = new GitStatusEventArgs
+                ReportFile(
+                    new GitStatusEventArgs
                     {
                         FullPath = fullPath,
                         LocalContentStatus = GetStatus(state),
@@ -157,155 +107,111 @@ namespace SharpGit
                             NodeKind = GitNodeKind.File,
                             Schedule = GetScheduleState(state)
                         }
-                    };
-
-                    callback(Client, e);
-
-                    if (CancelRequested(e))
-                        return;
-
-                    seen.Add(fullPath);
-                }
-
-                bool cancelled;
-
-                AddUnseenFiles(
-                    callback, repository, relativePath, seen, diff.GetRemoved(),
-                    GitInternalStatus.Removed, out cancelled
+                    },
+                    out cancelled
                 );
 
                 if (cancelled)
                     return;
-
-                AddUnseenFiles(
-                    callback, repository, relativePath, seen, diff.GetUntracked(),
-                    GitInternalStatus.Untracked, out cancelled
-                );
-
-                if (cancelled)
-                    return;
-
-                if (
-                    (Args.RetrieveIgnoredEntries || Args.RetrieveAllEntries) &&
-                    actualNodeKind == GitNodeKind.Directory &&
-                    Directory.Exists(path)
-                ) {
-                    string[] files;
-
-                    if (Args.Depth > GitDepth.Files)
-                        files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-                    else
-                        files = Directory.GetFiles(path);
-
-                    foreach (string fullPath in files)
-                    {
-                        // If the item has not yet been seen, or it is unclean
-                        // after we've read the entry.Repository, it's either added
-                        // or ignored.
-
-                        if (!GitTools.PathMatches(relativePath, repository.GetRepositoryPath(fullPath), false, Args.Depth))
-                            continue;
-
-                        if (!seen.Contains(fullPath))
-                        {
-                            var state =
-                                repositoryEntry.IgnoreManager.IsIgnored(fullPath, GitNodeKind.File)
-                                ? GitInternalStatus.Ignored
-                                : GitInternalStatus.Untracked;
-
-                            if (
-                                (Args.RetrieveAllEntries && (state == GitInternalStatus.Untracked || state == GitInternalStatus.Ignored)) ||
-                                (Args.RetrieveIgnoredEntries && state == GitInternalStatus.Ignored)
-                            ) {
-                                var e = new GitStatusEventArgs
-                                {
-                                    FullPath = fullPath,
-                                    LocalContentStatus = GetStatus(state),
-                                    InternalContentStatus = state,
-                                    NodeKind = GitNodeKind.File,
-                                    WorkingCopyInfo = new GitWorkingCopyInfo
-                                    {
-                                        NodeKind = GitNodeKind.File,
-                                        Schedule = GetScheduleState(state)
-                                    }
-                                };
-
-                                callback(Client, e);
-
-                                if (CancelRequested(e))
-                                    return;
-                            }
-
-                            seen.Add(fullPath);
-                        }
-                    }
-                }
             }
+
+            AddUnseenFiles(diff.GetRemoved(), GitInternalStatus.Removed, out cancelled);
+
+            if (cancelled)
+                return;
+
+            AddUnseenFiles(diff.GetUntracked(), GitInternalStatus.Untracked, out cancelled);
+
+            if (cancelled)
+                return;
+
+            if (Args.RetrieveIgnoredEntries)
+                AddUnseenFiles(diff.GetIgnoredNotInIndex(), GitInternalStatus.Ignored, out cancelled);
         }
 
-        private bool ReportDirectory(string path, EventHandler<GitStatusEventArgs> callback, IgnoreManager ignoreManager)
+        private GitNodeKind GetNodeKind(string path, IndexDiff diff)
         {
-            var state =
-                ignoreManager.IsIgnored(path, GitNodeKind.Directory)
-                    ? GitInternalStatus.Ignored
-                    : GitInternalStatus.Unset;
+            foreach (string pathString in diff.GetRemoved())
+            {
+                if (String.Equals(pathString, _relativePath, FileSystemUtil.StringComparison))
+                    return GitNodeKind.File;
+                if (GitTools.PathMatches(_relativePath, pathString, false, Args.Depth))
+                    return GitNodeKind.Directory;
+            }
 
+            if (Directory.Exists(path))
+                return GitNodeKind.Directory;
+            else if (File.Exists(path))
+                return GitNodeKind.File;
+
+            return GitNodeKind.Unknown;
+
+            throw new InvalidOperationException("Could not determine node kind");
+        }
+
+        private void ReportDirectory(string path, out bool cancelled)
+        {
             var e = new GitStatusEventArgs
             {
                 FullPath = path,
-                LocalContentStatus = GetStatus(state),
+                LocalContentStatus = GetStatus(GitInternalStatus.Unset),
                 NodeKind = GitNodeKind.Directory,
                 WorkingCopyInfo = new GitWorkingCopyInfo
                 {
                     NodeKind = GitNodeKind.Directory,
-                    Schedule = GetScheduleState(state)
+                    Schedule = GetScheduleState(GitInternalStatus.Unset)
                 }
             };
 
-            callback(Client, e);
+            _callback(Client, e);
 
-            return CancelRequested(e);
+            cancelled = CancelRequested(e);
         }
 
-        private void AddUnseenFiles(EventHandler<GitStatusEventArgs> callback, Repository repository, string relativePath, HashSet<string> seen, ICollection<string> paths, GitInternalStatus state, out bool cancelled)
+        private void ReportFile(GitStatusEventArgs e, out bool cancelled)
+        {
+            if (_seen.Contains(e.FullPath))
+            {
+                cancelled = false;
+                return;
+            }
+
+            _seen.Add(e.FullPath);
+
+            _callback(Client, e);
+
+            cancelled = CancelRequested(e);
+        }
+
+        private void AddUnseenFiles(IEnumerable<string> paths, GitInternalStatus state, out bool cancelled)
         {
             cancelled = false;
 
             foreach (string deletedPath in paths)
             {
-                if (!GitTools.PathMatches(relativePath, deletedPath, false, Args.Depth))
+                if (!GitTools.PathMatches(_relativePath, deletedPath, false, Args.Depth))
                     continue;
 
-                string fullPath = repository.GetAbsoluteRepositoryPath(deletedPath);
+                string fullPath = _repository.GetAbsoluteRepositoryPath(deletedPath);
 
-                // Prevent double reporting of naming conflicts. This ensures
-                // that only the Missing is reported, and not the Untracked.
-
-                if (seen.Contains(fullPath))
-                    continue;
-
-                var e = new GitStatusEventArgs
-                {
-                    FullPath = fullPath,
-                    LocalContentStatus = GetStatus(state),
-                    InternalContentStatus = state,
-                    NodeKind = GitNodeKind.File,
-                    WorkingCopyInfo = new GitWorkingCopyInfo
+                ReportFile(
+                    new GitStatusEventArgs
                     {
+                        FullPath = fullPath,
+                        LocalContentStatus = GetStatus(state),
+                        InternalContentStatus = state,
                         NodeKind = GitNodeKind.File,
-                        Schedule = GetScheduleState(state)
-                    }
-                };
+                        WorkingCopyInfo = new GitWorkingCopyInfo
+                        {
+                            NodeKind = GitNodeKind.File,
+                            Schedule = GetScheduleState(state)
+                        }
+                    },
+                    out cancelled
+                );
 
-                callback(Client, e);
-
-                if (CancelRequested(e))
-                {
-                    cancelled = true;
-                    break;
-                }
-
-                seen.Add(fullPath);
+                if (cancelled)
+                    return;
             }
         }
 
@@ -343,26 +249,25 @@ namespace SharpGit
             }
         }
 
-        private GitInternalStatus GetInternalStatus(DirCacheEntry item, IndexDiff diff)
+        private GitInternalStatus GetInternalStatus(string relativePath, IndexDiff diff)
         {
-            string itemName = item.PathString;
             GitInternalStatus result = GitInternalStatus.Unset;
 
-            if (diff.GetConflicting().Contains(itemName))
+            if (diff.GetConflicting().Contains(relativePath))
                 result |= GitInternalStatus.Conflicted;
-            if (diff.GetAdded().Contains(itemName))
+            if (diff.GetAdded().Contains(relativePath))
                 result |= GitInternalStatus.Added;
-            if (diff.GetAssumeUnchanged().Contains(itemName))
+            if (diff.GetAssumeUnchanged().Contains(relativePath))
                 result |= GitInternalStatus.AssumeUnchanged;
-            if (diff.GetChanged().Contains(itemName))
+            if (diff.GetChanged().Contains(relativePath))
                 result |= GitInternalStatus.Changed;
-            if (diff.GetModified().Contains(itemName))
+            if (diff.GetModified().Contains(relativePath))
                 result |= GitInternalStatus.Modified;
-            if (diff.GetMissing().Contains(itemName))
+            if (diff.GetMissing().Contains(relativePath))
                 result |= GitInternalStatus.Missing;
-            if (diff.GetRemoved().Contains(itemName))
+            if (diff.GetRemoved().Contains(relativePath))
                 result |= GitInternalStatus.Removed;
-            if (diff.GetUntracked().Contains(itemName))
+            if (diff.GetUntracked().Contains(relativePath))
                 result |= GitInternalStatus.Untracked;
 
             return result;

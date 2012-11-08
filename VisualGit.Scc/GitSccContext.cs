@@ -76,7 +76,6 @@ namespace VisualGit.Scc
 
             var sa = new GitStatusArgs();
             sa.Depth = GitDepth.Files;
-            sa.RetrieveAllEntries = false;
             sa.RetrieveIgnoredEntries = false;
             sa.ThrowOnError = false;
             sa.ThrowOnCancel = false;

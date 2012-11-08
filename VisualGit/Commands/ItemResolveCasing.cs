@@ -107,7 +107,6 @@ namespace VisualGit.Commands
                 GitStatusArgs args = new GitStatusArgs();
 
                 args.Depth = GitDepth.Files;
-                args.RetrieveAllEntries = false;
                 args.RetrieveIgnoredEntries = false;
                 args.ThrowOnCancel = false;
                 args.ThrowOnError = false;
